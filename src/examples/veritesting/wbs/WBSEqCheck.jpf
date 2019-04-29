@@ -1,4 +1,4 @@
-target=veritesting.wbs.WBSEqCheck
+target=veritesting.spfWbs.WBSEqCheck
 veritestRegionExpectedCount = -1
 
 classpath=${jpf-symbc}/build/examples,${jpf-symbc}/build/examples/
@@ -7,7 +7,7 @@ vm.storage.class=nil
 symbolic.debug=false
 
 ######## testing equivalence ######
-symbolic.method=veritesting.wbs.TestVeritestingWBS.testHarness(con#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.method=veritesting.spfWbs.TestVeritestingWBS.testHarness(con#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
 
 #symbolic.min_int=-2147483648
 #symbolic.max_int=2147483647

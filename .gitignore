@@ -11,7 +11,11 @@ trace
 *.orig
 *~
 *.DS_Store
+*.iml
+output/
 .idea/*
 logs/
 out/
-!.idea/*
+src/examples/VeritestingPerf.java
+src/examples/VeritestingPerf.jpf
+*.log

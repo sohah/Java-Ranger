@@ -24,4 +24,4 @@ symbolic.optimizechoices=false
 
 printRegionDigest=true
 
-regionDigestPrintName=wbs.log
+regionDigestPrintName=spfWbs.log

@@ -1,7 +1,7 @@
-target=veritesting.wbs.WBS_vt
+target=veritesting.spfWbs.WBS_vt
 classpath=${jpf-symbc}/build/examples/
 sourcepath=${jpf-symbc}/src/examples/
-symbolic.method = veritesting.wbs.WBS_vt.update(sym#sym#sym)
+symbolic.method = veritesting.spfWbs.WBS_vt.update(sym#sym#sym)
 #symbolic.minint=-100
 #symbolic.maxint=100
 vm.storage.class=nil

@@ -1,8 +1,13 @@
 package gov.nasa.jpf.symbc;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
+
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.folderName;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.contractDiscoveryOn;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.loopCount;
 
 import com.ibm.wala.util.shrike.gotoTransformation.GoToTransformer;
-import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.symbc.veritesting.Heuristics.HeuristicManager;
@@ -228,14 +233,52 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 if (GoToTransformer.active)
                     GoToTransformer.statisticsOn = true;
             } else { //SH: right now setting defaults to true for testing.
-                GoToTransformer.active = true;
-                GoToTransformer.statisticsOn = true;
+                GoToTransformer.active = false;
+                GoToTransformer.statisticsOn = false;
             }
 
-            StatisticManager.veritestingRunning = true;
-            jpf.addPublisherExtension(ConsolePublisher.class, this);
-            if (System.getenv("TIMEOUT_MINS") != null) {
-                timeout_mins = Integer.parseInt(System.getenv("TIMEOUT_MINS"));
+            if (conf.hasValue("contractDiscoveryOn"))
+                contractDiscoveryOn = conf.getBoolean("contractDiscoveryOn");
+
+            if (contractDiscoveryOn) {
+                if (conf.hasValue("specRepair"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.specLevelRepair = conf.getBoolean("specRepair");
+                if (conf.hasValue("SpecDirectory")) {
+                    folderName = folderName +
+                            conf.getString("SpecDirectory");
+                    if (folderName.charAt(folderName.length() - 1) != '/')
+                        folderName += "/";
+                }
+                if (conf.hasValue("spec"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.spec = conf.getString("spec");
+                if (conf.hasValue("faultySpec")) {
+                    //gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString(
+                    //"faultySpec");
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.faultySpecs = conf.getStringArray(
+                            "faultySpec");
+                }
+
+                if (conf.hasValue("repairInitialValues"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairInitialValues = conf.getBoolean("repairInitialValues");
+                if (conf.hasValue("repairMode")) {
+                    int repairMode = conf.getInt("repairMode");
+                    if (repairMode == 0)
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.CONSTANT;
+                    else if (repairMode == 1)
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.PRE;
+                    else if (repairMode == 2)
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.LIBRARY;
+                    else {
+                        System.out.println("No other mode is supported");
+                        assert false;
+                    }
+                }
+
+                StatisticManager.veritestingRunning = true;
+                jpf.addPublisherExtension(ConsolePublisher.class, this);
+                if (System.getenv("TIMEOUT_MINS") != null) {
+                    timeout_mins = Integer.parseInt(System.getenv("TIMEOUT_MINS"));
+                }
             }
         }
     }
@@ -320,7 +363,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         thisHighOrdCount = 0;
                         staticRegion = JITAnalysis.discoverRegions(ti, instructionToExecute, key); // Just-In-Time static analysis to discover regions
                         if (staticRegion != null) {
-                            if (printRegionDigest) regionDigest.append("\n").append(staticRegion.staticStmt.toString());
+                            if (printRegionDigest)
+                                regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
                         }
                     } /*else
@@ -338,7 +382,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         thisHighOrdCount = 0;
                         //if (SpfUtil.isSymCond(staticRegion.staticStmt)) {
                         if (SpfUtil.isSymCond(ti, staticRegion.staticStmt, (SlotParamTable) staticRegion.slotParamTable, instructionToExecute)) {
-                            if (printRegionDigest) regionDigest.append("\n").append(staticRegion.staticStmt.toString());
+                            if (printRegionDigest)
+                                regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
                         } else
                             statisticManager.updateConcreteHitStatForRegion(key);
@@ -378,7 +423,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
 
-    private void runVeritestingWrapper(ThreadInfo ti, VM vm, StaticRegion staticRegion, Instruction instructionToExecute) throws Exception {
+    private void runVeritestingWrapper(ThreadInfo ti, VM vm, StaticRegion staticRegion, Instruction
+            instructionToExecute) throws Exception {
         if ((runMode != VeritestingMode.SPFCASES) && (runMode != VeritestingMode.EARLYRETURNS)) {
             isRegionEndOk(ti, staticRegion, instructionToExecute);
 
@@ -393,7 +439,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
 
-    private void isRegionEndOk(ThreadInfo ti, StaticRegion staticRegion, Instruction instructionToExecute) throws StaticRegionException {
+    private void isRegionEndOk(ThreadInfo ti, StaticRegion staticRegion, Instruction instructionToExecute) throws
+            StaticRegionException {
         boolean isEndingInsnStackConsuming = isStackConsumingRegionEnd(ti, staticRegion, instructionToExecute);
         // If region ends on a stack operand consuming instruction then the region should have a stack output
         if (isEndingInsnStackConsuming && staticRegion.stackOutput == null) {
@@ -472,7 +519,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         }
     }
 
-    private void runVeritestingWithSPF(ThreadInfo ti, VM vm, Instruction instructionToExecute, StaticRegion staticRegion,
+    private void runVeritestingWithSPF(ThreadInfo ti, VM vm, Instruction instructionToExecute, StaticRegion
+            staticRegion,
                                        String key) throws Exception {
 
 
@@ -536,7 +584,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
     @Override
-    public void choiceGeneratorRegistered(VM vm, ChoiceGenerator<?> nextCG, ThreadInfo currentThread, Instruction executedInstruction) {
+    public void choiceGeneratorRegistered(VM vm, ChoiceGenerator<?> nextCG, ThreadInfo currentThread, Instruction
+            executedInstruction) {
         System.out.println("choiceGeneratorRegistered(" + nextCG.getClass() + ") at " + executedInstruction.getMethodInfo() + "#" + executedInstruction.getPosition());
     }
 
@@ -557,7 +606,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         System.out.println("choiceGeneratorProcessed: at " + processedCG.getInsn().getMethodInfo() + "#" + processedCG.getInsn().getPosition());
     }
 
-    private DynamicRegion runVeritesting(ThreadInfo ti, Instruction instructionToExecute, StaticRegion staticRegion,
+    private DynamicRegion runVeritesting(ThreadInfo ti, Instruction instructionToExecute, StaticRegion
+            staticRegion,
                                          String key) throws Exception {
         Exception transformationException = null;
         System.out.println("\n---------- STARTING Transformations for conditional region: " + key +
@@ -614,7 +664,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 Map.Entry<Variable, Expression> entry = itr.next();
                 if (entry.getKey() instanceof FieldRefVarExpr)
                     assert ((FieldRefVarExpr) entry.getKey()).uniqueNum != -1;
-                if (entry.getKey() instanceof WalaVarExpr) assert ((WalaVarExpr) entry.getKey()).getUniqueNum() != -1;
+                if (entry.getKey() instanceof WalaVarExpr)
+                    assert ((WalaVarExpr) entry.getKey()).getUniqueNum() != -1;
                 if (entry.getKey() instanceof ArrayRefVarExpr)
                     assert ((ArrayRefVarExpr) entry.getKey()).uniqueNum != -1;
             }
@@ -635,6 +686,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         LinearizationTransformation linearTrans = new LinearizationTransformation();
         dynRegion = linearTrans.execute(dynRegion);
 
+        /*--------------- Discover Lustre Translation ---------------*/
+        if (contractDiscoveryOn)
+            DiscoverContract.discoverLusterContract(dynRegion);
+
+
         /*--------------- TO GREEN TRANSFORMATION ---------------*/
         dynRegion = AstToGreenVisitor.execute(dynRegion);
 
@@ -654,7 +710,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @throws StaticRegionException Exception to indicate a problem while setting SPF.
      */
 
-    public static Instruction setupSPF(ThreadInfo ti, Instruction ins, DynamicRegion dynRegion, Integer choice) throws StaticRegionException {
+    public static Instruction setupSPF(ThreadInfo ti, Instruction ins, DynamicRegion dynRegion, Integer choice) throws
+            StaticRegionException {
         if (canSetPC(ti, dynRegion, choice)) {
             populateFieldOutputs(ti, dynRegion);
             populateArrayOutputs(ti, dynRegion);
@@ -670,7 +727,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 pushExpOnStack(dynRegion, ti.getTopFrame(), (String) dynRegion.varTypeTable.lookup(dynRegion.stackOutput),
                         dynRegion.stackOutput);
             }
-            return advanceSpf(ti, ins, dynRegion, (choice != null && choice == RETURN_CHOICE) || optimizedReturnPath);
+            return advanceSpf(ins, dynRegion, (choice != null && choice == RETURN_CHOICE) || optimizedReturnPath);
 
         }
         assert ti.getVM().getSystemState().isIgnored();
@@ -743,7 +800,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @return PathCondition is still satisfiable or not.
      * @throws StaticRegionException Exception to indicate a problem while checking SAT of the updated PathCondition.
      */
-    private static boolean canSetPC(ThreadInfo ti, DynamicRegion dynRegion, Integer choice) throws StaticRegionException {
+    private static boolean canSetPC(ThreadInfo ti, DynamicRegion dynRegion, Integer choice) throws
+            StaticRegionException {
         PathCondition pc;
         PCChoiceGenerator currCG;
 
@@ -864,29 +922,17 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @param ins       Insturction to be executed.
      * @param dynRegion Dynamic region that has been successfully transformed and summarized.
      */
-    public static Instruction advanceSpf(ThreadInfo ti, Instruction ins, DynamicRegion dynRegion, boolean earlyReturnSetup) throws StaticRegionException {
+    public static Instruction advanceSpf(Instruction ins, DynamicRegion dynRegion, boolean earlyReturnSetup) {
         int endIns;
         if (!earlyReturnSetup) // going to first instruction after the region
             endIns = dynRegion.endIns;
         else //going to a return instruction
             endIns = dynRegion.earlyReturnResult.retPosAndType.getFirst();
-
-        //using jpf api to find the right instruction to jump to.
-        /*while (ins.getPosition() != endIns) {
+        while (ins.getPosition() != endIns) {
             if (ins instanceof GOTO && (((GOTO) ins).getTarget().getPosition() <= endIns))
                 ins = ((GOTO) ins).getTarget();
             else ins = ins.getNext();
-        }*/
-
-        Instruction ret;
-        try {
-            ret = ti.getTopFrameMethodInfo().getInstructionAt(endIns);
-        } catch (JPFException e) {
-            throw new StaticRegionException("region end instruction cannot be found");
         }
-        if (ret == null)
-            throw new StaticRegionException("region end instruction cannot be found");
-
         // this hack used to go along with a corresponding hack in SpfUtil.isStackConsumingRegionEnd that would advance
         // SPF beyond a store at the end of the region. These hacks aren't needed anymore but I am keeping this code
         // around until a month or two has gone by after we've stopped seeing these issues (March 13, 2019)
@@ -896,7 +942,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 //            assert false; //too late to throw a StaticRegionException, region's outputs have already been written
 //        }
         //ti.setNextPC(ins);
-        return ret;
+        return ins;
     }
 
 
@@ -955,6 +1001,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
         if (spfCasesHeuristicsOn)
             statisticManager.printHeuristicStatistics();
+
+        if (DiscoverContract.isRepaired())
+            pw.print("Contract is repaired in iteration number:" + loopCount);
+        else
+            pw.print("Contract is NOT repaired");
     }
 
     private void writeRegionDigest() {
