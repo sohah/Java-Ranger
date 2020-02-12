@@ -325,18 +325,18 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverFreeInputTCAS() {
-        freeInput.add("Cur_Vertical_Sep", NamedType.INT);
-        freeInput.add("High_Confidence_flag", NamedType.INT);
-        freeInput.add("Two_of_Three_Reports_Valid_flag", NamedType.INT);
-        freeInput.add("Own_Tracked_Alt", NamedType.INT);
-        freeInput.add("Own_Tracked_Alt_Rate", NamedType.INT);
-        freeInput.add("Other_Tracked_Alt", NamedType.INT);
-        freeInput.add("Alt_Layer_Value", NamedType.INT);
-        freeInput.add("Up_Separation", NamedType.INT);
-        freeInput.add("Down_Separation", NamedType.INT);
-        freeInput.add("Other_RAC", NamedType.INT);
-        freeInput.add("Other_Capability", NamedType.INT);
-        freeInput.add("Climb_Inhibit", NamedType.INT);
+        freeInput.add("Cur_Vertical_Sep_1_SYMINT", NamedType.INT);
+        freeInput.add("High_Confidence_flag_2_SYMINT", NamedType.INT);
+        freeInput.add("Two_of_Three_Reports_Valid_flag_3_SYMINT", NamedType.INT);
+        freeInput.add("Own_Tracked_Alt_4_SYMINT", NamedType.INT);
+        freeInput.add("Own_Tracked_Alt_Rate_5_SYMINT", NamedType.INT);
+        freeInput.add("Other_Tracked_Alt_6_SYMINT", NamedType.INT);
+        freeInput.add("Alt_Layer_Value_7_SYMINT", NamedType.INT);
+        freeInput.add("Up_Separation_8_SYMINT", NamedType.INT);
+        freeInput.add("Down_Separation_9_SYMINT", NamedType.INT);
+        freeInput.add("Other_RAC_10_SYMINT", NamedType.INT);
+        freeInput.add("Other_Capability_11_SYMINT", NamedType.INT);
+        freeInput.add("Climb_Inhibit_12_SYMINT", NamedType.INT);
 
         /*if (freeInput.containsBool()) {
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
@@ -367,8 +367,8 @@ public class InOutManager {
         stateInput.add("Positive_RA_Alt_Thresh_2", NamedType.INT);
         stateInput.add("Positive_RA_Alt_Thresh_3", NamedType.INT);
 
-        stateInput.add("result_alt_sep_test", NamedType.INT);
-        stateInput.add("alim_res", NamedType.INT);
+        stateInput.add("result_alt_sep_test_13_SYMINT", NamedType.INT);
+        stateInput.add("alim_res_14_SYMINT", NamedType.INT);
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
