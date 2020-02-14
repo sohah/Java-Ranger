@@ -28,5 +28,5 @@ repairMode = 2
 
 SpecDirectory = TCAS
 contractDiscoveryOn = true
-faultySpec = TCAS_Fail_Ass1
+faultySpec = TCAS_Fail_Ass1_terms1
 repairInitialValues = true
