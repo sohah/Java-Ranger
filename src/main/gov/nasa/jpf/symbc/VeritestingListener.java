@@ -297,6 +297,10 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @param instructionToExecute instruction to be executed.
      */
     public void executeInstruction(VM vm, ThreadInfo ti, Instruction instructionToExecute) {
+        if (discoveryAttempted) {
+            ti.getVM().getSystemState().setIgnored(true);
+            return;
+        }
         if (timeout_mins != -1) {
             long runningTimeNsecs = System.nanoTime() - runStartTime;
             if (TimeUnit.NANOSECONDS.toSeconds(runningTimeNsecs) > ((timeout_mins * 60) - (10 * timeoutReportingCounter))) {
@@ -611,9 +615,6 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             staticRegion,
                                          String key) throws Exception {
 
-        if (discoveryAttempted) {
-            ti.getVM().getSystemState().setIgnored(true);
-        }
 
         Exception transformationException = null;
         System.out.println("\n---------- STARTING Transformations for conditional region: " + key +
