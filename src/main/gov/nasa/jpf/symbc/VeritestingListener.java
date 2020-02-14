@@ -4,8 +4,6 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.folderName;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.contractDiscoveryOn;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.loopCount;
 
 import com.ibm.wala.util.shrike.gotoTransformation.GoToTransformer;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
@@ -59,6 +57,7 @@ import java.util.concurrent.TimeUnit;
 
 import static gov.nasa.jpf.symbc.veritesting.ChoiceGenerator.SamePathOptimization.*;
 import static gov.nasa.jpf.symbc.veritesting.ChoiceGenerator.StaticBranchChoiceGenerator.*;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.*;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.ExceptionPhase.INSTANTIATION;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.throwException;
 import static gov.nasa.jpf.symbc.veritesting.VeritestingMain.skipRegionStrings;
@@ -273,12 +272,14 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         assert false;
                     }
                 }
+                if (conf.hasValue("limitedSteps"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps = conf.getBoolean("limitedSteps");
+            }
+            StatisticManager.veritestingRunning = true;
+            jpf.addPublisherExtension(ConsolePublisher.class, this);
+            if (System.getenv("TIMEOUT_MINS") != null) {
+                timeout_mins = Integer.parseInt(System.getenv("TIMEOUT_MINS"));
 
-                StatisticManager.veritestingRunning = true;
-                jpf.addPublisherExtension(ConsolePublisher.class, this);
-                if (System.getenv("TIMEOUT_MINS") != null) {
-                    timeout_mins = Integer.parseInt(System.getenv("TIMEOUT_MINS"));
-                }
             }
         }
     }
@@ -609,6 +610,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     private DynamicRegion runVeritesting(ThreadInfo ti, Instruction instructionToExecute, StaticRegion
             staticRegion,
                                          String key) throws Exception {
+
+        if (discoveryDone) {
+            ti.getVM().getSystemState().setIgnored(true);
+        }
+
         Exception transformationException = null;
         System.out.println("\n---------- STARTING Transformations for conditional region: " + key +
                 "\n" + PrettyPrintVisitor.print(staticRegion.staticStmt) + "\n");
@@ -687,8 +693,10 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         dynRegion = linearTrans.execute(dynRegion);
 
         /*--------------- Discover Lustre Translation ---------------*/
-        if (contractDiscoveryOn)
+        if (contractDiscoveryOn) {
             DiscoverContract.discoverLusterContract(dynRegion);
+            discoveryDone = true;
+        }
 
 
         /*--------------- TO GREEN TRANSFORMATION ---------------*/

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.folderName;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps;
 import static jkind.lustre.UnaryOp.NEGATIVE;
 import static jkind.lustre.UnaryOp.NOT;
 
@@ -441,7 +442,7 @@ public class DiscoveryUtil {
         JKindResult result = new JKindResult("");
         if (!kInductionOn) { // I have not yet noticed considerable benefit from stopping kInduction on the there
             // exists query. I'm turning it off for now.
-         //   api.disableKInduction();
+            //   api.disableKInduction();
         }
 
 
@@ -452,8 +453,9 @@ public class DiscoveryUtil {
         // useful in minimization query where we want to not halt in the last query, for that we need to stop
         // generation of pdr while checking the needed steps in BMC.
 
-        if(existsQuery){
-            maxK = maxK==0 ? 5 : maxK*3;
+        if (existsQuery) {
+            if (limitedSteps) //limiting the steps if the flag is on to multiple of 3
+                maxK = maxK == 0 ? 5 : maxK * 3;
             api.setPdrMax(0);
         }
 

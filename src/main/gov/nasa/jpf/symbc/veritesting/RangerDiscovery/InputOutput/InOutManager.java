@@ -73,7 +73,24 @@ public class InOutManager {
         return isOutputConverted;
     }
 
+    // this is now here to determine the name of the symVar, since in the new SPF they have adapted a new naming for
+    // symbolic variables for which we need a dynamic mechanism to get the right name. This can be handled in a
+    // later stage.
+    public static String setSymVarName() {
+        if (Config.spec.equals("wbs"))
+            Config.symVarName = "symVar_10_SYMINT";
+        else if (Config.spec.equals("tcas"))
+            Config.symVarName = "symVar_15_SYMINT";
+        else if (Config.spec.equals("vote"))
+            Config.symVarName = "symVar_6_SYMINT";
+        else
+            assert false;
+        return Config.symVarName;
+    }
+
     public void discoverVars() {
+        setSymVarName();
+        
         if (Config.spec.equals("pad")) {
             discoverFreeInputPad();
             doFreeTypeConversion();
@@ -266,9 +283,9 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverFreeInputWBS() {
-        freeInput.add("pedal", NamedType.INT);
-        freeInput.add("autoBrake", NamedType.BOOL);
-        freeInput.add("skid", NamedType.BOOL);
+        freeInput.add("pedal_1_SYMINT", NamedType.INT);
+        freeInput.add("autoBrake_2_SYMINT", NamedType.BOOL);
+        freeInput.add("skid_3_SYMINT", NamedType.BOOL);
 
         /*if (freeInput.containsBool()) {
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
@@ -279,13 +296,13 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverStateInputWBS() {
-        stateInput.add("WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE", NamedType.INT);
-        stateInput.add("WBS_Node_WBS_BSCU_rlt_PRE1", NamedType.INT);
-        stateInput.add("WBS_Node_WBS_rlt_PRE2", NamedType.INT);
+        stateInput.add("WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE_4_SYMINT", NamedType.INT);
+        stateInput.add("WBS_Node_WBS_BSCU_rlt_PRE1_5_SYMINT", NamedType.INT);
+        stateInput.add("WBS_Node_WBS_rlt_PRE2_6_SYMINT", NamedType.INT);
 
-        stateInput.add("Nor_Pressure", NamedType.INT);
-        stateInput.add("Alt_Pressure", NamedType.INT);
-        stateInput.add("Sys_Mode", NamedType.INT);
+        stateInput.add("Nor_Pressure_7_SYMINT", NamedType.INT);
+        stateInput.add("Alt_Pressure_8_SYMINT", NamedType.INT);
+        stateInput.add("Sys_Mode_9_SYMINT", NamedType.INT);
 
     }
 
@@ -304,7 +321,6 @@ public class InOutManager {
         stateOutput.addInit(referenceObjectName + ".WBS_Node_WBS_rlt_PRE2.1.3.2", new IntExpr(0));
 
     }
-
 
 
     //====================== TCAS ====================================

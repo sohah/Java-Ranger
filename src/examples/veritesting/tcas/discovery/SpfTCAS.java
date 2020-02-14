@@ -272,18 +272,19 @@ public class SpfTCAS {
 				result_alt_sep_test != UPWARD_RA : true);
 */
         // fails (1)
-		assert((Up_Separation > alim_res &&
+		/*assert((Up_Separation > alim_res &&
 				Down_Separation >= alim_res &&
 				Own_Tracked_Alt > Other_Tracked_Alt) ?
-				result_alt_sep_test != DOWNWARD_RA : true);
+				result_alt_sep_test != DOWNWARD_RA : true);*/
         // fails(2)
 //        Debug.printPC("printing pc before assertion");
 
         /*if (Up_Separation >= alim_res &&
                 Down_Separation < alim_res && result_alt_sep_test == DOWNWARD_RA){
-            Debug.printPC("printing pc before assertion");
-        assert false;}
-*/
+            //Debug.printPC("printing pc before assertion");
+        assert false;}*/
+
+        assert ((400 <= alim_res));
 /*
 
         assert ((Up_Separation >= alim_res &&

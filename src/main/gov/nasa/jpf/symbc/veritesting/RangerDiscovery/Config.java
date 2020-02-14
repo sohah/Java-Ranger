@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
+    public static String symVarName;
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
     public static String TNODE = "T_node"; // also refers to the R_prime in the refinement loop.
@@ -22,6 +23,8 @@ public class Config {
     public static String CAND_T_PRIME = "Candidate_T_Prime";
     public static String specPropertyName = "ok";
     public static String wrapperOutpuName = "out";
+    public static boolean limitedSteps = true; //this controls the number of steps we allow for there exists query
+    // of finding a different R.
 
     public static String tnodeSpecPropertyName;
 

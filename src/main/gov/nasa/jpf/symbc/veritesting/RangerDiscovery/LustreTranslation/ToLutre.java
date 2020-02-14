@@ -37,22 +37,12 @@ public class ToLutre {
 
     //adding symVar equation, this can be taken out if we do not need symVar wrapper
     private static Equation addSymVarEquation() {
-        if (spec.equals("tcas"))
-            return new Equation(new IdExpr("symVar_15_SYMINT"), new IntExpr(1));
-        else {
-            assert false; // we need to adjust the symVar value as per the new changes of SPF
-            return new Equation(new IdExpr("symVar"), new IntExpr(1));
-        }
+        return new Equation(new IdExpr(symVarName), new IntExpr(1));
     }
 
     //adding symVar declaration, this can be taken out if we do not need symVar wrapper
     private static VarDecl addSymVar() {
-        if (spec.equals("tcas"))
-            return new VarDecl("symVar_15_SYMINT", NamedType.INT);
-        else{
-            assert false; // we need to adjust the symVar value as per the new changes of SPF
-            return new VarDecl("symVar", NamedType.INT);
-        }
+        return new VarDecl(symVarName, NamedType.INT);
     }
 
     public static Node generateRwrapper(InOutManager inOutManager) {
