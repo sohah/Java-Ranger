@@ -31,7 +31,7 @@ public class DiscoverContract {
      * name of the method we want to extract its contract.
      */
     public static boolean contractDiscoveryOn = false;
-    public static boolean discoveryDone = false;
+    public static boolean discoveryAttempted = false;
 
     public static LinkedHashSet<Pair> z3QuerySet = new LinkedHashSet();
 

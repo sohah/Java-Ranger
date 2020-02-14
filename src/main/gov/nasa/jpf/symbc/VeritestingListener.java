@@ -611,7 +611,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             staticRegion,
                                          String key) throws Exception {
 
-        if (discoveryDone) {
+        if (discoveryAttempted) {
             ti.getVM().getSystemState().setIgnored(true);
         }
 
@@ -694,8 +694,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
         /*--------------- Discover Lustre Translation ---------------*/
         if (contractDiscoveryOn) {
+            discoveryAttempted = true;
             DiscoverContract.discoverLusterContract(dynRegion);
-            discoveryDone = true;
         }
 
 
