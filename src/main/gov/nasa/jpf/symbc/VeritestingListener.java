@@ -51,6 +51,9 @@ import za.ac.sun.cs.green.expr.Expression;
 import za.ac.sun.cs.green.expr.RealConstant;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -78,6 +81,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     // SPFCASES, EARLYRETURNS
     public static int veritestingMode = 0;
     public static VeritestingMode runMode;
+    private static final int MEGABYTE = (1024 * 1024);
 
     public static long totalSolverTime = 0, z3Time = 0;
     public static long parseTime = 0, regionSummaryParseTime = 0;
@@ -304,6 +308,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @param instructionToExecute instruction to be executed.
      */
     public void executeInstruction(VM vm, ThreadInfo ti, Instruction instructionToExecute) {
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+
         if (discoveryAttempted) {
             ti.getVM().getSystemState().setIgnored(true);
             return;
@@ -431,6 +437,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             e.printStackTrace();
             updateSkipRegions(e.getMessage(), key);
             writeRegionDigest();
+        } catch (OutOfMemoryError e) {
+            MemoryUsage heapUsage = memoryBean.getHeapMemoryUsage();
+            long maxMemory = heapUsage.getMax() / MEGABYTE;
+            long usedMemory = heapUsage.getUsed() / MEGABYTE;
+            System.out.println("Memory Use :" + usedMemory + "M/" + maxMemory + "M");
         }
     }
 
