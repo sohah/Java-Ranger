@@ -1,4 +1,4 @@
-target=veritesting.wbs.discovery.DiscoveryWBS
+{{target=veritesting.wbs.discovery.DiscoveryWBS
 classpath=${jpf-symbc}/build/examples,${jpf-symbc}/lib/com.ibm.wala.util-1.4.4-SNAPSHOT.jar
 sourcepath=${jpf-symbc}/src/examples
 vm.storage.class=nil
@@ -37,7 +37,8 @@ spec = spfWbs
 specRepair = true
 repairMode = 2
 
-SpecDirectory = WBS/MinimalRepair_1/Assertion_1
+SpecDirectory = TCAS
 contractDiscoveryOn = true
-faultySpec = Faulty_WBS_Ass1_terms2,Faulty_WBS_Ass1_terms3_4
+faultySpec = TCAS_PassMutation_Ass1_terms1,TCAS_PassMutation_Ass1_terms2,TCAS_PassMutation_Ass1_terms3-4
 repairInitialValues = true
+z3Solver=true

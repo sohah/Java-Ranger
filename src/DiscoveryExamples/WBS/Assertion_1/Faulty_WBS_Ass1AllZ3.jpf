@@ -41,3 +41,4 @@ SpecDirectory = WBS/MinimalRepair_1/Assertion_1
 contractDiscoveryOn = true
 faultySpec = Faulty_WBS_Ass1_terms2,Faulty_WBS_Ass1_terms3_4
 repairInitialValues = true
+z3Solver=true
