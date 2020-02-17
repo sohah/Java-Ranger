@@ -1,6 +1,8 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ThereExistsQuery;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.RepairStatistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.LustreAstMapExtnVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
@@ -10,6 +12,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
 import jkind.api.results.JKindResult;
@@ -32,6 +35,7 @@ public class DiscoverContract {
      */
     public static boolean contractDiscoveryOn = false;
     public static boolean discoveryAttempted = false;
+    public static RepairStatistics repairStatistics;
 
     public static LinkedHashSet<Pair> z3QuerySet = new LinkedHashSet();
 
@@ -107,6 +111,7 @@ public class DiscoverContract {
         else
             System.out.println("Repair does NOT include initial values");
 
+        repairStatistics = new RepairStatistics(tFileName, "undefined", MutationType.UNKNOWN);
 
         //print out the translation once, for very first time we hit linearlization for the method of
         // interest.
@@ -147,12 +152,16 @@ public class DiscoverContract {
         do {
             fileName = currFaultySpec + "_" + loopCount + ".lus";
             writeToFile(fileName, counterExampleQueryStrStr, false);
+            long singleQueryTime = System.currentTimeMillis();
 
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
+            singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+
+            repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
                 case VALID: //valid match
                     System.out.println("^-^Ranger Discovery Result ^-^");
-
+                    repairStatistics.advanceTighterLoop(true);
                     if (loopCount > 0) {// we had at least a single repair/synthesis, at that point we want to find
                         // minimal repair.
                         outerLoopRepairNum = loopCount;
@@ -166,6 +175,7 @@ public class DiscoverContract {
 
                     //System.out.println(getTnodeFromStr(fileName));
                     DiscoverContract.repaired = true;
+                    repairStatistics.printSpecStatistics();
                     return;
                 case INVALID: //synthesis is needed
                     if (aRepairSynthesis == null) {
@@ -197,14 +207,18 @@ public class DiscoverContract {
                     String synthesisContractStr = aRepairSynthesis.toString();
                     fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
                     writeToFile(fileName, synthesisContractStr, false);
-
+                    singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 2, false, false);
+                    singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+                    repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
                             System.out.println("^-^ Ranger Discovery Result ^-^");
                             System.out.println("Cannot find a synthesis");
                             DiscoverContract.repaired = false;
+                            repairStatistics.advanceTighterLoop(false);
+                            repairStatistics.printSpecStatistics();
                             return;
                         case INVALID:
                             System.out.println("repairing holes for iteration#:" + loopCount);

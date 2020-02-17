@@ -12,6 +12,7 @@ public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
+    public static boolean z3Solver;
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
     public static String TNODE = "T_node"; // also refers to the R_prime in the refinement loop.
