@@ -33,7 +33,7 @@ specRepair = true
 
 
 ################## contract Discovery configurations ###############
-spec = spfWbs
+spec = wbs
 specRepair = true
 repairMode = 2
 
