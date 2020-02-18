@@ -32,6 +32,7 @@ contractDiscoveryOn = true
 specRepair = true
 
 
+
 ################## contract Discovery configurations ###############
 spec = wbs
 specRepair = true
@@ -39,7 +40,6 @@ repairMode = 2
 
 SpecDirectory = WBS/Assertion_1_Mutation
 contractDiscoveryOn = true
-faultySpec=Faulty_WBS_Ass1_terms2_mutation4,Faulty_WBS_Ass1_terms2_mutation5
-faultySpec = Faulty_WBS_Ass1_terms2_mutation1,Faulty_WBS_Ass1_terms2_mutation2,Faulty_WBS_Ass1_terms2_mutation3,
-Faulty_WBS_Ass1_terms2_mutation4,Faulty_WBS_Ass1_terms2_mutation5
+faultySpec=Faulty_WBS_Ass1_terms2_mutation1_Wrap_level2-good,Faulty_WBS_Ass1_terms2_mutation1_Wrap_level3
 repairInitialValues = true
+#Faulty_WBS_Ass1_terms2_mutation1_Wrap_leaf1,Faulty_WBS_Ass1_terms2_mutation1_Wrap_leaf2,Faulty_WBS_Ass1_terms2_mutation1_Wrap_leaf3,Faulty_WBS_Ass1_terms2_mutation1_Wrap_leaf4,Faulty_WBS_Ass1_terms2_mutation1_Wrap_level2,

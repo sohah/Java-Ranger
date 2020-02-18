@@ -82,8 +82,17 @@ public class CandidateStatistics {
         RepairStatistics.out.print(forallQueryNumTillRepair + "     ");
         RepairStatistics.out.print(thereExistsQueryNumTillRepair + "     ");
         RepairStatistics.out.print(totalLoopTimeUntilRepair + "     ");
-        RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + "     ");
-        RepairStatistics.out.print(thereExistTimeTillRepair / thereExistsQueryNumTillRepair + "     ");
+        if (forallQueryNumTillRepair == 0) { // this condition is expected to hold only in the minimal query when the
+            // thereExists fails to find even a single synthesis for which we can do a forall query. Therefore one
+            // way to check that is that there can't be a repair found at this point.
+            assert !repairFound;
+            RepairStatistics.out.print("N/A     ");
+        } else RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + "     ");
+
+        if (thereExistsQueryNumTillRepair == 0) { // this condition is not expected to occur since at least one
+            // thereExists query must happen in either the outer or the inner loop.
+            assert false;
+        } else RepairStatistics.out.print(thereExistTimeTillRepair / thereExistsQueryNumTillRepair + "     ");
         RepairStatistics.out.print(totalTime / (thereExistsQueryNumTillRepair + forallQueryNumTillRepair) + "     ");
         RepairStatistics.out.println();
         RepairStatistics.out.println();
