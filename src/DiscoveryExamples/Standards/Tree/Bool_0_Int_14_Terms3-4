@@ -11,9 +11,19 @@ valhole_5: inthole;
 valhole_6: inthole;
 
 const_hole1:int;
-const_hole2:int
+const_hole2:int;
 const_hole3:int;
-const_hole4:int
+const_hole4:int;
+
+valhole_7: inthole;
+valhole_8: inthole;
+valhole_9: inthole;
+
+valhole_10: inthole;
+valhole_11: inthole;
+valhole_12: inthole;
+valhole_13: inthole
+
 ]
 
 returns (out: bool);
@@ -130,35 +140,35 @@ leaf_2 = if(valhole_3 = 0) then i0
     -- the other part of the tree
 
     leaf_4 = if(valhole_7 = 0) then i0
-                       else if(valehole_7 = 1) then i1
-                       else if(valehole_7 = 2) then i2
-                       else if(valehole_7 = 3) then i3
-                       else if(valehole_7 = 4) then i4
-                       else if(valehole_7 = 5) then i5
-                       else if(valehole_7 = 6) then i6
-                       else if(valehole_7 = 7) then i7
-                       else if(valehole_7 = 8) then i8
-                       else if(valehole_7 = 9) then i9
-                       else if(valehole_7 = 10) then 10
-                       else if(valehole_7 = 11) then i11
-                       else if(valehole_7 = 12) then i12
-                       else if(valehole_7 = 13) then i13
+                       else if(valhole_7 = 1) then i1
+                       else if(valhole_7 = 2) then i2
+                       else if(valhole_7 = 3) then i3
+                       else if(valhole_7 = 4) then i4
+                       else if(valhole_7 = 5) then i5
+                       else if(valhole_7 = 6) then i6
+                       else if(valhole_7 = 7) then i7
+                       else if(valhole_7 = 8) then i8
+                       else if(valhole_7 = 9) then i9
+                       else if(valhole_7 = 10) then 10
+                       else if(valhole_7 = 11) then i11
+                       else if(valhole_7 = 12) then i12
+                       else if(valhole_7 = 13) then i13
                        else const_hole3;
 
-    leaf_5 = if(valehole_8 = 0) then i0
-                       else if(valehole_8 = 1) then i1
-                       else if(valehole_8 = 2) then i2
-                       else if(valehole_8 = 3) then i3
-                       else if(valehole_8 = 4) then i4
-                       else if(valehole_8 = 5) then i5
-                       else if(valehole_8 = 6) then i6
-                       else if(valehole_8 = 7) then i7
-                       else if(valehole_8 = 8) then i8
-                       else if(valehole_8 = 9) then i9
-                       else if(valehole_8 = 10) then i10
-                       else if(valehole_8 = 11) then i11
-                       else if(valehole_8 = 12) then i12
-                       else if(valehole_8 = 13) then i13
+    leaf_5 = if(valhole_8 = 0) then i0
+                       else if(valhole_8 = 1) then i1
+                       else if(valhole_8 = 2) then i2
+                       else if(valhole_8 = 3) then i3
+                       else if(valhole_8 = 4) then i4
+                       else if(valhole_8 = 5) then i5
+                       else if(valhole_8 = 6) then i6
+                       else if(valhole_8 = 7) then i7
+                       else if(valhole_8 = 8) then i8
+                       else if(valhole_8 = 9) then i9
+                       else if(valhole_8 = 10) then i10
+                       else if(valhole_8 = 11) then i11
+                       else if(valhole_8 = 12) then i12
+                       else if(valhole_8 = 13) then i13
                        else const_hole3;
 
     term3 = if(valhole_9 = 0) then leaf_4 > leaf_5
@@ -206,14 +216,14 @@ leaf_2 = if(valhole_3 = 0) then i0
 
 
 
-    level_2 = if(valhole_13 = 0) then term4 and term5
-                    else if(valhole_13 = 1) then term4 or term5
-                    else if(valhole_13 = 2) then term4 => term5
-                    else if(valhole_13 = 3) then term4 xor term5
+    level_2 = if(valhole_13 = 0) then term4 and term3
+                    else if(valhole_13 = 1) then term4 or term3
+                    else if(valhole_13 = 2) then term4 => term3
+                    else if(valhole_13 = 3) then term4 xor term3
                     else if(valhole_13 = 4) then not term4
-                    else if(valhole_13 = 5) then not term5
+                    else if(valhole_13 = 5) then not term3
                     else if(valhole_13 = 6) then term4
-                    else if(valhole_13 = 7) then term5
+                    else if(valhole_13 = 7) then term3
                     else if(valhole_13 = 8) then true
                     else false;
 

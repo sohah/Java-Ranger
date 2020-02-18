@@ -1,133 +1,235 @@
-repair node discover_binary_Bool_1_Int_4_Terms3_4(a0: bool; i0:int; i1:int; i2:int;i3:int)
+repair node discover_binary_Bool_0_Int_14_Terms3_4(i0: int; i1:int; i2:int; i3:int; i4: int; i5:int; i6:int; i7:int; i8:
+int; i9:int; i10:int; i11:int; i12:int; i13:int )
 [
 valhole_0: inthole;
-valhole_1:inthole;
-valhole_2:inthole;
-
-const_hole0: inthole;
-const_hole1 : inthole;
+valhole_1: inthole;
+valhole_2: inthole;
 
 valhole_3: inthole;
-valhole_4:inthole;
-valhole_5:inthole;
+valhole_4: inthole;
+valhole_5: inthole;
+valhole_6: inthole;
 
-const_hole2: inthole;
-const_hole3 : inthole;
+const_hole1:int;
+const_hole2:int;
+const_hole3:int;
+const_hole4:int;
+
+valhole_7: inthole;
+valhole_8: inthole;
+valhole_9: inthole;
+
+valhole_10: inthole;
+valhole_11: inthole;
+valhole_12: inthole;
+valhole_13: inthole
 
 ]
 
 returns (out: bool);
 var
 
-leaf_0:bool;
-leaf_1:bool;
+leaf_0:int;
+leaf_1:int;
+term1:bool;
 
-bExprlevel_1_0:bool;
+leaf_2:int;
+leaf_3:int;
+term2:bool;
+level_1:bool;
 
-leaf_2:bool;
-leaf_3:bool;
 
-bExprlevel_1_1:bool;
-bExprlevel_2:bool;
+leaf_4:int;
+leaf_5:int;
+term3:bool;
+
+leaf_6:int;
+leaf_7:int;
+term4:bool;
+level_2:bool;
 
 let
 
-    leaf_0 = if(valhole_0 = 0) then a0
-                   else if(valhole_0 = 1) then i0 <= const_hole0
-                   else if(valhole_0 = 2) then i0 > const_hole0
-                   else if(valhole_0 = 3) then i0 = const_hole0
-                   else if(valhole_0 = 4) then i1 <= const_hole0
-                   else if(valhole_0 = 5) then i1 > const_hole0
-                   else if(valhole_0 = 6) then i1 = const_hole0
-                   else if(valhole_0 = 7) then i2 <= const_hole0
-                   else if(valhole_0 = 8) then i2 > const_hole0
-                   else if(valhole_0 = 9) then i2 = const_hole0
-                   else if(valhole_0 = 10) then i3 <= const_hole0
-                   else if(valhole_0 = 11) then i3 > const_hole0
-                   else i3 = const_hole0;
+    leaf_0 = if(valhole_0 = 0) then i0
+                   else if(valhole_0 = 1) then i1
+                   else if(valhole_0 = 2) then i2
+                   else if(valhole_0 = 3) then i3
+                   else if(valhole_0 = 4) then i4
+                   else if(valhole_0 = 5) then i5
+                   else if(valhole_0 = 6) then i6
+                   else if(valhole_0 = 7) then i7
+                   else if(valhole_0 = 8) then i8
+                   else if(valhole_0 = 9) then i9
+                   else if(valhole_0 = 10) then 10
+                   else if(valhole_0 = 11) then i11
+                   else if(valhole_0 = 12) then i12
+                   else if(valhole_0 = 13) then i13
+                   else const_hole1;
+
+    leaf_1 = if(valhole_1 = 0) then i0
+                   else if(valhole_1 = 1) then i1
+                   else if(valhole_1 = 2) then i2
+                   else if(valhole_1 = 3) then i3
+                   else if(valhole_1 = 4) then i4
+                   else if(valhole_1 = 5) then i5
+                   else if(valhole_1 = 6) then i6
+                   else if(valhole_1 = 7) then i7
+                   else if(valhole_1 = 8) then i8
+                   else if(valhole_1 = 9) then i9
+                   else if(valhole_1 = 10) then i10
+                   else if(valhole_1 = 11) then i11
+                   else if(valhole_1 = 12) then i12
+                   else if(valhole_1 = 13) then i13
+                   else const_hole1;
+
+    term1 = if(valhole_2 = 0) then leaf_0 > leaf_1
+                else if(valhole_2 = 1) then leaf_0 <= leaf_1
+                else if(valhole_2 = 2) then leaf_0 <> leaf_1
+                else leaf_0 = leaf_1 ;
 
 
-    leaf_1 = if(valhole_1 = 0) then a0
-                   else if(valhole_1 = 1) then i0 <= const_hole1
-                   else if(valhole_1 = 2) then i0 > const_hole1
-                   else if(valhole_1 = 3) then i0 = const_hole1
-                   else if(valhole_1 = 4) then i1 <= const_hole1
-                   else if(valhole_1 = 5) then i1 > const_hole1
-                   else if(valhole_1 = 6) then i1 = const_hole1
-                   else if(valhole_1 = 7) then i2 <= const_hole1
-                   else if(valhole_1 = 8) then i2 > const_hole1
-                   else if(valhole_1 = 9) then i2 = const_hole1
-                   else if(valhole_1 = 10) then i3 <= const_hole1
-                   else if(valhole_1 = 11) then i3 > const_hole1
-                   else i3 = const_hole1;
+leaf_2 = if(valhole_3 = 0) then i0
+                   else if(valhole_3 = 1) then i1
+                   else if(valhole_3 = 2) then i2
+                   else if(valhole_3 = 3) then i3
+                   else if(valhole_3 = 4) then i4
+                   else if(valhole_3 = 5) then i5
+                   else if(valhole_3 = 6) then i6
+                   else if(valhole_3 = 7) then i7
+                   else if(valhole_3 = 8) then i8
+                   else if(valhole_3 = 9) then i9
+                   else if(valhole_3 = 10) then 10
+                   else if(valhole_3 = 11) then i11
+                   else if(valhole_3 = 12) then i12
+                   else if(valhole_3 = 13) then i13
+                   else const_hole2;
+
+    leaf_3 = if(valhole_4 = 0) then i0
+                   else if(valhole_4 = 1) then i1
+                   else if(valhole_4 = 2) then i2
+                   else if(valhole_4 = 3) then i3
+                   else if(valhole_4 = 4) then i4
+                   else if(valhole_4 = 5) then i5
+                   else if(valhole_4 = 6) then i6
+                   else if(valhole_4 = 7) then i7
+                   else if(valhole_4 = 8) then i8
+                   else if(valhole_4 = 9) then i9
+                   else if(valhole_4 = 10) then i10
+                   else if(valhole_4 = 11) then i11
+                   else if(valhole_4 = 12) then i12
+                   else if(valhole_4 = 13) then i13
+                   else const_hole2;
+
+    term2 = if(valhole_5 = 0) then leaf_2 > leaf_3
+                else if(valhole_5 = 1) then leaf_2 <= leaf_3
+                else if(valhole_5 = 2) then leaf_2 <> leaf_3
+                else leaf_2 = leaf_3;
 
 
-    bExprlevel_1_0 =  if(valhole_2 = 1) then leaf_0 and leaf_1
-                   else if(valhole_2 = 2) then leaf_0 or leaf_1
-                   else if(valhole_2 = 3) then leaf_0 => leaf_1
-                   else if(valhole_2 = 4) then leaf_0 xor leaf_1
-                   else if(valhole_2 = 5) then not leaf_0
-                   else if(valhole_2 = 6) then not leaf_1
-                   else if(valhole_2 = 7) then true
-                   else false;
+
+    level_1 = if(valhole_6 = 0) then term1 and term2
+                else if(valhole_6 = 1) then term1 or term2
+                else if(valhole_6 = 2) then term1 => term2
+                else if(valhole_6 = 3) then term1 xor term2
+                else if(valhole_6 = 4) then not term1
+                else if(valhole_6 = 5) then not term2
+                else if(valhole_6 = 6) then true
+                else false;
+
+
+    -- the other part of the tree
+
+    leaf_4 = if(valhole_7 = 0) then i0
+                       else if(valhole_7 = 1) then i1
+                       else if(valhole_7 = 2) then i2
+                       else if(valhole_7 = 3) then i3
+                       else if(valhole_7 = 4) then i4
+                       else if(valhole_7 = 5) then i5
+                       else if(valhole_7 = 6) then i6
+                       else if(valhole_7 = 7) then i7
+                       else if(valhole_7 = 8) then i8
+                       else if(valhole_7 = 9) then i9
+                       else if(valhole_7 = 10) then 10
+                       else if(valhole_7 = 11) then i11
+                       else if(valhole_7 = 12) then i12
+                       else if(valhole_7 = 13) then i13
+                       else const_hole3;
+
+    leaf_5 = if(valhole_8 = 0) then i0
+                       else if(valhole_8 = 1) then i1
+                       else if(valhole_8 = 2) then i2
+                       else if(valhole_8 = 3) then i3
+                       else if(valhole_8 = 4) then i4
+                       else if(valhole_8 = 5) then i5
+                       else if(valhole_8 = 6) then i6
+                       else if(valhole_8 = 7) then i7
+                       else if(valhole_8 = 8) then i8
+                       else if(valhole_8 = 9) then i9
+                       else if(valhole_8 = 10) then i10
+                       else if(valhole_8 = 11) then i11
+                       else if(valhole_8 = 12) then i12
+                       else if(valhole_8 = 13) then i13
+                       else const_hole3;
+
+    term3 = if(valhole_9 = 0) then leaf_4 > leaf_5
+                    else if(valhole_9 = 1) then leaf_4 <= leaf_5
+                    else if(valhole_9 = 2) then leaf_4 <> leaf_5
+                    else leaf_4 = leaf_5 ;
+
+
+    leaf_6 = if(valhole_10 = 0) then i0
+                       else if(valhole_10 = 1) then i1
+                       else if(valhole_10 = 2) then i2
+                       else if(valhole_10 = 3) then i3
+                       else if(valhole_10 = 4) then i4
+                       else if(valhole_10 = 5) then i5
+                       else if(valhole_10 = 6) then i6
+                       else if(valhole_10 = 7) then i7
+                       else if(valhole_10 = 8) then i8
+                       else if(valhole_10 = 9) then i9
+                       else if(valhole_10 = 10) then 10
+                       else if(valhole_10 = 11) then i11
+                       else if(valhole_10 = 12) then i12
+                       else if(valhole_10 = 13) then i13
+                       else const_hole4;
+
+    leaf_7 = if(valhole_11 = 0) then i0
+                       else if(valhole_11 = 1) then i1
+                       else if(valhole_11 = 2) then i2
+                       else if(valhole_11 = 3) then i3
+                       else if(valhole_11 = 4) then i4
+                       else if(valhole_11 = 5) then i5
+                       else if(valhole_11 = 6) then i6
+                       else if(valhole_11 = 7) then i7
+                       else if(valhole_11 = 8) then i8
+                       else if(valhole_11 = 9) then i9
+                       else if(valhole_11 = 10) then i10
+                       else if(valhole_11 = 11) then i11
+                       else if(valhole_11 = 12) then i12
+                       else if(valhole_11 = 13) then i13
+                       else const_hole4;
+
+    term4 = if(valhole_12 = 0) then leaf_6 > leaf_7
+                    else if(valhole_12 = 1) then leaf_6 <= leaf_7
+                    else if(valhole_12 = 2) then leaf_6 <> leaf_7
+                    else leaf_6 = leaf_7;
 
 
 
--- the other side of the tree
-    leaf_2 = if(valhole_3 = 0) then a0
-                   else if(valhole_3 = 1) then i0 <= const_hole2
-                   else if(valhole_3 = 2) then i0 > const_hole2
-                   else if(valhole_3 = 3) then i0 = const_hole2
-                   else if(valhole_3 = 4) then i1 <= const_hole2
-                   else if(valhole_3 = 5) then i1 > const_hole2
-                   else if(valhole_3 = 6) then i1 = const_hole2
-                   else if(valhole_3 = 7) then i2 <= const_hole2
-                   else if(valhole_3 = 8) then i2 > const_hole2
-                   else if(valhole_3 = 9) then i2 = const_hole2
-                   else if(valhole_3 = 10) then i3 <= const_hole2
-                   else if(valhole_3 = 11) then i3 > const_hole2
-                   else i3 = const_hole2;
+    level_2 = if(valhole_13 = 0) then term4 and term3
+                    else if(valhole_13 = 1) then term4 or term3
+                    else if(valhole_13 = 2) then term4 => term3
+                    else if(valhole_13 = 3) then term4 xor term3
+                    else if(valhole_13 = 4) then not term4
+                    else if(valhole_13 = 5) then not term3
+                    else if(valhole_13 = 6) then term4
+                    else if(valhole_13 = 7) then term3
+                    else if(valhole_13 = 8) then true
+                    else false;
 
 
-    leaf_3 = if(valhole_4 = 0) then a0
-                   else if(valhole_4 = 1) then i0 <= const_hole3
-                   else if(valhole_4 = 2) then i0 > const_hole3
-                   else if(valhole_4 = 3) then i0 = const_hole3
-                   else if(valhole_4 = 4) then i1 <= const_hole3
-                   else if(valhole_4 = 5) then i1 > const_hole3
-                   else if(valhole_4 = 6) then i1 = const_hole3
-                   else if(valhole_4 = 7) then i2 <= const_hole3
-                   else if(valhole_4 = 8) then i2 > const_hole3
-                   else if(valhole_4 = 9) then i2 = const_hole3
-                   else if(valhole_4 = 10) then i3 <= const_hole3
-                   else if(valhole_4 = 11) then i3 > const_hole3
-                   else i3 = const_hole3;
-
-
-    bExprlevel_1_1 =  if(valhole_5 = 1) then leaf_2 and leaf_3
-                   else if(valhole_5 = 2) then leaf_2 or leaf_3
-                   else if(valhole_5 = 3) then leaf_2 => leaf_3
-                   else if(valhole_5 = 4) then leaf_2 xor leaf_3
-                   else if(valhole_5 = 5) then not leaf_2
-                   else if(valhole_5 = 6) then not leaf_3
-                   else if(valhole_5 = 7) then true
-                   else false;
-
-
-    bExprlevel_2 =  if(valhole_6 = 1) then bExprlevel_1_0 and bExprlevel_1_1
-                   else if(valhole_6 = 2) then bExprlevel_1_0 or bExprlevel_1_1
-                   else if(valhole_6 = 3) then bExprlevel_1_0 => bExprlevel_1_1
-                   else if(valhole_6 = 4) then bExprlevel_1_0 xor bExprlevel_1_1
-                   else if(valhole_6 = 5) then not bExprlevel_1_0
-                   else if(valhole_6 = 6) then not bExprlevel_1_1
-                   else if(valhole_6 = 7) then bExprlevel_1_0
-                   else if(valhole_6 = 8) then bExprlevel_1_1
-                   else if(valhole_6 = 9) then true
-                   else false;
-
-    out = bExprlevel_2;
+    out = level_2;
 tel;
-
 
 
 node main(Cur_Vertical_Sep_s: int; High_Confidence_flag_s:int; Two_of_Three_Reports_Valid_flag_s:int;
