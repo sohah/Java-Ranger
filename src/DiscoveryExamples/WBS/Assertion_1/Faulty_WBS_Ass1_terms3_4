@@ -1,5 +1,5 @@
 
-repair node discover_binary_Bool_1_Int_4_Terms3_4(a0: bool; a1:bool; i0:int; i1:int; i2:int;i3:int)
+repair node discover_binary_Bool_2_Int_4_Terms3_4(a0: bool; a1:bool; i0:int; i1:int; i2:int;i3:int)
 [
 valhole_0: inthole;
 valhole_1:inthole;
