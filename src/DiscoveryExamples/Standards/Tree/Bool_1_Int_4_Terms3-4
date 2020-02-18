@@ -10,9 +10,10 @@ const_hole1 : inthole;
 valhole_3: inthole;
 valhole_4:inthole;
 valhole_5:inthole;
+valhole_6:inthole;
 
 const_hole2: inthole;
-const_hole3 : inthole;
+const_hole3 : inthole
 
 ]
 
