@@ -1,0 +1,143 @@
+repair node discover_binary_Bool_0_Int_14_Terms2(i0: int; i1:int; i2:int; i3:int; i4: int; i5:int; i6:int; i7:int; i8:
+int; i9:int; i10:int; i11:int; i12:int; i13:int )
+[
+valhole_0: inthole;
+valhole_1: inthole;
+valhole_2: inthole;
+
+valhole_3: inthole;
+valhole_4: inthole;
+valhole_5: inthole;
+valhole_6: inthole;
+
+const_hole1:int;
+const_hole2:int
+]
+
+returns (out: bool);
+var
+
+leaf_0:int;
+leaf_1:int;
+term1:bool;
+
+leaf_2:int;
+leaf_3:int;
+term2:bool;
+level_1:bool;
+
+let
+
+    leaf_0 = if(valhole_0 = 0) then i0
+                   else if(valhole_0 = 1) then i1
+                   else if(valhole_0 = 2) then i2
+                   else if(valhole_0 = 3) then i3
+                   else if(valhole_0 = 4) then i4
+                   else if(valhole_0 = 5) then i5
+                   else if(valhole_0 = 6) then i6
+                   else if(valhole_0 = 7) then i7
+                   else if(valhole_0 = 8) then i8
+                   else if(valhole_0 = 9) then i9
+                   else if(valhole_0 = 10) then 10
+                   else if(valhole_0 = 11) then i11
+                   else if(valhole_0 = 12) then i12
+                   else if(valhole_0 = 13) then i13
+                   else const_hole1;
+
+    leaf_1 = if(valhole_1 = 0) then i0
+                   else if(valhole_1 = 1) then i1
+                   else if(valhole_1 = 2) then i2
+                   else if(valhole_1 = 3) then i3
+                   else if(valhole_1 = 4) then i4
+                   else if(valhole_1 = 5) then i5
+                   else if(valhole_1 = 6) then i6
+                   else if(valhole_1 = 7) then i7
+                   else if(valhole_1 = 8) then i8
+                   else if(valhole_1 = 9) then i9
+                   else if(valhole_1 = 10) then i10
+                   else if(valhole_1 = 11) then i11
+                   else if(valhole_1 = 12) then i12
+                   else if(valhole_1 = 13) then i13
+                   else const_hole1;
+
+    term1 = if(valhole_2 = 0) then leaf_0 > leaf_1
+                else if(valhole_2 = 1) then leaf_0 <= leaf_1
+                else if(valhole_2 = 2) then leaf_0 <> leaf_1
+                else leaf_0 = leaf_1 ;
+
+
+leaf_2 = if(valhole_3 = 0) then i0
+                   else if(valhole_3 = 1) then i1
+                   else if(valhole_3 = 2) then i2
+                   else if(valhole_3 = 3) then i3
+                   else if(valhole_3 = 4) then i4
+                   else if(valhole_3 = 5) then i5
+                   else if(valhole_3 = 6) then i6
+                   else if(valhole_3 = 7) then i7
+                   else if(valhole_3 = 8) then i8
+                   else if(valhole_3 = 9) then i9
+                   else if(valhole_3 = 10) then 10
+                   else if(valhole_3 = 11) then i11
+                   else if(valhole_3 = 12) then i12
+                   else if(valhole_3 = 13) then i13
+                   else const_hole2;
+
+    leaf_3 = if(valhole_4 = 0) then i0
+                   else if(valhole_4 = 1) then i1
+                   else if(valhole_4 = 2) then i2
+                   else if(valhole_4 = 3) then i3
+                   else if(valhole_4 = 4) then i4
+                   else if(valhole_4 = 5) then i5
+                   else if(valhole_4 = 6) then i6
+                   else if(valhole_4 = 7) then i7
+                   else if(valhole_4 = 8) then i8
+                   else if(valhole_4 = 9) then i9
+                   else if(valhole_4 = 10) then i10
+                   else if(valhole_4 = 11) then i11
+                   else if(valhole_4 = 12) then i12
+                   else if(valhole_4 = 13) then i13
+                   else const_hole2;
+
+    term2 = if(valhole_5 = 0) then leaf_2 > leaf_3
+                else if(valhole_5 = 1) then leaf_2 <= leaf_3
+                else if(valhole_5 = 2) then leaf_2 <> leaf_3
+                else leaf_2 = leaf_3;
+
+
+
+    level_1 = if(valhole_6 = 0) then term1 and term2
+                else if(valhole_6 = 1) then term1 or term2
+                else if(valhole_6 = 2) then term1 => term2
+                else if(valhole_6 = 3) then term1 xor term2
+                else if(valhole_6 = 4) then not term1
+                else if(valhole_6 = 5) then not term2
+                else if(valhole_6 = 6) then true
+                else false;
+
+    out = level_1;
+tel;
+
+
+
+node main(Cur_Vertical_Sep_s: int; High_Confidence_flag_s:int; Two_of_Three_Reports_Valid_flag_s:int;
+Own_Tracked_Alt_s:int; Own_Tracked_Alt_Rate_s:int; Other_Tracked_Alt_s:int; Alt_Layer_Value_s:int; Up_Separation_s:int;Down_Separation_s:int; Other_RAC_s:int; Other_Capability_s:int; Climb_Inhibit_s:int;
+--output
+ result_alt_sep_test_s:int; alim_res_s:int) returns (p1:
+ bool);
+
+
+let
+
+-- mutating <> 2 to = 2
+-- repairing first passing assertion in TCAS, which should pass. where DOWNWARD_RA is encoded in the implementation as 2. we can have a different encoding for it, but lets keep it like this for now.
+
+    p1 = true -> repair(((Up_Separation_s < alim_res_s) and (Down_Separation_s < alim_res_s))=> (result_alt_sep_test_s
+    = 2),
+    discover_binary_Bool_0_Int_14_Terms2(Cur_Vertical_Sep_s, High_Confidence_flag_s,
+    Two_of_Three_Reports_Valid_flag_s, Own_Tracked_Alt_s, Own_Tracked_Alt_Rate_s, Other_Tracked_Alt_s,
+    Alt_Layer_Value_s, Up_Separation_s,Down_Separation_s, Other_RAC_s, Other_Capability_s,  Climb_Inhibit_s,
+    result_alt_sep_test_s, alim_res_s)) ;
+
+  --%PROPERTY p1;
+
+tel;

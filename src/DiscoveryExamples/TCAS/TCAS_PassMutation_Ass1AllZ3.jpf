@@ -28,6 +28,6 @@ repairMode = 2
 
 SpecDirectory = TCAS
 contractDiscoveryOn = true
-faultySpec = TCAS_PassMutation_Ass1_terms1,TCAS_PassMutation_Ass1_terms2,TCAS_PassMutation_Ass1_terms3-4
+faultySpec = TCAS_PassMutation_Ass1_terms1Z3,TCAS_PassMutation_Ass1_terms2Z3,TCAS_PassMutation_Ass1_terms3-4Z3
 repairInitialValues = true
 z3Solver=true
