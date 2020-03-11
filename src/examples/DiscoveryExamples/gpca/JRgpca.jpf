@@ -1,0 +1,22 @@
+target=DiscoveryExamples.gpca.ALARM_Functional
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+symbolic.debug=false
+vm.storage.class=nil
+symbolic.lazy = true
+symbolic.debug=true
+symbolic.optimizechoices=false
+
+
+symbolic.method=DiscoveryExamples.gpca.ALARM_Functional.ALARM_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+vm.storage.class=nil
+
+
+symbolic.dp=z3bitvectorinc
+
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = false

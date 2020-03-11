@@ -1,0 +1,110 @@
+1. converting struct to classes
+2. uint8_T => int, unsigned 8 bit to java 32 bit integer
+3. 1U = 1;
+4. #define => static final
+5. switch => if
+6. changed the return type of ALARM_Functional_setCurrentAlarm to int instead of real, since it is always returning zero in the floating point.
+7. changed the return type of ALARM_Functional_Step_Scaling_Factor sine it is returning the input which is int, then un-necessarily comparing it with floating point.
+
+
+
+Alarm Properties obtained from the model
+
+
+function check_alarm_properties(System_On, Reservoir_Volume, Reservoir_Empty, Low_Reservoir, In_Therapy, Highest_Level_Alarm, Air_In_Line, Occlusion,Door_Open, Disable_Audio, Audio_Notification_Command, Is_Audio_Disabled, Audio_Level, Volume_Infused,  VTBI_Hi, Flow_Rate_Monitored,  Flow_Rate_Hi)
+
+    is_volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm = volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm(System_On, Volume_Infused, VTBI_Hi, In_Therapy, Highest_Level_Alarm);
+    sldv.prove(is_volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm);
+
+    is_empty_reservoir_implies_alarm_L4 = empty_reservoir_implies_alarm_L4(System_On,Reservoir_Empty, In_Therapy, Highest_Level_Alarm);
+    sldv.prove(is_empty_reservoir_implies_alarm_L4);
+
+     is_air_in_line_implies_grt_L3_alarm = air_in_line_implies_grt_L3_alarm(System_On, Air_In_Line, Highest_Level_Alarm);
+     sldv.prove(is_air_in_line_implies_grt_L3_alarm);
+
+    is_occlusion_implies_grt_L3_alarm = occlusion_implies_grt_L3_alarm(System_On, Occlusion, Highest_Level_Alarm);
+    sldv.prove(is_occlusion_implies_grt_L3_alarm);
+
+    is_door_open_implies_grt_L3_alarm = door_open_implies_grt_L3_alarm(System_On, Door_Open, Highest_Level_Alarm);
+     sldv.prove(is_door_open_implies_grt_L3_alarm);
+
+    is_alarm_gte_L3_causes_audio_output_EQ_audio_level = alarm_gte_L3_causes_audio_output_EQ_audio_level(System_On, Highest_Level_Alarm, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command, Audio_Level);
+    sldv.prove(is_alarm_gte_L3_causes_audio_output_EQ_audio_level);
+
+    is_no_audio_if_audio_disabled = no_audio_if_audio_disabled(System_On, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command);
+    sldv.prove(is_no_audio_if_audio_disabled);
+
+     is_flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm =  flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm(System_On, In_Therapy,  Flow_Rate_Monitored,  Flow_Rate_Hi, Highest_Level_Alarm);
+    sldv.prove(is_flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm);
+
+    is_low_reservoir_implies_grt_L2_alarm = low_reservoir_implies_grt_L2_alarm(System_On, Reservoir_Volume, Low_Reservoir, In_Therapy, Highest_Level_Alarm);
+    sldv.prove(is_low_reservoir_implies_grt_L2_alarm);
+
+    is_alarm_value_range =  alarm_value_range (System_On, Highest_Level_Alarm);
+    sldv.prove(is_alarm_value_range);
+
+    is_audio_disabled_range =  audio_disabled_range (System_On, Is_Audio_Disabled, Disable_Audio);
+    sldv.prove(is_audio_disabled_range);
+
+function result = volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm(System_On, Volume_Infused, VTBI_Hi, In_Therapy, Highest_Level_Alarm)
+    checkCondition = (System_On && In_Therapy && (Volume_Infused > VTBI_Hi ) );
+    checkOutput = (Highest_Level_Alarm >= 3);
+    result = implies(checkCondition, checkOutput);
+
+
+function result = empty_reservoir_implies_alarm_L4(System_On,Reservoir_Empty, In_Therapy, Highest_Level_Alarm)
+    checkCondition = (System_On && In_Therapy && Reservoir_Empty);
+    checkOutput = (Highest_Level_Alarm == 4);
+    result = implies(checkCondition, checkOutput);
+
+function result = air_in_line_implies_grt_L3_alarm(System_On, Air_In_Line, Highest_Level_Alarm)
+    checkCondition = (System_On && Air_In_Line );
+    checkOutput = (Highest_Level_Alarm >= 3);
+    result = implies(checkCondition, checkOutput);
+
+function result = occlusion_implies_grt_L3_alarm(System_On, Occlusion, Highest_Level_Alarm)
+    checkCondition = (System_On && Occlusion );
+    checkOutput = (Highest_Level_Alarm >= 3);
+    result = implies(checkCondition, checkOutput);
+
+function result = door_open_implies_grt_L3_alarm(System_On, Door_Open, Highest_Level_Alarm)
+    checkCondition = (System_On && Door_Open );
+    checkOutput = (Highest_Level_Alarm >= 3);
+    result = implies(checkCondition, checkOutput);
+
+function result = alarm_gte_L3_causes_audio_output_EQ_audio_level(System_On, Highest_Level_Alarm, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command, Audio_Level)
+    checkCondition = (System_On && (Highest_Level_Alarm >=3 ) && (Disable_Audio == 0) );
+    checkOutput = ((Audio_Notification_Command == Audio_Level) && (Is_Audio_Disabled == 0) );
+    result = implies(checkCondition, checkOutput);
+
+function result = no_audio_if_audio_disabled(System_On, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command)
+    checkCondition = (System_On && (Disable_Audio > 0 ) );
+    checkOutput = ((Audio_Notification_Command == 0) && (Is_Audio_Disabled == Disable_Audio));
+    result = implies(checkCondition, checkOutput);
+
+function result = flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm(System_On, In_Therapy,  Flow_Rate_Monitored,  Flow_Rate_Hi, Highest_Level_Alarm)
+    checkCondition = (System_On && In_Therapy && (Flow_Rate_Monitored > Flow_Rate_Hi));
+    checkOutput = (Highest_Level_Alarm >= 3);
+    result = implies(checkCondition, checkOutput);
+
+function result = low_reservoir_implies_grt_L2_alarm(System_On, Reservoir_Volume, Low_Reservoir, In_Therapy, Highest_Level_Alarm)
+    checkCondition = (System_On && In_Therapy && (Reservoir_Volume < Low_Reservoir ) );
+    checkOutput = (Highest_Level_Alarm >= 2);
+    result = implies(checkCondition, checkOutput);
+
+function result = alarm_value_range (System_On, Highest_Level_Alarm)
+    checkCondition = (System_On);
+    checkOutput = ((Highest_Level_Alarm >= 0) && (Highest_Level_Alarm <= 4)) ;
+    result = implies(checkCondition, checkOutput);
+
+function result = audio_disabled_range (System_On, Is_Audio_Disabled, Disable_Audio)
+    checkCondition = (System_On);
+    checkOutput = (Is_Audio_Disabled == Disable_Audio) ;
+    result = implies(checkCondition, checkOutput);
+
+
+  function c = implies(a,b)
+     c = ((not (a)) || b);
+
+
+
