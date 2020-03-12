@@ -488,10 +488,10 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverFreeInputVote() {
-        freeInput.add("a", NamedType.BOOL);
-        freeInput.add("b", NamedType.BOOL);
-        freeInput.add("c", NamedType.BOOL);
-        freeInput.add("threshold", NamedType.INT);
+        freeInput.add("a_1_SYMINT", NamedType.BOOL);
+        freeInput.add("b_2_SYMINT", NamedType.BOOL);
+        freeInput.add("c_3_SYMINT", NamedType.BOOL);
+        freeInput.add("threshold_4_SYMINT", NamedType.INT);
 
         /*if (freeInput.containsBool()) {
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
@@ -502,7 +502,7 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverStateInputVote() {
-        stateInput.add("out", NamedType.BOOL);
+        stateInput.add("out_5_SYMINT", NamedType.BOOL);
         /*if (stateInput.containsBool()) { //type conversion to spf int type is needed
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = stateInput.convertInput();
             typeConversionEq.addAll(conversionResult.getSecond());
@@ -519,8 +519,8 @@ public class InOutManager {
 
     private void discoverContractOutputVote2() {
 
-        contractOutput.add(referenceObjectName + ".out.1.18.2", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName + ".out.1.18.2", new BoolExpr(false));
+        contractOutput.add(referenceObjectName + "r347.out.1.1.2", NamedType.BOOL);
+        contractOutput.addInit(referenceObjectName + "r347.out.1.1.2", new BoolExpr(false));
         /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
             ArrayList<Equation> conversionResult = contractOutput.convertOutput();
             assert conversionResult.size() == 1;

@@ -675,7 +675,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
         if (transformationException != null) throw transformationException;
 
-        TypePropagationVisitor.propagateTypes(dynRegion);
+        //TypePropagationVisitor.propagateTypes(dynRegion);
 
         dynRegion = UniqueRegion.execute(dynRegion);
 

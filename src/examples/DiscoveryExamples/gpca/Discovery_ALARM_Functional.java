@@ -1,10 +1,8 @@
 package DiscoveryExamples.gpca;
 
-import org.apache.commons.math.stat.descriptive.rank.Max;
-
 import static DiscoveryExamples.gpca.Div_s32.div_s32;
 
-public class ALARM_Functional {
+public class Discovery_ALARM_Functional {
     static final int ALARM_Functional_IN_AlarmDisplay = 1;
     static final int ALARM_Functional_IN_Alarms = 1;
     static final int ALARM_Functional_IN_Check = 1;
@@ -37,16 +35,17 @@ public class ALARM_Functional {
         ov = 0;
         if (localB.In_Therapy) {
             /* Transition: '<S1>:4062' */
+            int div1 = div_s32(localB.Tolerance_Max, 100);
+            int div2 = div_s32(localB.Tolerance_Min, 100);
+
             if (localB.Flow_Rate > localB.Flow_Rate_High) {
                 /* Transition: '<S1>:4063' */
                 ov = 1;
-            } else if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div_s32
-                    (localB.Tolerance_Max, 100) + localB.Commanded_Flow_Rate) {
+            } else if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div1 + localB.Commanded_Flow_Rate) {
                 /* Transition: '<S1>:4064' */
                 ov = 1;
             } else {
-                if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div_s32
-                        (localB.Tolerance_Min, 100) + localB.Commanded_Flow_Rate) {
+                if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div2 + localB.Commanded_Flow_Rate) {
                     /* Transition: '<S1>:4065' */
                     ov = 2;
                 }
@@ -73,16 +72,18 @@ public class ALARM_Functional {
         c = 0;
         if (localB.In_Therapy) {
             /* Transition: '<S1>:4139' */
+            int div1 = div_s32(localB.Tolerance_Max, 100);
+            int div2 = div_s32(localB.Tolerance_Min, 100);
             if (localB.Flow_Rate < localB.Flow_Rate_Low) {
                 /* Transition: '<S1>:4138' */
                 c = 1;
             } else if (localB.Flow_Rate < localB.Commanded_Flow_Rate -
-                    localB.Commanded_Flow_Rate * div_s32(localB.Tolerance_Max, 100)) {
+                    localB.Commanded_Flow_Rate * div1) {
                 /* Transition: '<S1>:4140' */
                 c = 1;
             } else {
                 if (localB.Flow_Rate < localB.Commanded_Flow_Rate -
-                        localB.Commanded_Flow_Rate * div_s32(localB.Tolerance_Min, 100)) {
+                        localB.Commanded_Flow_Rate * div2) {
                     /* Transition: '<S1>:4142' */
                     c = 2;
                 }
@@ -136,9 +137,8 @@ public class ALARM_Functional {
         else if (localDW.is_IsUnderInfusion == ALARM_Functional_IN_Monitor) {
 
             /* During 'Monitor': '<S1>:4128' */
-            if ((underInfusion == 1) || ((int) localDW.underInfusionTimer >
-                    ALARM_Functional_Step_Scaling_Factor
-                            (localB.Max_Duration_Under_Infusion))) {
+            int scale_factor1 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Under_Infusion);
+            if ((underInfusion == 1) || ((int) localDW.underInfusionTimer > scale_factor1)) {
                 /* Transition: '<S1>:4122' */
                 localDW.underInfusionTimer = 0;
                 localDW.is_IsUnderInfusion = ALARM_Functional_IN_Yes_o;
@@ -187,9 +187,10 @@ public class ALARM_Functional {
         /* During 'IsIdleTimeExceeded': '<S1>:4149' */
 
         if (localDW.is_IsIdleTimeExceeded == ALARM_Functional_IN_No) {
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
             /* During 'No': '<S1>:4153' */
             if ((localB.Current_System_Mode == 1) &&
-                    (ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration) == 1)) {
+                    (scale_factor == 1)) {
                 /* Transition: '<S1>:4750' */
                 /* Exit 'No': '<S1>:4153' */
                 localDW.idletimer = 0;
@@ -216,8 +217,8 @@ public class ALARM_Functional {
             }
         } else {
             /* During 'counting': '<S1>:4745' */
-            if ((int) localDW.idletimer >= ALARM_Functional_Step_Scaling_Factor
-                    (localB.Max_Idle_Duration)) {
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
+            if ((int) localDW.idletimer >= scale_factor) {
                 /* Transition: '<S1>:4747' */
                 /* Exit 'counting': '<S1>:4745' */
                 localDW.idletimer++;
@@ -231,10 +232,9 @@ public class ALARM_Functional {
 
         if (localDW.is_IsPausedTimeExceeded == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4756' */
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
             if (((localB.Current_System_Mode == 6) || (localB.Current_System_Mode == 7)
-                    || (localB.Current_System_Mode == 8)) &&
-                    (ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration) ==
-                            1)) {
+                    || (localB.Current_System_Mode == 8)) && (scale_factor == 1)) {
                 /* Transition: '<S1>:4761' */
                 /* Exit 'No': '<S1>:4756' */
                 localDW.pausedtimer = 0;
@@ -264,8 +264,8 @@ public class ALARM_Functional {
 
         } else {
             /* During 'counting': '<S1>:4752' */
-            if ((int) localDW.pausedtimer >= ALARM_Functional_Step_Scaling_Factor
-                    (localB.Max_Paused_Duration)) {
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
+            if ((int) localDW.pausedtimer >= scale_factor) {
                 /* Transition: '<S1>:4758' */
                 /* Exit 'counting': '<S1>:4752' */
                 localDW.pausedtimer++;
@@ -278,15 +278,15 @@ public class ALARM_Functional {
         /* During 'IsConfigTimeWarning': '<S1>:4161' */
         if (localDW.is_IsConfigTimeWarning == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4166' */
-            if ((int) localB.Config_Timer > ALARM_Functional_Step_Scaling_Factor
-                    (localB.Config_Warning_Duration)) {
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
+            if ((int) localB.Config_Timer > scale_factor) {
                 /* Transition: '<S1>:4163' */
                 localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_Yes;
             }
         } else {
             /* During 'Yes': '<S1>:4165' */
-            if ((localDW.cancelAlarm == 14) && (!((int) localB.Config_Timer >
-                    ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration)))) {
+            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
+            if ((localDW.cancelAlarm == 14) && (!((int) localB.Config_Timer > scale_factor))) {
                 /* Transition: '<S1>:4164' */
                 localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_No;
             }
@@ -632,8 +632,8 @@ public class ALARM_Functional {
             }
         } else if (localDW.is_IsOverInfusionFlowRate == ALARM_Functional_IN_Monitor) {
             /* During 'Monitor': '<S1>:4053' */
-            if ((overInfusion == 1) || ((int) localDW.overInfusionTimer >
-                    ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion))) {
+            int scaling_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion);
+            if ((overInfusion == 1) || ((int) localDW.overInfusionTimer > scaling_factor2)) {
                 /* Transition: '<S1>:4047' */
                 localDW.overInfusionTimer = 0;
 
@@ -1105,9 +1105,8 @@ public class ALARM_Functional {
                         /* Entry 'ON': '<S1>:3938' */
                         localB.ALARM_OUT_Audio_Notification_Command = localB.Audio_Level;
                     } else {
-                        if (((int) localDW.audioTimer >
-                                ALARM_Functional_Step_Scaling_Factor
-                                        (localB.Audio_Enable_Duration)) || (localB.Disable_Audio == 0)) {
+                        int scale_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Audio_Enable_Duration);
+                        if (((int) localDW.audioTimer > scale_factor2) || (localB.Disable_Audio == 0)) {
                             /* Transition: '<S1>:3936' */
                             /* Transition: '<S1>:3928' */
                             /* Exit 'Silenced': '<S1>:3952' */
@@ -1310,8 +1309,9 @@ public class ALARM_Functional {
         localDW.is_active_IsIdleTimeExceeded = 1;
 
         /* Entry Internal 'IsIdleTimeExceeded': '<S1>:4149' */
+        int scaling_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
         if ((localB.Current_System_Mode == 1) &&
-                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration) == 1)) {
+                (scaling_factor == 1)) {
             /* Transition: '<S1>:4749' */
             localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_Yes;
         } else if (localB.Current_System_Mode == 1) {
@@ -1332,9 +1332,10 @@ public class ALARM_Functional {
         localDW.is_active_IsPausedTimeExceeded = 1;
 
         /* Entry Internal 'IsPausedTimeExceeded': '<S1>:4155' */
+        int scaling_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
         if (((localB.Current_System_Mode == 6) || (localB.Current_System_Mode == 7) ||
                 (localB.Current_System_Mode == 8)) &&
-                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration) == 1)) {
+                (scaling_factor2 == 1)) {
             /* Transition: '<S1>:4760' */
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
         } else if ((localB.Current_System_Mode == 6) || (localB.Current_System_Mode ==
@@ -1356,8 +1357,8 @@ public class ALARM_Functional {
         localDW.is_active_IsConfigTimeWarning = 1;
 
         /* Entry Internal 'IsConfigTimeWarning': '<S1>:4161' */
-        if ((int) localB.Config_Timer > ALARM_Functional_Step_Scaling_Factor
-                (localB.Config_Warning_Duration)) {
+        int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
+        if ((int) localB.Config_Timer > scale_factor) {
             /* Transition: '<S1>:4207' */
             localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_Yes;
         } else {
@@ -1481,7 +1482,7 @@ public class ALARM_Functional {
 
     /* Initial conditions for referenced model: 'ALARM_Functional' */
     static void ALARM_Functional_Init(B_ALARM_Functional_c_T localB,
-                               DW_ALARM_Functional_f_T localDW) {
+                                      DW_ALARM_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Alarm  Sub-System' */
         localDW.is_active_CheckAlarm = 0;
         localDW.is_active_CancelAlarm = 0;
@@ -1553,16 +1554,16 @@ public class ALARM_Functional {
 
     /* Output and update for referenced model: 'ALARM_Functional' */
     static void ALARM_Functional(Infusion_Manager_Outputs rtu_IM_IN,
-                          Top_Level_Mode_Outputs rtu_TLM_MODE_IN,
-                          System_Monitor_Output rtu_SYS_MON_IN,
-                          Log_Output rtu_LOGGING_IN, Operator_Commands rtu_OP_CMD_IN,
-                          Drug_Database_Inputs rtu_DB_IN,
-                          Device_Sensor_Inputs rtu_SENSOR_IN,
-                          Device_Configuration_Inputs rtu_CONST_IN,
-                          System_Status_Outputs rtu_SYS_STAT_IN,
-                          Config_Outputs rtu_CONFIG_IN, Alarm_Outputs
-                                  rty_ALARM_OUT, B_ALARM_Functional_c_T localB,
-                          DW_ALARM_Functional_f_T localDW) {
+                                 Top_Level_Mode_Outputs rtu_TLM_MODE_IN,
+                                 System_Monitor_Output rtu_SYS_MON_IN,
+                                 Log_Output rtu_LOGGING_IN, Operator_Commands rtu_OP_CMD_IN,
+                                 Drug_Database_Inputs rtu_DB_IN,
+                                 Device_Sensor_Inputs rtu_SENSOR_IN,
+                                 Device_Configuration_Inputs rtu_CONST_IN,
+                                 System_Status_Outputs rtu_SYS_STAT_IN,
+                                 Config_Outputs rtu_CONFIG_IN, Alarm_Outputs
+                                         rty_ALARM_OUT, B_ALARM_Functional_c_T localB,
+                                 DW_ALARM_Functional_f_T localDW) {
         /* BusSelector: '<Root>/BusConversion_InsertedFor_IM_IN_at_outport_0' */
         localB.Commanded_Flow_Rate = rtu_IM_IN.Commanded_Flow_Rate;
         localB.Current_System_Mode = rtu_IM_IN.Current_System_Mode;
@@ -1668,15 +1669,15 @@ public class ALARM_Functional {
         rty_ALARM_OUT.Log_Message_ID = localB.ALARM_OUT_Log_Message_ID;
 
         //Prop: empty_reservoir_implies_alarm_L4
-        boolean checkCondition = localB.System_On && localB.In_Therapy && localB.Reservoir_Empty;
-        boolean checkOutput = localB.ALARM_OUT_Highest_Level_Alarm == 4;
-        assert (!checkCondition || checkOutput);
+//        boolean checkCondition = localB.System_On && localB.In_Therapy && localB.Reservoir_Empty;
+//        boolean checkOutput = localB.ALARM_OUT_Highest_Level_Alarm == 4;
+//        assert (!checkCondition || checkOutput);
 
 
         //Prop: air_in_line_implies_grt_L3_alarm
-        checkCondition = (localB.System_On && localB.Air_In_Line);
-        checkOutput = (localB.ALARM_OUT_Highest_Level_Alarm >= 3);
-        assert (!checkCondition || checkOutput);
+//        checkCondition = (localB.System_On && localB.Air_In_Line);
+//        checkOutput = (localB.ALARM_OUT_Highest_Level_Alarm >= 3);
+//        assert (!checkCondition || checkOutput);
 
     }
     /*
@@ -1723,138 +1724,138 @@ public class ALARM_Functional {
                 1, 1, false, 1, 1, 1, false, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, false, false, false, false, 1,
-                1, 1, 1, 1, 1, 1, 1);
+                1, 1, 1, 1, 1, 1, 1, true);
     }
 
     static private void ALARM_FunctionalSymWrapper(//Symbolic input of Infusion_Manager_Outputs
-                                            int Commanded_Flow_Rate,
-                                            int Current_System_Mode, boolean New_Infusion,
-                                            int Log_Message_ID_1,
-                                            int Actual_Infusion_Duration,
+                                                   int Commanded_Flow_Rate,
+                                                   int Current_System_Mode, boolean New_Infusion,
+                                                   int Log_Message_ID_1,
+                                                   int Actual_Infusion_Duration,
 
 
-                                            //Symbolic input of Top_Level_Mode_Outputs
-                                            boolean System_On,
-                                            boolean Request_Confirm_Stop,
-                                            int Log_Message_ID_2,
+                                                   //Symbolic input of Top_Level_Mode_Outputs
+                                                   boolean System_On,
+                                                   boolean Request_Confirm_Stop,
+                                                   int Log_Message_ID_2,
 
 
-                                            //Symbolic input of System_Monitor_Output
-                                            boolean System_Monitor_Failed,
+                                                   //Symbolic input of System_Monitor_Output
+                                                   boolean System_Monitor_Failed,
 
-                                            //Symbolic input of System_Monitor_Output
-                                            int Log,
-                                            boolean Logging_Failed,
+                                                   //Symbolic input of System_Monitor_Output
+                                                   int Log,
+                                                   boolean Logging_Failed,
 
-                                            //Symbolic input of Operator_Commands
-                                            boolean System_Start,
-                                            boolean System_Stop,
-                                            boolean Infusion_Initiate,
-                                            boolean Infusion_Inhibit,
-                                            boolean Infusion_Cancel,
-                                            boolean Data_Config,
-                                            boolean Next,
-                                            boolean Back,
-                                            boolean Cancel,
-                                            boolean Keyboard,
-                                            int Disable_Audio,
-                                            boolean Notification_Cancel,
-                                            int Configuration_Type,
-                                            boolean Confirm_Stop,
+                                                   //Symbolic input of Operator_Commands
+                                                   boolean System_Start,
+                                                   boolean System_Stop,
+                                                   boolean Infusion_Initiate,
+                                                   boolean Infusion_Inhibit,
+                                                   boolean Infusion_Cancel,
+                                                   boolean Data_Config,
+                                                   boolean Next,
+                                                   boolean Back,
+                                                   boolean Cancel,
+                                                   boolean Keyboard,
+                                                   int Disable_Audio,
+                                                   boolean Notification_Cancel,
+                                                   int Configuration_Type,
+                                                   boolean Confirm_Stop,
 
-                                            //Symbolic input of Drug_Database_Inputs
-                                            boolean Known_Prescription,
-                                            int Drug_Name1,
-                                            int Drug_Concentration_High,
-                                            int Drug_Concentration_Low,
-                                            int VTBI_High,
-                                            int VTBI_Low,
-                                            int Interval_Patient_Bolus,
-                                            int Number_Max_Patient_Bolus,
-                                            int Flow_Rate_KVO1,
-                                            int Flow_Rate_High,
-                                            int Flow_Rate_Low,
+                                                   //Symbolic input of Drug_Database_Inputs
+                                                   boolean Known_Prescription,
+                                                   int Drug_Name1,
+                                                   int Drug_Concentration_High,
+                                                   int Drug_Concentration_Low,
+                                                   int VTBI_High,
+                                                   int VTBI_Low,
+                                                   int Interval_Patient_Bolus,
+                                                   int Number_Max_Patient_Bolus,
+                                                   int Flow_Rate_KVO1,
+                                                   int Flow_Rate_High,
+                                                   int Flow_Rate_Low,
 
-                                            //Symbolic input of Device_Sensor_Inputs
-                                            int Flow_Rate,
-                                            boolean Flow_Rate_Not_Stable,
-                                            boolean Air_In_Line,
-                                            boolean Occlusion,
-                                            boolean Door_Open,
-                                            boolean Temp,
-                                            boolean Air_Pressure,
-                                            boolean Humidity,
-                                            boolean Battery_Depleted,
-                                            boolean Battery_Low,
-                                            boolean Battery_Unable_To_Charge,
-                                            boolean Supply_Voltage,
-                                            boolean CPU_In_Error,
-                                            boolean RTC_In_Error,
-                                            boolean Watchdog_Interrupted,
-                                            boolean Memory_Corrupted,
-                                            boolean Pump_Too_Hot,
-                                            boolean Pump_Overheated,
-                                            boolean Pump_Primed,
-                                            boolean Post_Successful,
+                                                   //Symbolic input of Device_Sensor_Inputs
+                                                   int Flow_Rate,
+                                                   boolean Flow_Rate_Not_Stable,
+                                                   boolean Air_In_Line,
+                                                   boolean Occlusion,
+                                                   boolean Door_Open,
+                                                   boolean Temp,
+                                                   boolean Air_Pressure,
+                                                   boolean Humidity,
+                                                   boolean Battery_Depleted,
+                                                   boolean Battery_Low,
+                                                   boolean Battery_Unable_To_Charge,
+                                                   boolean Supply_Voltage,
+                                                   boolean CPU_In_Error,
+                                                   boolean RTC_In_Error,
+                                                   boolean Watchdog_Interrupted,
+                                                   boolean Memory_Corrupted,
+                                                   boolean Pump_Too_Hot,
+                                                   boolean Pump_Overheated,
+                                                   boolean Pump_Primed,
+                                                   boolean Post_Successful,
 
-                                            //Symbolic input of Device_Configuration_Inputs
-                                            int Audio_Enable_Duration,
-                                            int Audio_Level,
-                                            int Config_Warning_Duration,
-                                            int Empty_Reservoir,
-                                            int Low_Reservoir,
-                                            int Max_Config_Duration,
-                                            int Max_Duration_Over_Infusion,
-                                            int Max_Duration_Under_Infusion,
-                                            int Max_Paused_Duration,
-                                            int Max_Idle_Duration,
-                                            int Tolerance_Max,
-                                            int Tolerance_Min,
-                                            int Log_Interval,
-                                            int System_Test_Interval,
-                                            int Max_Display_Duration,
-                                            int Max_Confirm_Stop_Duration,
+                                                   //Symbolic input of Device_Configuration_Inputs
+                                                   int Audio_Enable_Duration,
+                                                   int Audio_Level,
+                                                   int Config_Warning_Duration,
+                                                   int Empty_Reservoir,
+                                                   int Low_Reservoir,
+                                                   int Max_Config_Duration,
+                                                   int Max_Duration_Over_Infusion,
+                                                   int Max_Duration_Under_Infusion,
+                                                   int Max_Paused_Duration,
+                                                   int Max_Idle_Duration,
+                                                   int Tolerance_Max,
+                                                   int Tolerance_Min,
+                                                   int Log_Interval,
+                                                   int System_Test_Interval,
+                                                   int Max_Display_Duration,
+                                                   int Max_Confirm_Stop_Duration,
 
-                                            //Symbolic input of System_Status_Outputs
-                                            boolean Reservoir_Empty,
-                                            int Reservoir_Volume1,
-                                            int Volume_Infused,
-                                            int Log_Message_ID3,
-                                            boolean In_Therapy,
+                                                   //Symbolic input of System_Status_Outputs
+                                                   boolean Reservoir_Empty,
+                                                   int Reservoir_Volume1,
+                                                   int Volume_Infused,
+                                                   int Log_Message_ID3,
+                                                   boolean In_Therapy,
 
-                                            //Symbolic input of Config_Outputs
-                                            int Patient_ID,
-                                            int Drug_Name2,
-                                            int Drug_Concentration,
-                                            int Infusion_Total_Duration,
-                                            int VTBI_Total,
-                                            int Flow_Rate_Basal,
-                                            int Flow_Rate_Intermittent_Bolus,
-                                            int Duration_Intermittent_Bolus,
-                                            int Interval_Intermittent_Bolus,
-                                            int Flow_Rate_Patient_Bolus,
-                                            int Duration_Patient_Bolus,
-                                            int Lockout_Period_Patient_Bolus,
-                                            int Max_Number_of_Patient_Bolus,
-                                            int Flow_Rate_KVO2,
-                                            int Entered_Reservoir_Volume,
-                                            int Reservoir_Volume2,
-                                            int Configured,
-                                            int Error_Message_ID,
-                                            boolean Request_Config_Type,
-                                            boolean Request_Confirm_Infusion_Initiate,
-                                            boolean Request_Patient_Drug_Info,
-                                            boolean Request_Infusion_Info,
-                                            int Log_Message_ID4,
-                                            int Config_Timer,
-                                            int Config_Mode,
+                                                   //Symbolic input of Config_Outputs
+                                                   int Patient_ID,
+                                                   int Drug_Name2,
+                                                   int Drug_Concentration,
+                                                   int Infusion_Total_Duration,
+                                                   int VTBI_Total,
+                                                   int Flow_Rate_Basal,
+                                                   int Flow_Rate_Intermittent_Bolus,
+                                                   int Duration_Intermittent_Bolus,
+                                                   int Interval_Intermittent_Bolus,
+                                                   int Flow_Rate_Patient_Bolus,
+                                                   int Duration_Patient_Bolus,
+                                                   int Lockout_Period_Patient_Bolus,
+                                                   int Max_Number_of_Patient_Bolus,
+                                                   int Flow_Rate_KVO2,
+                                                   int Entered_Reservoir_Volume,
+                                                   int Reservoir_Volume2,
+                                                   int Configured,
+                                                   int Error_Message_ID,
+                                                   boolean Request_Config_Type,
+                                                   boolean Request_Confirm_Infusion_Initiate,
+                                                   boolean Request_Patient_Drug_Info,
+                                                   boolean Request_Infusion_Info,
+                                                   int Log_Message_ID4,
+                                                   int Config_Timer,
+                                                   int Config_Mode,
 
-                                            //Symbolic input of Alarm_Outputs
-                                            int Is_Audio_Disabled,
-                                            int Notification_Message,
-                                            int Audio_Notification_Command,
-                                            int Highest_Level_Alarm,
-                                            int Log_Message_ID5)
+                                                   //Symbolic input of Alarm_Outputs
+                                                   int Is_Audio_Disabled,
+                                                   int Notification_Message,
+                                                   int Audio_Notification_Command,
+                                                   int Highest_Level_Alarm,
+                                                   int Log_Message_ID5, boolean symVar)
 
     //,B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW)
     {
@@ -1997,15 +1998,16 @@ public class ALARM_Functional {
         B_ALARM_Functional_c_T localB = new B_ALARM_Functional_c_T();
         DW_ALARM_Functional_f_T localDW = new DW_ALARM_Functional_f_T();
 
-        ALARM_Functional_Init(localB, localDW);
+        if (symVar) {
+            ALARM_Functional_Init(localB, localDW);
 
-        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
-                rtu_sensor_in,
-                rtu_const_in,
-                rtu_sys_stat_in,
-                rtu_config_in, rty_alarm_out, localB,
-                localDW);
-
+            ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
+                    rtu_sensor_in,
+                    rtu_const_in,
+                    rtu_sys_stat_in,
+                    rtu_config_in, rty_alarm_out, localB,
+                    localDW);
+        }
     }
 
 
