@@ -11,7 +11,7 @@
 -- TIGHT 5:
 
 
-repair node discover_binary_Bool_2_Int_4_Terms2(a0: bool; a1:bool; i0:int; i1:int; i2:int;i3:int)
+repair node discover_binary_Bool_0_Int_4_Terms2(i0:int; i1:int; i2:int;i3:int)
 [valhole_0: inthole;
 valhole_1:inthole;
 
@@ -46,8 +46,8 @@ let
                    else if(valhole_0 = 9) then i2 = const_hole0
                    else if(valhole_0 = 10) then i3 <= const_hole0
                    else if(valhole_0 = 11) then i3 > const_hole0
-                   else if(valhole_0 = 12) then i3 = const_hole0
-                   else a1;
+                   else i3 = const_hole0;
+
 
 
     leaf_1 = if(valhole_1 = 0) then a0
@@ -62,8 +62,8 @@ let
                    else if(valhole_1 = 9) then i2 = const_hole1
                    else if(valhole_1 = 10) then i3 <= const_hole1
                    else if(valhole_1 = 11) then i3 > const_hole1
-                   else if(valhole_1 = 12) then i3 = const_hole1
-                   else a1;
+                   else  i3 = const_hole1;
+
 
 
     bExprlevel_1 =  if(level_2_hole = 1) then leaf_0 and leaf_1
@@ -79,15 +79,64 @@ let
     out = bExprlevel_1;
 tel;
 
-node main(pedal_r: int; autoBreak_r: bool; skid_r: bool; NormalPressure_r:int; AltPressure_r:int; Sys_Mode: int) returns (p1: bool);
+node main(
+Commanded_Flow_Rate: int;
+Current_System_Mode: int;
+System_On: bool;
+System_Monitor_Failed:bool;
+Logging_Failed:bool;
+Infusion_Initiate:bool;
+Disable_Audio:int;
+Notification_Cancel:bool;
+VTBI_High:int;
+Flow_Rate_High:int;
+Flow_Rate_Low:int;
+Flow_Rate:int;
+Flow_Rate_Not_Stable:bool;
+Air_In_Line:bool;
+Occlusion:bool;
+Door_Open:bool;
+Temp:bool;
+Air_Pressure:bool;
+Humidity: boo;
+Battery_Depleted:bool;
+Battery_Low: bool;
+Battery_Unable_To_Charge: bool;
+Supply_Voltage:bool;
+CPU_In_Error:bool;
+RTC_In_Error:bool;
+Watchdog_Interrupted:bool;
+Memory_Corrupted:bool;
+Pump_Too_Hot:bool;
+Pump_Overheated:bool;
+Audio_Enable_Duration:int;
+Audio_Level:int;
+Config_Warning_Duration:int;
+Low_Reservoir:int;
+Max_Duration_Over_Infusion:int;
+Max_Duration_Under_Infusion:int;
+Max_Paused_Duration:int;
+Max_Idle_Duration:int;
+Tolerance_Max:int;
+Tolerance_Min:int;
+Reservoir_Empty:bool;
+Reservoir_Volume:int;
+Volume_Infused:int;
+In_Therapy:bool;
+Config_Timer:int;
+out_s_Audio_Disabled:int;
+out_Notification_Message:int;
+out_Audio_Notification_Command:int;
+out_Highest_Level_Alarm:int;
+out_Log_Message_ID5:int
+) returns (p1: bool);
 
 
 let
 
--- introducing a fault in passing assertion #1 in WBS, basically by wrapping the assertion with a not
-    p1 = true -> repair(not(pedal_r > 0 and pedal_r <= 4 and not skid_r) => (AltPressure_r > 0 or NormalPressure_r >
-        0),discover_binary_Bool_2_Int_4_Terms2(autoBreak_r, skid_r, pedal_r, NormalPressure_r, AltPressure_r, Sys_Mode)) ;
-
+    p1 = true -> (System_On and In_Therapy and Reservoir_Empty) =>
+repair((out_Highest_Level_Alarm = 4), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
+out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
       --%PROPERTY p1;
 
 tel;

@@ -22,11 +22,12 @@ performanceMode = false
 simplify = false
 
 ################## contract Discovery configurations ###############
-contractDiscoveryOn = false
+contractDiscoveryOn = true
 spec = gpca
 specRepair = true
 repairMode = 2
 
-SpecDirectory = GPCA/Prop_1
+SpecDirectory = GPCA/Prop1
 faultySpec=Faulty_GPCA_Prop1
 repairInitialValues = true
+z3Solver=true

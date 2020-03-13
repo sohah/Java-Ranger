@@ -1723,13 +1723,21 @@ public class Discovery_ALARM_Functional {
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, false, 1, 1, 1, false, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, false, false, false, false, 1,
-                1, 1, 1, 1, 1, 1, 1, true);
+                1, 1, 1, 1, 1, true, false, false, false, 1,
+                1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,true,true,true,true,true,true
+                ,true,true
+                ,true,true
+                ,true,true
+ ,true,true
+                ,true,true,true,true,true,true,true,true,true,true,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+                ,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,true);
     }
 
     static private void ALARM_FunctionalSymWrapper(//Symbolic input of Infusion_Manager_Outputs
                                                    int Commanded_Flow_Rate,
-                                                   int Current_System_Mode, boolean New_Infusion,
+                                                   int Current_System_Mode,
+                                                   boolean New_Infusion,
                                                    int Log_Message_ID_1,
                                                    int Actual_Infusion_Duration,
 
@@ -1855,7 +1863,125 @@ public class Discovery_ALARM_Functional {
                                                    int Notification_Message,
                                                    int Audio_Notification_Command,
                                                    int Highest_Level_Alarm,
-                                                   int Log_Message_ID5, boolean symVar)
+                                                   int Log_Message_ID5,
+
+                                                   //Symbolic input for state localB
+                                                   int localB_Commanded_Flow_Rate,
+                                                           int localB_Current_System_Mode,
+                                                           int localB_Disable_Audio,
+                                                           int localB_VTBI_High,
+                                                           int localB_Flow_Rate_High,
+                                                           int localB_Flow_Rate_Low,
+                                                           int localB_Flow_Rate,
+                                                           int localB_Audio_Enable_Duration,
+                                                           int localB_Audio_Level,
+                                                           int localB_Config_Warning_Duration,
+                                                           int localB_Low_Reservoir,
+                                                           int localB_Max_Duration_Over_Infusion,
+                                                           int localB_Max_Duration_Under_Infusion,
+                                                           int localB_Max_Paused_Duration,
+                                                           int localB_Max_Idle_Duration,
+                                                           int localB_Tolerance_Max,
+                                                           int localB_Tolerance_Min,
+                                                           int localB_Reservoir_Volume,
+                                                           int localB_Volume_Infused,
+                                                           int localB_Config_Timer,
+                                                           int localB_ALARM_OUT_Display_Audio_Disabled_Indicator,/* '<Root>/Alarm  Sub-System' */
+                                                           int localB_ALARM_OUT_Display_Notification_Command,/* '<Root>/Alarm  Sub-System' */
+                                                           int localB_ALARM_OUT_Audio_Notification_Command,/* '<Root>/Alarm  Sub-System' */
+                                                           int localB_ALARM_OUT_Highest_Level_Alarm,/* '<Root>/Alarm  Sub-System' */
+                                                           int localB_ALARM_OUT_Log_Message_ID,    /* '<Root>/Alarm  Sub-System' */
+                                                           boolean localB_System_On,
+                                                           boolean localB_System_Monitor_Failed,
+                                                           boolean localB_Logging_Failed,
+                                                           boolean localB_Infusion_Initiate,
+                                                           boolean localB_Notification_Cancel,
+                                                           boolean localB_Flow_Rate_Not_Stable,
+                                                           boolean localB_Air_In_Line,
+                                                           boolean localB_Occlusion,
+                                                           boolean localB_Door_Open,
+                                                           boolean localB_Temp,
+                                                           boolean localB_Air_Pressure,
+                                                           boolean localB_Humidity,
+                                                           boolean localB_Battery_Depleted,
+                                                           boolean localB_Battery_Low,
+                                                           boolean localB_Battery_Unable_To_Charge,
+                                                           boolean localB_Supply_Voltage,
+                                                           boolean localB_CPU_In_Error,
+                                                           boolean localB_RTC_In_Error,
+                                                           boolean localB_Watchdog_Interrupted,
+                                                           boolean localB_Memory_Corrupted,
+                                                           boolean localB_Pump_Too_Hot,
+                                                           boolean localB_Pump_Overheated,
+                                                           boolean localB_Reservoir_Empty,
+                                                           boolean localB_In_Therapy,
+
+                                                   //Symoblic input for localDW
+                                                   int is_active_c2_ALARM_Functional,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_c2_ALARM_Functional,      /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Notification,      /* '<Root>/Alarm  Sub-System' */
+                                                           int is_Visual,                   /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Visual,            /* '<Root>/Alarm  Sub-System' */
+                                                           int is_Audio,                    /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Audio,             /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_CheckAlarm,        /* '<Root>/Alarm  Sub-System' */
+                                                           int is_CancelAlarm,              /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_CancelAlarm,       /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_SetAlarmStatus,    /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Level4,            /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsEmptyReservoir,         /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsEmptyReservoir,  /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsSystemMonitorFailed,    /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsSystemMonitorFailed,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsEnviromentalError,      /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsEnviromentalError,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Level3,            /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsOverInfusionFlowRate,   /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsOverInfusionFlowRate,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_InfusionNotStartedWarning,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_InfusionNotStartedWarning,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsOverInfusionVTBI,       /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsOverInfusionVTBI,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsAirInLine,              /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsAirInLine,       /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsOcclusion,              /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsOcclusion,       /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsDoorOpen,               /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsDoorOpen,        /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Level2,            /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsLowReservoir,           /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsLowReservoir,    /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_Level1,            /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsUnderInfusion,          /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsUnderInfusion,   /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsFlowRateNotStable,      /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsFlowRateNotStable,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsIdleTimeExceeded,       /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsIdleTimeExceeded,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsPausedTimeExceeded,     /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsPausedTimeExceeded,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsConfigTimeWarning,      /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsConfigTimeWarning,/* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsBatteryError,           /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsBatteryError,    /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsPumpHot,                /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsPumpHot,         /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsLoggingFailed,          /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsLoggingFailed,   /* '<Root>/Alarm  Sub-System' */
+                                                           int is_IsHardwareError,          /* '<Root>/Alarm  Sub-System' */
+                                                           int is_active_IsHardwareError,   /* '<Root>/Alarm  Sub-System' */
+                                                           int overInfusionTimer,           /* '<Root>/Alarm  Sub-System' */
+                                                           int underInfusionTimer,          /* '<Root>/Alarm  Sub-System' */
+                                                           int currentAlarm,                /* '<Root>/Alarm  Sub-System' */
+                                                           int audioTimer,                  /* '<Root>/Alarm  Sub-System' */
+                                                           int cancelAlarm,                 /* '<Root>/Alarm  Sub-System' */
+                                                           int Max_Alarm_Level,             /* '<Root>/Alarm  Sub-System' */
+                                                           int idletimer,                   /* '<Root>/Alarm  Sub-System' */
+                                                           int pausedtimer,                 /* '<Root>/Alarm  Sub-System' */
+
+
+
+                                                   boolean symVar)
 
     //,B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW)
     {
@@ -1997,6 +2123,117 @@ public class Discovery_ALARM_Functional {
 
         B_ALARM_Functional_c_T localB = new B_ALARM_Functional_c_T();
         DW_ALARM_Functional_f_T localDW = new DW_ALARM_Functional_f_T();
+
+        localB.Commanded_Flow_Rate = localB_Commanded_Flow_Rate;
+        localB.Current_System_Mode = localB_Current_System_Mode;
+        localB.Disable_Audio = localB_Disable_Audio;
+        localB.VTBI_High = localB_VTBI_High;
+        localB.Flow_Rate_High = localB_Flow_Rate_High;
+        localB.Flow_Rate_Low = localB_Flow_Rate_Low;
+        localB.Flow_Rate = localB_Flow_Rate;
+        localB.Audio_Enable_Duration = localB_Audio_Enable_Duration;
+        localB.Config_Warning_Duration = localB_Config_Warning_Duration;
+        localB.Low_Reservoir = localB_Low_Reservoir;
+        localB.Max_Duration_Over_Infusion = localB_Max_Duration_Over_Infusion;
+        localB.Max_Duration_Under_Infusion = localB_Max_Duration_Under_Infusion;
+        localB.Max_Paused_Duration = localB_Max_Paused_Duration;
+        localB.Max_Idle_Duration =localB_Max_Idle_Duration;
+        localB.Tolerance_Max = localB_Tolerance_Max;
+        localB.Tolerance_Min = localB_Tolerance_Min;
+        localB.Reservoir_Volume = localB_Reservoir_Volume;
+        localB.Volume_Infused = localB_Volume_Infused;
+        localB.Config_Timer = localB_Config_Timer;
+        localB.ALARM_OUT_Display_Audio_Disabled_Indicator = localB_ALARM_OUT_Display_Audio_Disabled_Indicator;
+        localB.ALARM_OUT_Display_Notification_Command = localB_ALARM_OUT_Display_Notification_Command;
+        localB.ALARM_OUT_Audio_Notification_Command = localB_ALARM_OUT_Audio_Notification_Command;
+        localB.ALARM_OUT_Highest_Level_Alarm = localB_ALARM_OUT_Highest_Level_Alarm;
+        localB.ALARM_OUT_Log_Message_ID = localB_ALARM_OUT_Log_Message_ID;
+        localB.System_On = localB_System_On;
+        localB.System_Monitor_Failed = localB_System_Monitor_Failed;
+        localB.Logging_Failed = localB_Logging_Failed;
+        localB.Infusion_Initiate = localB_Infusion_Initiate;
+        localB.Notification_Cancel = localB_Notification_Cancel;
+        localB.Flow_Rate_Not_Stable = localB_Flow_Rate_Not_Stable;
+        localB.Air_In_Line = localB_Air_In_Line;
+        localB.Occlusion = localB_Occlusion;
+        localB.Door_Open = localB_Door_Open;
+        localB.Temp = localB_Temp;
+        localB.Air_Pressure = localB_Air_Pressure;
+        localB.Humidity = localB_Humidity;
+        localB.Battery_Depleted = localB_Battery_Depleted;
+        localB.Battery_Low = localB_Battery_Low;
+        localB.Battery_Unable_To_Charge = localB_Battery_Unable_To_Charge;
+        localB.Supply_Voltage = localB_Supply_Voltage;
+        localB.CPU_In_Error = localB_CPU_In_Error;
+        localB.RTC_In_Error = localB_RTC_In_Error;
+        localB.Watchdog_Interrupted = localB_Watchdog_Interrupted;
+        localB.Memory_Corrupted = localB_Memory_Corrupted;
+        localB.Pump_Too_Hot = localB_Pump_Too_Hot;
+        localB.Pump_Overheated = localB_Pump_Overheated;
+        localB.Reservoir_Empty = localB_Reservoir_Empty;
+        localB.In_Therapy = localB_In_Therapy;
+
+        localDW.is_active_c2_ALARM_Functional = is_active_c2_ALARM_Functional;
+        localDW.is_c2_ALARM_Functional = is_c2_ALARM_Functional;
+        localDW.is_active_Notification = is_active_Notification;
+        localDW.is_Visual = is_Visual;
+        localDW.is_active_Visual = is_active_Visual;
+        localDW.is_Audio = is_Audio;
+        localDW.is_active_Audio = is_active_Audio;
+        localDW.is_active_CheckAlarm = is_active_CheckAlarm;
+        localDW.is_CancelAlarm = is_CancelAlarm;
+        localDW.is_active_CancelAlarm = is_active_CancelAlarm;
+        localDW.is_active_SetAlarmStatus = is_active_SetAlarmStatus;
+        localDW.is_active_Level4 = is_active_Level4;
+        localDW.is_IsEmptyReservoir = is_IsEmptyReservoir;
+        localDW.is_active_IsEmptyReservoir = is_active_IsEmptyReservoir;
+        localDW.is_IsSystemMonitorFailed = is_IsSystemMonitorFailed;
+        localDW.is_active_IsSystemMonitorFailed = is_active_IsSystemMonitorFailed;
+        localDW.is_IsEnviromentalError = is_IsEnviromentalError;
+        localDW.is_active_IsEnviromentalError = is_active_IsEnviromentalError;
+        localDW.is_active_Level3 = is_active_Level3;
+        localDW.is_IsOverInfusionFlowRate = is_IsOverInfusionFlowRate;
+        localDW.is_active_IsOverInfusionFlowRate = is_active_IsOverInfusionFlowRate;
+        localDW.is_InfusionNotStartedWarning = is_InfusionNotStartedWarning;
+        localDW.is_active_InfusionNotStartedWarning = is_active_InfusionNotStartedWarning;
+        localDW.is_IsOverInfusionVTBI = is_IsOverInfusionVTBI;
+        localDW.is_active_IsOverInfusionVTBI = is_active_IsOverInfusionVTBI;
+        localDW.is_IsAirInLine = is_IsAirInLine;
+        localDW.is_active_IsAirInLine = is_active_IsAirInLine;
+        localDW.is_IsOcclusion = is_IsOcclusion;
+        localDW.is_active_IsOcclusion = is_active_IsOcclusion;
+        localDW.is_IsDoorOpen = is_IsDoorOpen;
+        localDW.is_active_IsDoorOpen = is_active_IsDoorOpen;
+        localDW.is_active_Level2 = is_active_Level2;
+        localDW.is_IsLowReservoir = is_IsLowReservoir;
+        localDW.is_active_IsLowReservoir = is_active_IsLowReservoir;
+        localDW.is_active_Level1 = is_active_Level1;
+        localDW.is_IsUnderInfusion = is_IsUnderInfusion;
+        localDW.is_active_IsUnderInfusion = is_active_IsUnderInfusion;
+        localDW.is_IsFlowRateNotStable = is_IsFlowRateNotStable;
+        localDW.is_active_IsFlowRateNotStable = is_active_IsFlowRateNotStable;
+        localDW.is_IsIdleTimeExceeded = is_IsIdleTimeExceeded;
+        localDW.is_active_IsIdleTimeExceeded = is_active_IsIdleTimeExceeded;
+        localDW.is_IsPausedTimeExceeded = is_IsPausedTimeExceeded;
+        localDW.is_active_IsPausedTimeExceeded = is_active_IsPausedTimeExceeded;
+        localDW.is_IsConfigTimeWarning = is_IsConfigTimeWarning;
+        localDW.is_active_IsConfigTimeWarning = is_active_IsConfigTimeWarning;
+        localDW.is_IsBatteryError = is_IsBatteryError;
+        localDW.is_active_IsBatteryError = is_active_IsBatteryError;
+        localDW.is_IsPumpHot = is_IsPumpHot;
+        localDW.is_active_IsPumpHot = is_active_IsPumpHot;
+        localDW.is_IsLoggingFailed = is_IsLoggingFailed;
+        localDW.is_active_IsLoggingFailed = is_active_IsLoggingFailed;
+        localDW.is_IsHardwareError = is_IsHardwareError;
+        localDW.is_active_IsHardwareError = is_active_IsHardwareError;
+        localDW.overInfusionTimer = overInfusionTimer;
+        localDW.underInfusionTimer = underInfusionTimer;
+        localDW.currentAlarm = currentAlarm;
+        localDW.audioTimer = audioTimer;
+        localDW.cancelAlarm = cancelAlarm;
+        localDW.Max_Alarm_Level = Max_Alarm_Level;
+        localDW.idletimer = idletimer;
+        localDW.pausedtimer = pausedtimer;
 
         if (symVar) {
             ALARM_Functional_Init(localB, localDW);

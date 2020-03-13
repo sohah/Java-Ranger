@@ -38,6 +38,9 @@ public class SpecInOutManager {
         } else if (Config.spec.equals("vote2")) {
             discoverFreeInputVote2();
             discoverOutputVarVote2();
+        } if (Config.spec.equals("gpca")) {
+            discoverFreeInputGpca();
+            discoverOutputVarGpca();
         } else {
             System.out.println("unexpected spec to run.!");
         }
@@ -89,6 +92,64 @@ public class SpecInOutManager {
         inOutputVars.add("Sys_Mode", NamedType.INT);
     }
 
+    //=========================== GPCA ===========================
+
+    private void discoverFreeInputGpca() {
+        freeInput.add("Commanded_Flow_Rate", NamedType.INT);
+        freeInput.add("Current_System_Mode", NamedType.INT);
+        freeInput.add("System_On", NamedType.BOOL);
+        freeInput.add("System_Monitor_Failed", NamedType.BOOL);
+        freeInput.add("Logging_Failed", NamedType.BOOL);
+        freeInput.add("Infusion_Initiate", NamedType.BOOL);
+        freeInput.add("Disable_Audio", NamedType.INT);
+        freeInput.add("Notification_Cancel", NamedType.BOOL);
+        freeInput.add("VTBI_High", NamedType.INT);
+        freeInput.add("Flow_Rate_High", NamedType.INT);
+        freeInput.add("Flow_Rate_Low", NamedType.INT);
+        freeInput.add("Flow_Rate", NamedType.INT);
+        freeInput.add("Flow_Rate_Not_Stable", NamedType.BOOL);
+        freeInput.add("Air_In_Line", NamedType.BOOL);
+        freeInput.add("Occlusion", NamedType.BOOL);
+        freeInput.add("Door_Open", NamedType.BOOL);
+        freeInput.add("Temp", NamedType.BOOL);
+        freeInput.add("Air_Pressure", NamedType.BOOL);
+        freeInput.add("Humidity", NamedType.BOOL);
+        freeInput.add("Battery_Depleted", NamedType.BOOL);
+        freeInput.add("Battery_Low", NamedType.BOOL);
+        freeInput.add("Battery_Unable_To_Charge", NamedType.BOOL);
+        freeInput.add("Supply_Voltage", NamedType.BOOL);
+        freeInput.add("CPU_In_Error", NamedType.BOOL);
+        freeInput.add("RTC_In_Error", NamedType.BOOL);
+        freeInput.add("Watchdog_Interrupted", NamedType.BOOL);
+        freeInput.add("Memory_Corrupted", NamedType.BOOL);
+        freeInput.add("Pump_Too_Hot", NamedType.BOOL);
+        freeInput.add("Pump_Overheated", NamedType.BOOL);
+        freeInput.add("Audio_Enable_Duration", NamedType.INT);
+        freeInput.add("Audio_Level", NamedType.INT);
+        freeInput.add("Config_Warning_Duration", NamedType.INT);
+        freeInput.add("Low_Reservoir", NamedType.INT);
+        freeInput.add("Max_Duration_Over_Infusion", NamedType.INT);
+        freeInput.add("Max_Duration_Under_Infusion", NamedType.INT);
+        freeInput.add("Max_Paused_Duration", NamedType.INT);
+        freeInput.add("Max_Idle_Duration", NamedType.INT);
+        freeInput.add("Tolerance_Max", NamedType.INT);
+        freeInput.add("Tolerance_Min", NamedType.INT);
+        freeInput.add("Reservoir_Empty", NamedType.BOOL);
+        freeInput.add("Reservoir_Volume", NamedType.INT);
+        freeInput.add("Volume_Infused", NamedType.INT);
+        freeInput.add("In_Therapy", NamedType.BOOL);
+        freeInput.add("Config_Timer", NamedType.INT);
+
+    }
+
+
+    private void discoverOutputVarGpca() {
+        inOutputVars.add("out_s_Audio_Disabled", NamedType.INT);
+        inOutputVars.add("out_Notification_Message", NamedType.INT);
+        inOutputVars.add("out_Audio_Notification_Command", NamedType.INT);
+        inOutputVars.add("out_Highest_Level_Alarm", NamedType.INT);
+        inOutputVars.add("out_Log_Message_ID5", NamedType.INT);
+    }
 //=========================== TCAS ===========================
 
     private void discoverFreeInputTcas() {
