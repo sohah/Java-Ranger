@@ -12,14 +12,21 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutateExpr;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
 import jkind.api.results.JKindResult;
+import jkind.lustre.Expr;
+import jkind.lustre.LustreUtil;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
 import jkind.lustre.parsing.LustreParseUtil;
+import jkind.lustre.parsing.LustreParser;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,6 +35,7 @@ import java.util.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.callJkind;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
 
 public class DiscoverContract {
     /**
@@ -89,6 +97,8 @@ public class DiscoverContract {
 
     }
 
+
+
     public static void resetState() {
         loopCount = 0;
         permutationCount = 0;
@@ -137,6 +147,9 @@ public class DiscoverContract {
             flatExtendedPgm = FlattenNodes.execute(inputExtendedPgm);
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
+            String mutationDir = "./mutants";
+            ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir);
+            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
 
         } else {
             originalProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
@@ -254,6 +267,7 @@ public class DiscoverContract {
         }
         while (true);
     }
+
 /*
     public static Program getLustreNoExt(Program origLustreExtPgm) {
         return RemoveRepairConstructVisitor.execute(origLustreExtPgm);
