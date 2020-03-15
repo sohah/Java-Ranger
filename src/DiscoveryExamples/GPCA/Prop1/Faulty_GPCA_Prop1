@@ -98,7 +98,7 @@ Occlusion:bool;
 Door_Open:bool;
 Temp:bool;
 Air_Pressure:bool;
-Humidity: boo;
+Humidity: bool;
 Battery_Depleted:bool;
 Battery_Low: bool;
 Battery_Unable_To_Charge: bool;

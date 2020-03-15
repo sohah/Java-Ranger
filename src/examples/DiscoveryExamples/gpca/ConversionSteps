@@ -6,7 +6,7 @@
 6. changed the return type of ALARM_Functional_setCurrentAlarm to int instead of real, since it is always returning zero in the floating point.
 7. changed the return type of ALARM_Functional_Step_Scaling_Factor sine it is returning the input which is int, then un-necessarily comparing it with floating point.
 
-
+8. disjunctive- conditional ifs -> multiple ifs.
 
 ---- to contract discovery, change any method invocation in the if-condition to before the if-condiition.
 

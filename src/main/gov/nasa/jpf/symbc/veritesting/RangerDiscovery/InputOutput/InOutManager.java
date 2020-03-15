@@ -40,7 +40,7 @@ public class InOutManager {
 
     //specific reference names for GPCA
     private String referenceObjectName_gpca_Alarm_Outputs = "r390";
-    private String referenceObjectName_gpca_localB = "394";
+    private String referenceObjectName_gpca_localB = "r394";
     private String referenceObjectName_gpca_localDW = "r398";
 
     //this number is very important it should be the same between the passed inputs into the spec that we think is an
@@ -95,6 +95,7 @@ public class InOutManager {
         return Config.symVarName;
     }
 
+    //* IMPORTANT!!! the order of variables of state input should match those  of variables of the state output!!*//
     public void discoverVars() {
         setSymVarName();
 
@@ -313,7 +314,8 @@ public class InOutManager {
             conversionLocalList.addAll(conversionResult.getFirst());
         }*/
     }
-
+// IMP: order here is important. Firs the put the input variables for the state, then the state variables that account
+// for the outputs of the sepc.
     //entered by hand for now
     private void discoverStateInputWBS() {
         stateInput.add("WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE_4_SYMINT", NamedType.INT);
@@ -538,12 +540,6 @@ public class InOutManager {
     //entered by hand for now
     private void discoverStateInputGPCA() {
 
-        stateInput.add("Is_Audio_Disabled_103_SYMINT", NamedType.INT);
-        stateInput.add("Notification_Message_104_SYMINT", NamedType.INT);
-        stateInput.add("Audio_Notification_Command_105_SYMINT", NamedType.INT);
-        stateInput.add("Highest_Level_Alarm_106_SYMINT", NamedType.INT);
-        stateInput.add("Log_Message_ID5_107_SYMINT", NamedType.INT);
-
         //localB
         stateInput.add("localB_Commanded_Flow_Rate_108_SYMINT", NamedType.INT);
         stateInput.add("localB_Current_System_Mode_109_SYMINT", NamedType.INT);
@@ -552,6 +548,7 @@ public class InOutManager {
         stateInput.add("localB_Flow_Rate_High_112_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_Low_113_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_114_SYMINT", NamedType.INT);
+        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Audio_Enable_Duration_115_SYMINT", NamedType.INT);
         stateInput.add("localB_Config_Warning_Duration_117_SYMINT", NamedType.INT);
         stateInput.add("localB_Low_Reservoir_118_SYMINT", NamedType.INT);
@@ -574,7 +571,7 @@ public class InOutManager {
         stateInput.add("localB_Logging_Failed_135_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Infusion_Initiate_136_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Notification_Cancel_137_SYMINT", NamedType.BOOL);
-        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
+
         stateInput.add("localB_Air_In_Line_139_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Occlusion_140_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Door_Open_141_SYMINT", NamedType.BOOL);
@@ -603,6 +600,8 @@ public class InOutManager {
         stateInput.add("is_Audio_162_SYMINT", NamedType.INT);
         stateInput.add("is_active_Audio_163_SYMINT", NamedType.INT);
         stateInput.add("is_active_CheckAlarm_164_SYMINT", NamedType.INT);
+
+        //here
         stateInput.add("is_CancelAlarm_165_SYMINT", NamedType.INT);
         stateInput.add("is_active_CancelAlarm_166_SYMINT", NamedType.INT);
         stateInput.add("is_active_SetAlarmStatus_167_SYMINT", NamedType.INT);
@@ -656,354 +655,346 @@ public class InOutManager {
         stateInput.add("idletimer_215_SYMINT", NamedType.INT);
         stateInput.add("pausedtimer_216_SYMINT", NamedType.INT);
 
+        stateInput.add("Is_Audio_Disabled_103_SYMINT", NamedType.INT);
+        stateInput.add("Notification_Message_104_SYMINT", NamedType.INT);
+        stateInput.add("Audio_Notification_Command_105_SYMINT", NamedType.INT);
+        stateInput.add("Highest_Level_Alarm_106_SYMINT", NamedType.INT);
+        stateInput.add("Log_Message_ID5_107_SYMINT", NamedType.INT);
+
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputGPCA() {
 
-        stateOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", new IntExpr(0));
-
-        stateOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", new IntExpr(0));
-
-        stateOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.52", new IntExpr(0));
-
-        stateOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", new IntExpr(0));
-
-        stateOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", new IntExpr(0));
-
         //localB
         stateOutput.add(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Commanded_Flow_Rate.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Current_System_Mode.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Disable_Audio.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".VTBI_High.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".VTBI_High.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".VTBI_High.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Flow_Rate_High.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Flow_Rate_Low.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Flow_Rate_Not_Stable.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Enable_Duration.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Config_Warning_Duration.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Low_Reservoir.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Max_Duration_Over_Infusion.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Max_Duration_Under_Infusion.1.3.52",
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52",
                 new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Max_Paused_Duration.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Max_Idle_Duration.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Tolerance_Max.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Tolerance_Min.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Reservoir_Volume.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Volume_Infused.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Config_Timer.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Config_Timer.1.3.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Timer.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1" +
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1" +
                 ".12.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Display_Notification_Command.1.24" +
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24" +
                 ".52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Audio_Notification_Command.1.61.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Highest_Level_Alarm.1.12.52",
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52",
                 new IntExpr(0));
 
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.10.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".System_On.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".System_On.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_On.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".System_Monitor_Failed.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Logging_Failed.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Infusion_Initiate.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Cancel.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Air_In_Line.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Occlusion.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Occlusion.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Occlusion.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Door_Open.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Door_Open.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Door_Open.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Temp.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Temp.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Temp.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Air_Pressure.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Humidity.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Humidity.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Humidity.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Battery_Depleted.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Low.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Battery_Low.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Low.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Battery_Unable_To_Charge.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Supply_Voltage.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".CPU_In_Error.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".RTC_In_Error.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Watchdog_Interrupted.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Memory_Corrupted.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Pump_Too_Hot.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Pump_Overheated.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Reservoir_Empty.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".In_Therapy.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".In_Therapy.1.3.52", new BoolExpr(false));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".In_Therapy.1.3.52", new BoolExpr(false));
 
 
 //localDW
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_c2_ALARM_Functional.1.5.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_c2_ALARM_Functional.1.12.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.12.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Notification.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Notification.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Notification.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_Visual.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_Visual.1.24.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Visual.1.24.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Visual.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Visual.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Visual.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".Is_Audio_Disabled.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_Audio.1.59.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Audio.1.59.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Audio.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Audio.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Audio.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_CheckAlarm.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.16.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_CancelAlarm.1.16.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.16.52", new IntExpr(0));
+
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_CancelAlarm.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_SetAlarmStatus.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level4.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Level4.1.11.522", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level4.1.11.522", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsEmptyReservoir.1.24.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.24.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsEmptyReservoir.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsSystemMonitorFailed.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsSystemMonitorFailed.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError_173_SYMINT", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsEnviromentalError_173_SYMINT", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError_173_SYMINT", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsEnviromentalError.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level3.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Level3.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level3.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.39.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsOverInfusionFlowRate.1.39.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.39.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsOverInfusionFlowRate.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_InfusionNotStartedWarning.1.22.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.22.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsOverInfusionVTBI.1.23.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsOverInfusionVTBI.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsAirInLine.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsAirInLine.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsOcclusion.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsOcclusion.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsDoorOpen.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsDoorOpen.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level2.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Level2.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level2.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsLowReservoir.1.22.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.22.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsLowReservoir.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level1.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_Level1.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level1.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsUnderInfusion.1.33.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.33.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsUnderInfusion.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsFlowRateNotStable.1.22.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.22.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsFlowRateNotStable.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsIdleTimeExceeded.1.33.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.33.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsIdleTimeExceeded.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsPausedTimeExceeded.1.33.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.33.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsPausedTimeExceeded.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsConfigTimeWarning.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsConfigTimeWarning.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.23.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsBatteryError.1.23.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.23.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsBatteryError.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsPumpHot.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsPumpHot.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsLoggingFailed.1.21.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.21.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_active_IsLoggingFailed.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.26.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".is_IsHardwareError.1.26.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.26.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsHardwareError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + "is_active_IsHardwareError.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + "is_active_IsHardwareError.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.17.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".overInfusionTimer.1.17.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.17.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.17.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".underInfusionTimer.1.17.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.17.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".currentAlarm.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".currentAlarm.1.12.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".currentAlarm.1.12.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".audioTimer.1.34.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".audioTimer.1.34.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".audioTimer.1.34.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".cancelAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".cancelAlarm.1.11.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".cancelAlarm.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".idletimer.1.35.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".pausedtimer.1.35.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".pausedtimer.1.35.52", new IntExpr(0));

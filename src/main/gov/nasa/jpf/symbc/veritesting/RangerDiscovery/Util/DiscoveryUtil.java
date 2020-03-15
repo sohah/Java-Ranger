@@ -73,6 +73,9 @@ public class DiscoveryUtil {
 
         if (s.equals("!"))
             op = UnaryOp.fromString("not");
+        else
+            op = UnaryOp.fromString(s);
+
 
         return op;
     }
