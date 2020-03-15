@@ -685,8 +685,11 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", new IntExpr(0));
+
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", new IntExpr(0));
@@ -758,9 +761,6 @@ public class InOutManager {
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", NamedType.BOOL);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", new BoolExpr(false));
-
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", NamedType.BOOL);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", new BoolExpr(false));
@@ -867,8 +867,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError_173_SYMINT", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError_173_SYMINT", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + "._is_IsEnviromentalError_1_35_52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + "._is_IsEnviromentalError_1_35_52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", new IntExpr(0));
