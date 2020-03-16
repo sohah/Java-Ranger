@@ -147,7 +147,7 @@ public class DiscoverContract {
             flatExtendedPgm = FlattenNodes.execute(inputExtendedPgm);
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
-            String mutationDir = "./mutants";
+            String mutationDir = "../src/DiscoveryExamples/mutants";
             ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir);
             System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
 
