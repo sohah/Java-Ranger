@@ -144,7 +144,7 @@ public class SpecInOutManager {
 
 
     private void discoverOutputVarGpca() {
-        inOutputVars.add("out_s_Audio_Disabled", NamedType.INT);
+        inOutputVars.add("out_Is_Audio_Disabled", NamedType.INT);
         inOutputVars.add("out_Notification_Message", NamedType.INT);
         inOutputVars.add("out_Audio_Notification_Command", NamedType.INT);
         inOutputVars.add("out_Highest_Level_Alarm", NamedType.INT);
