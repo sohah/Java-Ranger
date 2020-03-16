@@ -84,6 +84,7 @@ function result = no_audio_if_audio_disabled(System_On, Disable_Audio, Is_Audio_
     checkOutput = ((Audio_Notification_Command == 0) && (Is_Audio_Disabled == Disable_Audio));
     result = implies(checkCondition, checkOutput);
 
+---- NOT sure what Flow_Rate_Monitored maps to in the source code. Unused prop for now
 function result = flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm(System_On, In_Therapy,  Flow_Rate_Monitored,  Flow_Rate_Hi, Highest_Level_Alarm)
     checkCondition = (System_On && In_Therapy && (Flow_Rate_Monitored > Flow_Rate_Hi));
     checkOutput = (Highest_Level_Alarm >= 3);

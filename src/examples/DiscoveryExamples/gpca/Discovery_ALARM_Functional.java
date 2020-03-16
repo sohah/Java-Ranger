@@ -1780,9 +1780,9 @@ public class Discovery_ALARM_Functional {
 //
 //
 //        //Prop: air_in_line_implies_grt_L3_alarm
-//        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
-//        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
-//        assert (!checkCondition || checkOutput);
+////        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
+////        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
+////        assert (!checkCondition || checkOutput);
 
     }
     /*

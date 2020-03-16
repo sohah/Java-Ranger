@@ -1,0 +1,11 @@
+target=DiscoveryExamples.AnRocketLaunch.SymbolicMain
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples/DiscoveryExamples.AnRocketLaunch
+symbolic.method = DiscoveryExamples.AnRocketLaunch.SymbolicMain.makeStep(sym#sym#sym#sym#sym)
+vm.storage.class=nil
+#coverage.include=WBSV
+listener = .symbc.SymbolicListener
+#listener = .symbc.VeritestingListener
+#,gov.nasa.jpf.listener.CoverageAnalyzer
+#listener = .listener.ChoiceTracker
+symbolic.dp=z3bitvector

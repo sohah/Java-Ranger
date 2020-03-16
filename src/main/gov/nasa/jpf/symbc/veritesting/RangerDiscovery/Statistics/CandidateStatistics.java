@@ -84,10 +84,11 @@ public class CandidateStatistics {
         RepairStatistics.out.print(forallQueryNumTillRepair + "     ");
         RepairStatistics.out.print(thereExistsQueryNumTillRepair + "     ");
         RepairStatistics.out.print(totalLoopTimeUntilRepair + "     ");
-        if (forallQueryNumTillRepair == 0) { // this condition is expected to hold only in the minimal query when the
-            // thereExists fails to find even a single synthesis for which we can do a forall query. Therefore one
-            // way to check that is that there can't be a repair found at this point.
-            assert (DiscoverContract.loopCount == 0);
+        if (forallQueryNumTillRepair == 0) { //this condition should happen in two cases, either if the contract is
+            // already matching the specification, so the outer loop will already pass. The other case is when we
+            // have tightened the spec enough and we have no more tightness in the next iteration. In the former case
+            // we will be calling this method with repairFound=true, the second case will call this method with
+            // repairFound=false.
             RepairStatistics.out.print("N/A     ");
         } else RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + "     ");
 

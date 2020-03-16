@@ -122,7 +122,7 @@ Reservoir_Volume:int;
 Volume_Infused:int;
 In_Therapy:bool;
 Config_Timer:int;
-out_s_Audio_Disabled:int;
+out_Is_Audio_Disabled:int;
 out_Notification_Message:int;
 out_Audio_Notification_Command:int;
 out_Highest_Level_Alarm:int;
@@ -130,12 +130,12 @@ out_Log_Message_ID5:int
 ) returns (p1: bool);
 
 
-let  -- Prop: empty_reservoir_implies_alarm_L4
+let  -- Prop6: alarm_gte_L3_causes_audio_output_EQ_audio_level
 
--- correct prop is => (out_Highest_Level_Alarm = 4), without negation.
-
-    p1 = true -> (System_On and In_Therapy and Reservoir_Empty) =>
-repair(not (out_Highest_Level_Alarm = 4), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
+    p1 = true -> (System_On and (out_Highest_Level_Alarm>=3) and (Disable_Audio =0)) =>
+repair(((out_Audio_Notification_Command = Audio_Level) and (out_Is_Audio_Disabled=0)),
+discover_binary_Bool_0_Int_4_Terms2
+(out_s_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
       --%PROPERTY p1;
 

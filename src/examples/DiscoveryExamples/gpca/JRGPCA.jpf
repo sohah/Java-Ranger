@@ -4,7 +4,6 @@ sourcepath=${jpf-symbc}/src/examples
 #symbolic.debug=false
 vm.storage.class=nil
 symbolic.lazy = true
-symbolic.debug=true
 symbolic.optimizechoices=false
 
 

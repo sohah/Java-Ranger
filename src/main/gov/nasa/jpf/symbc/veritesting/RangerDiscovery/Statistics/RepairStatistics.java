@@ -68,7 +68,10 @@ public class RepairStatistics {
         out.print(candidateStatistics.repairsFoundNum + "     ");
         out.print(candidateStatistics.totalTime + "     ");
         out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + "     ");
-        out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + "     ");
+        if (candidateStatistics.totalForallNum != 0)
+            out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + "     ");
+        else
+            out.print("N/A     ");
         out.println();
         out.close();
     }

@@ -130,12 +130,10 @@ out_Log_Message_ID5:int
 ) returns (p1: bool);
 
 
-let  -- Prop: empty_reservoir_implies_alarm_L4
+let  -- Prop8: low_reservoir_implies_grt_L2_alarm
 
--- correct prop is => (out_Highest_Level_Alarm = 4), without negation.
-
-    p1 = true -> (System_On and In_Therapy and Reservoir_Empty) =>
-repair(not (out_Highest_Level_Alarm = 4), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
+    p1 = true -> (System_On and In_Therapy and (Reservoir_Volume < Low_Reservoir)) =>
+repair((out_Highest_Level_Alarm >= 2), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
       --%PROPERTY p1;
 
