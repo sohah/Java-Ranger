@@ -1787,6 +1787,10 @@ public class ALARM_Functional {
         checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
         assert (!checkCondition || checkOutput);
 
+        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty);
+        checkOutput = (rty_ALARM_OUT.Log_Message_ID ==0) ^ (rty_ALARM_OUT.Log_Message_ID == 77);
+        assert (!checkCondition || checkOutput);
+
     }
     /*
 

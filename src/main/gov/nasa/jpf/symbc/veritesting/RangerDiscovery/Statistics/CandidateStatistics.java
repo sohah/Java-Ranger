@@ -1,6 +1,8 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
+
 /**
  * collects statistics of all candidates tried within a tight loop or in the main outer loop.
  */
@@ -85,7 +87,7 @@ public class CandidateStatistics {
         if (forallQueryNumTillRepair == 0) { // this condition is expected to hold only in the minimal query when the
             // thereExists fails to find even a single synthesis for which we can do a forall query. Therefore one
             // way to check that is that there can't be a repair found at this point.
-            assert !repairFound;
+            assert (DiscoverContract.loopCount == 0);
             RepairStatistics.out.print("N/A     ");
         } else RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + "     ");
 

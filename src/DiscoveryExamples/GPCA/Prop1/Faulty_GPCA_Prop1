@@ -34,8 +34,7 @@ bExprlevel_1:bool;
 
 let
 
-    leaf_0 = if(valhole_0 = 0) then a0
-                   else if(valhole_0 = 1) then i0 <= const_hole0
+    leaf_0 = if(valhole_0 = 0) then i0 <= const_hole0
                    else if(valhole_0 = 2) then i0 > const_hole0
                    else if(valhole_0 = 3) then i0 = const_hole0
                    else if(valhole_0 = 4) then i1 <= const_hole0
@@ -50,8 +49,7 @@ let
 
 
 
-    leaf_1 = if(valhole_1 = 0) then a0
-                   else if(valhole_1 = 1) then i0 <= const_hole1
+    leaf_1 = if(valhole_1 = 0) then i0 <= const_hole1
                    else if(valhole_1 = 2) then i0 > const_hole1
                    else if(valhole_1 = 3) then i0 = const_hole1
                    else if(valhole_1 = 4) then i1 <= const_hole1
@@ -135,7 +133,7 @@ out_Log_Message_ID5:int
 let
 
     p1 = true -> (System_On and In_Therapy and Reservoir_Empty) =>
-repair((out_Highest_Level_Alarm = 4), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
+repair(not (out_Highest_Level_Alarm = 4), discover_binary_Bool_0_Int_4_Terms2(out_s_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
       --%PROPERTY p1;
 

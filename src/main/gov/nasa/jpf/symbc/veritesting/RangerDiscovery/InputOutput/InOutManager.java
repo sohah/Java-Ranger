@@ -867,8 +867,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + "._is_IsEnviromentalError_1_35_52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + "._is_IsEnviromentalError_1_35_52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.35.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.35.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", new IntExpr(0));
@@ -886,7 +886,7 @@ public class InOutManager {
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.22.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.11.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", new IntExpr(0));
@@ -942,8 +942,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.33.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.57.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.57.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", new IntExpr(0));
@@ -954,8 +954,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.23.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.23.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.35.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.35.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", new IntExpr(0));
@@ -972,8 +972,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.26.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.26.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.61.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.61.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsHardwareError.1.11.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + "is_active_IsHardwareError.1.11.52", new IntExpr(0));
@@ -996,8 +996,8 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".pausedtimer.1.35.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".pausedtimer.1.35.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".pausedtimer.1.61.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".pausedtimer.1.61.52", new IntExpr(0));
 
     }
 
