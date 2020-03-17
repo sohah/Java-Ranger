@@ -27,7 +27,7 @@ spec = gpca
 specRepair = true
 repairMode = 2
 
-SpecDirectory = GPCA/Prop6
-faultySpec=Faulty_GPCA_Prop6
+SpecDirectory = GPCA_Alarm/Prop4
+faultySpec=Faulty_GPCA_Prop4
 repairInitialValues = true
 z3Solver=true

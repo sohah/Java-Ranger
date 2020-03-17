@@ -8,6 +8,8 @@
 
 8. disjunctive- conditional ifs -> multiple ifs.
 
+9. remove print statements
+
 ---- to contract discovery, change any method invocation in the if-condition to before the if-condiition.
 
 Alarm Properties obtained from the model

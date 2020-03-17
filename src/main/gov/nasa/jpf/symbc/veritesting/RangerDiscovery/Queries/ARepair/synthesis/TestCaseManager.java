@@ -185,10 +185,7 @@ public class TestCaseManager {
             // add the test case in an affirmative form, however if we collected the test case of the upper property
             // then we need to add the test case in the neg form.
             //According to createVarDeclForTestInput , we collect in this case the test case of the upper property thus
-            // we will
-            // construct
-            // the
-            // neg form of the test case.
+            // we will construct the neg form of the test case.
             newInnerExpr = new BinaryExpr(new UnaryExpr(UnaryOp.NOT, DiscoveryUtil.varDeclToIdExpr(localTestCallVar)), BinaryOp.AND, oldInnerExpr);
         } else {
             System.out.print("this can't happen, both isMatchImpl and isTighter are true yet we are collecting the counter example!");

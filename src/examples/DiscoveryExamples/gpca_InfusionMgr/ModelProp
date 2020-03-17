@@ -1,0 +1,133 @@
+
+function check_infusion_manager_properties(prev_System_On, System_On, Highest_Level_Alarm, Flow_Rate_Commanded, Current_System_Mode, Flow_Rate_Basal, Flow_Rate_Intermittent_Bolus, Flow_Rate_Patient_Bolus, Flow_Rate_KVO, Configured)
+
+   is_mode_range = mode_range(Current_System_Mode);
+   sldv.prove(is_mode_range);
+
+   is_system_on_implies_idle = system_on_implies_idle(prev_System_On, System_On, Current_System_Mode);
+   sldv.prove(is_system_on_implies_idle);
+
+    is_not_system_on_implies_mode_0 =not_system_on_implies_mode_0(System_On, Current_System_Mode);
+    sldv.prove(is_not_system_on_implies_mode_0);
+
+    is_alarm_L4_implies_flow_rate_zero = alarm_L4_implies_flow_rate_zero(System_On, Highest_Level_Alarm, Flow_Rate_Commanded);
+    sldv.prove(is_alarm_L4_implies_flow_rate_zero);
+
+    is_alarm_L3_implies_flow_kvo = alarm_L3_implies_flow_kvo(System_On, Highest_Level_Alarm, Flow_Rate_Commanded, Flow_Rate_KVO);
+    sldv.prove(is_alarm_L3_implies_flow_kvo);
+
+    is_configured_lt_1_flow_rate_zero = configured_lt_1_flow_rate_zero(System_On, Configured, Flow_Rate_Commanded);
+    sldv.prove(is_configured_lt_1_flow_rate_zero);
+
+    is_alarm_L2_implies_in_paused_or_idle_or_basal = alarm_L2_implies_in_paused_or_idle_or_basal(System_On, Highest_Level_Alarm, Current_System_Mode);
+
+    is_mode_off_implies_infusion_rate_zero = mode_off_implies_infusion_rate_zero(Current_System_Mode, Flow_Rate_Commanded);
+
+    is_alarm_L2_implies_no_bolus = alarm_L2_implies_no_bolus(System_On, Highest_Level_Alarm, Current_System_Mode);
+    is_alarm_GTE_3_implies_in_paused_or_idle = alarm_GTE_3_implies_in_paused_or_idle(System_On, Highest_Level_Alarm, Current_System_Mode);
+    is_mode_basal_implies_infusion_rate_basal = mode_basal_implies_infusion_rate_basal(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Basal);
+    is_mode_intermittent_implies_infusion_rate_intermittent_bolus = mode_intermittent_implies_infusion_rate_intermittent_bolus(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Intermittent_Bolus);
+    is_mode_patient_implies_infusion_rate_patient_bolus = mode_patient_implies_infusion_rate_patient_bolus(System_On , Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Patient_Bolus);
+    %is_not_infusing_eq_rate_zero = not_infusing_eq_rate_zero(System_On, Infusing, Flow_Rate_Commanded);
+    is_mode_idle_implies_infusion_rate_zero = mode_idle_implies_infusion_rate_zero(System_On, Current_System_Mode, Flow_Rate_Commanded);
+    is_mode_paused_implies_infusion_rate_kvo = mode_paused_implies_infusion_rate_kvo(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_KVO);
+
+    sldv.prove(is_alarm_L2_implies_in_paused_or_idle_or_basal);
+    sldv.prove(is_mode_off_implies_infusion_rate_zero);SSSSS
+    sldv.prove(is_alarm_L2_implies_no_bolus);
+    sldv.prove(is_alarm_GTE_3_implies_in_paused_or_idle);
+    sldv.prove(is_mode_basal_implies_infusion_rate_basal);
+    sldv.prove(is_mode_intermittent_implies_infusion_rate_intermittent_bolus);
+    sldv.prove(is_mode_patient_implies_infusion_rate_patient_bolus);
+    %sldv.prove(is_not_infusing_eq_rate_zero);
+    sldv.prove(is_mode_idle_implies_infusion_rate_zero);
+    sldv.prove(is_mode_paused_implies_infusion_rate_kvo);
+
+
+    function result = mode_range(Current_System_Mode)
+        checkCondition = ((Current_System_Mode == 0) || (Current_System_Mode == 1) || (Current_System_Mode == 2) || (Current_System_Mode == 3) || (Current_System_Mode == 4) || (Current_System_Mode == 6) || (Current_System_Mode == 7) || (Current_System_Mode ==8));
+        result = checkCondition;
+
+    function result = system_on_implies_idle(prev_On_Start, curr_On_Start, Current_System_Mode)
+        checkCondition = ((not(prev_On_Start)) && curr_On_Start);
+        checkOutput = (Current_System_Mode == 1);
+        result = implies(checkCondition, checkOutput);
+
+    function result =not_system_on_implies_mode_0(System_On, Current_System_Mode)
+        checkCondition = (not(System_On));
+        checkOutput = (Current_System_Mode == 0);
+    	result = implies(checkCondition, checkOutput);
+
+   function result = alarm_L4_implies_flow_rate_zero(System_On, Highest_Level_Alarm, Flow_Rate_Commanded)
+        checkCondition = (System_On && (Highest_Level_Alarm == 4));
+        checkOutput = (Flow_Rate_Commanded == 0);
+        result = implies(checkCondition, checkOutput);
+
+    function result = alarm_L3_implies_flow_kvo(System_On, Highest_Level_Alarm, Flow_Rate_Commanded, Flow_Rate_KVO)
+        checkCondition = (System_On && (Highest_Level_Alarm == 3));
+        checkOutput = (Flow_Rate_Commanded <= Flow_Rate_KVO);
+        result = implies(checkCondition, checkOutput);
+
+    function result = configured_lt_1_flow_rate_zero(System_On, Configured, Flow_Rate_Commanded)
+		checkCondition = (System_On && (Configured < 1));
+        checkOutput = (Flow_Rate_Commanded == 0);
+        result = implies(checkCondition, checkOutput);
+
+    function result = alarm_L2_implies_in_paused_or_idle_or_basal(System_On, Highest_Level_Alarm, Current_System_Mode)
+        checkCondition = (System_On && (Highest_Level_Alarm == 2));
+        checkOutput = ((Current_System_Mode == 1) || (Current_System_Mode == 2) || (Current_System_Mode == 6) || (Current_System_Mode == 7) || (Current_System_Mode == 8) );
+        result = implies(checkCondition, checkOutput);
+
+
+
+    function result = mode_off_implies_infusion_rate_zero(Current_System_Mode, Flow_Rate_Commanded)
+        checkCondition = (Current_System_Mode == 0);
+        checkOutput = (Flow_Rate_Commanded == 0);
+        result = implies(checkCondition, checkOutput);
+
+
+
+    function result = alarm_L2_implies_no_bolus(System_On, Highest_Level_Alarm, Current_System_Mode)
+        checkCondition = (System_On && (Highest_Level_Alarm == 2));
+        checkOutput = (Current_System_Mode ~= 3 && Current_System_Mode  ~= 4); -- weird condition
+        result = implies(checkCondition, checkOutput);
+
+    function result = alarm_GTE_3_implies_in_paused_or_idle(System_On, Highest_Level_Alarm, Current_System_Mode)
+        checkCondition = (System_On && (Highest_Level_Alarm == 4));
+        checkOutput = ((Current_System_Mode == 1) || (Current_System_Mode == 6) || (Current_System_Mode == 7));
+        result = implies(checkCondition, checkOutput);
+
+    function result = mode_basal_implies_infusion_rate_basal(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Basal)
+        checkCondition = (System_On && Current_System_Mode == 2 );
+        checkOutput = (Flow_Rate_Commanded == Flow_Rate_Basal);
+        result = implies(checkCondition, checkOutput);
+
+    function result = mode_intermittent_implies_infusion_rate_intermittent_bolus(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Intermittent_Bolus)
+        checkCondition = System_On && (Current_System_Mode == 3 );
+        checkOutput = (Flow_Rate_Commanded == Flow_Rate_Intermittent_Bolus);
+        result = implies(checkCondition, checkOutput);
+
+    function result = mode_patient_implies_infusion_rate_patient_bolus(System_On , Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_Patient_Bolus)
+        checkCondition = System_On && (Current_System_Mode == 4 );
+        checkOutput = (Flow_Rate_Commanded == Flow_Rate_Patient_Bolus);
+        result = implies(checkCondition, checkOutput);
+
+    function result =not_infusing_eq_rate_zero(System_On, Infusing, Flow_Rate_Commanded)
+        checkCondition = (System_On && (not (Infusing)));
+        checkOutput = (Flow_Rate_Commanded == 0);
+        result = implies(checkCondition, checkOutput);
+
+    function result = mode_idle_implies_infusion_rate_zero(System_On, Current_System_Mode, Flow_Rate_Commanded)
+        checkCondition = System_On && (Current_System_Mode == 1);
+        checkOutput = (Flow_Rate_Commanded == 0);
+        result = implies(checkCondition, checkOutput);
+
+    function result = mode_paused_implies_infusion_rate_kvo(System_On, Current_System_Mode, Flow_Rate_Commanded, Flow_Rate_KVO)
+        checkCondition = System_On && (Current_System_Mode == 6 || Current_System_Mode == 7 || Current_System_Mode == 8 );
+        checkOutput = (Flow_Rate_Commanded <= Flow_Rate_KVO);
+        result = implies(checkCondition, checkOutput);
+
+  function c = implies(a,b)
+     c = ((not (a)) || b);
+
+
