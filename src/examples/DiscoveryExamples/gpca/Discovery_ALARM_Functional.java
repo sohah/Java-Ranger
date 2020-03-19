@@ -2237,6 +2237,7 @@ public class Discovery_ALARM_Functional {
         localB.Flow_Rate_Low = localB_Flow_Rate_Low;
         localB.Flow_Rate = localB_Flow_Rate;
         localB.Audio_Enable_Duration = localB_Audio_Enable_Duration;
+        localB.Audio_Level = localB_Audio_Level;
         localB.Config_Warning_Duration = localB_Config_Warning_Duration;
         localB.Low_Reservoir = localB_Low_Reservoir;
         localB.Max_Duration_Over_Infusion = localB_Max_Duration_Over_Infusion;

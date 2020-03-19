@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
+import gov.nasa.jpf.symbc.VeritestingListener;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
 import jkind.lustre.IntExpr;
@@ -81,6 +82,7 @@ public class Config {
         //make a new directory for the output of that spec
         new File(folderName + "/output/" + Config.currFaultySpec).mkdirs();
 
+        VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
         /*if (spec.equals("pad")) {
             tFileName = folderName + "FaultyPreImaginaryPad";

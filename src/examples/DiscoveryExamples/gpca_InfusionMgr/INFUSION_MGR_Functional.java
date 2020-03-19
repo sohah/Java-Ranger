@@ -1203,13 +1203,13 @@ public class INFUSION_MGR_Functional {
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
-*/
+
 
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
         assert (!checkCondition || checkOutput);
-/*
+
         //Prop5: configured_lt_1_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_CONFIG_IN.Configured < 1));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
@@ -1225,10 +1225,12 @@ public class INFUSION_MGR_Functional {
         checkCondition = (rty_IM_OUT.Current_System_Mode == 0);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
-
-        //Prop8: alarm_L2_implies_no_bolus -- weird prop
-//        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 2));
-//        checkOutput = (rty_IM_OUT.Current_System_Mode == 3) && (rty_IM_OUT.Current_System_Mode  == 4);
+*/
+  /*      //Prop8: alarm_L2_implies_no_bolus -- weird prop
+        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 2));
+        checkOutput = (rty_IM_OUT.Current_System_Mode != 3) && (rty_IM_OUT.Current_System_Mode  != 4);
+        assert (!checkCondition || checkOutput);*/
+  /*
         //assert (!checkCondition || checkOutput);
         //Prop9: alarm_GTE_3_implies_in_paused_or_idle
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));

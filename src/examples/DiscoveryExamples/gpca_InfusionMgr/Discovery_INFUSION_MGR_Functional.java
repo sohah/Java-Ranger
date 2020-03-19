@@ -198,7 +198,7 @@ public class Discovery_INFUSION_MGR_Functional {
         localDW.sbolus_timer = 0;
         localDW.sbolus_req = false;
         localDW.sbolus_req = (INFUSION_MGR_Functional_sbolus_trigger(localB, localDW)
-                != 0.0);
+                != 0);
         localDW.is_active_Arbiter_c = 1;
 
         /* Entry Internal 'Arbiter': '<S1>:3913' */
@@ -504,7 +504,7 @@ public class Discovery_INFUSION_MGR_Functional {
                                 localDW.is_INTERMITTENT = INFUSION_MGR_Functional_IN_ON;
                             } else {
                                 localDW.sbolus_req = (INFUSION_MGR_Functional_sbolus_trigger
-                                        (localB, localDW) != 0.0);
+                                        (localB, localDW) != 0);
                             }
                         } else {
                             /* During 'ON': '<S1>:3941' */
@@ -519,7 +519,7 @@ public class Discovery_INFUSION_MGR_Functional {
                                 localDW.sbolus_timer = 0;
                                 localDW.sbolus_req = false;
                                 localDW.sbolus_req = (INFUSION_MGR_Functional_sbolus_trigger
-                                        (localB, localDW) != 0.0);
+                                        (localB, localDW) != 0);
                             } else {
                                 localDW.sbolus_timer++;
                                 localDW.sbolus_req = false;
@@ -856,12 +856,12 @@ public class Discovery_INFUSION_MGR_Functional {
         /* Gateway: Infusion Manager Sub-System */
         /* During: Infusion Manager Sub-System */
         //DB_PRINTF("10: ");
-        System.out.println("10: ");
+        //System.out.println("10: ");
 
         if (localDW.is_active_c2_INFUSION_MGR_Functional == 0) {
             /* Entry: Infusion Manager Sub-System */
             //DB_PRINTF("11: ");
-            System.out.println("11: ");
+          //  System.out.println("11: ");
             localDW.is_active_c2_INFUSION_MGR_Functional = 1;
 
             /* Entry Internal: Infusion Manager Sub-System */
@@ -890,7 +890,7 @@ public class Discovery_INFUSION_MGR_Functional {
                 INFUSION_MGR_Functional_IN_Infusion_Manager) {
             /* During 'Infusion_Manager': '<S1>:3858' */
             //DB_PRINTF("12: ");
-            System.out.println("12: ");
+            //System.out.println("12: ");
             if (!rtu_TLM_MODE_IN.System_On) {
                 /* Transition: '<S1>:3732' */
                 /* Exit Internal 'Infusion_Manager': '<S1>:3858' */
@@ -930,13 +930,14 @@ public class Discovery_INFUSION_MGR_Functional {
                 localB.IM_OUT_Flow_Rate_Commanded = 0;
             } else if (localDW.is_Infusion_Manager == INFUSION_MGR_Functional_IN_IDLE) {
                 //DB_PRINTF("13: ");
-                System.out.println("13: ");
+                //System.out.println("13: ");
                 //DB_PRINTF("2: %d %d %d ", localB.Infusion_Initiate, localB.Configured, localB.Reservoir_Empty);
-                System.out.println("2: " + localB.Infusion_Initiate + " " + localB.Configured + " " + localB.Reservoir_Empty);
+                //System.out.println("2: " + localB.Infusion_Initiate + " " + localB.Configured + " " + localB
+                // .Reservoir_Empty);
                 /* During 'IDLE': '<S1>:3866' */
                 if (localB.Infusion_Cancel || localB.Infusion_Inhibit) {
                     //DB_PRINTF("30: ");
-                    System.out.println("30: ");
+                  //  System.out.println("30: ");
                     /* Transition: '<S1>:3993' */
                     /* Exit 'IDLE': '<S1>:3866' */
                     localB.IM_OUT_Current_System_Mode = 1;
@@ -951,7 +952,7 @@ public class Discovery_INFUSION_MGR_Functional {
                 } else if (localB.Infusion_Initiate && (localB.Configured > 0) &&
                         (!localB.Reservoir_Empty)) {
                     //DB_PRINTF("31: ");
-                    System.out.println("31: ");
+                    //System.out.println("31: ");
                     /* Transition: '<S1>:3864' */
                     INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
 
@@ -976,18 +977,18 @@ public class Discovery_INFUSION_MGR_Functional {
                     }
                 } else {
                     //DB_PRINTF("32: ");
-                    System.out.println("32: ");
+                    //System.out.println("32: ");
                     localB.IM_OUT_Current_System_Mode = 1;
                     localB.IM_OUT_Flow_Rate_Commanded = 0;
                 }
             } else {
                 //DB_PRINTF("14: ");
-                System.out.println("14: ");
+                //System.out.println("14: ");
                 INFUSION_MGR_Functional_THERAPY(localB, localDW);
             }
         } else {
             //DB_PRINTF("20: ");
-            System.out.println("20: ");
+            //System.out.println("20: ");
             /* During 'NOT_ON': '<S1>:3740' */
             if (rtu_TLM_MODE_IN.System_On) {
                 /* Transition: '<S1>:3741' */
@@ -1020,7 +1021,7 @@ public class Discovery_INFUSION_MGR_Functional {
     }
 
     static private void INFUSION_MGR_FunctionalSymWrapper(
-            //Inputs of Infusion_Manager_Outputs rtu_TLM_MODE_IN
+            //Inputs of Top_Level_Mode_Outputs rtu_TLM_MODE_IN
             boolean System_On,
             boolean Request_Confirm_Stop,
             int Log_Message_ID1,
@@ -1139,7 +1140,8 @@ public class Discovery_INFUSION_MGR_Functional {
             int number_pbolus,               /* '<Root>/Infusion Manager Sub-System' */
             int sbolusInter_timer,           /* '<Root>/Infusion Manager Sub-System' */
             boolean sbolus_req,                /* '<Root>/Infusion Manager Sub-System' */
-            boolean inPatientBolus           /* '<Root>/Infusion Manager Sub-System' */
+            boolean inPatientBolus,           /* '<Root>/Infusion Manager Sub-System' */
+            boolean symVar
     ) {
 
         B_INFUSION_MGR_Functional_c_T localB = new B_INFUSION_MGR_Functional_c_T();
@@ -1194,9 +1196,6 @@ public class Discovery_INFUSION_MGR_Functional {
         localDW.sbolusInter_timer = sbolusInter_timer;           /* '<Root>/Infusion Manager Sub-System' */
         localDW.sbolus_req = sbolus_req;                /* '<Root>/Infusion Manager Sub-System' */
         localDW.inPatientBolus = inPatientBolus;            /* '<Root>/Infusion Manager Sub-System' */
-
-
-        INFUSION_MGR_Functional_Init(localB, localDW);
 
         Top_Level_Mode_Outputs rtu_TLM_MODE_IN = new Top_Level_Mode_Outputs();
         rtu_TLM_MODE_IN.System_On = System_On;
@@ -1272,14 +1271,25 @@ public class Discovery_INFUSION_MGR_Functional {
         rty_IM_OUT.Log_Message_ID = Log_Message_ID4;
         rty_IM_OUT.Actual_Infusion_Duration = Actual_Infusion_Duration;
 
-        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
-                rtu_OP_CMD_IN, rtu_PATIENT_IN,
-                rtu_CONFIG_IN, rtu_ALARM_IN,
-                rtu_SYS_STAT_IN, rty_IM_OUT,
-                localB, localDW);
+        if (symVar) {
+            INFUSION_MGR_Functional_Init(localB, localDW);
+            INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                    rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                    rtu_CONFIG_IN, rtu_ALARM_IN,
+                    rtu_SYS_STAT_IN, rty_IM_OUT,
+                    localB, localDW);
+        }
 
     }
 
 
+    public static void main(String[] args) {
+        INFUSION_MGR_FunctionalSymWrapper(false, false, 1, false, false, false, false, false, false, false, false,
+                false, false, 1, false, 1, false, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, false, false, false, false
+                , 1, 1, 1, 1, 1, 1, 1, 1, false, 1, 1, 1, false, 1, 1, false, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                1,false,false,false,false,false, false,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,false, false,
+                false);
+
+    }
 
 }
