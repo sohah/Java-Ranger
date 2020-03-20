@@ -2,6 +2,7 @@ package DiscoveryExamples.gpca_InfusionMgr;
 
 import DiscoveryExamples.gpca.*;
 import choco.cp.solver.constraints.integer.bool.Not;
+import gov.nasa.jpf.symbc.Debug;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import org.opt4j.benchmark.N;
 
@@ -301,7 +302,6 @@ public class INFUSION_MGR_Functional {
         localDW.number_pbolus = 0;
     }
 
-    /* Function for Chart: '<Root>/Infusion Manager Sub-System' */
     static void INFUSION_MGR_Functional_THERAPY(B_INFUSION_MGR_Functional_c_T
                                                         localB, DW_INFUSION_MGR_Functional_f_T localDW) {
         //DB_PRINTF("1: %2x %2x ", localB.Infusion_Initiate, localB.Reservoir_Empty);
@@ -367,45 +367,46 @@ public class INFUSION_MGR_Functional {
             localB.IM_OUT_Current_System_Mode = 1;
             localB.IM_OUT_Flow_Rate_Commanded = 0;
             INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
-        } else if (localB.Infusion_Initiate && (localB.Configured == 1) &&
-                localB.Reservoir_Empty) {
-            /* Transition: '<S1>:3861' */
-            INFUSION_MGR_Functional_resetForNewInfusion(localB, localDW);
+        } else if (localB.Infusion_Initiate) {
+            if (localB.Configured == 1) if (localB.Reservoir_Empty) {
+                /* Transition: '<S1>:3861' */
+                INFUSION_MGR_Functional_resetForNewInfusion(localB, localDW);
 
-            /* Transition: '<S1>:3863' */
-            localB.IM_OUT_New_Infusion = true;
+                /* Transition: '<S1>:3863' */
+                localB.IM_OUT_New_Infusion = true;
 
-            /* Exit Internal 'THERAPY': '<S1>:3867' */
-
-
-            if (localDW.is_THERAPY == INFUSION_MGR_Functional_IN_ACTIVE) {
-                INFUSION_MGR_Functional_exit_internal_ACTIVE(localDW);
-                localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
-            } else if (localDW.is_THERAPY == INFUSION_MGR_Functional_IN_PAUSED) {
-
-                INFUSION_MGR_Functional_exit_internal_PAUSED(localB, localDW);
-                localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
-            } else
-
-                localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+                /* Exit Internal 'THERAPY': '<S1>:3867' */
 
 
+                if (localDW.is_THERAPY == INFUSION_MGR_Functional_IN_ACTIVE) {
+                    INFUSION_MGR_Functional_exit_internal_ACTIVE(localDW);
+                    localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+                } else if (localDW.is_THERAPY == INFUSION_MGR_Functional_IN_PAUSED) {
 
-            /* Exit 'THERAPY': '<S1>:3867' */
-            INFUSION_MGR_Functional_TherapyExitOperations(localB);
-            localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_THERAPY;
+                    INFUSION_MGR_Functional_exit_internal_PAUSED(localB, localDW);
+                    localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+                } else
 
-            /* Entry Internal 'THERAPY': '<S1>:3867' */
-            if (localB.Infusion_Inhibit || (localB.Highest_Level_Alarm >= 3)) {
-                /* Transition: '<S1>:3994' */
-                localDW.is_THERAPY = INFUSION_MGR_Functional_IN_PAUSED;
-                INFUSION_MGR_Functional_enter_internal_PAUSED(localB, localDW);
-            } else {
-                /* Transition: '<S1>:3875' */
-                localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
-                INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
+                    localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+
+
+
+                /* Exit 'THERAPY': '<S1>:3867' */
+                INFUSION_MGR_Functional_TherapyExitOperations(localB);
+                localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_THERAPY;
+
+                /* Entry Internal 'THERAPY': '<S1>:3867' */
+                if (localB.Infusion_Inhibit || (localB.Highest_Level_Alarm >= 3)) {
+                    /* Transition: '<S1>:3994' */
+                    localDW.is_THERAPY = INFUSION_MGR_Functional_IN_PAUSED;
+                    INFUSION_MGR_Functional_enter_internal_PAUSED(localB, localDW);
+                } else {
+                    /* Transition: '<S1>:3875' */
+                    localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
+                    INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
+                }
             }
-        } else {
+        } else if (!(localB.Configured == 1)) if (!localB.Reservoir_Empty) {
             int scalingFactor = INFUSION_MGR_Functional_Step_Scaling_Factor((int) (localB.Infusion_Total_Duration - 1));
             if (((int) localB.IM_OUT_Actual_Infusion_Duration >= scalingFactor) || (localB.Volume_Infused >= localB.VTBI_Total)) {
                 /* Transition: '<S1>:3865' */
@@ -472,17 +473,18 @@ public class INFUSION_MGR_Functional {
                             }
                         } else if (localDW.is_PATIENT == INFUSION_MGR_Functional_IN_OFF_b) {
                             /* During 'OFF': '<S1>:3933' */
-                            if (localB.Patient_Bolus_Request && (localB.Highest_Level_Alarm <
-                                    2) && (localDW.number_pbolus <
-                                    localB.Max_Number_of_Patient_Bolus)) {
-                                /* Transition: '<S1>:3929' */
-                                localDW.is_PATIENT = INFUSION_MGR_Functional_IN_ON_b;
+                            if (localB.Patient_Bolus_Request)
+                                if (localB.Highest_Level_Alarm < 2)
+                                    if (localDW.number_pbolus <
+                                            localB.Max_Number_of_Patient_Bolus) {
+                                        /* Transition: '<S1>:3929' */
+                                        localDW.is_PATIENT = INFUSION_MGR_Functional_IN_ON_b;
 
-                                /* Entry 'ON': '<S1>:3934' */
-                                localDW.number_pbolus++;
-                                localDW.inPatientBolus = true;
-                                localDW.pbolus_timer++;
-                            }
+                                        /* Entry 'ON': '<S1>:3934' */
+                                        localDW.number_pbolus++;
+                                        localDW.inPatientBolus = true;
+                                        localDW.pbolus_timer++;
+                                    }
                         } else {
                             /* During 'ON': '<S1>:3934' */
                             int scalingFactor1 = INFUSION_MGR_Functional_Step_Scaling_Factor((int) (localB.Duration_Patient_Bolus - 1));
@@ -509,7 +511,7 @@ public class INFUSION_MGR_Functional {
                                 localDW.is_INTERMITTENT = INFUSION_MGR_Functional_IN_ON;
                             } else {
                                 localDW.sbolus_req = (INFUSION_MGR_Functional_sbolus_trigger
-                                        (localB, localDW) != 0.0);
+                                        (localB, localDW) != 0);
                             }
                         } else {
                             /* During 'ON': '<S1>:3941' */
@@ -524,7 +526,7 @@ public class INFUSION_MGR_Functional {
                                 localDW.sbolus_timer = 0;
                                 localDW.sbolus_req = false;
                                 localDW.sbolus_req = (INFUSION_MGR_Functional_sbolus_trigger
-                                        (localB, localDW) != 0.0);
+                                        (localB, localDW) != 0);
                             } else {
                                 localDW.sbolus_timer++;
                                 localDW.sbolus_req = false;
@@ -634,13 +636,14 @@ public class INFUSION_MGR_Functional {
                     }
                 } else {
                     /* During 'PAUSED': '<S1>:3876' */
-                    if (localB.Infusion_Initiate && (localB.Highest_Level_Alarm < 3) &&
-                            (!localB.Infusion_Inhibit)) {
-                        /* Transition: '<S1>:3870' */
-                        INFUSION_MGR_Functional_exit_internal_PAUSED(localB, localDW);
-                        localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
-                        INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
-                    } else {
+                    if (localB.Infusion_Initiate) {
+                        if (localB.Highest_Level_Alarm < 3) if (!localB.Infusion_Inhibit) {
+                            /* Transition: '<S1>:3870' */
+                            INFUSION_MGR_Functional_exit_internal_PAUSED(localB, localDW);
+                            localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
+                            INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
+                        }
+                    } else if (!(localB.Highest_Level_Alarm < 3)) if ((localB.Infusion_Inhibit)) {
                         /* During 'Alarm_Paused': '<S1>:3893' */
                         if (localDW.is_Alarm_Paused == INFUSION_MGR_Functional_IN_OFF) {
                             /* During 'OFF': '<S1>:3897' */
@@ -861,12 +864,12 @@ public class INFUSION_MGR_Functional {
         /* Gateway: Infusion Manager Sub-System */
         /* During: Infusion Manager Sub-System */
         //DB_PRINTF("10: ");
-        System.out.println("10: ");
+        //System.out.println("10: ");
 
         if (localDW.is_active_c2_INFUSION_MGR_Functional == 0) {
             /* Entry: Infusion Manager Sub-System */
             //DB_PRINTF("11: ");
-            System.out.println("11: ");
+            //  System.out.println("11: ");
             localDW.is_active_c2_INFUSION_MGR_Functional = 1;
 
             /* Entry Internal: Infusion Manager Sub-System */
@@ -895,7 +898,7 @@ public class INFUSION_MGR_Functional {
                 INFUSION_MGR_Functional_IN_Infusion_Manager) {
             /* During 'Infusion_Manager': '<S1>:3858' */
             //DB_PRINTF("12: ");
-            System.out.println("12: ");
+            //System.out.println("12: ");
             if (!rtu_TLM_MODE_IN.System_On) {
                 /* Transition: '<S1>:3732' */
                 /* Exit Internal 'Infusion_Manager': '<S1>:3858' */
@@ -935,13 +938,14 @@ public class INFUSION_MGR_Functional {
                 localB.IM_OUT_Flow_Rate_Commanded = 0;
             } else if (localDW.is_Infusion_Manager == INFUSION_MGR_Functional_IN_IDLE) {
                 //DB_PRINTF("13: ");
-                System.out.println("13: ");
+                //System.out.println("13: ");
                 //DB_PRINTF("2: %d %d %d ", localB.Infusion_Initiate, localB.Configured, localB.Reservoir_Empty);
-                System.out.println("2: " + localB.Infusion_Initiate + " " + localB.Configured + " " + localB.Reservoir_Empty);
+                //System.out.println("2: " + localB.Infusion_Initiate + " " + localB.Configured + " " + localB
+                // .Reservoir_Empty);
                 /* During 'IDLE': '<S1>:3866' */
                 if (localB.Infusion_Cancel || localB.Infusion_Inhibit) {
                     //DB_PRINTF("30: ");
-                    System.out.println("30: ");
+                    //  System.out.println("30: ");
                     /* Transition: '<S1>:3993' */
                     /* Exit 'IDLE': '<S1>:3866' */
                     localB.IM_OUT_Current_System_Mode = 1;
@@ -953,46 +957,47 @@ public class INFUSION_MGR_Functional {
                     localB.IM_OUT_Current_System_Mode = 1;
                     localB.IM_OUT_Flow_Rate_Commanded = 0;
                     INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
-                } else if (localB.Infusion_Initiate && (localB.Configured > 0) &&
-                        (!localB.Reservoir_Empty)) {
-                    //DB_PRINTF("31: ");
-                    System.out.println("31: ");
-                    /* Transition: '<S1>:3864' */
-                    INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
+                } else if (localB.Infusion_Initiate) {
+                    if (localB.Configured > 0) if ((!localB.Reservoir_Empty)) {
+                        //DB_PRINTF("31: ");
+                        //System.out.println("31: ");
+                        /* Transition: '<S1>:3864' */
+                        INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
 
-                    /* Transition: '<S1>:3863' */
-                    localB.IM_OUT_New_Infusion = true;
+                        /* Transition: '<S1>:3863' */
+                        localB.IM_OUT_New_Infusion = true;
 
-                    /* Exit 'IDLE': '<S1>:3866' */
-                    localB.IM_OUT_Current_System_Mode = 1;
-                    localB.IM_OUT_Flow_Rate_Commanded = 0;
-                    INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
-                    localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_THERAPY;
+                        /* Exit 'IDLE': '<S1>:3866' */
+                        localB.IM_OUT_Current_System_Mode = 1;
+                        localB.IM_OUT_Flow_Rate_Commanded = 0;
+                        INFUSION_MGR_Functional_resetAllInfusionDetails(localB, localDW);
+                        localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_THERAPY;
 
-                    /* Entry Internal 'THERAPY': '<S1>:3867' */
-                    if (localB.Infusion_Inhibit || (localB.Highest_Level_Alarm >= 3)) {
-                        /* Transition: '<S1>:3994' */
-                        localDW.is_THERAPY = INFUSION_MGR_Functional_IN_PAUSED;
-                        INFUSION_MGR_Functional_enter_internal_PAUSED(localB, localDW);
-                    } else {
-                        /* Transition: '<S1>:3875' */
-                        localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
-                        INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
+                        /* Entry Internal 'THERAPY': '<S1>:3867' */
+                        if (localB.Infusion_Inhibit || (localB.Highest_Level_Alarm >= 3)) {
+                            /* Transition: '<S1>:3994' */
+                            localDW.is_THERAPY = INFUSION_MGR_Functional_IN_PAUSED;
+                            INFUSION_MGR_Functional_enter_internal_PAUSED(localB, localDW);
+                        } else {
+                            /* Transition: '<S1>:3875' */
+                            localDW.is_THERAPY = INFUSION_MGR_Functional_IN_ACTIVE;
+                            INFUSION_MGR_Functional_enter_internal_ACTIVE(localB, localDW);
+                        }
                     }
-                } else {
+                } else if (localB.Configured > 0) if (localB.Reservoir_Empty) {
                     //DB_PRINTF("32: ");
-                    System.out.println("32: ");
+                    //System.out.println("32: ");
                     localB.IM_OUT_Current_System_Mode = 1;
                     localB.IM_OUT_Flow_Rate_Commanded = 0;
                 }
             } else {
                 //DB_PRINTF("14: ");
-                System.out.println("14: ");
+                //System.out.println("14: ");
                 INFUSION_MGR_Functional_THERAPY(localB, localDW);
             }
         } else {
             //DB_PRINTF("20: ");
-            System.out.println("20: ");
+            //System.out.println("20: ");
             /* During 'NOT_ON': '<S1>:3740' */
             if (rtu_TLM_MODE_IN.System_On) {
                 /* Transition: '<S1>:3741' */
@@ -1198,77 +1203,87 @@ public class INFUSION_MGR_Functional {
         /*checkCondition = (!(rtu_TLM_MODE_IN.System_On));
         checkOutput = (rty_IM_OUT.Current_System_Mode == 0);
         assert (!checkCondition || checkOutput);
+*/
 
-        //prop4 alarm_L4_implies_flow_rate_zero
+        /*//prop4 alarm_L4_implies_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
-
+*/
 
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);
+        if (checkCondition && !checkOutput) {
+            Debug.printPC("pc for the violation");
+            System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));
+        }
 
-        //Prop5: configured_lt_1_flow_rate_zero
+  /*      //Prop5: configured_lt_1_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_CONFIG_IN.Configured < 1));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
-        assert (!checkCondition || checkOutput);
+        assert (!checkCondition || checkOutput);*/
 
-        //Prop6: alarm_L2_implies_in_paused_or_idle_or_basal
+  /*      //Prop6: alarm_L2_implies_in_paused_or_idle_or_basal
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 2));
         checkOutput =
                 ((rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 2) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7) || (rty_IM_OUT.Current_System_Mode == 8));
-        assert (!checkCondition || checkOutput);
+        assert (!checkCondition || checkOutput);*/
 
+/*
         //Prop7: mode_off_implies_infusion_rate_zero
         checkCondition = (rty_IM_OUT.Current_System_Mode == 0);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
 */
-  /*      //Prop8: alarm_L2_implies_no_bolus -- weird prop
+
+        /*//Prop8: alarm_L2_implies_no_bolus
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 2));
         checkOutput = (rty_IM_OUT.Current_System_Mode != 3) && (rty_IM_OUT.Current_System_Mode  != 4);
         assert (!checkCondition || checkOutput);*/
-  /*
+
         //assert (!checkCondition || checkOutput);
         //Prop9: alarm_GTE_3_implies_in_paused_or_idle
-        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
+  /*      checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput =
                 ((rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7));
-        assert (!checkCondition || checkOutput);
+        assert (!checkCondition || checkOutput);*/
 
         //Prop9: mode_basal_implies_infusion_rate_basal
-        checkCondition = (rtu_TLM_MODE_IN.System_On && rty_IM_OUT.Current_System_Mode == 2);
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && rty_IM_OUT.Current_System_Mode == 2);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Basal);
-        assert (!checkCondition || checkOutput);
+        assert (!checkCondition || checkOutput);*/
+
 
         //Prop10: mode_intermittent_implies_infusion_rate_intermittent_bolus
-        checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 3);
+  /*      checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 3);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Intermittent_Bolus);
         assert (!checkCondition || checkOutput);
-
+*/
+/*
         //Prop11: mode_patient_implies_infusion_rate_patient_bolus
         checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 4);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Patient_Bolus);
         assert (!checkCondition || checkOutput);
+*/
 
-        //Prop12: not_infusing_eq_rate_zero -- Could not map Infusing var
-//        checkCondition = (rtu_TLM_MODE_IN.System_On && (! (Infusing)));
-//        checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
-//        assert (!checkCondition || checkOutput);
+  /*      //Prop12: not_infusing_eq_rate_zero -- Could not map Infusing var
+        checkCondition = (rtu_TLM_MODE_IN.System_On && (! (Infusing)));
+        checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
+        assert (!checkCondition || checkOutput);*/
 
         //Prop13: mode_idle_implies_infusion_rate_zero(
+/*
         checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 1);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
+*/
 
         //Prop14: mode_paused_implies_infusion_rate_kvo
-        checkCondition =
+        /*checkCondition =
                 rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);
-*/
+        assert (!checkCondition || checkOutput);*/
 
     }
 
