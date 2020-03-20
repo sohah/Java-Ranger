@@ -2157,17 +2157,17 @@
       <change afterPath="$PROJECT_DIR$/src/TPlex/tutorial/src/TargetPanoramaSimultaneousScript.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/TPlex/tutorial/src/TargetPanoramaTimeoutScript.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/TPlex/tutorial/targetpan.jpf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/AnLaunch.jpf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/AnMainSymbolic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/Button.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/ControlButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/InactiveException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/InvalidInputException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/LaunchButtonArmedException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/PadUnit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/PadUnitManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/AnRocketLaunch/RocketPad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/AnLaunch.jpf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/AnMainSymbolic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/Button.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/ControlButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/InactiveException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/InvalidInputException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/LaunchButtonArmedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/PadUnit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/PadUnitManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples.AnRocketLaunch/RocketPad.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples/DiscoveryVoting.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples/DiscoveryVotingDepth2.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/examples/DiscoveryExamples/Voting.java" afterDir="false" />
