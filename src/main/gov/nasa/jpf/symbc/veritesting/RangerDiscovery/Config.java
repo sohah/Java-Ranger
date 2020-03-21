@@ -35,6 +35,8 @@ public class Config {
     public static Ast defaultHoleValBool = new BoolExpr(false);
     public static Ast defaultHoleValInt = new IntExpr(1);
     public static boolean useInitialSpecValues = true;
+    public static String genericRepairNodeName = "repairNode";
+    public static DimensionMode dimensionMode = DimensionMode.ENCLOSED_TERMS; //the default configuration.
 
     //this boolean toggles between equation based repair and whole spec repair.
     public static boolean specLevelRepair;// = false;

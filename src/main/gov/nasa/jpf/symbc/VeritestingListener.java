@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DimensionMode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
 
@@ -266,7 +267,13 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.z3Solver = conf.getBoolean(
                             "z3Solver");
                 }
-
+                if (conf.hasValue("dimension")) {
+                    if (conf.getInt("dimension") == 1)
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.dimensionMode = DimensionMode.ENCLOSED_TERMS;
+                    else if (conf.getInt("dimension") == 2) {
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.dimensionMode = DimensionMode.ENCLOSE_IN_OUT_CATEGORY;
+                    }
+                }
 
                 if (conf.hasValue("repairInitialValues"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairInitialValues = conf.getBoolean("repairInitialValues");
