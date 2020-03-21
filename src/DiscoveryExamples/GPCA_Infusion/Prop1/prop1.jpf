@@ -23,7 +23,7 @@ simplify = false
 
 ################## contract Discovery configurations ###############
 contractDiscoveryOn = true
-spec = gpca
+spec = infusion
 specRepair = true
 repairMode = 2
 

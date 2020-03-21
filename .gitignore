@@ -20,3 +20,4 @@ src/examples/VeritestingPerf.java
 src/examples/VeritestingPerf.jpf
 *.log
 statistics*.txt
+mutants/
