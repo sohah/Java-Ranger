@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Faulty_WBS_Ass1_All" type="JarApplication">
-    <output_file path="../src/DiscoveryExamples/WBS/MinimalRepair_1/Assertion_1_Mutation/Faulty_WBS_Ass1All.log" is_save="true" />
+    <output_file path="../src/DiscoveryExamples/WBS/Assertion_1_Mutation/Faulty_WBS_Ass1All_mutation1.log" is_save="true" />
     <option name="JAR_PATH" value="$PROJECT_DIR$/../jpf-core/build/RunJPF.jar" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=&quot;$PROJECT_DIR$/lib/&quot; -Xmx8000m -ea " />
     <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/DiscoveryExamples/WBS/Assertion_1_Mutation/Faulty_WBS_Ass1All.jpf" />
