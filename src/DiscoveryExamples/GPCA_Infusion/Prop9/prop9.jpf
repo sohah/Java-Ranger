@@ -1,0 +1,33 @@
+target=DiscoveryExamples.gpca_InfusionMgr.Discovery_INFUSION_MGR_Functional
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+#symbolic.debug=false
+vm.storage.class=nil
+symbolic.lazy = true
+symbolic.optimizechoices=false
+
+
+symbolic.method=DiscoveryExamples.gpca_InfusionMgr.Discovery_INFUSION_MGR_Functional.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+vm.storage.class=nil
+
+
+symbolic.dp=z3bitvectorinc
+
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+#listener = gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify = false
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = true
+spec = infusion
+specRepair = true
+repairMode = 2
+
+SpecDirectory = GPCA_Infusion/Prop9
+faultySpec=Faulty_Prop9
+repairInitialValues = true
+z3Solver=true

@@ -160,27 +160,27 @@ public class SpecInOutManager {
     //=========================== INFUSION ===========================
 
     private void discoverFreeInputInfusion() {
-        freeInput.add("System_On_1_SYMINT", NamedType.BOOL);
-        freeInput.add("Infusion_Initiate_6_SYMINT", NamedType.BOOL);
-        freeInput.add("Infusion_Inhibit_7_SYMINT", NamedType.INT);
-        freeInput.add("Infusion_Cancel_8_SYMINT", NamedType.BOOL);
-        freeInput.add("Patient_Bolus_Request_18_SYMINT", NamedType.BOOL);
-        freeInput.add("Infusion_Total_Duration_22_SYMINT", NamedType.INT);
-        freeInput.add("VTBI_Total_23_SYMINT", NamedType.INT);
-        freeInput.add("Flow_Rate_Basal_24_SYMINT", NamedType.INT);
-        freeInput.add("Flow_Rate_Intermittent_Bolus_25_SYMINT", NamedType.INT);
-        freeInput.add("Duration_Intermittent_Bolus_26_SYMINT", NamedType.INT);
-        freeInput.add("Interval_Intermittent_Bolus_27_SYMINT", NamedType.INT);
-        freeInput.add("Flow_Rate_Patient_Bolus_28_SYMINT", NamedType.INT);
-        freeInput.add("Duration_Patient_Bolus_29_SYMINT", NamedType.INT);
-        freeInput.add("Lockout_Period_Patient_Bolus_30_SYMINT", NamedType.INT);
-        freeInput.add("Max_Number_of_Patient_Bolus_Period_Patient_Bolus_31_SYMINT", NamedType.INT);
-        freeInput.add("Flow_Rate_KVO_32_SYMINT", NamedType.INT);
-        freeInput.add("Entered_Reservoir_Volume_33_SYMINT", NamedType.INT);
-        freeInput.add("Configured_35_SYMINT", NamedType.INT);
-        freeInput.add("Highest_Level_Alarm_47_SYMINT", NamedType.INT);
-        freeInput.add("Reservoir_Empty_49_SYMINT", NamedType.BOOL);
-        freeInput.add("Volume_Infused_51_SYMINT", NamedType.INT);
+        freeInput.add("System_On", NamedType.BOOL);
+        freeInput.add("Infusion_Initiate", NamedType.BOOL);
+        freeInput.add("Infusion_Inhibit", NamedType.BOOL);
+        freeInput.add("Infusion_Cancel", NamedType.BOOL);
+        freeInput.add("Patient_Bolus_Request", NamedType.BOOL);
+        freeInput.add("Infusion_Total_Duration", NamedType.INT);
+        freeInput.add("VTBI_Total", NamedType.INT);
+        freeInput.add("Flow_Rate_Basal", NamedType.INT);
+        freeInput.add("Flow_Rate_Intermittent_Bolus", NamedType.INT);
+        freeInput.add("Duration_Intermittent_Bolus", NamedType.INT);
+        freeInput.add("Interval_Intermittent_Bolus", NamedType.INT);
+        freeInput.add("Flow_Rate_Patient_Bolus", NamedType.INT);
+        freeInput.add("Duration_Patient_Bolus", NamedType.INT);
+        freeInput.add("Lockout_Period_Patient_Bolus", NamedType.INT);
+        freeInput.add("Max_Number_of_Patient_Bolus", NamedType.INT);
+        freeInput.add("Flow_Rate_KVO", NamedType.INT);
+        freeInput.add("Entered_Reservoir_Volume", NamedType.INT);
+        freeInput.add("Configured", NamedType.INT);
+        freeInput.add("Highest_Level_Alarm", NamedType.INT);
+        freeInput.add("Reservoir_Empty", NamedType.BOOL);
+        freeInput.add("Volume_Infused", NamedType.INT);
 
     }
 

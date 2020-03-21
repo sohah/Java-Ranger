@@ -1215,13 +1215,13 @@ public class INFUSION_MGR_FunctionalRecovered {
 */
 
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
-        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
         if (checkCondition && !checkOutput) {
-            /*Debug.printPC("pc for the violation");
-            System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));*/
+            *//*Debug.printPC("pc for the violation");
+            System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));*//*
             assert false;
-        }
+        }*/
 
   /*      //Prop5: configured_lt_1_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_CONFIG_IN.Configured < 1));
@@ -1289,6 +1289,9 @@ public class INFUSION_MGR_FunctionalRecovered {
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
         assert (!checkCondition || checkOutput);*/
 
+
+        /************Discovery properties**********/
+        //assert ((rty_IM_OUT.Current_System_Mode > -1) && (rty_IM_OUT.Commanded_Flow_Rate == 0));
     }
 
     public static void main(String[] args) {

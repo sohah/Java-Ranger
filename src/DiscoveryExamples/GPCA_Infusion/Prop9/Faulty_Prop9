@@ -107,12 +107,11 @@ node main(
 ) returns (p1: bool);
 
 
-let
+let  -- Prop: mode_range
 
-
-    p1 = true -> repair(((Current_System_Mode = 0) or (Current_System_Mode = 1) or (Current_System_Mode = 2) or
-    (Current_System_Mode = 3) or (Current_System_Mode = 4) or (Current_System_Mode = 6) or (Current_System_Mode = 7) ) and
-    (Current_System_Mode =8), discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
+    p1 = true -> repair((System_On and Current_System_Mode = 2 )
+                        => Commanded_Flow_Rate = Flow_Rate_Basal,
+     discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
      Log_Message_ID));
       --%PROPERTY p1;
 
