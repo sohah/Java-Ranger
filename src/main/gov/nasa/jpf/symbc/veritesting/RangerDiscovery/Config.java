@@ -14,6 +14,7 @@ public class Config {
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
     public static boolean z3Solver;
+    public static int repairNodeDepth = 0; //defines the depth of the repair node. A depth 0 means a single boolean atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
     public static String TNODE = "T_node"; // also refers to the R_prime in the refinement loop.
