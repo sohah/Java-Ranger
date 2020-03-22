@@ -13,14 +13,14 @@ public class GenericRepairNode {
 
     final String name;
     final List<VarDecl> actualParamVarDecls;
-    public final RepairNode nodeDefinition;
+    //public final RepairNode nodeDefinition;
     public final NodeCallExpr callExpr;
 
     public GenericRepairNode(String name, List<VarDecl> actualParamVarDecls) {
         this.name = name;
         this.actualParamVarDecls = actualParamVarDecls;
         callExpr = generateCallExpr();
-        nodeDefinition = generateRepairDef();
+        // nodeDefinition = generateRepairDef();
     }
 
 
