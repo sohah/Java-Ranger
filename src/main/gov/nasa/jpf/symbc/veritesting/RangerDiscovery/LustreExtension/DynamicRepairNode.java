@@ -5,6 +5,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,10 +33,10 @@ public class DynamicRepairNode {
 
     public RepairNode create(List<VarDecl> actualParamVarDecls) {
         populateBoolIntInputs(actualParamVarDecls);
-        int balancedTreeDepth = Config.repairNodeDepth % 2 != 0 ? Config.repairNodeDepth + 1 : Config.repairNodeDepth;
+//        int balancedTreeDepth = Config.repairNodeDepth % 2 != 0 ? Config.repairNodeDepth + 1 : Config.repairNodeDepth;
         List<Character> pathLabel = new ArrayList<>();
-        pathLabel.add((char) (balancedTreeDepth + '0'));
-        outputs.add(defineTreeLevel(balancedTreeDepth, pathLabel));
+        pathLabel.add('R'); //for root node
+        outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
         return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
     }
 
@@ -58,7 +59,8 @@ public class DynamicRepairNode {
             // variables constituting an inner node must be of type bool. Integers should only appear in the leaf.
             assert (leftVarDecl.type == NamedType.BOOL) && (rightVarDecl.type == NamedType.BOOL);
 
-            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl), constructInnerBoolNode(leftOperand, rightOperand));
+            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl),
+                    constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
 
             //populate my stuff
             locals.add(myNodeNameVarDecl);
@@ -79,13 +81,13 @@ public class DynamicRepairNode {
         IdExpr selectionHoleExpr = DiscoveryUtil.varDeclToIdExpr(selectionHoleVarDecl);
 
         List<Expr> leafSelectionExprs = new ArrayList<>();
-        leafSelectionExprs.addAll((List<Expr>) ((List<?>) DiscoveryUtil.varDeclToIdExpr(boolInputs)));
+        leafSelectionExprs.addAll(allPossibleBoolExp(boolInputs));
+
 
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
                 leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl)));
-
         }
 
         VarDecl myNodeNameVarDecl = constructPathLabelName(pathLabel);
@@ -96,6 +98,17 @@ public class DynamicRepairNode {
         equations.add(myEquation);
 
         return myNodeNameVarDecl;
+    }
+
+    //returns bool expr, i.e., a, along with "not a"
+    private Collection<? extends Expr> allPossibleBoolExp(List<VarDecl> boolInputs) {
+        List<Expr> origBoolExprs = (List<Expr>) ((List<?>) DiscoveryUtil.varDeclToIdExpr(boolInputs));
+        List<Expr> newBoolExprs = new ArrayList<>(origBoolExprs);
+        for (Expr expr : origBoolExprs) {
+            assert expr instanceof IdExpr;
+            newBoolExprs.add(new UnaryExpr(UnaryOp.NOT, expr));
+        }
+        return newBoolExprs;
     }
 
     private Expr createLeafSelectionExpr(IdExpr selectionHoleExpr, List<Expr> leafSelectionExprs) {
@@ -118,18 +131,31 @@ public class DynamicRepairNode {
     }
 
 
-    private Expr constructInnerBoolNode(IdExpr leftOperand, IdExpr rightOperand) {
+    private Expr constructInnerBoolNode(List<Character> myPathLabel, IdExpr leftOperand, IdExpr rightOperand) {
         VarDecl selectionHoleVarDecl = createNewHole(true);
         IdExpr sectionHoleExpr = DiscoveryUtil.varDeclToIdExpr(selectionHoleVarDecl);
-
-        IfThenElseExpr expr =
+        IfThenElseExpr expr;
+        if (!getPathLabelStr(myPathLabel).equals("R")) {
+            expr =
+                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
+                            new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
+                            new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
+                                    new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
+                                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
+                                            new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
+                                            new BinaryExpr(sectionHoleExpr, BinaryOp.XOR, new IntExpr(3)))));
+        } else expr =
                 new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
                         new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
                         new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
                                 new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
                                 new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
                                         new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                        new BinaryExpr(sectionHoleExpr, BinaryOp.XOR, new IntExpr(3)))));
+                                        new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
+                                                new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand),
+                                                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
+                                                        new BoolExpr(true),
+                                                        new BoolExpr(false))))));
         return expr;
     }
 
@@ -146,7 +172,14 @@ public class DynamicRepairNode {
     }
 
     private VarDecl constructPathLabelName(List<Character> pathLabel) {
-        return new VarDecl(pathLabel.toString(), NamedType.BOOL);
+        return new VarDecl(getPathLabelStr(pathLabel), NamedType.BOOL);
+    }
+
+    private String getPathLabelStr(List<Character> pathLabel) {
+        String pathStr = "";
+        for (int i = 0; i < pathLabel.size(); i++)
+            pathStr += i == 0 ? pathLabel.get(i) : "_" + pathLabel.get(i);
+        return pathStr;
     }
 
     private void populateBoolIntInputs(List<VarDecl> actualParamVarDecls) {

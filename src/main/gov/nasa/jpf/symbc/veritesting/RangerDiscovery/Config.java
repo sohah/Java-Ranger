@@ -14,7 +14,8 @@ public class Config {
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
     public static boolean z3Solver;
-    public static int repairNodeDepth = 0; //defines the depth of the repair node. A depth 0 means a single boolean atom synthesized
+    public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
+    // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
     public static String TNODE = "T_node"; // also refers to the R_prime in the refinement loop.
@@ -37,7 +38,7 @@ public class Config {
     public static Ast defaultHoleValInt = new IntExpr(1);
     public static boolean useInitialSpecValues = true;
     public static String genericRepairNodeName = "repairNode";
-    public static DimensionMode dimensionMode = DimensionMode.ENCLOSED_TERMS; //the default configuration.
+    public static RepairScopeType repairScope = RepairScopeType.ENCLOSED_TERMS; //the default configuration.
 
     //this boolean toggles between equation based repair and whole spec repair.
     public static boolean specLevelRepair;// = false;

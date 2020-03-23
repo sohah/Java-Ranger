@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import jkind.lustre.Expr;
 import jkind.lustre.NodeCallExpr;
 import jkind.lustre.RepairNode;
@@ -11,16 +12,15 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 
 public class GenericRepairNode {
 
-    final String name;
+    final String name = Config.genericRepairNodeName;
     final List<VarDecl> actualParamVarDecls;
-    //public final RepairNode nodeDefinition;
+    public final RepairNode nodeDefinition;
     public final NodeCallExpr callExpr;
 
-    public GenericRepairNode(String name, List<VarDecl> actualParamVarDecls) {
-        this.name = name;
+    public GenericRepairNode(List<VarDecl> actualParamVarDecls) {
         this.actualParamVarDecls = actualParamVarDecls;
         callExpr = generateCallExpr();
-        // nodeDefinition = generateRepairDef();
+        nodeDefinition = null; //= generateRepairDef();
     }
 
 

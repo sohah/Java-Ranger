@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ThereExistsQuery;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.RepairStatistics;
@@ -18,10 +19,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
 import jkind.api.results.JKindResult;
-import jkind.lustre.Expr;
-import jkind.lustre.LustreUtil;
-import jkind.lustre.Node;
-import jkind.lustre.Program;
+import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 import jkind.lustre.parsing.LustreParser;
 
@@ -98,7 +96,6 @@ public class DiscoverContract {
     }
 
 
-
     public static void resetState() {
         loopCount = 0;
         permutationCount = 0;
@@ -115,6 +112,18 @@ public class DiscoverContract {
 
     private static void repairSpec(DynamicRegion dynRegion) throws IOException {
         String fileName;
+
+        /// testing generic node
+
+/*
+        List<VarDecl> parameters = new ArrayList<>();
+        parameters.add(new VarDecl("x", NamedType.INT));
+        parameters.add(new VarDecl("a", NamedType.BOOL));
+        parameters.add(new VarDecl("y", NamedType.INT));
+        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
+//        System.out.println("dynamic repair definition");
+//        System.out.println(genericRepairNode.nodeDefinition);
+*/
 
         if (Config.repairInitialValues)
             System.out.println("Repair includes initial values");

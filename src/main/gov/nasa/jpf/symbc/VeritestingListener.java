@@ -1,6 +1,6 @@
 package gov.nasa.jpf.symbc;
 
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DimensionMode;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairScopeType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
 
@@ -42,7 +42,6 @@ import gov.nasa.jpf.symbc.veritesting.ast.transformations.ssaToAst.CreateStaticR
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.ssaToAst.StaticRegion;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
 
-import gov.nasa.jpf.symbc.veritesting.ast.transformations.typepropagation.TypePropagationVisitor;
 import gov.nasa.jpf.symbc.veritesting.ast.visitors.ExprVisitorAdapter;
 import gov.nasa.jpf.symbc.veritesting.ast.visitors.PrettyPrintVisitor;
 import gov.nasa.jpf.vm.*;
@@ -269,9 +268,9 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 }
                 if (conf.hasValue("dimension")) {
                     if (conf.getInt("dimension") == 1)
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.dimensionMode = DimensionMode.ENCLOSED_TERMS;
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSED_TERMS;
                     else if (conf.getInt("dimension") == 2) {
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.dimensionMode = DimensionMode.ENCLOSE_IN_OUT_CATEGORY;
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }
 
