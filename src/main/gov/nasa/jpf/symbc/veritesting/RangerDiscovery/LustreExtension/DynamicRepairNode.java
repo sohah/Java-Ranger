@@ -102,7 +102,7 @@ public class DynamicRepairNode {
         if (leafSelectionExprs.size() == 1)
             return leafSelectionExprs.get(0);
 
-        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(0)), leafSelectionExprs.get(0),
+        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(leafSelectionExprs.size())), leafSelectionExprs.get(0),
                 createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs.subList(1, leafSelectionExprs.size())));
     }
 
