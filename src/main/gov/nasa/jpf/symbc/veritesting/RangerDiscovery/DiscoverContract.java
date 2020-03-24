@@ -1,6 +1,5 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ThereExistsQuery;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.RepairStatistics;
@@ -13,7 +12,6 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutateExpr;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
@@ -21,10 +19,7 @@ import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicReg
 import jkind.api.results.JKindResult;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
-import jkind.lustre.parsing.LustreParser;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

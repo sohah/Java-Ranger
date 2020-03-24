@@ -1,4 +1,4 @@
-package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension;
+package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
