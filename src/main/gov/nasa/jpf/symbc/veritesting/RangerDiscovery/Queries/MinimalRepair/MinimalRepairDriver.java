@@ -56,14 +56,13 @@ public class MinimalRepairDriver {
      * indeed R' is inclosed in R and still matches the implementation.
      *
      * @param counterExamplePgm
-     * @param contract
      * @param repairedProgram       this is the specification after repair, which we want to find some inner, enclosed
      *                              program.
      * @param lastSynthizedContract This is the last query used for the repaired program.
      * @param flatExtendedPgm       This is the program we started with that has the sketch extendion, repair construct, arround places we want to repair.    @return
      */
 
-    public static Program execute(Program counterExamplePgm, Contract contract, Program repairedProgram, ARepairSynthesis
+    public static Program execute(Program counterExamplePgm, Program repairedProgram, ARepairSynthesis
             lastSynthizedContract, Program flatExtendedPgm) {
 
 
@@ -120,7 +119,7 @@ public class MinimalRepairDriver {
                                 "rPrimeCandidate.lus";
                         writeToFile(fileName, candTPrimePgm.toString(), true);
 
-                        forAllQ = MinimalRepairCheck.execute(contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
+                        forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
 
                         fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" +
                                 ".lus";

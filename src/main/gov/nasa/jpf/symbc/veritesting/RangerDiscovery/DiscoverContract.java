@@ -52,6 +52,9 @@ public class DiscoverContract {
 
     public static int outerLoopRepairNum = -1;
 
+    public static Contract contract;
+    public static DynamicRegion dynRegion;
+
 /***** begin of unused vars***/
     /**
      * currently unused because we assume we have a way to find the input and output.
@@ -66,6 +69,7 @@ public class DiscoverContract {
     /***** end of unused vars***/
 
     public static final void discoverLusterContract(DynamicRegion dynRegion) {
+        DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
         try {
             while (Config.canSetup()) {
@@ -75,7 +79,7 @@ public class DiscoverContract {
                 resetState();
                 assert (userSynNodes.size() > 0);
                 if (Config.specLevelRepair)
-                    repairSpec(dynRegion);
+                    repairSpec();
                 else
                     assert false; //removed definition repair for now.
                 //repairDef(dynRegion);
@@ -105,10 +109,8 @@ public class DiscoverContract {
         LustreAstMapExtnVisitor.resetState();
     }
 
-    private static void repairSpec(DynamicRegion dynRegion) throws IOException {
+    private static void repairSpec() throws IOException {
         String fileName;
-
-        /// testing generic node
 
 /*
         List<VarDecl> parameters = new ArrayList<>();
@@ -129,7 +131,7 @@ public class DiscoverContract {
 
         //print out the translation once, for very first time we hit linearlization for the method of
         // interest.
-        Contract contract = new Contract();
+        contract = new Contract();
 
         //this holds a repair which we might find, but it might not be a tight repair, in which case we'll have to
         // call on the other pair of thereExists and forAll queries for finding minimal repair.
@@ -163,7 +165,18 @@ public class DiscoverContract {
 
         }
 
-        CounterExampleQuery counterExampleQuery = new CounterExampleQuery(dynRegion, originalProgram, contract);
+        /*
+        List<VarDecl> parameters = new ArrayList<>();
+        parameters.add(new VarDecl("x", NamedType.INT));
+        parameters.add(new VarDecl("a", NamedType.BOOL));
+        parameters.add(new VarDecl("y", NamedType.INT));
+        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
+//        System.out.println("dynamic repair definition");
+//        System.out.println(genericRepairNode.nodeDefinition);
+*/
+
+        
+        CounterExampleQuery counterExampleQuery = new CounterExampleQuery(originalProgram);
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
@@ -185,7 +198,7 @@ public class DiscoverContract {
                         System.out.println("Initial repair found, in iteration #: " + outerLoopRepairNum);
                         System.out.println("Trying minimal repair.");
                         Program minimalRepair = MinimalRepairDriver.execute(counterExampleQuery.getCounterExamplePgm
-                                        (), contract, originalProgram,
+                                        (), originalProgram,
                                 aRepairSynthesis, flatExtendedPgm);
                     } else
                         System.out.println("Contract Matching! Printing repair and aborting!");
@@ -253,7 +266,7 @@ public class DiscoverContract {
                                 fileName = currFaultySpec + "_Extn" + loopCount + 1 + ".lus";
                                 writeToFile(fileName, inputExtendedPgm.toString(), false);
 
-                                counterExampleQuery = new CounterExampleQuery(dynRegion, originalProgram, contract);
+                                counterExampleQuery = new CounterExampleQuery(originalProgram);
                                 counterExampleQueryStrStr = counterExampleQuery.toString();
                                 break;
                             }
