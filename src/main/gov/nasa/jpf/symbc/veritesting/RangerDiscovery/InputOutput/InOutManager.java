@@ -1529,4 +1529,8 @@ public class InOutManager {
     public int getContractOutputCount() {
         return contractOutput.size;
     }
+
+    public String varOutNameByIndex(int index){
+        return contractOutput.varNameForIndex(index);
+    }
 }

@@ -12,6 +12,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
@@ -165,17 +166,21 @@ public class DiscoverContract {
 
         }
 
-        /*
+/*
+
         List<VarDecl> parameters = new ArrayList<>();
-        parameters.add(new VarDecl("x", NamedType.INT));
-        parameters.add(new VarDecl("a", NamedType.BOOL));
-        parameters.add(new VarDecl("y", NamedType.INT));
+        parameters.add(new VarDecl("Commanded_Flow_Rate", NamedType.INT));
+        parameters.add(new VarDecl("Current_System_Mode", NamedType.INT));
+        parameters.add(new VarDecl("New_Infusion", NamedType.BOOL));
+        parameters.add(new VarDecl("Log_Message_ID", NamedType.INT));
+        parameters.add(new VarDecl("Actual_Infusion_Duration", NamedType.INT));
         GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
-//        System.out.println("dynamic repair definition");
-//        System.out.println(genericRepairNode.nodeDefinition);
+        System.out.println("dynamic repair definition");
+        System.out.println(genericRepairNode.nodeDefinition);
+
 */
 
-        
+
         CounterExampleQuery counterExampleQuery = new CounterExampleQuery(originalProgram);
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 

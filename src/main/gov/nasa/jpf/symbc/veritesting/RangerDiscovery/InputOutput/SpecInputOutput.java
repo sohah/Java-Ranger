@@ -19,6 +19,15 @@ public class SpecInputOutput {
 
     }
 
+    public int indexOf(String varName) {
+        return getInputNames().indexOf(varName);
+
+    }
+
+    public String varNameForIndex(int index) {
+        return getInputNames().get(index);
+    }
+
     public boolean contains(String varName, NamedType type) {
         for (int i = 0; i < varList.size(); i++) {
             if (varList.get(i).getFirst().equals(varName) && varList.get(i).getSecond().equals(type))
@@ -27,7 +36,7 @@ public class SpecInputOutput {
         return false;
     }
 
-// checks if the name of the variable exists
+    // checks if the name of the variable exists
     public boolean hasName(String varName) {
         for (int i = 0; i < varList.size(); i++) {
             if (varList.get(i).getFirst().equals(varName))
@@ -36,10 +45,10 @@ public class SpecInputOutput {
         return false;
     }
 
-    public List<String> getInputNames(){
+    public List<String> getInputNames() {
         List<String> names = new ArrayList<>();
 
-        for(int i=0; i<varList.size(); i++){
+        for (int i = 0; i < varList.size(); i++) {
             names.add(varList.get(i).getFirst());
         }
 
@@ -51,8 +60,8 @@ public class SpecInputOutput {
     }
 
 
-    public boolean containsBool(){
-        for(int i=0; i< varList.size(); i++)
+    public boolean containsBool() {
+        for (int i = 0; i < varList.size(); i++)
             if (varList.get(i).getSecond() == NamedType.BOOL)
                 return true;
 
