@@ -17,14 +17,15 @@ public class VariableRangeExprVisitor extends ExprMapVisitor implements ExprVisi
 
     public VariableRangeExprVisitor() {
         super();
-        inVarOfInterestScope = false;
-        rangeValues = new ArrayList<>();
+        inVarOfInterestScope = false; // trying to excluding assignment statements that are initially not what we are looking for.
+        rangeValues = new ArrayList<>(); // all possible values encountered for the variable we are looking for.
     }
 
     @Override
     // we are not implementing simplification at that point. So we  should not count constants in an operation as a possible value, since it is not reduced down to a single constant.
     // just clear everything to abort safely.
     public Expression visit(Operation expr) {
+        // if we ever visited an operation then we assume that it can't be reduced and we assume there isn't a possible range of value to be collected for that variable. Thus we clear everything.
         rangeValues = new ArrayList<>();
         inVarOfInterestScope = false;
         VariableRangeVisitor.interestedVarName = new ArrayList<>();
@@ -39,6 +40,18 @@ public class VariableRangeExprVisitor extends ExprMapVisitor implements ExprVisi
         return expr;
     }
 
+    @Override
+    public Expression visit(IntVariable expr) {
+        if (!VariableRangeVisitor.relatedSymInput.equals(expr.toString())) {
+            rangeValues = new ArrayList<>();
+            inVarOfInterestScope = false;
+            VariableRangeVisitor.interestedVarName = new ArrayList<>();
+        }
+        else{
+            return expr;
+        }
+        return expr;
+    }
 
     @Override
     public Expression visit(GammaVarExpr expr) {
@@ -56,28 +69,29 @@ public class VariableRangeExprVisitor extends ExprMapVisitor implements ExprVisi
 
     @Override
     public Expression visit(WalaVarExpr expr) {
-        if (inVarOfInterestScope)
+        //visiting a WalaVarExpr on the right handside means that we still need to collect the definition of this new expr as well.
+        if ((inVarOfInterestScope) && (!VariableRangeVisitor.interestedVarName.contains(expr.toString())))
             VariableRangeVisitor.interestedVarName.add(expr.toString());
         return expr;
     }
 
     @Override
     public Expression visit(AstVarExpr expr) {
-        if (inVarOfInterestScope)
+        if ((inVarOfInterestScope) && (!VariableRangeVisitor.interestedVarName.contains(expr.toString())))
             VariableRangeVisitor.interestedVarName.add(expr.toString());
         return expr;
     }
 
     @Override
     public Expression visit(FieldRefVarExpr expr) {
-        if (inVarOfInterestScope)
+        if ((inVarOfInterestScope) && (!VariableRangeVisitor.interestedVarName.contains(expr.toString())))
             VariableRangeVisitor.interestedVarName.add(expr.toString());
         return expr;
     }
 
     @Override
     public Expression visit(ArrayRefVarExpr expr) {
-        if (inVarOfInterestScope)
+        if ((inVarOfInterestScope) && (!VariableRangeVisitor.interestedVarName.contains(expr.toString())))
             VariableRangeVisitor.interestedVarName.add(expr.toString());
         return expr;
     }

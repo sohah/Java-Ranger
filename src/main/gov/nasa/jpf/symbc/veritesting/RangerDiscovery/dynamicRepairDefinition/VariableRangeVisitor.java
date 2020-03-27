@@ -2,14 +2,12 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.ast.def.*;
-import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
 import gov.nasa.jpf.symbc.veritesting.ast.visitors.AstMapVisitor;
 import gov.nasa.jpf.symbc.veritesting.ast.visitors.ExprVisitor;
 import jkind.lustre.*;
 import za.ac.sun.cs.green.expr.Expression;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,18 +16,21 @@ import java.util.List;
  * It works with VariableRangeExprVisitor to visit only interesting assignments.
  */
 public class VariableRangeVisitor extends AstMapVisitor {
-    public static List<String> interestedVarName;
+    public static List<String> interestedVarName; //variable names that we realize are ssa instances that we need to traverse them
 
+    public static String relatedSymInput;
     public VariableRangeVisitor(ExprVisitor<Expression> exprVisitor, String varName) {
         super(exprVisitor);
         interestedVarName = new ArrayList<>();
         interestedVarName.add(varName);
+        relatedSymInput = DiscoverContract.contract.rInOutManager.ssaOutToStateInputInf.matchingOutput(varName);
     }
 
     @Override
     public Stmt visit(AssignmentStmt a) {
         if (interestedVarName.contains(a.lhs.toString())) {
             VariableRangeExprVisitor.inVarOfInterestScope = true;
+            interestedVarName.remove(a.lhs.toString()); //removing what we have visited in its definition.
             eva.accept(a.rhs);
         }
         return a;
@@ -40,7 +41,6 @@ public class VariableRangeVisitor extends AstMapVisitor {
         a.s2.accept(this);
         a.s1.accept(this);
         return a;
-
     }
 
     @Override
@@ -149,6 +149,7 @@ public class VariableRangeVisitor extends AstMapVisitor {
 
         List<Integer> rangeValues = VariableRangeExprVisitor.rangeValues;
         if (rangeValues.size() != 0) {//some range of value was found for the variable
+            assert interestedVarName.size() == 0; // we should have visited all definitions by now.
             return new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(Collections.max(rangeValues))), BinaryOp.AND,
                     new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(Collections.min(rangeValues))));
         }
