@@ -779,7 +779,7 @@ public class INFUSION_MGR_Functional {
     static void INFUSION_MGR_Functional_Init(B_INFUSION_MGR_Functional_c_T localB,
                                              DW_INFUSION_MGR_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Infusion Manager Sub-System' */
-        localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+        /*localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_Arbiter_c = 0;
         localDW.is_Arbiter_d = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
@@ -809,7 +809,7 @@ public class INFUSION_MGR_Functional {
         localB.IM_OUT_Current_System_Mode = 0;
         localB.IM_OUT_New_Infusion = false;
         localB.IM_OUT_Log_Message_ID = 0;
-        localB.IM_OUT_Actual_Infusion_Duration = 0;
+        localB.IM_OUT_Actual_Infusion_Duration = 0;*/
     }
 
     /* Output and update for referenced model: 'INFUSION_MGR_Functional' */
@@ -1017,6 +1017,8 @@ public class INFUSION_MGR_Functional {
         rty_IM_OUT.New_Infusion = localB.IM_OUT_New_Infusion;
         rty_IM_OUT.Log_Message_ID = localB.IM_OUT_Log_Message_ID;
         rty_IM_OUT.Actual_Infusion_Duration = localB.IM_OUT_Actual_Infusion_Duration;
+
+      //  assert (rty_IM_OUT.Commanded_Flow_Rate == 0);
     }
 
     static private void INFUSION_MGR_FunctionalSymWrapper(
@@ -1195,10 +1197,10 @@ public class INFUSION_MGR_Functional {
 */
 
         //prop4 alarm_L4_implies_flow_rate_zero
-        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
-
+*/
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);

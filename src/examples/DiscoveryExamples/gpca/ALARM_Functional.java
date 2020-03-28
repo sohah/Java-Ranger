@@ -1592,7 +1592,7 @@ public class ALARM_Functional {
     static void ALARM_Functional_Init(B_ALARM_Functional_c_T localB,
                                       DW_ALARM_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Alarm  Sub-System' */
-        localDW.is_active_CheckAlarm = 0;
+        /*localDW.is_active_CheckAlarm = 0;
         localDW.is_active_CancelAlarm = 0;
         localDW.is_CancelAlarm = ALARM_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_Level1 = 0;
@@ -1652,12 +1652,12 @@ public class ALARM_Functional {
         localDW.cancelAlarm = 0;
         localDW.Max_Alarm_Level = 0;
         localDW.idletimer = 0;
-        localDW.pausedtimer = 0;
-        localB.ALARM_OUT_Display_Audio_Disabled_Indicator = 0;
+        localDW.pausedtimer = 0;*/
+        /*localB.ALARM_OUT_Display_Audio_Disabled_Indicator = 0;
         localB.ALARM_OUT_Display_Notification_Command = 0;
         localB.ALARM_OUT_Audio_Notification_Command = 0;
         localB.ALARM_OUT_Highest_Level_Alarm = 0;
-        localB.ALARM_OUT_Log_Message_ID = 0;
+        localB.ALARM_OUT_Log_Message_ID = 0;*/
     }
 
     /* Output and update for referenced model: 'ALARM_Functional' */
@@ -1779,17 +1779,18 @@ public class ALARM_Functional {
         boolean checkCondition;
         boolean checkOutput;
 
-        /*//Prop1: empty_reservoir_implies_alarm_L4
-        checkCondition = rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty;
+        //Prop1: empty_reservoir_implies_alarm_L4
+        /*checkCondition = rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty;
         checkOutput = rty_ALARM_OUT.Highest_Level_Alarm == 4;
         assert (!checkCondition || checkOutput);
-
+*/
 
         //Prop2: air_in_line_implies_grt_L3_alarm
         checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
         checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
         assert (!checkCondition || checkOutput);
 
+        /*
         // Prop3: volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm
         checkCondition =
                 (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && (rtu_SYS_STAT_IN.Volume_Infused > rtu_DB_IN.VTBI_High));
@@ -1844,6 +1845,7 @@ public class ALARM_Functional {
 */
 
 
+        //assert ((rty_ALARM_OUT.Notification_Message <= 19) && (rty_ALARM_OUT.Notification_Message > 0));
     }
     /*
 
@@ -2171,6 +2173,19 @@ public class ALARM_Functional {
                 rtu_sys_stat_in,
                 rtu_config_in, rty_alarm_out, localB,
                 localDW);
+        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
+                rtu_sensor_in,
+                rtu_const_in,
+                rtu_sys_stat_in,
+                rtu_config_in, rty_alarm_out, localB,
+                localDW);
+        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
+                rtu_sensor_in,
+                rtu_const_in,
+                rtu_sys_stat_in,
+                rtu_config_in, rty_alarm_out, localB,
+                localDW);
+
 
     }
 

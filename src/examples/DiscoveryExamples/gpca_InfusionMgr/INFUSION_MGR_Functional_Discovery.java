@@ -1,6 +1,6 @@
 package DiscoveryExamples.gpca_InfusionMgr;
 
-public class Discovery_INFUSION_MGR_Functional {
+public class INFUSION_MGR_Functional_Discovery {
     static final int INFUSION_MGR_Functional_IN_ACTIVE = 1;
     static final int INFUSION_MGR_Functional_IN_Basal = 1;
     static final int INFUSION_MGR_Functional_IN_IDLE = 1;
@@ -770,7 +770,7 @@ public class Discovery_INFUSION_MGR_Functional {
     static void INFUSION_MGR_Functional_Init(B_INFUSION_MGR_Functional_c_T localB,
                                              DW_INFUSION_MGR_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Infusion Manager Sub-System' */
-        localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+      /*  localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_Arbiter_c = 0;
         localDW.is_Arbiter_d = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
@@ -787,8 +787,7 @@ public class Discovery_INFUSION_MGR_Functional {
         localDW.is_active_Manual_Paused = 0;
         localDW.is_Manual_Paused = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_c2_INFUSION_MGR_Functional = 0;
-        localDW.is_c2_INFUSION_MGR_Functional =
-                INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+        localDW.is_c2_INFUSION_MGR_Functional = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.sbolus_req = false;
         localDW.sbolus_timer = 0;
         localDW.pbolus_timer = 0;
@@ -800,7 +799,7 @@ public class Discovery_INFUSION_MGR_Functional {
         localB.IM_OUT_Current_System_Mode = 0;
         localB.IM_OUT_New_Infusion = false;
         localB.IM_OUT_Log_Message_ID = 0;
-        localB.IM_OUT_Actual_Infusion_Duration = 0;
+        localB.IM_OUT_Actual_Infusion_Duration = 0;*/
     }
 
     /* Output and update for referenced model: 'INFUSION_MGR_Functional' */
@@ -1263,7 +1262,7 @@ public class Discovery_INFUSION_MGR_Functional {
         rty_IM_OUT.Actual_Infusion_Duration = Actual_Infusion_Duration;
 
         if (symVar) {
-            INFUSION_MGR_Functional_Init(localB, localDW);
+            //INFUSION_MGR_Functional_Init(localB, localDW);
             INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
                     rtu_OP_CMD_IN, rtu_PATIENT_IN,
                     rtu_CONFIG_IN, rtu_ALARM_IN,

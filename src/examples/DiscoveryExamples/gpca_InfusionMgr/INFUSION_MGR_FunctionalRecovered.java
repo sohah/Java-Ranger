@@ -789,7 +789,7 @@ public class INFUSION_MGR_FunctionalRecovered {
     static void INFUSION_MGR_Functional_Init(B_INFUSION_MGR_Functional_c_T localB,
                                              DW_INFUSION_MGR_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Infusion Manager Sub-System' */
-        localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
+        /*localDW.is_Infusion_Manager = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_THERAPY = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_Arbiter_c = 0;
         localDW.is_Arbiter_d = INFUSION_MGR_Functional_IN_NO_ACTIVE_CHILD;
@@ -814,12 +814,13 @@ public class INFUSION_MGR_FunctionalRecovered {
         localDW.lock_timer = 0;
         localDW.number_pbolus = 0;
         localDW.inPatientBolus = false;
-        localDW.sbolusInter_timer = 0;
+        localDW.sbolusInter_timer = 0;*/
+        /*
         localB.IM_OUT_Flow_Rate_Commanded = 0;
         localB.IM_OUT_Current_System_Mode = 0;
         localB.IM_OUT_New_Infusion = false;
         localB.IM_OUT_Log_Message_ID = 0;
-        localB.IM_OUT_Actual_Infusion_Duration = 0;
+        localB.IM_OUT_Actual_Infusion_Duration = 0;*/
     }
 
     /* Output and update for referenced model: 'INFUSION_MGR_Functional' */
@@ -1187,6 +1188,18 @@ public class INFUSION_MGR_FunctionalRecovered {
                 rtu_SYS_STAT_IN, rty_IM_OUT,
                 localB, localDW);
 
+        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                rtu_CONFIG_IN, rtu_ALARM_IN,
+                rtu_SYS_STAT_IN, rty_IM_OUT,
+                localB, localDW);
+
+        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                rtu_CONFIG_IN, rtu_ALARM_IN,
+                rtu_SYS_STAT_IN, rty_IM_OUT,
+                localB, localDW);
+
 
         boolean checkCondition;
         boolean checkOutput;
@@ -1217,12 +1230,18 @@ public class INFUSION_MGR_FunctionalRecovered {
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
+        Debug.printPC("pc before violation");
+        //assert (!checkCondition || checkOutput);
         if (checkCondition && !checkOutput) {
-            *//*Debug.printPC("pc for the violation");
-            System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));*//*
-            assert false;
-        }*/
+            Debug.printPC("pc for the violation");
+            System.out.println(Debug.getSymbolicBooleanValue(rtu_TLM_MODE_IN.System_On));
+            System.out.println(Debug.getSymbolicIntegerValue(rtu_ALARM_IN.Highest_Level_Alarm ));
+            System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));
+            System.out.println(Debug.getSymbolicIntegerValue(rtu_CONFIG_IN.Flow_Rate_KVO));
 
+            assert false;
+        }
+*/
   /*      //Prop5: configured_lt_1_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_CONFIG_IN.Configured < 1));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
@@ -1283,15 +1302,14 @@ public class INFUSION_MGR_FunctionalRecovered {
         assert (!checkCondition || checkOutput);
 */
 
-        //Prop14: mode_paused_implies_infusion_rate_kvo
-        /*checkCondition =
-                rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
+        //Prop14: mode_paused_implies_infusion_rate_kvo -- this is only  valid on the initial step, but false afterwards.
+        /*checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);*/
-
+        assert (!checkCondition || checkOutput);
+*/
 
         /************Discovery properties**********/
-        //assert ((rty_IM_OUT.Current_System_Mode > -1) && (rty_IM_OUT.Commanded_Flow_Rate == 0));
+
     }
 
     public static void main(String[] args) {

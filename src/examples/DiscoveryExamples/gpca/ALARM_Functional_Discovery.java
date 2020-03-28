@@ -2,7 +2,7 @@ package DiscoveryExamples.gpca;
 
 import static DiscoveryExamples.gpca.Div_s32.div_s32;
 
-public class Discovery_ALARM_Functional {
+public class ALARM_Functional_Discovery {
     static final int ALARM_Functional_IN_AlarmDisplay = 1;
     static final int ALARM_Functional_IN_Alarms = 1;
     static final int ALARM_Functional_IN_Check = 1;
@@ -1441,14 +1441,14 @@ public class Discovery_ALARM_Functional {
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
             /* Entry 'counting': '<S1>:4752' */
             localDW.pausedtimer++;
-        } else if (localB.Current_System_Mode == 8){
+        } else if (localB.Current_System_Mode == 8) {
             /* Transition: '<S1>:4759' */
             localDW.pausedtimer = 0;
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
 
             /* Entry 'counting': '<S1>:4752' */
             localDW.pausedtimer++;
-        } else{
+        } else {
             /* Transition: '<S1>:4753' */
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_No;
 
@@ -1766,8 +1766,7 @@ public class Discovery_ALARM_Functional {
         /* BusCreator: '<Root>/BusConversion_InsertedFor_ALARM_OUT_at_inport_0' */
         rty_ALARM_OUT.Is_Audio_Disabled =
                 localB.ALARM_OUT_Display_Audio_Disabled_Indicator;
-        rty_ALARM_OUT.Notification_Message =
-                localB.ALARM_OUT_Display_Notification_Command;
+        rty_ALARM_OUT.Notification_Message = localB.ALARM_OUT_Display_Notification_Command;
         rty_ALARM_OUT.Audio_Notification_Command =
                 localB.ALARM_OUT_Audio_Notification_Command;
         rty_ALARM_OUT.Highest_Level_Alarm = localB.ALARM_OUT_Highest_Level_Alarm;
@@ -2342,7 +2341,7 @@ public class Discovery_ALARM_Functional {
         localDW.pausedtimer = pausedtimer;
 
         if (symVar) {
-            ALARM_Functional_Init(localB, localDW);
+            //ALARM_Functional_Init(localB, localDW);
 
             ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
                     rtu_sensor_in,
