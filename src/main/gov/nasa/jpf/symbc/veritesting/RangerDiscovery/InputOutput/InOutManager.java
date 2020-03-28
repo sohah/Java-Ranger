@@ -5,6 +5,7 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -71,6 +72,8 @@ public class InOutManager {
     ArrayList<Equation> typeConversionEq = new ArrayList<>();
 
     ArrayList<VarDecl> conversionLocalList = new ArrayList<>();
+
+    public SSAOutToStateInput ssaOutToStateInputInf = new SSAOutToStateInput();
 
     public ArrayList<Equation> getTypeConversionEq() {
         return typeConversionEq;
@@ -171,6 +174,8 @@ public class InOutManager {
             discoverContractOutputGPCA();
             doContractOutputTypeConversion();
 
+            discoverSsaOutToStateInputGPCA();
+
         } else if (Config.spec.equals("infusion")) {
             discoverFreeInputInfusion();
             doFreeTypeConversion();
@@ -183,6 +188,8 @@ public class InOutManager {
 
             discoverContractOutputInfusion();
             doContractOutputTypeConversion();
+
+            discoverSsaOutToStateInputInf();
 
         } else if (Config.spec.equals("vote")) {
             discoverFreeInputVote();
@@ -484,6 +491,14 @@ public class InOutManager {
     }
 
 //====================== GPCA ====================================
+
+    private void discoverSsaOutToStateInputGPCA(){
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", "Is_Audio_Disabled_103_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", "Notification_Message_104_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", "Audio_Notification_Command_105_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", "Highest_Level_Alarm_106_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", "Log_Message_ID5_107_SYMINT");
+    }
 
     private void discoverContractOutputGPCA() {
 
@@ -1030,6 +1045,15 @@ public class InOutManager {
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
     // the method output of the implementation, instead it is the output of the to-be-created r_wrapper node.
 
+    //used during the range value analysis
+    private void discoverSsaOutToStateInputInf() {
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", "Commanded_Flow_Rate_54_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", "Current_System_Mode_55_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", "New_Infusion_56_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", "Log_Message_ID4_57_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", "Actual_Infusion_Duration_58_SYMINT");
+    }
+
     private void discoverContractOutputInfusion() {
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", NamedType.INT);
@@ -1528,5 +1552,9 @@ public class InOutManager {
 
     public int getContractOutputCount() {
         return contractOutput.size;
+    }
+
+    public String varOutNameByIndex(int index) {
+        return contractOutput.varNameForIndex(index);
     }
 }

@@ -277,4 +277,8 @@ public class SpecInOutManager {
     public SpecInputOutput getInOutput() {
         return inOutputVars;
     }
+
+    public int indexOfOutputVar(String varName){
+        return inOutputVars.indexOf(varName);
+    }
 }

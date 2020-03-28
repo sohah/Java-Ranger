@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Contract;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.InOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation.ToLutre;
@@ -44,12 +45,12 @@ public class CounterExampleQuery extends ForAllQuery {
         CounterExampleQuery.mainNode = null;
     }
 
-    public CounterExampleQuery(DynamicRegion dynRegion, Program program, Contract contract) {
+    public CounterExampleQuery(Program program) {
 
         //generating rNode and rWrapper
 
-        rNode = ToLutre.generateRnode(dynRegion, contract);
-        rWrapper = ToLutre.generateRwrapper(contract.rInOutManager);
+        rNode = ToLutre.generateRnode(DiscoverContract.dynRegion, DiscoverContract.contract);
+        rWrapper = ToLutre.generateRwrapper(DiscoverContract.contract.rInOutManager);
 
         //generating nodes, const, types, etc from the spec
 
