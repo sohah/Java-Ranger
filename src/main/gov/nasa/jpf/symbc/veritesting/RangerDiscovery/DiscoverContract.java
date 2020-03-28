@@ -152,7 +152,7 @@ public class DiscoverContract {
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
             String mutationDir = "../src/DiscoveryExamples/mutants";
-            ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir);
+            ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir, contract.tInOutManager);
             System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
 
         } else {

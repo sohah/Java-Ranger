@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import jkind.lustre.BinaryOp;
 import jkind.lustre.Expr;
 import jkind.lustre.Node;
@@ -61,7 +62,8 @@ public class MutationUtils {
     }
 
     public static ArrayList<MutationResult> createSpecMutants(final Program originalProgram,
-                                                               final String mutationDirectory) {
+                                                              final String mutationDirectory,
+                                                              SpecInOutManager tInOutManager) {
         Node mainNode = null;
         for (Node n: originalProgram.nodes) {
             if (n.id.equals("main")) {
@@ -85,19 +87,22 @@ public class MutationUtils {
                 mutationDirectory + "/origSpec");
 
         MutationType[] mutationTypes = new MutationType[]{
-                MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT};
+                MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT, MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
-            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory));
+            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory, tInOutManager));
         }
         return mutationResults;
     }
 
-    private static ArrayList<MutationResult> applyMutation(final Program originalProgram, final MutationType mutationType,
-                                                int mutationIndex, String mutationDirectory) {
+    private static ArrayList<MutationResult> applyMutation(final Program originalProgram,
+                                                           final MutationType mutationType,
+                                                           int mutationIndex,
+                                                           String mutationDirectory,
+                                                           SpecInOutManager tInOutManager) {
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
-            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex);
+            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, tInOutManager);
             Expr mutatedExpr = originalProgram.nodes.get(0).equations.get(0).expr.accept(mutateExpr);
             if (!mutateExpr.didMutation()) {
                 break;
@@ -125,6 +130,8 @@ public class MutationUtils {
                 return "LOR";
             case RELATIONAL_OP_REPLACEMENT:
                 return "ROR";
+            case REPAIR_EXPR_MUT:
+                return "REXPR";
         }
     }
 
