@@ -545,8 +545,7 @@ public class ALARM_Functional_Recovered {
 
 
     /* Funcztion for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_CheckAlarm(B_ALARM_Functional_c_T localB,
-                                            DW_ALARM_Functional_f_T localDW) {
+    static void ALARM_Functional_CheckAlarm(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
         int overInfusion;
 
         /* During 'CheckAlarm': '<S1>:3953' */
@@ -601,8 +600,8 @@ public class ALARM_Functional_Recovered {
             /* During 'Yes': '<S1>:4220' */
             if ((localDW.cancelAlarm == 2) && (!(localB.Battery_Depleted ||
                     localB.RTC_In_Error || localB.CPU_In_Error ||
-                            localB.Memory_Corrupted || localB.Pump_Too_Hot ||
-                                    localB.Watchdog_Interrupted))) {
+                    localB.Memory_Corrupted || localB.Pump_Too_Hot ||
+                    localB.Watchdog_Interrupted))) {
                 /* Transition: '<S1>:4221' */
                 localDW.is_IsHardwareError = ALARM_Functional_IN_No;
             }
@@ -651,9 +650,8 @@ public class ALARM_Functional_Recovered {
 
             case ALARM_Functional_IN_Monitor:
                 /* During 'Monitor': '<S1>:4053' */
-                if ((overInfusion == 1) || ((int)localDW.overInfusionTimer >
-                        ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion)))
-                {
+                if ((overInfusion == 1) || ((int) localDW.overInfusionTimer >
+                        ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion))) {
                     /* Transition: '<S1>:4047' */
                     localDW.overInfusionTimer = 0;
 
@@ -769,8 +767,7 @@ public class ALARM_Functional_Recovered {
         /* During 'IsLowReservoir': '<S1>:4091' */
         if (localDW.is_IsLowReservoir == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4095' */
-            if (localB.In_Therapy && (localB.Reservoir_Volume < localB.Low_Reservoir))
-            {
+            if (localB.In_Therapy && (localB.Reservoir_Volume < localB.Low_Reservoir)) {
                 /* Transition: '<S1>:4093' */
                 localDW.is_IsLowReservoir = ALARM_Functional_IN_Yes;
             }
@@ -786,7 +783,7 @@ public class ALARM_Functional_Recovered {
         ALARM_Functional_Level1(localB, localDW);
 
         /* During 'SetAlarmStatus': '<S1>:4018' */
-        localDW.currentAlarm = (int)ALARM_Functional_setCurrentAlarm(localDW);
+        localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
         localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
                 (localDW);
     }
@@ -848,7 +845,7 @@ public class ALARM_Functional_Recovered {
 
             /* Exit Internal 'CheckAlarm': '<S1>:3953' */
             /* Exit 'SetAlarmStatus': '<S1>:4018' */
-            localDW.currentAlarm = (int)ALARM_Functional_setCurrentAlarm(localDW);
+            localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
             localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
                     (localDW);
             localDW.cancelAlarm = 0;
@@ -1161,10 +1158,9 @@ public class ALARM_Functional_Recovered {
                             /* Entry 'ON': '<S1>:3938' */
                             localB.ALARM_OUT_Audio_Notification_Command = localB.Audio_Level;
                         } else {
-                            if (((int)localDW.audioTimer >
+                            if (((int) localDW.audioTimer >
                                     ALARM_Functional_Step_Scaling_Factor
-                                            (localB.Audio_Enable_Duration)) || (localB.Disable_Audio == 0))
-                            {
+                                            (localB.Audio_Enable_Duration)) || (localB.Disable_Audio == 0)) {
                                 /* Transition: '<S1>:3936' */
                                 /* Transition: '<S1>:3928' */
                                 /* Exit 'Silenced': '<S1>:3952' */
@@ -1214,7 +1210,7 @@ public class ALARM_Functional_Recovered {
         /* Entry Internal 'IsHardwareError': '<S1>:4217' */
         if (localB.Battery_Depleted || localB.RTC_In_Error || localB.CPU_In_Error ||
                 localB.Memory_Corrupted || localB.Pump_Too_Hot ||
-                        localB.Watchdog_Interrupted) {
+                localB.Watchdog_Interrupted) {
             /* Transition: '<S1>:4224' */
             localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
         } else {
@@ -1309,8 +1305,7 @@ public class ALARM_Functional_Recovered {
         localDW.is_active_IsLowReservoir = 1;
 
         /* Entry Internal 'IsLowReservoir': '<S1>:4091' */
-        if (localB.In_Therapy && (localB.Reservoir_Volume < localB.Low_Reservoir))
-        {
+        if (localB.In_Therapy && (localB.Reservoir_Volume < localB.Low_Reservoir)) {
             /* Transition: '<S1>:4205' */
             localDW.is_IsLowReservoir = ALARM_Functional_IN_Yes;
         } else {
@@ -1370,8 +1365,7 @@ public class ALARM_Functional_Recovered {
 
         /* Entry Internal 'IsIdleTimeExceeded': '<S1>:4149' */
         if ((localB.Current_System_Mode == 1) &&
-                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration) == 1.0))
-        {
+                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration) == 1.0)) {
             /* Transition: '<S1>:4749' */
             localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_Yes;
         } else if (localB.Current_System_Mode == 1) {
@@ -1394,8 +1388,7 @@ public class ALARM_Functional_Recovered {
         /* Entry Internal 'IsPausedTimeExceeded': '<S1>:4155' */
         if (((localB.Current_System_Mode == 6) || (localB.Current_System_Mode == 7) ||
                 (localB.Current_System_Mode == 8)) &&
-                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration) == 1.0))
-        {
+                (ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration) == 1.0)) {
             /* Transition: '<S1>:4760' */
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
         } else if ((localB.Current_System_Mode == 6) || (localB.Current_System_Mode ==
@@ -1417,7 +1410,7 @@ public class ALARM_Functional_Recovered {
         localDW.is_active_IsConfigTimeWarning = 1;
 
         /* Entry Internal 'IsConfigTimeWarning': '<S1>:4161' */
-        if ((int)localB.Config_Timer > ALARM_Functional_Step_Scaling_Factor
+        if ((int) localB.Config_Timer > ALARM_Functional_Step_Scaling_Factor
                 (localB.Config_Warning_Duration)) {
             /* Transition: '<S1>:4207' */
             localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_Yes;
@@ -1474,14 +1467,13 @@ public class ALARM_Functional_Recovered {
         localDW.is_active_SetAlarmStatus = 1;
 
         /* Entry 'SetAlarmStatus': '<S1>:4018' */
-        localDW.currentAlarm = (int)ALARM_Functional_setCurrentAlarm(localDW);
+        localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
         localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
                 (localDW);
     }
 
     /* Function for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_enter_internal_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW)
-    {
+    static void ALARM_Functional_enter_internal_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
         /* Entry Internal 'Alarms': '<S1>:3907' */
         localDW.is_active_CheckAlarm = 1;
         ALARM_Functional_enter_internal_CheckAlarm(localB, localDW);
@@ -1538,7 +1530,8 @@ public class ALARM_Functional_Recovered {
 
             /* Entry 'OFF': '<S1>:3937' */
             localB.ALARM_OUT_Audio_Notification_Command = 0;
-        }}
+        }
+    }
 
 
     /* Initial conditions for referenced model: 'ALARM_Functional' */
