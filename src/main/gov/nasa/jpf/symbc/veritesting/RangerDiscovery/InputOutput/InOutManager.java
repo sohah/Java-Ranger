@@ -174,7 +174,7 @@ public class InOutManager {
             discoverContractOutputGPCA();
             doContractOutputTypeConversion();
 
-            discoverSsaOutToStateInputGPCA();
+            //discoverSsaOutToStateInputGPCA();
 
         } else if (Config.spec.equals("infusion")) {
             discoverFreeInputInfusion();
@@ -189,7 +189,7 @@ public class InOutManager {
             discoverContractOutputInfusion();
             doContractOutputTypeConversion();
 
-            discoverSsaOutToStateInputInf();
+            //discoverSsaOutToStateInputInf();
 
         } else if (Config.spec.equals("vote")) {
             discoverFreeInputVote();
@@ -492,10 +492,10 @@ public class InOutManager {
 
 //====================== GPCA ====================================
 
-    private void discoverSsaOutToStateInputGPCA(){
+    private void discoverSsaOutToStateInputGPCA() {
         ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", "Is_Audio_Disabled_103_SYMINT");
         ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", "Notification_Message_104_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", "Audio_Notification_Command_105_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.52", "Audio_Notification_Command_105_SYMINT");
         ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", "Highest_Level_Alarm_106_SYMINT");
         ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", "Log_Message_ID5_107_SYMINT");
     }
@@ -508,8 +508,8 @@ public class InOutManager {
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", NamedType.INT);
         contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.52", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.52", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", NamedType.INT);
         contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", new IntExpr(0));
@@ -585,8 +585,10 @@ public class InOutManager {
         stateInput.add("localB_Flow_Rate_High_112_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_Low_113_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_114_SYMINT", NamedType.INT);
-        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
+
+
         stateInput.add("localB_Audio_Enable_Duration_115_SYMINT", NamedType.INT);
+        stateInput.add("localB_Audio_Level_116_SYMINT", NamedType.INT);
         stateInput.add("localB_Config_Warning_Duration_117_SYMINT", NamedType.INT);
         stateInput.add("localB_Low_Reservoir_118_SYMINT", NamedType.INT);
         stateInput.add("localB_Max_Duration_Over_Infusion_119_SYMINT", NamedType.INT);
@@ -608,6 +610,7 @@ public class InOutManager {
         stateInput.add("localB_Logging_Failed_135_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Infusion_Initiate_136_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Notification_Cancel_137_SYMINT", NamedType.BOOL);
+        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
 
         stateInput.add("localB_Air_In_Line_139_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Occlusion_140_SYMINT", NamedType.BOOL);
@@ -725,11 +728,11 @@ public class InOutManager {
         stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
-
         stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", new IntExpr(0));
+
+        stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Level.1.3.52", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Level.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", new IntExpr(0));
@@ -741,8 +744,7 @@ public class InOutManager {
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52",
-                new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", new IntExpr(0));
@@ -766,19 +768,16 @@ public class InOutManager {
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Timer.1.3.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1" +
-                ".12.52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1" + ".12.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24" +
-                ".52", new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24" + ".52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", NamedType.INT);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", new IntExpr(0));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52",
-                new IntExpr(0));
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52", new IntExpr(0));
 
 
         stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.10.52", NamedType.INT);
@@ -798,6 +797,9 @@ public class InOutManager {
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", NamedType.BOOL);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", new BoolExpr(false));
+
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
 
         stateOutput.add(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", NamedType.BOOL);
         stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", new BoolExpr(false));
