@@ -1049,29 +1049,29 @@ public class InOutManager {
 
     //used during the range value analysis
     private void discoverSsaOutToStateInputInf() {
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", "Commanded_Flow_Rate_54_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", "Current_System_Mode_55_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", "New_Infusion_56_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", "Log_Message_ID4_57_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", "Actual_Infusion_Duration_58_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", "Commanded_Flow_Rate_54_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", "Current_System_Mode_55_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", "New_Infusion_56_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", "Log_Message_ID4_57_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", "Actual_Infusion_Duration_58_SYMINT");
     }
 
     private void discoverContractOutputInfusion() {
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", new BoolExpr(false));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", NamedType.BOOL);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", new BoolExpr(false));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", new IntExpr(0));
 
     }
 
@@ -1203,153 +1203,153 @@ public class InOutManager {
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputInfusion() {
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Configured.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Configured.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Configured.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Configured.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.149.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.149.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.159.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.159.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.135.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.135.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.148.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.148.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.25.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.25.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.29.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.29.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Actual_Infusion_Duration.1.32.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + "IM_OUT_Actual_Infusion_Duration.1.32.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Actual_Infusion_Duration.1.37.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + "IM_OUT_Actual_Infusion_Duration.1.37.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.21.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.21.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.26.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.26.67", new BoolExpr(false));
 
         //localDW
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.12.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.12.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.13.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.13.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.26.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.26.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.29.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.29.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_THERAPY.1.45.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_THERAPY.1.45.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_THERAPY.1.52.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_THERAPY.1.52.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter.1.94.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter.1.94.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter.1.109.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter.1.109.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.47.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.47.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.65.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.65.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.47.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.48.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.65.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.65.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_BASAL.1.36.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_BASAL.1.36.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_BASAL.1.49.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_BASAL.1.49.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_BASAL.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + "is_active_BASAL.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_BASAL.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + "is_active_BASAL.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.60.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.60.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.71.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.71.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_PATIENT.1.57.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_PATIENT.1.57.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_PATIENT.1.73.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_PATIENT.1.73.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.46.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.46.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.59.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.59.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_timer.1.52.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_timer.1.52.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_timer.1.64.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_timer.1.64.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".pbolus_timer.1.62.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".pbolus_timer.1.62.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".pbolus_timer.1.78.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".pbolus_timer.1.78.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".lock_timer.1.42.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".lock_timer.1.42.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".lock_timer.1.53.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".lock_timer.1.53.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".number_pbolus.1.42.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".number_pbolus.1.42.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".number_pbolus.1.52.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".number_pbolus.1.52.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.57.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.57.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.62.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.62.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_req.1.46.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_req.1.46.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_req.1.63.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_req.1.63.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".inPatientBolus.1.43.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".inPatientBolus.1.43.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".inPatientBolus.1.56.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".inPatientBolus.1.56.67", new BoolExpr(false));
     }
 
     //=========================== Even ============================
