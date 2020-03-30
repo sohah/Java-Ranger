@@ -92,7 +92,6 @@ public class DiscoverContract {
             assert false;
             e.printStackTrace();
         }
-
     }
 
 
@@ -154,9 +153,9 @@ public class DiscoverContract {
             flatExtendedPgm = FlattenNodes.execute(inputExtendedPgm);
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
-            String mutationDir = "../src/DiscoveryExamples/mutants";
+            /*String mutationDir = "../src/DiscoveryExamples/mutants";
             ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir);
-            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
+            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");*/
 
         } else {
             originalProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
@@ -169,15 +168,21 @@ public class DiscoverContract {
 /*
 
         List<VarDecl> parameters = new ArrayList<>();
-        parameters.add(new VarDecl("Commanded_Flow_Rate", NamedType.INT));
+        parameters.add(new VarDecl("out_Is_Audio_Disabled", NamedType.INT));
+        parameters.add(new VarDecl("out_Notification_Message", NamedType.INT));
+        parameters.add(new VarDecl("out_Audio_Notification_Command", NamedType.INT));
+        parameters.add(new VarDecl("out_Highest_Level_Alarm", NamedType.INT));
+        parameters.add(new VarDecl("out_Log_Message_ID5", NamedType.INT));
+
+*/
+        /*parameters.add(new VarDecl("Commanded_Flow_Rate", NamedType.INT));
         parameters.add(new VarDecl("Current_System_Mode", NamedType.INT));
         parameters.add(new VarDecl("New_Infusion", NamedType.BOOL));
         parameters.add(new VarDecl("Log_Message_ID", NamedType.INT));
-        parameters.add(new VarDecl("Actual_Infusion_Duration", NamedType.INT));
-        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
+        parameters.add(new VarDecl("Actual_Infusion_Duration", NamedType.INT));*/
+        /*GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
         System.out.println("dynamic repair definition");
         System.out.println(genericRepairNode.nodeDefinition);
-
 */
 
 
