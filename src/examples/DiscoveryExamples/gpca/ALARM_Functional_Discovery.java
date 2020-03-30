@@ -468,7 +468,7 @@ public class ALARM_Functional_Discovery {
         if (localDW.is_IsDoorOpen == ALARM_Functional_IN_Yes) {
             /* Transition: '<S1>:3997' */
             s = 8;
-            localDW.Max_Alarm_Level = 2; //TODO: Soha Mutated that for the sake of the expirement of the repair motivational example
+            localDW.Max_Alarm_Level = 3; //TODO: Soha Mutated that for the sake of the expirement of the repair motivational example
         } else {
             /* Transition: '<S1>:3996' */
         }

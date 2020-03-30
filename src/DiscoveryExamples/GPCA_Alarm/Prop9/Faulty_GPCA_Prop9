@@ -135,7 +135,7 @@ let  -- Prop9: alarm_value_range
 -- fault: negating implication outcome
 
     p1 = true -> (System_On ) =>
-repair(not ((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)), discover_binary_Bool_0_Int_4_Terms2
+repair(((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)), discover_binary_Bool_0_Int_4_Terms2
 (out_Is_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
       --%PROPERTY p1;

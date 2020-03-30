@@ -135,7 +135,7 @@ let  -- Prop6: alarm_gte_L3_causes_audio_output_EQ_audio_level
 -- fault: negating implication outcome
 
     p1 = true -> (System_On and (out_Highest_Level_Alarm>=3) and (Disable_Audio =0)) =>
-repair(not ((out_Audio_Notification_Command = Audio_Level) and (out_Is_Audio_Disabled=0)),
+repair(((out_Audio_Notification_Command = Audio_Level) and (out_Is_Audio_Disabled=0)),
 discover_binary_Bool_0_Int_4_Terms2 (out_Is_Audio_Disabled, out_Notification_Message,out_Highest_Level_Alarm,
 out_Log_Message_ID5));
       --%PROPERTY p1;
