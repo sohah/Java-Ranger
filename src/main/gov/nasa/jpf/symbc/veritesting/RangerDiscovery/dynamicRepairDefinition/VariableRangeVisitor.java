@@ -19,11 +19,13 @@ public class VariableRangeVisitor extends AstMapVisitor {
     public static List<String> interestedVarName; //variable names that we realize are ssa instances that we need to traverse them
 
     public static String relatedSymInput;
+
     public VariableRangeVisitor(ExprVisitor<Expression> exprVisitor, String varName) {
         super(exprVisitor);
         interestedVarName = new ArrayList<>();
         interestedVarName.add(varName);
         relatedSymInput = DiscoverContract.contract.rInOutManager.ssaOutToStateInputInf.matchingOutput(varName);
+        assert relatedSymInput != null;
     }
 
     @Override

@@ -174,7 +174,7 @@ public class InOutManager {
             discoverContractOutputGPCA();
             doContractOutputTypeConversion();
 
-            //discoverSsaOutToStateInputGPCA();
+            discoverSsaOutToStateInputGPCA();
 
         } else if (Config.spec.equals("infusion")) {
             discoverFreeInputInfusion();
@@ -189,7 +189,7 @@ public class InOutManager {
             discoverContractOutputInfusion();
             doContractOutputTypeConversion();
 
-            //discoverSsaOutToStateInputInf();
+            discoverSsaOutToStateInputInf();
 
         } else if (Config.spec.equals("vote")) {
             discoverFreeInputVote();

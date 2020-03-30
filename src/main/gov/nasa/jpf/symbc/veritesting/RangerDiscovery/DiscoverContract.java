@@ -112,16 +112,6 @@ public class DiscoverContract {
     private static void repairSpec() throws IOException {
         String fileName;
 
-/*
-        List<VarDecl> parameters = new ArrayList<>();
-        parameters.add(new VarDecl("x", NamedType.INT));
-        parameters.add(new VarDecl("a", NamedType.BOOL));
-        parameters.add(new VarDecl("y", NamedType.INT));
-        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
-//        System.out.println("dynamic repair definition");
-//        System.out.println(genericRepairNode.nodeDefinition);
-*/
-
         if (Config.repairInitialValues)
             System.out.println("Repair includes initial values");
         else
@@ -153,9 +143,9 @@ public class DiscoverContract {
             flatExtendedPgm = FlattenNodes.execute(inputExtendedPgm);
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
-            /*String mutationDir = "../src/DiscoveryExamples/mutants";
-            ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir);
-            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");*/
+            String mutationDir = "../src/DiscoveryExamples/mutants";
+            ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir, contract.tInOutManager);
+            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
 
         } else {
             originalProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
