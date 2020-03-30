@@ -4,7 +4,7 @@ package DiscoveryExamples.gpca;
 import static DiscoveryExamples.gpca.Div_s32.div_s32;
 
 
-public class ALARM_Functional {
+public class ALARM_Functional_Recovered {
     static final int ALARM_Functional_IN_AlarmDisplay = 1;
     static final int ALARM_Functional_IN_Alarms = 1;
     static final int ALARM_Functional_IN_Check = 1;
