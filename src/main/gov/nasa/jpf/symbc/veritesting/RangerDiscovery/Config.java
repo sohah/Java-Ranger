@@ -81,6 +81,7 @@ public class Config {
     //this contains specific equations we would like to repair, instead of repairing the whole thing. This is now used for testing only.
     public static Integer[] equationNumToRepair = {1};
     public static boolean allEqRepair = true;
+    private static boolean firstTime = true;
 
     static String mutationDir = "../src/DiscoveryExamples/mutants";
 
@@ -89,14 +90,16 @@ public class Config {
         DiscoverContract.contract = new Contract();
         tFileName = folderName + currFaultySpec;
 
-        if(mutationOn) {
-            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-            ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-            faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
-        }else{
-            faultySpecs = new String[]{currFaultySpec};
+        if (firstTime) {
+            firstTime = false;
+            if (mutationOn) {
+                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
+                faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
+            } else {
+                faultySpecs = new String[]{currFaultySpec};
+            }
         }
-
         if ((faultySpecIndex) >= faultySpecs.length)
             return false;
 
