@@ -53,6 +53,8 @@ public class DiscoverContract {
     public static Contract contract;
     public static DynamicRegion dynRegion;
 
+    public static boolean specAlreadyMatching = false;
+
 /***** begin of unused vars***/
     /**
      * currently unused because we assume we have a way to find the input and output.
@@ -70,7 +72,7 @@ public class DiscoverContract {
         DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
         try {
-            while (Config.canSetup()) {
+            while (!specAlreadyMatching && Config.canSetup()) {
                 long singleTermTime = System.currentTimeMillis();
 
                 System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
@@ -134,11 +136,6 @@ public class DiscoverContract {
 
             inputExtendedPgm = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
                     "UTF-8"));
-/*
-            String mutationDir = "../src/DiscoveryExamples/mutants";
-            ArrayList<MutationResult> mutationResults = createSpecMutants(inputExtendedPgm, mutationDir, contract.tInOutManager);
-            inputExtendedPgm = processMutants(mutationResults, inputExtendedPgm, currFaultySpec);
-*/
 
 
             originalNodeKey = defineNodeKeys(inputExtendedPgm);
@@ -179,9 +176,10 @@ public class DiscoverContract {
                         Program minimalRepair = MinimalRepairDriver.execute(counterExampleQuery.getCounterExamplePgm
                                         (), originalProgram,
                                 aRepairSynthesis, flatExtendedPgm);
-                    } else
+                    } else {
+                        specAlreadyMatching = true;
                         System.out.println("Contract Matching! Printing repair and aborting!");
-
+                    }
                     //System.out.println(getTnodeFromStr(fileName));
                     DiscoverContract.repaired = true;
                     repairStatistics.printSpecStatistics();

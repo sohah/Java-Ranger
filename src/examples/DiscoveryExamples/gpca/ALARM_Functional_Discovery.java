@@ -468,7 +468,7 @@ public class ALARM_Functional_Discovery {
         if (localDW.is_IsDoorOpen == ALARM_Functional_IN_Yes) {
             /* Transition: '<S1>:3997' */
             s = 8;
-            localDW.Max_Alarm_Level = 2; //TODO: Soha Mutated that for the sake of the expirement of the repair motivational example
+            localDW.Max_Alarm_Level = 3; //TODO: Soha Mutated that for the sake of the expirement of the repair motivational example
         } else {
             /* Transition: '<S1>:3996' */
         }
@@ -791,8 +791,7 @@ public class ALARM_Functional_Discovery {
     }
 
     /* Function for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_Alarms(B_ALARM_Functional_c_T localB,
-                                        DW_ALARM_Functional_f_T localDW) {
+    static void ALARM_Functional_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
         /* During 'Alarms': '<S1>:3907' */
         if (!localB.System_On) {
             /* Transition: '<S1>:3901' */
@@ -839,8 +838,7 @@ public class ALARM_Functional_Discovery {
             /* Exit Internal 'CheckAlarm': '<S1>:3953' */
             /* Exit 'SetAlarmStatus': '<S1>:4018' */
             localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
-            localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
-                    (localDW);
+            localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm(localDW);
             localDW.cancelAlarm = 0;
             localDW.is_active_SetAlarmStatus = 0;
 
@@ -1605,9 +1603,9 @@ public class ALARM_Functional_Discovery {
                                  Device_Sensor_Inputs rtu_SENSOR_IN,
                                  Device_Configuration_Inputs rtu_CONST_IN,
                                  System_Status_Outputs rtu_SYS_STAT_IN,
-                                 Config_Outputs rtu_CONFIG_IN, Alarm_Outputs
-                                         rty_ALARM_OUT, B_ALARM_Functional_c_T localB,
-                                 DW_ALARM_Functional_f_T localDW) {
+                                 Config_Outputs rtu_CONFIG_IN, Alarm_Outputs rty_ALARM_OUT,
+                                 B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
+
         /* BusSelector: '<Root>/BusConversion_InsertedFor_IM_IN_at_outport_0' */
         localB.Commanded_Flow_Rate = rtu_IM_IN.Commanded_Flow_Rate;
         localB.Current_System_Mode = rtu_IM_IN.Current_System_Mode;

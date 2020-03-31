@@ -26,6 +26,7 @@ contractDiscoveryOn = true
 spec = gpca
 specRepair = true
 repairMode = 2
+mutationEnabled=false
 
 SpecDirectory = GPCA_Alarm/Prop5
 faultySpec=Faulty_GPCA_Prop5

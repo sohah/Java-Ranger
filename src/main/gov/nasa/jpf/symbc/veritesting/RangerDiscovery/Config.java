@@ -57,7 +57,7 @@ public class Config {
     public static String currFaultySpec;
     public static String[] faultySpecs;
 
-    public static int faultySpecIndex = 1; //TODO: change that, now I am using this to avoid repairing -> operator
+    public static int faultySpecIndex = 0;
 
     public static boolean defaultBoolValue = false;
     public static int initialIntValue = 0;
@@ -71,7 +71,7 @@ public class Config {
     public static int costLimit = 10; // value entered by hand for now
 
     public static boolean printMutantDir = false;
-    public static boolean mutationOn = true;
+    public static boolean mutationEnabled = true;
 
     public static int faultyEquationNumber = 1;
 
@@ -92,11 +92,15 @@ public class Config {
 
         if (firstTime) {
             firstTime = false;
-            if (mutationOn) {
-                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+            if (mutationEnabled) {
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
                 faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
             } else {
+                if (origSpec.repairNodes.size() != 0) {
+                    System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
+                    assert false;
+                }
                 faultySpecs = new String[]{currFaultySpec};
             }
         }
