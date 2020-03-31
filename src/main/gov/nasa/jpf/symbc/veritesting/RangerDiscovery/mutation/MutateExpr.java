@@ -14,6 +14,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
     private final int previousMutationIndex;
     private final MutationType mutationType;
     private final SpecInOutManager tInOutManager;
+    public List<GenericRepairNode> repairNodes = new ArrayList<>();
 
     private int mutationIndex;
 
@@ -37,7 +38,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
     }
 
     BinaryOp applyBinaryOpMutation(BinaryOp origOp, BinaryOp[] mutatedOpArr) {
-        for (BinaryOp mutatedOp: mutatedOpArr) {
+        for (BinaryOp mutatedOp : mutatedOpArr) {
             if (shouldApplyMutation())
                 return mutatedOp;
         }
@@ -75,6 +76,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
             e.accept(idExprVisitor);
             List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
             GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls);
+            repairNodes.add(genericRepairNode);
             NodeCallExpr callExpr = genericRepairNode.callExpr;
             RepairExpr repairExpr = new RepairExpr(e, callExpr);
             return repairExpr;

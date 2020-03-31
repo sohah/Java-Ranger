@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import jkind.lustre.BinaryOp;
 import jkind.lustre.Expr;
@@ -17,7 +18,7 @@ public class MutationUtils {
 
     private static BinaryOp[] getMutationOps(final BinaryOp origOp, final BinaryOp[] allOps) {
         BinaryOp[] retOps = new BinaryOp[allOps.length - 1];
-        for(int i = 0, j = 0; i < allOps.length; i++) {
+        for (int i = 0, j = 0; i < allOps.length; i++) {
             if (allOps[i] != origOp) {
                 retOps[j++] = allOps[i];
             }
@@ -31,7 +32,8 @@ public class MutationUtils {
             case AND:
             case OR:
             case XOR:
-            case IMPLIES: return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+            case IMPLIES:
+                return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
             default:
                 return op;
         }
@@ -45,7 +47,8 @@ public class MutationUtils {
             case GREATER:
             case GREATEREQUAL:
             case EQUAL:
-            case NOTEQUAL: return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+            case NOTEQUAL:
+                return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
             default:
                 return op;
         }
@@ -65,7 +68,7 @@ public class MutationUtils {
                                                               final String mutationDirectory,
                                                               SpecInOutManager tInOutManager) {
         Node mainNode = null;
-        for (Node n: originalProgram.nodes) {
+        for (Node n : originalProgram.nodes) {
             if (n.id.equals("main")) {
                 mainNode = n;
             }
@@ -76,22 +79,23 @@ public class MutationUtils {
         }
         int mutationIndex = -1;
         File directory = new File(mutationDirectory);
-        if (! directory.exists()){
+        if (!directory.exists()) {
             if (!directory.mkdir()) {
                 throw new UnsupportedOperationException("Failed to create the mutants directory");
             }
             // If you require it to make the entire directory path including parents,
             // use directory.mkdirs(); here instead.
         }
-        writeUsingFileWriter(mainNode.equations.get(0).expr.toString(),
-                mutationDirectory + "/origSpec");
+        writeUsingFileWriter(mainNode.equations.get(0).expr.toString(), mutationDirectory + "/origSpec");
 
         MutationType[] mutationTypes = new MutationType[]{
                 MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT, MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
-        for(MutationType mutationType: mutationTypes) {
-            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory, tInOutManager));
+        for (MutationType mutationType : mutationTypes) {
+            if (mutationType == MutationType.REPAIR_EXPR_MUT)
+                mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory, tInOutManager));
         }
+        System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
     }
 
@@ -108,16 +112,15 @@ public class MutationUtils {
                 break;
             } else {
                 mutationIndex++;
-                writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory + "/mutatedSpec-"
-                        + mutationTypeToString(mutationType)
-                        + "-" + mutationIndex);
-                ret.add(new MutationResult(mutatedExpr, mutationIndex));
+                if (Config.printMutantDir)
+                    writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-" + mutationIndex);
+                ret.add(new MutationResult(mutatedExpr, mutationIndex, mutationType, mutateExpr.repairNodes));
             }
         }
         return ret;
     }
 
-    private static String mutationTypeToString(MutationType mutationType) {
+    public static String mutationTypeToString(MutationType mutationType) {
         switch (mutationType) {
             case OP_MUT:
             case LITERAL_MUT:
@@ -137,6 +140,7 @@ public class MutationUtils {
 
     /**
      * Use FileWriter when number of write operations are less
+     *
      * @param data
      */
     private static void writeUsingFileWriter(final String data, final String fileName) {
@@ -147,7 +151,7 @@ public class MutationUtils {
             fr.write(data);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             //close resources
             try {
                 fr.close();
@@ -156,7 +160,6 @@ public class MutationUtils {
             }
         }
     }
-
 
 
 }

@@ -91,7 +91,7 @@ public class MinimalRepairDriver {
                 System.out.println("Trying candidate #: " + candidateLoopCount);
 
                 String fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
-                writeToFile(fileName, tPrimeExistsQ.toString(), true);
+                writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
                 System.out.println("ThereExists Query of : " + fileName);
 
@@ -117,13 +117,13 @@ public class MinimalRepairDriver {
 
                         fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" +
                                 "rPrimeCandidate.lus";
-                        writeToFile(fileName, candTPrimePgm.toString(), true);
+                        writeToFile(fileName, candTPrimePgm.toString(), true, false);
 
                         forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
 
                         fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" +
                                 ".lus";
-                        writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true);
+                        writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 
 
                         singleQueryTime = System.currentTimeMillis();
