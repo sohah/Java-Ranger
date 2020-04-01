@@ -38,14 +38,17 @@ public class ALARM_Functional_Discovery {
             int div1 = div_s32(localB.Tolerance_Max, 100);
             int div2 = div_s32(localB.Tolerance_Min, 100);
 
+            int Commanded_Flow_Ratel = localB.Commanded_Flow_Rate;
+            int Flow_Ratel = localB.Flow_Rate;
+
             if (localB.Flow_Rate > localB.Flow_Rate_High) {
                 /* Transition: '<S1>:4063' */
                 ov = 1;
-            } else if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div1 + localB.Commanded_Flow_Rate) {
+            } else if (Flow_Ratel > Commanded_Flow_Ratel * div1 + Commanded_Flow_Ratel) {
                 /* Transition: '<S1>:4064' */
                 ov = 1;
             } else {
-                if (localB.Flow_Rate > localB.Commanded_Flow_Rate * div2 + localB.Commanded_Flow_Rate) {
+                if (Flow_Ratel > Commanded_Flow_Ratel * div2 + Commanded_Flow_Ratel) {
                     /* Transition: '<S1>:4065' */
                     ov = 2;
                 }
@@ -74,16 +77,17 @@ public class ALARM_Functional_Discovery {
             /* Transition: '<S1>:4139' */
             int div1 = div_s32(localB.Tolerance_Max, 100);
             int div2 = div_s32(localB.Tolerance_Min, 100);
+            int Flow_Ratel = localB.Flow_Rate;
+            int Commanded_Flow_Ratel = localB.Commanded_Flow_Rate;
+
             if (localB.Flow_Rate < localB.Flow_Rate_Low) {
                 /* Transition: '<S1>:4138' */
                 c = 1;
-            } else if (localB.Flow_Rate < localB.Commanded_Flow_Rate -
-                    localB.Commanded_Flow_Rate * div1) {
+            } else if (Flow_Ratel < Commanded_Flow_Ratel - Commanded_Flow_Ratel * div1) {
                 /* Transition: '<S1>:4140' */
                 c = 1;
             } else {
-                if (localB.Flow_Rate < localB.Commanded_Flow_Rate -
-                        localB.Commanded_Flow_Rate * div2) {
+                if (Flow_Ratel < Commanded_Flow_Ratel - Commanded_Flow_Ratel * div2) {
                     /* Transition: '<S1>:4142' */
                     c = 2;
                 }
@@ -118,27 +122,25 @@ public class ALARM_Functional_Discovery {
 
         /* During 'IsUnderInfusion': '<S1>:4114' */
         underInfusion = ALARM_Functional_checkUnderInfusion(localB);
-        if (localDW.is_IsUnderInfusion == ALARM_Functional_IN_Check)
+
+        if (localDW.is_IsUnderInfusion == ALARM_Functional_IN_Check) {
             /* During 'Check': '<S1>:4127' */
             if (underInfusion == 1) {
                 /* Transition: '<S1>:4119' */
                 localDW.is_IsUnderInfusion = ALARM_Functional_IN_Yes_o;
-
                 /* Entry 'Yes': '<S1>:4126' */
             } else {
                 if (underInfusion == 2) {
                     /* Transition: '<S1>:4121' */
                     localDW.underInfusionTimer = 0;
                     localDW.is_IsUnderInfusion = ALARM_Functional_IN_Monitor;
-
                     /* Entry 'Monitor': '<S1>:4128' */
                 }
             }
-        else if (localDW.is_IsUnderInfusion == ALARM_Functional_IN_Monitor) {
-
+        } else if (localDW.is_IsUnderInfusion == ALARM_Functional_IN_Monitor) {
             /* During 'Monitor': '<S1>:4128' */
-            int scale_factor1 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Under_Infusion);
-            if ((underInfusion == 1) || ((int) localDW.underInfusionTimer > scale_factor1)) {
+            int scalingFactor1 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Under_Infusion);
+            if ((underInfusion == 1) || ((int) localDW.underInfusionTimer > scalingFactor1)) {
                 /* Transition: '<S1>:4122' */
                 localDW.underInfusionTimer = 0;
                 localDW.is_IsUnderInfusion = ALARM_Functional_IN_Yes_o;
@@ -169,6 +171,7 @@ public class ALARM_Functional_Discovery {
             }
         }
 
+
         /* During 'IsFlowRateNotStable': '<S1>:4143' */
         if (localDW.is_IsFlowRateNotStable == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4148' */
@@ -187,10 +190,9 @@ public class ALARM_Functional_Discovery {
         /* During 'IsIdleTimeExceeded': '<S1>:4149' */
 
         if (localDW.is_IsIdleTimeExceeded == ALARM_Functional_IN_No) {
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
             /* During 'No': '<S1>:4153' */
-            if ((localB.Current_System_Mode == 1) &&
-                    (scale_factor == 1)) {
+            int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
+            if ((localB.Current_System_Mode == 1) && (scalingFactor == 1)) {
                 /* Transition: '<S1>:4750' */
                 /* Exit 'No': '<S1>:4153' */
                 localDW.idletimer = 0;
@@ -217,8 +219,8 @@ public class ALARM_Functional_Discovery {
             }
         } else {
             /* During 'counting': '<S1>:4745' */
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
-            if ((int) localDW.idletimer >= scale_factor) {
+            int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
+            if ((int) localDW.idletimer >= scalingFactor) {
                 /* Transition: '<S1>:4747' */
                 /* Exit 'counting': '<S1>:4745' */
                 localDW.idletimer++;
@@ -228,60 +230,27 @@ public class ALARM_Functional_Discovery {
             }
         }
 
+
         /* During 'IsPausedTimeExceeded': '<S1>:4155' */
 
+
         if (localDW.is_IsPausedTimeExceeded == ALARM_Functional_IN_No) {
-            //////////////// rewriting the if condition for JR
             /* During 'No': '<S1>:4756' */
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
 
-            /*if (((localB.Current_System_Mode == 6) || (localB.Current_System_Mode == 7)
-                    || (localB.Current_System_Mode == 8)) && (scale_factor == 1)) {
-                *//* Transition: '<S1>:4761' *//*
-             *//* Exit 'No': '<S1>:4756' *//*
+            int Current_System_Model = localB.Current_System_Mode;
+            int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
+
+            if (((Current_System_Model == 6) || (Current_System_Model == 7) || (Current_System_Model == 8)) && (scalingFactor == 1)) {
+                /* Transition: '<S1>:4761' */
+                /* Exit 'No': '<S1>:4756' */
                 localDW.pausedtimer = 0;
                 localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-            } else if ((localB.Current_System_Mode == 6) ||
-                    (localB.Current_System_Mode == 7) ||
-                    (localB.Current_System_Mode == 8)) {
-                *//* Transition: '<S1>:4757' *//*
-             *//* Exit 'No': '<S1>:4756' *//*
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
-
-                *//* Entry 'counting': '<S1>:4752' *//*
-                localDW.pausedtimer++;
-            } else {
-                localDW.pausedtimer = 0;
-            }*/
-
-            if ((localB.Current_System_Mode == 6 && (scale_factor == 1))) {
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-            } else if ((localB.Current_System_Mode == 7 && (scale_factor == 1))) {
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-            } else if ((localB.Current_System_Mode == 8 && (scale_factor == 1))) {
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-            } else if ((localB.Current_System_Mode == 6)) {
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
-
-                /* Entry 'counting': '<S1>:4752' */
-                localDW.pausedtimer++;
-
-            } else if (localB.Current_System_Mode == 7) {
-                localDW.pausedtimer = 0;
-                localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
-
-                /* Entry 'counting': '<S1>:4752' */
-                localDW.pausedtimer++;
-            } else if (localB.Current_System_Mode == 8) {
+            } else if ((Current_System_Model == 6) || (Current_System_Model == 7) || (Current_System_Model == 8)) {
                 /* Transition: '<S1>:4757' */
                 /* Exit 'No': '<S1>:4756' */
                 localDW.pausedtimer = 0;
                 localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
+
                 /* Entry 'counting': '<S1>:4752' */
                 localDW.pausedtimer++;
             } else {
@@ -296,11 +265,11 @@ public class ALARM_Functional_Discovery {
                 /* Entry 'No': '<S1>:4756' */
                 localDW.pausedtimer = 0;
             }
-
         } else {
             /* During 'counting': '<S1>:4752' */
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
-            if ((int) localDW.pausedtimer >= scale_factor) {
+            int scalingFactor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
+
+            if ((int) localDW.pausedtimer >= scalingFactor2) {
                 /* Transition: '<S1>:4758' */
                 /* Exit 'counting': '<S1>:4752' */
                 localDW.pausedtimer++;
@@ -310,18 +279,21 @@ public class ALARM_Functional_Discovery {
             }
         }
 
+
+        int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
         /* During 'IsConfigTimeWarning': '<S1>:4161' */
         if (localDW.is_IsConfigTimeWarning == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4166' */
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
-            if ((int) localB.Config_Timer > scale_factor) {
+            if ((int) localB.Config_Timer > scalingFactor) {
                 /* Transition: '<S1>:4163' */
                 localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_Yes;
             }
         } else {
             /* During 'Yes': '<S1>:4165' */
-            int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
-            if ((localDW.cancelAlarm == 14) && (!((int) localB.Config_Timer > scale_factor))) {
+            int scalingFactor2 = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
+            int cancelAlarml = localDW.cancelAlarm;
+            int Config_Timerl = localB.Config_Timer;
+            if ((cancelAlarml == 14) && (!((int) Config_Timerl > scalingFactor2))) {
                 /* Transition: '<S1>:4164' */
                 localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_No;
             }
@@ -330,23 +302,25 @@ public class ALARM_Functional_Discovery {
         /* During 'IsBatteryError': '<S1>:4167' */
         if (localDW.is_IsBatteryError == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4172' */
-            if (localB.Battery_Low)
-                localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
-            else if (localB.Battery_Unable_To_Charge)
-                localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
-            else if (localB.Supply_Voltage) {
-                localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
+            boolean Battery_Lowl = localB.Battery_Low;
+            boolean Battery_Unable_To_Chargel = localB.Battery_Unable_To_Charge;
+            boolean Supply_Voltagel = localB.Supply_Voltage;
+
+            if (Battery_Lowl || Battery_Unable_To_Chargel || Supply_Voltagel) {
                 /* Transition: '<S1>:4169' */
+                localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
             }
         } else {
             /* During 'Yes': '<S1>:4171' */
-            if ((localDW.cancelAlarm == 15))
-                if (!(localB.Battery_Low))
-                    if (!localB.Battery_Unable_To_Charge)
-                        if (!localB.Supply_Voltage) {
-                            /* Transition: '<S1>:4170' */
-                            localDW.is_IsBatteryError = ALARM_Functional_IN_No;
-                        }
+            int cancelAlarml = localDW.cancelAlarm;
+            boolean Battery_Lowl = localB.Battery_Low;
+            boolean Battery_Unable_To_Chargel = localB.Battery_Unable_To_Charge;
+            boolean Supply_Voltagel = localB.Supply_Voltage;
+
+            if ((cancelAlarml == 15) && (!(Battery_Lowl || Battery_Unable_To_Chargel || Supply_Voltagel))) {
+                /* Transition: '<S1>:4170' */
+                localDW.is_IsBatteryError = ALARM_Functional_IN_No;
+            }
         }
 
         /* During 'IsPumpHot': '<S1>:4173' */
@@ -494,7 +468,7 @@ public class ALARM_Functional_Discovery {
         if (localDW.is_IsDoorOpen == ALARM_Functional_IN_Yes) {
             /* Transition: '<S1>:3997' */
             s = 8;
-            localDW.Max_Alarm_Level = 3;
+            localDW.Max_Alarm_Level = 3; //TODO: Soha Mutated that for the sake of the expirement of the repair motivational example
         } else {
             /* Transition: '<S1>:3996' */
         }
@@ -568,8 +542,7 @@ public class ALARM_Functional_Discovery {
 
 
     /* Funcztion for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_CheckAlarm(B_ALARM_Functional_c_T localB,
-                                            DW_ALARM_Functional_f_T localDW) {
+    static void ALARM_Functional_CheckAlarm(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
         int overInfusion;
 
         /* During 'CheckAlarm': '<S1>:3953' */
@@ -611,85 +584,57 @@ public class ALARM_Functional_Discovery {
             }
         }
 
-        //////////////////// rewriting that to if statements for JavaRanger
+        boolean Battery_Depletedl = localB.Battery_Depleted;
+        boolean RTC_In_Errorl = localB.RTC_In_Error;
+        boolean CPU_In_Errorl = localB.CPU_In_Error;
+        boolean Memory_Corruptedl = localB.Memory_Corrupted;
+        boolean Pump_Too_Hotl = localB.Pump_Too_Hot;
+        boolean Watchdog_Interruptedl = localB.Watchdog_Interrupted;
+        int cancelAlarml = localDW.cancelAlarm;
         /* During 'IsHardwareError': '<S1>:4217' */
-        /*if (localDW.is_IsHardwareError == ALARM_Functional_IN_No) {
-         *//* During 'No': '<S1>:4222' *//*
-            if (localB.Battery_Depleted || localB.RTC_In_Error || localB.CPU_In_Error
-                    || localB.Memory_Corrupted || localB.Pump_Too_Hot ||
-                    localB.Watchdog_Interrupted) {
-                *//* Transition: '<S1>:4223' *//*
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            }
-        } else {
-            *//* During 'Yes': '<S1>:4220' *//*
-            if ((localDW.cancelAlarm == 2) && (!(localB.Battery_Depleted ||
-                    localB.RTC_In_Error || localB.CPU_In_Error ||
-                    localB.Memory_Corrupted || localB.Pump_Too_Hot ||
-                    localB.Watchdog_Interrupted))) {
-                *//* Transition: '<S1>:4221' *//*
-                localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-            }
-        }*/
-        //////////////////// end of rewrite
-
         if (localDW.is_IsHardwareError == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4222' */
-            if (localB.Battery_Depleted)
+
+            if (Battery_Depletedl || RTC_In_Errorl || CPU_In_Errorl || Memory_Corruptedl || Pump_Too_Hotl || Watchdog_Interruptedl) {
+                /* Transition: '<S1>:4223' */
                 localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            if (localB.RTC_In_Error)
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            if (localB.CPU_In_Error)
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            if (localB.Memory_Corrupted)
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            if (localB.Pump_Too_Hot)
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-            if (localB.Watchdog_Interrupted)
-                localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
+            }
         } else {
             /* During 'Yes': '<S1>:4220' */
-            if ((localDW.cancelAlarm == 2))
-                if (!(localB.Battery_Depleted))
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-                else if (localB.RTC_In_Error)
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-                else if (localB.CPU_In_Error)
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-                else if (localB.Memory_Corrupted)
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-                else if (localB.Pump_Too_Hot)
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
-                else if (localB.Watchdog_Interrupted)
-                    localDW.is_IsHardwareError = ALARM_Functional_IN_No;
+            if ((cancelAlarml == 2) && (!(Battery_Depletedl || RTC_In_Errorl || CPU_In_Errorl || Memory_Corruptedl || Pump_Too_Hotl || Watchdog_Interruptedl))) {
+                /* Transition: '<S1>:4221' */
+                localDW.is_IsHardwareError = ALARM_Functional_IN_No;
+            }
         }
+
 
         /* During 'IsEnviromentalError': '<S1>:4032' */
         if (localDW.is_IsEnviromentalError == ALARM_Functional_IN_No) {
             /* During 'No': '<S1>:4037' */
-            if (localB.Temp)
-                localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
-            if (localB.Humidity)
-                localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
-            if (localB.Air_Pressure) {
+            boolean Templ = localB.Temp;
+            boolean Humidityl = localB.Humidity;
+            boolean Air_Pressurel = localB.Air_Pressure;
+
+            if (Templ || Humidityl || Air_Pressurel) {
                 /* Transition: '<S1>:4034' */
                 localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
             }
         } else {
+            cancelAlarml = localDW.cancelAlarm;
+            boolean Templ = localB.Temp;
+            boolean Humidityl = localB.Humidity;
+            boolean Air_Pressurel = localB.Air_Pressure;
+
             /* During 'Yes': '<S1>:4036' */
-            if ((localDW.cancelAlarm == 3))
-                if (!(localB.Temp))
-                    if (!localB.Humidity)
-                        if (!localB.Air_Pressure) {
-                            /* Transition: '<S1>:4035' */
-                            localDW.is_IsEnviromentalError = ALARM_Functional_IN_No;
-                        }
+            if ((cancelAlarml == 3) && (!(Templ || Humidityl || Air_Pressurel))) {
+                /* Transition: '<S1>:4035' */
+                localDW.is_IsEnviromentalError = ALARM_Functional_IN_No;
+            }
         }
 
         /* During 'Level3': '<S1>:4038' */
         /* During 'IsOverInfusionFlowRate': '<S1>:4039' */
         overInfusion = ALARM_Functional_checkOverInfusionFlowRate(localB);
-
         if (localDW.is_IsOverInfusionFlowRate == ALARM_Functional_IN_Check) {
             /* During 'Check': '<S1>:4052' */
             if (overInfusion == 1) {
@@ -711,8 +656,8 @@ public class ALARM_Functional_Discovery {
             }
         } else if (localDW.is_IsOverInfusionFlowRate == ALARM_Functional_IN_Monitor) {
             /* During 'Monitor': '<S1>:4053' */
-            int scaling_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion);
-            if ((overInfusion == 1) || ((int) localDW.overInfusionTimer > scaling_factor2)) {
+            int scalingFactor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Duration_Over_Infusion);
+            if ((overInfusion == 1) || ((int) localDW.overInfusionTimer > scalingFactor2)) {
                 /* Transition: '<S1>:4047' */
                 localDW.overInfusionTimer = 0;
 
@@ -842,13 +787,11 @@ public class ALARM_Functional_Discovery {
 
         /* During 'SetAlarmStatus': '<S1>:4018' */
         localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
-        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
-                (localDW);
+        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm(localDW);
     }
 
     /* Function for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_Alarms(B_ALARM_Functional_c_T localB,
-                                        DW_ALARM_Functional_f_T localDW) {
+    static void ALARM_Functional_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
         /* During 'Alarms': '<S1>:3907' */
         if (!localB.System_On) {
             /* Transition: '<S1>:3901' */
@@ -875,6 +818,7 @@ public class ALARM_Functional_Discovery {
                 localDW.is_Audio = ALARM_Functional_IN_NO_ACTIVE_CHILD;
             }
 
+
             /* Exit 'Audio': '<S1>:3919' */
             localB.ALARM_OUT_Display_Audio_Disabled_Indicator = localB.Disable_Audio;
             localDW.is_active_Audio = 0;
@@ -894,8 +838,7 @@ public class ALARM_Functional_Discovery {
             /* Exit Internal 'CheckAlarm': '<S1>:3953' */
             /* Exit 'SetAlarmStatus': '<S1>:4018' */
             localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
-            localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
-                    (localDW);
+            localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm(localDW);
             localDW.cancelAlarm = 0;
             localDW.is_active_SetAlarmStatus = 0;
 
@@ -921,6 +864,7 @@ public class ALARM_Functional_Discovery {
             localDW.is_active_IsConfigTimeWarning = 0;
 
             /* Exit Internal 'IsPausedTimeExceeded': '<S1>:4155' */
+
             if (localDW.is_IsPausedTimeExceeded == ALARM_Functional_IN_No) {
                 /* Exit 'No': '<S1>:4756' */
                 localDW.pausedtimer = 0;
@@ -932,6 +876,7 @@ public class ALARM_Functional_Discovery {
             } else {
                 localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
             }
+
 
             localDW.is_active_IsPausedTimeExceeded = 0;
 
@@ -945,10 +890,8 @@ public class ALARM_Functional_Discovery {
                 /* Exit 'counting': '<S1>:4745' */
                 localDW.idletimer++;
                 localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-            } else {
-                localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
             }
-
+            localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
 
             localDW.is_active_IsIdleTimeExceeded = 0;
 
@@ -1184,8 +1127,10 @@ public class ALARM_Functional_Discovery {
                         /* Entry 'ON': '<S1>:3938' */
                         localB.ALARM_OUT_Audio_Notification_Command = localB.Audio_Level;
                     } else {
-                        int scale_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Audio_Enable_Duration);
-                        if (((int) localDW.audioTimer > scale_factor2) || (localB.Disable_Audio == 0)) {
+                        int audioTimerl = localDW.audioTimer;
+                        int Disable_Audiol = localB.Disable_Audio;
+                        int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Audio_Enable_Duration);
+                        if (((int) audioTimerl > scalingFactor) || (Disable_Audiol == 0)) {
                             /* Transition: '<S1>:3936' */
                             /* Transition: '<S1>:3928' */
                             /* Exit 'Silenced': '<S1>:3952' */
@@ -1200,6 +1145,7 @@ public class ALARM_Functional_Discovery {
                     }
                 }
             }
+
         }
     }
 
@@ -1231,18 +1177,20 @@ public class ALARM_Functional_Discovery {
 
         localDW.is_active_IsHardwareError = 1;
 
+        boolean Battery_Depletedl = localB.Battery_Depleted;
+        boolean RTC_In_Errorl = localB.RTC_In_Error;
+        boolean CPU_In_Errorl = localB.CPU_In_Error;
+        boolean Memory_Corruptedl = localB.Memory_Corrupted;
+        boolean Pump_Too_Hotl = localB.Pump_Too_Hot;
+        boolean Watchdog_Interruptedl = localB.Watchdog_Interrupted;
+        boolean Templ = localB.Temp;
+        boolean Humidityl = localB.Humidity;
+        boolean Air_Pressurel = localB.Air_Pressure;
+
+
+
         /* Entry Internal 'IsHardwareError': '<S1>:4217' */
-        if (localB.Battery_Depleted)
-            localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-        else if (localB.RTC_In_Error)
-            localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-        else if (localB.CPU_In_Error)
-            localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-        else if (localB.Memory_Corrupted)
-            localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-        else if (localB.Pump_Too_Hot)
-            localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
-        else if (localB.Watchdog_Interrupted) {
+        if (Battery_Depletedl || RTC_In_Errorl || CPU_In_Errorl || Memory_Corruptedl || Pump_Too_Hotl || Watchdog_Interruptedl) {
             /* Transition: '<S1>:4224' */
             localDW.is_IsHardwareError = ALARM_Functional_IN_Yes;
         } else {
@@ -1253,11 +1201,7 @@ public class ALARM_Functional_Discovery {
         localDW.is_active_IsEnviromentalError = 1;
 
         /* Entry Internal 'IsEnviromentalError': '<S1>:4032' */
-        if (localB.Temp)
-            localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
-        else if (localB.Humidity)
-            localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
-        else if (localB.Air_Pressure) {
+        if (Templ || Humidityl || Air_Pressurel) {
             /* Transition: '<S1>:4198' */
             localDW.is_IsEnviromentalError = ALARM_Functional_IN_Yes;
         } else {
@@ -1293,8 +1237,12 @@ public class ALARM_Functional_Discovery {
 
         localDW.is_active_IsOverInfusionVTBI = 1;
 
+        boolean In_Therapyl = localB.In_Therapy;
+        int Volume_Infusedl = localB.Volume_Infused;
+        int VTBI_Highl = localB.VTBI_High;
+
         /* Entry Internal 'IsOverInfusionVTBI': '<S1>:4066' */
-        if (localB.In_Therapy && (localB.Volume_Infused > localB.VTBI_High)) {
+        if (In_Therapyl && (Volume_Infusedl > VTBI_Highl)) {
             /* Transition: '<S1>:4201' */
             localDW.is_IsOverInfusionVTBI = ALARM_Functional_IN_Yes;
         } else {
@@ -1400,9 +1348,9 @@ public class ALARM_Functional_Discovery {
         localDW.is_active_IsIdleTimeExceeded = 1;
 
         /* Entry Internal 'IsIdleTimeExceeded': '<S1>:4149' */
-        int scaling_factor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
-        if ((localB.Current_System_Mode == 1) &&
-                (scaling_factor == 1)) {
+        int scalingFactor1 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Idle_Duration);
+
+        if ((localB.Current_System_Mode == 1) && (scalingFactor1 == 1)) {
             /* Transition: '<S1>:4749' */
             localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_Yes;
         } else if (localB.Current_System_Mode == 1) {
@@ -1422,26 +1370,14 @@ public class ALARM_Functional_Discovery {
 
         localDW.is_active_IsPausedTimeExceeded = 1;
 
+        int Current_System_Model = localB.Current_System_Mode;
+
         /* Entry Internal 'IsPausedTimeExceeded': '<S1>:4155' */
-        int scaling_factor2 = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
-        if (((localB.Current_System_Mode == 6) && (scaling_factor2 == 1)))
-            localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-        else if ((localB.Current_System_Mode == 7) && (scaling_factor2 == 1))
-            localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-        else if ((localB.Current_System_Mode == 8) && (scaling_factor2 == 1)) {
+        int scalingFactor = ALARM_Functional_Step_Scaling_Factor(localB.Max_Paused_Duration);
+        if (((Current_System_Model == 6) || (Current_System_Model == 7) || (Current_System_Model == 8)) && (scalingFactor == 1)) {
             /* Transition: '<S1>:4760' */
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_Yes;
-        } else if ((localB.Current_System_Mode == 6)) {
-            localDW.pausedtimer = 0;
-            localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
-            /* Entry 'counting': '<S1>:4752' */
-            localDW.pausedtimer++;
-        } else if (localB.Current_System_Mode == 7) {
-            localDW.pausedtimer = 0;
-            localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
-            /* Entry 'counting': '<S1>:4752' */
-            localDW.pausedtimer++;
-        } else if (localB.Current_System_Mode == 8) {
+        } else if ((Current_System_Model == 6) || (Current_System_Model == 7) || (Current_System_Model == 8)) {
             /* Transition: '<S1>:4759' */
             localDW.pausedtimer = 0;
             localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_counting;
@@ -1459,8 +1395,9 @@ public class ALARM_Functional_Discovery {
         localDW.is_active_IsConfigTimeWarning = 1;
 
         /* Entry Internal 'IsConfigTimeWarning': '<S1>:4161' */
-        int scale_factor = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
-        if ((int) localB.Config_Timer > scale_factor) {
+        int scalingFactor2 = ALARM_Functional_Step_Scaling_Factor(localB.Config_Warning_Duration);
+
+        if ((int) localB.Config_Timer > scalingFactor2) {
             /* Transition: '<S1>:4207' */
             localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_Yes;
         } else {
@@ -1471,11 +1408,11 @@ public class ALARM_Functional_Discovery {
         localDW.is_active_IsBatteryError = 1;
 
         /* Entry Internal 'IsBatteryError': '<S1>:4167' */
-        if (localB.Battery_Low)
-            localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
-        else if (localB.Battery_Unable_To_Charge)
-            localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
-        else if (localB.Supply_Voltage) {
+        boolean Battery_Lowl = localB.Battery_Low;
+        boolean Battery_Unable_To_Chargel = localB.Battery_Unable_To_Charge;
+        boolean Supply_Voltagel = localB.Supply_Voltage;
+
+        if (Battery_Lowl || Battery_Unable_To_Chargel || Supply_Voltagel) {
             /* Transition: '<S1>:4212' */
             localDW.is_IsBatteryError = ALARM_Functional_IN_Yes;
         } else {
@@ -1520,12 +1457,12 @@ public class ALARM_Functional_Discovery {
 
         /* Entry 'SetAlarmStatus': '<S1>:4018' */
         localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
-        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
-                (localDW);
+        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm(localDW);
     }
 
     /* Function for Chart: '<Root>/Alarm  Sub-System' */
-    static void ALARM_Functional_enter_internal_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
+    static void ALARM_Functional_enter_internal_Alarms(B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T
+            localDW) {
         /* Entry Internal 'Alarms': '<S1>:3907' */
         localDW.is_active_CheckAlarm = 1;
         ALARM_Functional_enter_internal_CheckAlarm(localB, localDW);
@@ -1569,8 +1506,7 @@ public class ALARM_Functional_Discovery {
             localDW.audioTimer = 0;
             localB.ALARM_OUT_Audio_Notification_Command = 0;
             localDW.audioTimer++;
-        } else if ((localB.ALARM_OUT_Highest_Level_Alarm > 2) &&
-                (localB.Disable_Audio == 0)) {
+        } else if ((localB.ALARM_OUT_Highest_Level_Alarm > 2) && (localB.Disable_Audio == 0)) {
             /* Transition: '<S1>:4601' */
             localDW.is_Audio = ALARM_Functional_IN_ON;
 
@@ -1585,11 +1521,12 @@ public class ALARM_Functional_Discovery {
         }
     }
 
+
     /* Initial conditions for referenced model: 'ALARM_Functional' */
     static void ALARM_Functional_Init(B_ALARM_Functional_c_T localB,
                                       DW_ALARM_Functional_f_T localDW) {
         /* InitializeConditions for Chart: '<Root>/Alarm  Sub-System' */
-        localDW.is_active_CheckAlarm = 0;
+        /*localDW.is_active_CheckAlarm = 0;
         localDW.is_active_CancelAlarm = 0;
         localDW.is_CancelAlarm = ALARM_Functional_IN_NO_ACTIVE_CHILD;
         localDW.is_active_Level1 = 0;
@@ -1649,12 +1586,12 @@ public class ALARM_Functional_Discovery {
         localDW.cancelAlarm = 0;
         localDW.Max_Alarm_Level = 0;
         localDW.idletimer = 0;
-        localDW.pausedtimer = 0;
-        localB.ALARM_OUT_Display_Audio_Disabled_Indicator = 0;
+        localDW.pausedtimer = 0;*/
+        /*localB.ALARM_OUT_Display_Audio_Disabled_Indicator = 0;
         localB.ALARM_OUT_Display_Notification_Command = 0;
         localB.ALARM_OUT_Audio_Notification_Command = 0;
         localB.ALARM_OUT_Highest_Level_Alarm = 0;
-        localB.ALARM_OUT_Log_Message_ID = 0;
+        localB.ALARM_OUT_Log_Message_ID = 0;*/
     }
 
     /* Output and update for referenced model: 'ALARM_Functional' */
@@ -1666,9 +1603,9 @@ public class ALARM_Functional_Discovery {
                                  Device_Sensor_Inputs rtu_SENSOR_IN,
                                  Device_Configuration_Inputs rtu_CONST_IN,
                                  System_Status_Outputs rtu_SYS_STAT_IN,
-                                 Config_Outputs rtu_CONFIG_IN, Alarm_Outputs
-                                         rty_ALARM_OUT, B_ALARM_Functional_c_T localB,
-                                 DW_ALARM_Functional_f_T localDW) {
+                                 Config_Outputs rtu_CONFIG_IN, Alarm_Outputs rty_ALARM_OUT,
+                                 B_ALARM_Functional_c_T localB, DW_ALARM_Functional_f_T localDW) {
+
         /* BusSelector: '<Root>/BusConversion_InsertedFor_IM_IN_at_outport_0' */
         localB.Commanded_Flow_Rate = rtu_IM_IN.Commanded_Flow_Rate;
         localB.Current_System_Mode = rtu_IM_IN.Current_System_Mode;
@@ -1766,55 +1703,84 @@ public class ALARM_Functional_Discovery {
         /* BusCreator: '<Root>/BusConversion_InsertedFor_ALARM_OUT_at_inport_0' */
         rty_ALARM_OUT.Is_Audio_Disabled =
                 localB.ALARM_OUT_Display_Audio_Disabled_Indicator;
-        rty_ALARM_OUT.Notification_Message = localB.ALARM_OUT_Display_Notification_Command;
+        rty_ALARM_OUT.Notification_Message =
+                localB.ALARM_OUT_Display_Notification_Command;
         rty_ALARM_OUT.Audio_Notification_Command =
                 localB.ALARM_OUT_Audio_Notification_Command;
         rty_ALARM_OUT.Highest_Level_Alarm = localB.ALARM_OUT_Highest_Level_Alarm;
         rty_ALARM_OUT.Log_Message_ID = localB.ALARM_OUT_Log_Message_ID;
 
-//        //Prop: empty_reservoir_implies_alarm_L4
-//        boolean checkCondition = rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty;
-//        boolean checkOutput = rty_ALARM_OUT.Highest_Level_Alarm == 4;
-//        assert (!checkCondition || checkOutput);
-//
-//
-//        //Prop: air_in_line_implies_grt_L3_alarm
-////        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
-////        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
-////        assert (!checkCondition || checkOutput);
+        boolean checkCondition;
+        boolean checkOutput;
 
-    }
-    /*
-
-     */
-    /* Model initialize function *//*
-
-    void ALARM_Functional_initialize(char_T **rt_errorStatus,
-                                     RT_MODEL_ALARM_Functional_T ALARM_Functional_M, B_ALARM_Functional_c_T
-                                             localB, DW_ALARM_Functional_f_T localDW) {
-        */
-    /* Registration code *//*
-
-
-     */
-    /* initialize error status *//*
-
-        rtmSetErrorStatusPointer(ALARM_Functional_M, rt_errorStatus);
-
-        */
-    /* block I/O *//*
-
-        (void) memset((( void *)localB),0,
-                sizeof(B_ALARM_Functional_c_T));
-
-        */
-    /* states (dwork) *//*
-
-        (void) memset(( void *)localDW, 0,
-                sizeof(DW_ALARM_Functional_f_T));
-    }
+        //Prop1: empty_reservoir_implies_alarm_L4
+        /*checkCondition = rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty;
+        checkOutput = rty_ALARM_OUT.Highest_Level_Alarm == 4;
+        assert (!checkCondition || checkOutput);
 */
 
+        //Prop2: air_in_line_implies_grt_L3_alarm
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
+        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
+        assert (!checkCondition || checkOutput);*/
+
+        /*
+        // Prop3: volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm
+        checkCondition =
+                (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && (rtu_SYS_STAT_IN.Volume_Infused > rtu_DB_IN.VTBI_High));
+        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
+        assert (!checkCondition || checkOutput);
+
+        // Prop4: occlusion_implies_grt_L3_alarm
+        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Occlusion);
+        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
+        assert (!checkCondition || checkOutput);
+*/
+        //      Prop5: door_open_implies_grt_L3_alarm
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Door_Open);
+        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
+        assert (!checkCondition || checkOutput);*/
+/*
+        //Prop6: alarm_gte_L3_causes_audio_output_EQ_audio_level
+        checkCondition =
+                (rtu_TLM_MODE_IN.System_On && (rty_ALARM_OUT.Highest_Level_Alarm >= 3) && (rtu_OP_CMD_IN.Disable_Audio == 0));
+        checkOutput =
+                ((rty_ALARM_OUT.Audio_Notification_Command == rtu_CONST_IN.Audio_Level) && (rty_ALARM_OUT.Is_Audio_Disabled == 0));
+        assert (!checkCondition || checkOutput);
+
+
+        //Prop7: no_audio_if_audio_disabled
+        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_OP_CMD_IN.Disable_Audio > 0));
+        checkOutput =
+                ((rty_ALARM_OUT.Audio_Notification_Command == 0) && (rty_ALARM_OUT.Is_Audio_Disabled == rtu_OP_CMD_IN.Disable_Audio));
+        assert (!checkCondition || checkOutput);
+
+        //Prop8: low_reservoir_implies_grt_L2_alarm
+        checkCondition =
+                (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && (rtu_SYS_STAT_IN.Reservoir_Volume < rtu_CONST_IN.Low_Reservoir));
+        checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 2);
+        assert (!checkCondition || checkOutput);
+
+        //Prop9 : alarm_value_range
+        checkCondition = (rtu_TLM_MODE_IN.System_On);
+        checkOutput = ((rty_ALARM_OUT.Highest_Level_Alarm >= 0) && (rty_ALARM_OUT.Highest_Level_Alarm <= 4));
+        assert (!checkCondition || checkOutput);
+
+        //Prop10: audio_disabled_range
+        checkCondition = (rtu_TLM_MODE_IN.System_On);
+        checkOutput = (rty_ALARM_OUT.Is_Audio_Disabled == rtu_OP_CMD_IN.Disable_Audio);
+        assert (!checkCondition || checkOutput);
+
+*/
+        /*************** discovery repaired properties *******************/
+       /* checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty);
+        checkOutput = (rty_ALARM_OUT.Log_Message_ID ==0) ^ (rty_ALARM_OUT.Log_Message_ID == 77);
+        assert (!checkCondition || checkOutput);
+*/
+
+
+        //assert ((rty_ALARM_OUT.Notification_Message <= 19) && (rty_ALARM_OUT.Notification_Message > 0));
+    }
 
     public static void main(String[] args) {
 

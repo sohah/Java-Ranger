@@ -14,6 +14,8 @@ public class MutateExpr implements ExprVisitor<Expr> {
     private final int previousMutationIndex;
     private final MutationType mutationType;
     private final SpecInOutManager tInOutManager;
+    private final ShouldApplyMutation shouldApplyMutation;
+    public List<GenericRepairNode> repairNodes = new ArrayList<>();
 
     private int mutationIndex;
 
@@ -22,6 +24,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
         this.previousMutationIndex = previousMutationIndex;
         this.mutationIndex = -1;
         this.tInOutManager = tInOutManager;
+        this.shouldApplyMutation = new ShouldApplyMutation();
     }
 
     boolean didMutation() {
@@ -32,13 +35,15 @@ public class MutateExpr implements ExprVisitor<Expr> {
         return ++mutationIndex;
     }
 
-    private boolean shouldApplyMutation() {
-        return incAndGetMutationIndex() == previousMutationIndex + 1;
-    }
+    public class ShouldApplyMutation {
+        public boolean shouldApplyMutation() {
+            return incAndGetMutationIndex() == previousMutationIndex + 1;
+        }
+    };
 
     BinaryOp applyBinaryOpMutation(BinaryOp origOp, BinaryOp[] mutatedOpArr) {
         for (BinaryOp mutatedOp: mutatedOpArr) {
-            if (shouldApplyMutation())
+            if (shouldApplyMutation.shouldApplyMutation())
                 return mutatedOp;
         }
         return origOp;
@@ -63,18 +68,58 @@ public class MutateExpr implements ExprVisitor<Expr> {
     @Override
     public Expr visit(BinaryExpr e) {
         Expr repairExpr = wrapRepairExpr(e);
-        if (!didMutation())
-            return new BinaryExpr(e.location,
-                    e.left.accept(this), mutate(mutationType, e.op, this), e.right.accept(this));
+        if (!didMutation()) {
+            Expr applyMCO = mutateMCO(e);
+            if (!didMutation()) {
+                Expr applyORO = mutateORO(e);
+                if (!didMutation()) {
+                    return new BinaryExpr(e.location,
+                            e.left.accept(this), mutate(mutationType, e.op, this), e.right.accept(this));
+                } else return applyORO;
+            } else return applyMCO;
+        }
         else return repairExpr;
     }
 
+    private Expr mutateORO(BinaryExpr e) {
+        if (mutationType == MutationType.OPERAND_REPLACEMENT_MUT) {
+            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
+            e.accept(idExprVisitor);
+            ArrayList<IdExpr> idExprs = idExprVisitor.getIdExprs();
+            ConstExprVisitor constExprVisitor = new ConstExprVisitor();
+            e.accept(constExprVisitor);
+            ArrayList<Expr> constExprs = constExprVisitor.getConstExprs();
+            OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs);
+            return e.accept(oroVisitor);
+        }
+        return e;
+    }
+
+    private Expr mutateMCO(BinaryExpr e) {
+        if (mutationType == MutationType.MISSING_COND_MUT) {
+            if (e.op == BinaryOp.IMPLIES || e.op == BinaryOp.AND || e.op == BinaryOp.OR) {
+                boolean replaceLHSWithTrue = shouldApplyMutation.shouldApplyMutation();
+                boolean replaceLHSWithFalse = shouldApplyMutation.shouldApplyMutation();
+                boolean replaceRHSWithTrue = shouldApplyMutation.shouldApplyMutation();
+                boolean replaceRHSWithFalse = shouldApplyMutation.shouldApplyMutation();
+                BinaryExpr trueExpr = new BinaryExpr(new IntExpr(0), BinaryOp.EQUAL, new IntExpr(0));
+                BinaryExpr falseExpr = new BinaryExpr(new IntExpr(0), BinaryOp.EQUAL, new IntExpr(1));
+                if (replaceLHSWithTrue) { return new BinaryExpr(trueExpr, e.op, e.right); }
+                if (replaceLHSWithFalse) { return new BinaryExpr(falseExpr, e.op, e.right); }
+                if (replaceRHSWithTrue) { return new BinaryExpr(e.left, e.op, trueExpr); }
+                if (replaceRHSWithFalse) { return new BinaryExpr(e.left, e.op, falseExpr); }
+            }
+        }
+        return e;
+    }
+
     private Expr wrapRepairExpr(BinaryExpr e) {
-        if (shouldApplyMutation() && mutationType == MutationType.REPAIR_EXPR_MUT) {
+        if (mutationType == MutationType.REPAIR_EXPR_MUT && shouldApplyMutation.shouldApplyMutation()) {
             IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
             e.accept(idExprVisitor);
             List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
             GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls);
+            repairNodes.add(genericRepairNode);
             NodeCallExpr callExpr = genericRepairNode.callExpr;
             RepairExpr repairExpr = new RepairExpr(e, callExpr);
             return repairExpr;

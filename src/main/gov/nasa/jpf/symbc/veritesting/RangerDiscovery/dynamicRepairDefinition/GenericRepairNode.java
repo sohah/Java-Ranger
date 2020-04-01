@@ -20,7 +20,7 @@ public class GenericRepairNode {
     public GenericRepairNode(List<VarDecl> actualParamVarDecls) {
         this.actualParamVarDecls = actualParamVarDecls;
         callExpr = generateCallExpr();
-        nodeDefinition = null; //generateRepairDef();
+        nodeDefinition = generateRepairDef();
     }
 
 

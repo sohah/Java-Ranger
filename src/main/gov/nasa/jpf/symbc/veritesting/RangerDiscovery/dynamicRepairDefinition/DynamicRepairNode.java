@@ -54,6 +54,7 @@ public class DynamicRepairNode {
             VarDecl rightVarDecl = defineTreeLevel(balancedTreeDepth - 1, rightPathLabel);
             IdExpr rightOperand = DiscoveryUtil.varDeclToIdExpr(rightVarDecl);
 
+
             VarDecl myNodeNameVarDecl = constructPathLabelName(pathLabel);
 
             // variables constituting an inner node must be of type bool. Integers should only appear in the leaf.
@@ -63,7 +64,9 @@ public class DynamicRepairNode {
                     constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
 
             //populate my stuff
-            locals.add(myNodeNameVarDecl);
+            if (!getPathLabelStr(pathLabel).equals("R")) //add only local variables other than R, since R should be a return
+                locals.add(myNodeNameVarDecl);
+
             equations.add(myEquation);
 
             return myNodeNameVarDecl;
@@ -174,9 +177,9 @@ public class DynamicRepairNode {
     private VarDecl createNewHole(boolean innerHole) {
         VarDecl newHole;
         if (innerHole)
-            newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INT);
+            newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INTHOLE);
         else
-            newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INT);
+            newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INTHOLE);
         holeInputs.add(newHole);
         ++holesCounter;
         return newHole;

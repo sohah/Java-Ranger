@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.NodeRepairKey;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.Hole;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.SolverOption;
@@ -146,13 +147,15 @@ public class DiscoveryUtil {
     }
 
 
-    public static boolean writeToFile(String fileName, String content, boolean minimal) {
+    public static boolean writeToFile(String fileName, String content, boolean minimal, boolean config) {
         String directory;
 
-        if (minimal)
+        if (config) {
+            directory = folderName + "/";
+            assert !minimal;
+        } else if (minimal) {
             directory = folderName + "output/" + Config.currFaultySpec + "/minimal/";
-
-        else
+        } else
             directory = folderName + "output/" + Config.currFaultySpec + "/";
 
 

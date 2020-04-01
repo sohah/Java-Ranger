@@ -12,7 +12,6 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
@@ -56,6 +55,8 @@ public class DiscoverContract {
     public static Contract contract;
     public static DynamicRegion dynRegion;
 
+    public static boolean specAlreadyMatching = false;
+
 /***** begin of unused vars***/
     /**
      * currently unused because we assume we have a way to find the input and output.
@@ -73,7 +74,7 @@ public class DiscoverContract {
         DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
         try {
-            while (Config.canSetup()) {
+            while (!specAlreadyMatching && Config.canSetup()) {
                 long singleTermTime = System.currentTimeMillis();
 
                 System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
@@ -92,7 +93,6 @@ public class DiscoverContract {
             assert false;
             e.printStackTrace();
         }
-
     }
 
 
@@ -113,16 +113,6 @@ public class DiscoverContract {
     private static void repairSpec() throws IOException {
         String fileName;
 
-/*
-        List<VarDecl> parameters = new ArrayList<>();
-        parameters.add(new VarDecl("x", NamedType.INT));
-        parameters.add(new VarDecl("a", NamedType.BOOL));
-        parameters.add(new VarDecl("y", NamedType.INT));
-        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
-//        System.out.println("dynamic repair definition");
-//        System.out.println(genericRepairNode.nodeDefinition);
-*/
-
         if (Config.repairInitialValues)
             System.out.println("Repair includes initial values");
         else
@@ -132,7 +122,7 @@ public class DiscoverContract {
 
         //print out the translation once, for very first time we hit linearlization for the method of
         // interest.
-        contract = new Contract();
+        //contract = new Contract();
 
         //this holds a repair which we might find, but it might not be a tight repair, in which case we'll have to
         // call on the other pair of thereExists and forAll queries for finding minimal repair.
@@ -149,11 +139,13 @@ public class DiscoverContract {
             inputExtendedPgm = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
                     "UTF-8"));
 
+
             originalNodeKey = defineNodeKeys(inputExtendedPgm);
 
             flatExtendedPgm = FlattenNodes.execute(inputExtendedPgm);
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
+
             String mutationDir = "../src/DiscoveryExamples/mutants";
             ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir, contract.tInOutManager);
             System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
@@ -166,27 +158,12 @@ public class DiscoverContract {
 
         }
 
-/*
-
-        List<VarDecl> parameters = new ArrayList<>();
-        parameters.add(new VarDecl("Commanded_Flow_Rate", NamedType.INT));
-        parameters.add(new VarDecl("Current_System_Mode", NamedType.INT));
-        parameters.add(new VarDecl("New_Infusion", NamedType.BOOL));
-        parameters.add(new VarDecl("Log_Message_ID", NamedType.INT));
-        parameters.add(new VarDecl("Actual_Infusion_Duration", NamedType.INT));
-        GenericRepairNode genericRepairNode = new GenericRepairNode(parameters);
-        System.out.println("dynamic repair definition");
-        System.out.println(genericRepairNode.nodeDefinition);
-
-*/
-
-
         CounterExampleQuery counterExampleQuery = new CounterExampleQuery(originalProgram);
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
             fileName = currFaultySpec + "_" + loopCount + ".lus";
-            writeToFile(fileName, counterExampleQueryStrStr, false);
+            writeToFile(fileName, counterExampleQueryStrStr, false, false);
             long singleQueryTime = System.currentTimeMillis();
 
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
@@ -205,9 +182,10 @@ public class DiscoverContract {
                         Program minimalRepair = MinimalRepairDriver.execute(counterExampleQuery.getCounterExamplePgm
                                         (), originalProgram,
                                 aRepairSynthesis, flatExtendedPgm);
-                    } else
+                    } else {
+                        specAlreadyMatching = true;
                         System.out.println("Contract Matching! Printing repair and aborting!");
-
+                    }
                     //System.out.println(getTnodeFromStr(fileName));
                     DiscoverContract.repaired = true;
                     repairStatistics.printSpecStatistics();
@@ -241,7 +219,7 @@ public class DiscoverContract {
 
                     String synthesisContractStr = aRepairSynthesis.toString();
                     fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
-                    writeToFile(fileName, synthesisContractStr, false);
+                    writeToFile(fileName, synthesisContractStr, false, false);
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 2, false, false);
@@ -269,7 +247,7 @@ public class DiscoverContract {
                                 inputExtendedPgm = SketchVisitor.execute(flatExtendedPgm, synthesisResult, false);
                                 originalProgram = RemoveRepairConstructVisitor.execute(inputExtendedPgm);
                                 fileName = currFaultySpec + "_Extn" + loopCount + 1 + ".lus";
-                                writeToFile(fileName, inputExtendedPgm.toString(), false);
+                                writeToFile(fileName, inputExtendedPgm.toString(), false, false);
 
                                 counterExampleQuery = new CounterExampleQuery(originalProgram);
                                 counterExampleQueryStrStr = counterExampleQuery.toString();
@@ -283,12 +261,16 @@ public class DiscoverContract {
                     }
                     break;
                 default:
-                    break;
+                    System.out.println("Outerloop unexpected status for the counter example query");
+                    DiscoverContract.repaired = false;
+                    return;
             }
             ++loopCount;
         }
         while (true);
     }
+
+
 
 /*
     public static Program getLustreNoExt(Program origLustreExtPgm) {

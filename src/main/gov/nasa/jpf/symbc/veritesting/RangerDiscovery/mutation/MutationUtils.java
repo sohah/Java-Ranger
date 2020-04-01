@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import jkind.lustre.BinaryOp;
 import jkind.lustre.Expr;
@@ -87,11 +88,13 @@ public class MutationUtils {
                 mutationDirectory + "/origSpec");
 
         MutationType[] mutationTypes = new MutationType[]{
-                MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT, MutationType.REPAIR_EXPR_MUT};
+                MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
+                MutationType.REPAIR_EXPR_MUT, MutationType.MISSING_COND_MUT, MutationType.OPERAND_REPLACEMENT_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
             mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory, tInOutManager));
         }
+        System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
     }
 
@@ -108,16 +111,15 @@ public class MutationUtils {
                 break;
             } else {
                 mutationIndex++;
-                writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory + "/mutatedSpec-"
-                        + mutationTypeToString(mutationType)
-                        + "-" + mutationIndex);
-                ret.add(new MutationResult(mutatedExpr, mutationIndex));
+                if (Config.printMutantDir)
+                    writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-" + mutationIndex);
+                ret.add(new MutationResult(mutatedExpr, mutationIndex, mutationType, mutateExpr.repairNodes));
             }
         }
         return ret;
     }
 
-    private static String mutationTypeToString(MutationType mutationType) {
+    static String mutationTypeToString(MutationType mutationType) {
         switch (mutationType) {
             case OP_MUT:
             case LITERAL_MUT:
@@ -132,6 +134,10 @@ public class MutationUtils {
                 return "ROR";
             case REPAIR_EXPR_MUT:
                 return "REXPR";
+            case MISSING_COND_MUT:
+                return "MCO";
+            case OPERAND_REPLACEMENT_MUT:
+                return "ORO";
         }
     }
 

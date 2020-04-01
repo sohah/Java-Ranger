@@ -492,30 +492,30 @@ public class InOutManager {
 
 //====================== GPCA ====================================
 
-    private void discoverSsaOutToStateInputGPCA(){
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", "Is_Audio_Disabled_103_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", "Notification_Message_104_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", "Audio_Notification_Command_105_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", "Highest_Level_Alarm_106_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", "Log_Message_ID5_107_SYMINT");
+    private void discoverSsaOutToStateInputGPCA() {
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", "Is_Audio_Disabled_103_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", "Notification_Message_104_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", "Audio_Notification_Command_105_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", "Highest_Level_Alarm_106_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", "Log_Message_ID5_107_SYMINT");
     }
 
     private void discoverContractOutputGPCA() {
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.1.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.52", new IntExpr(0));
+        contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", new IntExpr(0));
 
     }
 
@@ -585,8 +585,10 @@ public class InOutManager {
         stateInput.add("localB_Flow_Rate_High_112_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_Low_113_SYMINT", NamedType.INT);
         stateInput.add("localB_Flow_Rate_114_SYMINT", NamedType.INT);
-        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
+
+
         stateInput.add("localB_Audio_Enable_Duration_115_SYMINT", NamedType.INT);
+        stateInput.add("localB_Audio_Level_116_SYMINT", NamedType.INT);
         stateInput.add("localB_Config_Warning_Duration_117_SYMINT", NamedType.INT);
         stateInput.add("localB_Low_Reservoir_118_SYMINT", NamedType.INT);
         stateInput.add("localB_Max_Duration_Over_Infusion_119_SYMINT", NamedType.INT);
@@ -608,6 +610,7 @@ public class InOutManager {
         stateInput.add("localB_Logging_Failed_135_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Infusion_Initiate_136_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Notification_Cancel_137_SYMINT", NamedType.BOOL);
+        stateInput.add("localB_Flow_Rate_Not_Stable_138_SYMINT", NamedType.BOOL);
 
         stateInput.add("localB_Air_In_Line_139_SYMINT", NamedType.BOOL);
         stateInput.add("localB_Occlusion_140_SYMINT", NamedType.BOOL);
@@ -704,337 +707,336 @@ public class InOutManager {
     private void discoverStateOutputGPCA() {
 
         //localB
-        stateOutput.add(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Commanded_Flow_Rate.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Current_System_Mode.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Disable_Audio.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".VTBI_High.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".VTBI_High.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".VTBI_High.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".VTBI_High.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_High.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Low.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Enable_Duration.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Audio_Level.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Audio_Level.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Warning_Duration.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Low_Reservoir.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Over_Infusion.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.52",
-                new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Duration_Under_Infusion.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Paused_Duration.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Max_Idle_Duration.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Max.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Tolerance_Min.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Volume.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Volume_Infused.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Config_Timer.1.3.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Timer.1.3.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Config_Timer.1.3.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Config_Timer.1.3.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1" +
-                ".12.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Audio_Disabled_Indicator.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.24" +
-                ".52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.27.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Display_Notification_Command.1.27.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.61.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.63.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Audio_Notification_Command.1.63.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.12.52",
-                new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Highest_Level_Alarm.1.13.51", new IntExpr(0));
 
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.10.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.10.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.15.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".ALARM_OUT_Log_Message_ID.1.15.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".System_On.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_On.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".System_On.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_On.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".System_Monitor_Failed.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Logging_Failed.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Infusion_Initiate.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Notification_Cancel.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Flow_Rate_Not_Stable.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Occlusion.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Occlusion.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_In_Line.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Door_Open.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Door_Open.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Occlusion.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Occlusion.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Temp.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Temp.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Door_Open.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Door_Open.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Temp.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Temp.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Humidity.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Humidity.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Air_Pressure.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Humidity.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Humidity.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Low.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Low.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Depleted.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Low.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Low.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Battery_Unable_To_Charge.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Supply_Voltage.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".CPU_In_Error.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".RTC_In_Error.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Watchdog_Interrupted.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Memory_Corrupted.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Too_Hot.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Pump_Overheated.1.3.51", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_gpca_localB + ".In_Therapy.1.3.52", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_gpca_localB + ".In_Therapy.1.3.52", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".Reservoir_Empty.1.3.51", new BoolExpr(false));
+
+        stateOutput.add(referenceObjectName_gpca_localB + ".In_Therapy.1.3.51", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_gpca_localB + ".In_Therapy.1.3.51", new BoolExpr(false));
 
 
 //localDW
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_c2_ALARM_Functional.1.5.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.12.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_c2_ALARM_Functional.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Notification.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Notification.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Notification.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Notification.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_Visual.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Visual.1.24.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_Visual.1.27.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Visual.1.27.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Visual.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Visual.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Visual.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Visual.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_Audio.1.59.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Audio.1.59.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_Audio.1.63.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_Audio.1.63.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Audio.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Audio.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Audio.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Audio.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CheckAlarm.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.16.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.16.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.19.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_CancelAlarm.1.19.51", new IntExpr(0));
 
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_CancelAlarm.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_SetAlarmStatus.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level4.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level4.1.11.522", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level4.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level4.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.24.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.24.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.29.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEmptyReservoir.1.29.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEmptyReservoir.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsSystemMonitorFailed.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsSystemMonitorFailed.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.35.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.35.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.29.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsEnviromentalError.1.29.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsEnviromentalError.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level3.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level3.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level3.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level3.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.39.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.39.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.43.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionFlowRate.1.43.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionFlowRate.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.22.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_InfusionNotStartedWarning.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_InfusionNotStartedWarning.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.23.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.27.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOverInfusionVTBI.1.27.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOverInfusionVTBI.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsAirInLine.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsAirInLine.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsOcclusion.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsOcclusion.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsDoorOpen.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsDoorOpen.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level2.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level2.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level2.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level2.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.22.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.27.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLowReservoir.1.27.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLowReservoir.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level1.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level1.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_Level1.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_Level1.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.33.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.37.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsUnderInfusion.1.37.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsUnderInfusion.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.22.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.22.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.27.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsFlowRateNotStable.1.27.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsFlowRateNotStable.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.33.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.33.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.38.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsIdleTimeExceeded.1.38.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsIdleTimeExceeded.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.57.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.57.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.37.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPausedTimeExceeded.1.37.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPausedTimeExceeded.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsConfigTimeWarning.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsConfigTimeWarning.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.35.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.35.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.29.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsBatteryError.1.29.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsBatteryError.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsPumpHot.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsPumpHot.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.21.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.21.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.25.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsLoggingFailed.1.25.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_active_IsLoggingFailed.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.61.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.61.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.35.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".is_IsHardwareError.1.35.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsHardwareError.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + "is_active_IsHardwareError.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".is_active_IsHardwareError.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + "is_active_IsHardwareError.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.17.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.17.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.23.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".overInfusionTimer.1.23.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.17.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.17.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.23.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".underInfusionTimer.1.23.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".currentAlarm.1.12.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".currentAlarm.1.12.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".currentAlarm.1.13.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".currentAlarm.1.13.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".audioTimer.1.34.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".audioTimer.1.34.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".audioTimer.1.48.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".audioTimer.1.48.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".cancelAlarm.1.11.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".cancelAlarm.1.11.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".cancelAlarm.1.15.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".cancelAlarm.1.15.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".idletimer.1.35.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".idletimer.1.40.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".idletimer.1.40.51", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_gpca_localDW + ".pausedtimer.1.61.52", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_gpca_localDW + ".pausedtimer.1.61.52", new IntExpr(0));
+        stateOutput.add(referenceObjectName_gpca_localDW + ".pausedtimer.1.40.51", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_gpca_localDW + ".pausedtimer.1.40.51", new IntExpr(0));
 
     }
 
@@ -1047,29 +1049,29 @@ public class InOutManager {
 
     //used during the range value analysis
     private void discoverSsaOutToStateInputInf() {
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", "Commanded_Flow_Rate_54_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", "Current_System_Mode_55_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", "New_Infusion_56_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", "Log_Message_ID4_57_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", "Actual_Infusion_Duration_58_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", "Commanded_Flow_Rate_54_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", "Current_System_Mode_55_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", "New_Infusion_56_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", "Log_Message_ID4_57_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", "Actual_Infusion_Duration_58_SYMINT");
     }
 
     private void discoverContractOutputInfusion() {
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.68", new BoolExpr(false));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", NamedType.BOOL);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", new BoolExpr(false));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", new IntExpr(0));
 
-        contractOutput.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.68", new IntExpr(0));
+        contractOutput.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", NamedType.INT);
+        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", new IntExpr(0));
 
     }
 
@@ -1201,153 +1203,153 @@ public class InOutManager {
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputInfusion() {
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Highest_Level_Alarm.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Total_Duration.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".VTBI_Total.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Basal.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Interval_Intermittent_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Duration_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Lockout_Period_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Max_Number_of_Patient_Bolus.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Flow_Rate_KVO.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Configured.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Configured.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Configured.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Configured.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Volume_Infused.1.3.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.149.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.149.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.159.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Flow_Rate_Commanded.1.159.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.135.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.135.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.148.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Current_System_Mode.1.148.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.25.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.25.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.29.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_Log_Message_ID.1.29.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Actual_Infusion_Duration.1.32.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localB + "IM_OUT_Actual_Infusion_Duration.1.32.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_Actual_Infusion_Duration.1.37.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localB + "IM_OUT_Actual_Infusion_Duration.1.37.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Initiate.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Inhibit.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Infusion_Cancel.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Patient_Bolus_Request.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".Reservoir_Empty.1.3.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.21.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.21.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.26.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localB + ".IM_OUT_New_Infusion.1.26.67", new BoolExpr(false));
 
         //localDW
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_c2_INFUSION_MGR_Functional.1.5.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.12.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.12.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.13.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_c2_INFUSION_MGR_Functional.1.13.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.26.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.26.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.29.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Infusion_Manager.1.29.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_THERAPY.1.45.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_THERAPY.1.45.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_THERAPY.1.52.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_THERAPY.1.52.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter.1.94.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter.1.94.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter.1.109.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter.1.109.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.47.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.47.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.65.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Alarm_Paused.1.65.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Alarm_Paused.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.47.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.48.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.65.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Manual_Paused.1.65.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.35.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.35.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.51.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Manual_Paused.1.51.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_BASAL.1.36.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_BASAL.1.36.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_BASAL.1.49.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_BASAL.1.49.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_BASAL.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + "is_active_BASAL.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_BASAL.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + "is_active_BASAL.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.60.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.60.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.71.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_Arbiter_d.1.71.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_Arbiter_c.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_PATIENT.1.57.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_PATIENT.1.57.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_PATIENT.1.73.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_PATIENT.1.73.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_PATIENT.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.46.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.46.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.59.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_INTERMITTENT.1.59.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.31.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.31.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.43.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".is_active_INTERMITTENT.1.43.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_timer.1.52.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_timer.1.52.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_timer.1.64.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_timer.1.64.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".pbolus_timer.1.62.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".pbolus_timer.1.62.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".pbolus_timer.1.78.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".pbolus_timer.1.78.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".lock_timer.1.42.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".lock_timer.1.42.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".lock_timer.1.53.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".lock_timer.1.53.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".number_pbolus.1.42.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".number_pbolus.1.42.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".number_pbolus.1.52.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".number_pbolus.1.52.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.57.68", NamedType.INT);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.57.68", new IntExpr(0));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.62.67", NamedType.INT);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolusInter_timer.1.62.67", new IntExpr(0));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_req.1.46.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_req.1.46.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".sbolus_req.1.63.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".sbolus_req.1.63.67", new BoolExpr(false));
 
-        stateOutput.add(referenceObjectName_infusion_localDW + ".inPatientBolus.1.43.68", NamedType.BOOL);
-        stateOutput.addInit(referenceObjectName_infusion_localDW + ".inPatientBolus.1.43.68", new BoolExpr(false));
+        stateOutput.add(referenceObjectName_infusion_localDW + ".inPatientBolus.1.56.67", NamedType.BOOL);
+        stateOutput.addInit(referenceObjectName_infusion_localDW + ".inPatientBolus.1.56.67", new BoolExpr(false));
     }
 
     //=========================== Even ============================

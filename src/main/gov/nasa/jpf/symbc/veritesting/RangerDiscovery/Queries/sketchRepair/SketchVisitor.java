@@ -142,7 +142,7 @@ public class SketchVisitor extends AstMapVisitor {
         else
             fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
 
-        DiscoveryUtil.writeToFile(fileName, counterExample.toString(), isMinimal);
+        DiscoveryUtil.writeToFile(fileName, counterExample.toString(), isMinimal, false);
 
         SketchVisitor sketchVisitor = new SketchVisitor(originalExtPgm, counterExample);
 

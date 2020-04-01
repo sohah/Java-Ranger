@@ -1,13 +1,21 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.VeritestingListener;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
 import jkind.lustre.IntExpr;
 import jkind.lustre.Program;
+import jkind.lustre.parsing.LustreParseUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.processMutants;
 
 public class Config {
     public static String counterExPropertyName = "fail";
@@ -15,6 +23,7 @@ public class Config {
     public static String symVarName;
     public static boolean z3Solver;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
+    public static String origFaultySpec;
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -61,6 +70,8 @@ public class Config {
 
     public static int costLimit = 10; // value entered by hand for now
 
+    public static boolean printMutantDir = false;
+    public static boolean mutationEnabled = true;
 
     public static int faultyEquationNumber = 1;
 
@@ -70,10 +81,29 @@ public class Config {
     //this contains specific equations we would like to repair, instead of repairing the whole thing. This is now used for testing only.
     public static Integer[] equationNumToRepair = {1};
     public static boolean allEqRepair = true;
+    private static boolean firstTime = true;
 
+    static String mutationDir = "../src/DiscoveryExamples/mutants";
 
     public static boolean canSetup() throws IOException {
 
+        DiscoverContract.contract = new Contract();
+        tFileName = folderName + currFaultySpec;
+
+        if (firstTime) {
+            firstTime = false;
+            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+            if (mutationEnabled) {
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
+                faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
+            } else {
+                if (origSpec.repairNodes.size() != 0) {
+                    System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
+                    assert false;
+                }
+                faultySpecs = new String[]{currFaultySpec};
+            }
+        }
         if ((faultySpecIndex) >= faultySpecs.length)
             return false;
 
@@ -88,32 +118,6 @@ public class Config {
 
         VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
-        /*if (spec.equals("pad")) {
-            tFileName = folderName + "FaultyPreImaginaryPad";
-        } else if (spec.equals("even")) {
-            tFileName = folderName + "FaultyPreEvenSpec";
-        } else if (spec.equals("wbs")) {
-            tFileName = folderName + "FaultyImaginaryWBS"; //
-        } else if (spec.equals("vote")) {
-            tFileName = folderName + "vote"; //
-        }*/
-        /*else if (spec.equals("evenRestrictive")) {
-            tFileName = folderName + "FaultyEvenRestrictiveSpec";
-            tnodeSpecPropertyName = "T_node~0.p1"; // we do not know yet!
-        } else if (spec.equals("FaultyPreEvenSpec")) {
-            tFileName = folderName + "FaultyPreEvenSpec";
-            tnodeSpecPropertyName = "T_node~0.p1"; // we do not know yet!
-        } */
-        /*else {
-            System.out.println("unsupported spec, you need to setup input and output of the spec before usage!");
-            assert false;
-        }*/
-/*
-        auxilaryRepairProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName +
-                repairLustreFileName)), "UTF-8"));
 
-
-        System.out.println(auxilaryRepairProgram);
-*/
     }
 }

@@ -255,10 +255,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 if (conf.hasValue("spec"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.spec = conf.getString("spec");
                 if (conf.hasValue("faultySpec")) {
-                    //gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString(
-                    //"faultySpec");
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.faultySpecs = conf.getStringArray(
-                            "faultySpec");
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString("faultySpec");
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.origFaultySpec = conf.getString("faultySpec");
                 }
                 if (conf.hasValue("z3Solver")) {
                     //gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString(
@@ -273,6 +271,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }
+                if(conf.hasValue("mutationEnabled"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled = conf.getBoolean("mutationEnabled");
 
                 if (conf.hasValue("repairInitialValues"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairInitialValues = conf.getBoolean("repairInitialValues");

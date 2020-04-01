@@ -38,12 +38,10 @@ public class SpecInOutManager {
         } else if (Config.spec.equals("vote2")) {
             discoverFreeInputVote2();
             discoverOutputVarVote2();
-        }
-        if (Config.spec.equals("gpca")) {
+        } else if (Config.spec.equals("gpca")) {
             discoverFreeInputGpca();
             discoverOutputVarGpca();
-        }
-        if (Config.spec.equals("infusion")) {
+        } else if (Config.spec.equals("infusion")) {
             discoverFreeInputInfusion();
             discoverOutputVarInfusion();
         } else {
@@ -278,7 +276,7 @@ public class SpecInOutManager {
         return inOutputVars;
     }
 
-    public int indexOfOutputVar(String varName){
+    public int indexOfOutputVar(String varName) {
         return inOutputVars.indexOf(varName);
     }
 }

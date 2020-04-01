@@ -1,0 +1,66 @@
+node main(Commanded_Flow_Rate : int;
+            Current_System_Mode : int;
+            System_On : bool;
+            System_Monitor_Failed : bool;
+            Logging_Failed : bool;
+            Infusion_Initiate : bool;
+            Disable_Audio : int;
+            Notification_Cancel : bool;
+            VTBI_High : int;
+            Flow_Rate_High : int;
+            Flow_Rate_Low : int;
+            Flow_Rate : int;
+            Flow_Rate_Not_Stable : bool;
+            Air_In_Line : bool;
+            Occlusion : bool;
+            Door_Open : bool;
+            Temp : bool;
+            Air_Pressure : bool;
+            Humidity : bool;
+            Battery_Depleted : bool;
+            Battery_Low : bool;
+            Battery_Unable_To_Charge : bool;
+            Supply_Voltage : bool;
+            CPU_In_Error : bool;
+            RTC_In_Error : bool;
+            Watchdog_Interrupted : bool;
+            Memory_Corrupted : bool;
+            Pump_Too_Hot : bool;
+            Pump_Overheated : bool;
+            Audio_Enable_Duration : int;
+            Audio_Level : int;
+            Config_Warning_Duration : int;
+            Low_Reservoir : int;
+            Max_Duration_Over_Infusion : int;
+            Max_Duration_Under_Infusion : int;
+            Max_Paused_Duration : int;
+            Max_Idle_Duration : int;
+            Tolerance_Max : int;
+            Tolerance_Min : int;
+            Reservoir_Empty : bool;
+            Reservoir_Volume : int;
+            Volume_Infused : int;
+            In_Therapy : bool;
+            Config_Timer : int;
+            out_Is_Audio_Disabled : int;
+            out_Notification_Message : int;
+            out_Audio_Notification_Command : int;
+            out_Highest_Level_Alarm : int;
+            out_Log_Message_ID5 : int) returns (p1: bool);
+
+var
+
+   prop1: bool;
+   prop2:bool;
+
+let
+
+    prop1 =  (true -> ((System_On and Door_Open) => ((out_Highest_Level_Alarm > 4) => (out_Highest_Level_Alarm <= 3))));
+
+    prop2 =  (true -> ((System_On and Door_Open) => ((out_Notification_Message <= 25) and (out_Highest_Level_Alarm <= 4))));
+
+    p1 = prop2 => prop1  ;
+
+  --%PROPERTY p1;
+
+tel;
