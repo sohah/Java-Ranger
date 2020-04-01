@@ -72,6 +72,7 @@ public class Config {
 
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
+    public static boolean rangeValueAnalysis = false;
 
     public static int faultyEquationNumber = 1;
 
@@ -97,7 +98,7 @@ public class Config {
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
                 faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
             } else {
-                if (origSpec.repairNodes.size() != 0) {
+                if (origSpec.repairNodes.size() == 0) {
                     System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
                     assert false;
                 }
