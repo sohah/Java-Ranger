@@ -33,11 +33,13 @@ import java.util.List;
 
 public class IdExprVisitor implements ExprVisitor<Expr> {
     private final HashSet<String> idExprSet;
+    private final ArrayList<IdExpr> idExprList;
     private final SpecInOutManager tInOutManager;
 
     public IdExprVisitor(Expr e, SpecInOutManager tInOutManager) {
         idExprSet = new HashSet<>();
         this.tInOutManager = tInOutManager;
+        idExprList = new ArrayList<>();
     }
 
     @Override
@@ -94,7 +96,10 @@ public class IdExprVisitor implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(IdExpr e) {
-        idExprSet.add(e.id);
+        if (!idExprSet.contains(e.id)) {
+            idExprSet.add(e.id);
+            idExprList.add(e);
+        }
         return e;
     }
 
@@ -179,4 +184,6 @@ public class IdExprVisitor implements ExprVisitor<Expr> {
         }
         throw new IllegalArgumentException("failed to figure out type for " + idExpr);
     }
+
+    public ArrayList<IdExpr> getIdExprs() { return idExprList; }
 }
