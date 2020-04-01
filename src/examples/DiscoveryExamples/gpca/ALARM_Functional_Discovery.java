@@ -1701,12 +1701,9 @@ public class ALARM_Functional_Discovery {
         /* End of Chart: '<Root>/Alarm  Sub-System' */
 
         /* BusCreator: '<Root>/BusConversion_InsertedFor_ALARM_OUT_at_inport_0' */
-        rty_ALARM_OUT.Is_Audio_Disabled =
-                localB.ALARM_OUT_Display_Audio_Disabled_Indicator;
-        rty_ALARM_OUT.Notification_Message =
-                localB.ALARM_OUT_Display_Notification_Command;
-        rty_ALARM_OUT.Audio_Notification_Command =
-                localB.ALARM_OUT_Audio_Notification_Command;
+        rty_ALARM_OUT.Is_Audio_Disabled = localB.ALARM_OUT_Display_Audio_Disabled_Indicator;
+        rty_ALARM_OUT.Notification_Message = localB.ALARM_OUT_Display_Notification_Command;
+        rty_ALARM_OUT.Audio_Notification_Command = localB.ALARM_OUT_Audio_Notification_Command;
         rty_ALARM_OUT.Highest_Level_Alarm = localB.ALARM_OUT_Highest_Level_Alarm;
         rty_ALARM_OUT.Log_Message_ID = localB.ALARM_OUT_Log_Message_ID;
 

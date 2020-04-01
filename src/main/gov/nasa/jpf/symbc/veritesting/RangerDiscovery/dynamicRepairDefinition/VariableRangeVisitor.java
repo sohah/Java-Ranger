@@ -18,7 +18,7 @@ import java.util.List;
 public class VariableRangeVisitor extends AstMapVisitor {
     public static List<String> interestedVarName; //variable names that we realize are ssa instances that we need to traverse them
 
-    public static String relatedSymInput;
+    public static List<String> relatedSymInput;
 
     public VariableRangeVisitor(ExprVisitor<Expression> exprVisitor, String varName) {
         super(exprVisitor);
@@ -143,6 +143,9 @@ public class VariableRangeVisitor extends AstMapVisitor {
 
     public static BinaryExpr getRangeExpr(IdExpr expr, IdExpr holeExpr) {
         int specOutIndex = DiscoverContract.contract.tInOutManager.indexOfOutputVar(expr.toString());
+        if(specOutIndex == -1){ //if we can't find it in the output, then we can't do a range analysis for that variable, since that would mean that it is either a free input or a state variable, in both cases we can't analyze its range of values.
+            return null;
+        }
         String varName = DiscoverContract.contract.rInOutManager.varOutNameByIndex(specOutIndex);
 
         VariableRangeExprVisitor varRangeExprVisitor = new VariableRangeExprVisitor();

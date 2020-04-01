@@ -784,8 +784,7 @@ public class ALARM_Functional_Recovered {
 
         /* During 'SetAlarmStatus': '<S1>:4018' */
         localDW.currentAlarm = (int) ALARM_Functional_setCurrentAlarm(localDW);
-        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm
-                (localDW);
+        localB.ALARM_OUT_Highest_Level_Alarm = ALARM_Functional_setHighestAlarm(localDW);
     }
 
     /* Function for Chart: '<Root>/Alarm  Sub-System' */

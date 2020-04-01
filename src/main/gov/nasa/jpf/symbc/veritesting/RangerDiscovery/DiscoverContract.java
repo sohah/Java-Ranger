@@ -146,9 +146,10 @@ public class DiscoverContract {
 
             originalProgram = RemoveRepairConstructVisitor.execute(flatExtendedPgm);
 
+            /* //this has moved to Config.java
             String mutationDir = "../src/DiscoveryExamples/mutants";
             ArrayList<MutationResult> mutationResults = createSpecMutants(originalProgram, mutationDir, contract.tInOutManager);
-            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");
+            System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDir + " folder");*/
 
         } else {
             originalProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),

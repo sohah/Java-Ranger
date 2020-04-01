@@ -42,22 +42,27 @@ public class VariableRangeExprVisitor extends ExprMapVisitor implements ExprVisi
 
     @Override
     public Expression visit(IntVariable expr) {
-        if (!VariableRangeVisitor.relatedSymInput.equals(expr.toString())) {
-            rangeValues = new ArrayList<>();
-            inVarOfInterestScope = false;
-            VariableRangeVisitor.interestedVarName = new ArrayList<>();
+        for (String outputStr : VariableRangeVisitor.relatedSymInput) {
+            if (outputStr.equals(expr.toString())) { //then we just ignore it
+                return expr;
+            }
         }
-        else{
-            return expr;
-        }
+        // we go to here then we haven't found it as a corresponding output then we need to trace it back.
+        rangeValues = new ArrayList<>();
+        inVarOfInterestScope = false;
+        VariableRangeVisitor.interestedVarName = new ArrayList<>();
         return expr;
     }
 
     @Override
     public Expression visit(GammaVarExpr expr) {
-        return new GammaVarExpr(expr.condition,
-                eva.accept(expr.thenExpr),
-                eva.accept(expr.elseExpr));
+        if (expr.condition.toString().contains("symVar")) { //used to avoid tracing one side that is outside of the symVar condition, not interesting for contract discovery
+            assert (expr.elseExpr instanceof IntVariable);
+            return eva.accept(expr.thenExpr);
+        } else
+            return new GammaVarExpr(expr.condition,
+                    eva.accept(expr.thenExpr),
+                    eva.accept(expr.elseExpr));
     }
 
     @Override

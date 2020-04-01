@@ -8,14 +8,14 @@ import java.util.List;
 //defines the first ssa vairable related to the output ssa variable of an implementation
 public class SSAOutToStateInput {
 
-    List<Pair<String, String>> ssaOutToStateInput = new ArrayList<>();
+    List<Pair<String, List<String>>> ssaOutToStateInput = new ArrayList<>();
 
-    public void add(String outputName, String inputName) {
-        ssaOutToStateInput.add(new Pair(outputName, inputName));
+    public void add(String outputName, List<String> inputNames) {
+        ssaOutToStateInput.add(new Pair<String, List<String>>(outputName, inputNames));
     }
 
-    public String matchingOutput(String outputName) {
-        for (Pair<String, String> pair : ssaOutToStateInput) {
+    public List<String> matchingOutput(String outputName) {
+        for (Pair<String, List<String>> pair : ssaOutToStateInput) {
             if (pair.getFirst().equals(outputName))
                 return pair.getSecond();
         }

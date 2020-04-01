@@ -5,6 +5,7 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -45,7 +46,7 @@ public class InOutManager {
     private String referenceObjectName_gpca_localDW = "r398";
 
 
-    //specific reference names for GPCA
+    //specific reference names for Infusion
     private String referenceObjectName_infusion_Outputs = "r382";
     private String referenceObjectName_infusion_localB = "r350";
     private String referenceObjectName_infusion_localDW = "r354";
@@ -73,6 +74,8 @@ public class InOutManager {
 
     ArrayList<VarDecl> conversionLocalList = new ArrayList<>();
 
+    // This data structure is a bit of tricky and hacky. The idea here is that for our range value analysis to work we need to track back values on all paths for the output variables. If on all paths we find either concrete values or the symbolic variable that is defined as an input for that output variable then we take all values as the only possible range of values for that vairable.
+    // on the other hand if we encountered another symbolic input, not related to the input of this variable, then we can't claim that we can constraint it. and thus our analysis should not procduce anything for htat output vairable.
     public SSAOutToStateInput ssaOutToStateInputInf = new SSAOutToStateInput();
 
     public ArrayList<Equation> getTypeConversionEq() {
@@ -493,11 +496,14 @@ public class InOutManager {
 //====================== GPCA ====================================
 
     private void discoverSsaOutToStateInputGPCA() {
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", "Is_Audio_Disabled_103_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", "Notification_Message_104_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", "Audio_Notification_Command_105_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", "Highest_Level_Alarm_106_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", "Log_Message_ID5_107_SYMINT");
+        //since the output variables below are also popluated by the output variables of the localB. That is the localB really replicate the output variables for the alarm_output
+        // so we can consider symbolic variables for the outputB related fields to be related to the output of the alarm. This is helpful to ignore them when
+        // computing the range value analysis.
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", Arrays.asList("Is_Audio_Disabled_103_SYMINT", "localB_ALARM_OUT_Display_Audio_Disabled_Indicator_128_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", Arrays.asList("Notification_Message_104_SYMINT", "localB_ALARM_OUT_Display_Notification_Command_129_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", Arrays.asList("Audio_Notification_Command_105_SYMINT", "localB_ALARM_OUT_Audio_Notification_Command_130_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", Arrays.asList("Highest_Level_Alarm_106_SYMINT", "localB_ALARM_OUT_Highest_Level_Alarm_131_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", Arrays.asList("Log_Message_ID5_107_SYMINT", "localB_ALARM_OUT_Log_Message_ID_132_SYMINT"));
     }
 
     private void discoverContractOutputGPCA() {
@@ -1049,11 +1055,11 @@ public class InOutManager {
 
     //used during the range value analysis
     private void discoverSsaOutToStateInputInf() {
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", "Commanded_Flow_Rate_54_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", "Current_System_Mode_55_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", "New_Infusion_56_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", "Log_Message_ID4_57_SYMINT");
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", "Actual_Infusion_Duration_58_SYMINT");
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", Arrays.asList("Commanded_Flow_Rate_54_SYMINT", "IM_OUT_Flow_Rate_Commanded2_73_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", Arrays.asList("Current_System_Mode_55_SYMINT", "IM_OUT_Current_System_Mode2_74_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", Arrays.asList("New_Infusion_56_SYMINT", "IM_OUT_New_Infusion2_82_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", Arrays.asList("Log_Message_ID4_57_SYMINT", "IM_OUT_Log_Message_ID2_75_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", Arrays.asList("Actual_Infusion_Duration_58_SYMINT", "IM_OUT_Actual_Infusion_Duration2_76_SYMINT"));
     }
 
     private void discoverContractOutputInfusion() {
