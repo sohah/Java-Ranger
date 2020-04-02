@@ -75,7 +75,6 @@ public class MutationUtils {
             System.out.println("Failed to find the main node or main node has more than one equation");
             return null;
         }
-        int mutationIndex = -1;
         File directory = new File(mutationDirectory);
         if (! directory.exists()){
             if (!directory.mkdir()) {
@@ -92,7 +91,7 @@ public class MutationUtils {
                 MutationType.REPAIR_EXPR_MUT, MutationType.MISSING_COND_MUT, MutationType.OPERAND_REPLACEMENT_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
-            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationIndex, mutationDirectory, tInOutManager));
+            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager));
         }
         System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
@@ -100,20 +99,26 @@ public class MutationUtils {
 
     private static ArrayList<MutationResult> applyMutation(final Program originalProgram,
                                                            final MutationType mutationType,
-                                                           int mutationIndex,
                                                            String mutationDirectory,
                                                            SpecInOutManager tInOutManager) {
+        int mutationIndex = -1, repairMutationIndex = -1;
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
-            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, tInOutManager);
+            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, repairMutationIndex, tInOutManager);
             Expr mutatedExpr = originalProgram.nodes.get(0).equations.get(0).expr.accept(mutateExpr);
             if (!mutateExpr.didMutation()) {
                 break;
             } else {
-                mutationIndex++;
-                if (Config.printMutantDir)
-                    writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-" + mutationIndex);
-                ret.add(new MutationResult(mutatedExpr, mutationIndex, mutationType, mutateExpr.repairNodes));
+                if (!mutateExpr.addedRepairWrapper()) {
+                    mutationIndex++;
+                } else {
+                    repairMutationIndex++;
+                    if (Config.printMutantDir)
+                        writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory
+                                + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-"
+                                + repairMutationIndex + "-" + mutationIndex);
+                    ret.add(new MutationResult(mutatedExpr, mutationIndex, mutationType, mutateExpr.repairNodes));
+                }
             }
         }
         return ret;

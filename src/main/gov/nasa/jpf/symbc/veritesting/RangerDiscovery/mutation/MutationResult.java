@@ -19,9 +19,6 @@ public class MutationResult {
         this.mutationType = mutationType;
         this.mutationIdentifier = "-" + MutationUtils.mutationTypeToString(mutationType) + "-" + mutationIndex;
         this.repairNodes = repairNodes;
-        if (mutationType == MutationType.REPAIR_EXPR_MUT)
-            assert repairNodes.size() == 1; // currently we are not expecting multiple repair nodes with a single mutant.
-        else
-            assert repairNodes == null || repairNodes.size() == 0;
+        assert repairNodes.size() == 1; // currently we are not expecting multiple repair nodes with a single mutant.
     }
 }

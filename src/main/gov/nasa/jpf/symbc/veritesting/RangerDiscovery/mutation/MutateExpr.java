@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import jkind.lustre.*;
 import jkind.lustre.visitors.ExprVisitor;
@@ -11,33 +12,47 @@ import java.util.List;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.mutate;
 
 public class MutateExpr implements ExprVisitor<Expr> {
-    private final int previousMutationIndex;
+    private final int prevMutationIndex, prevRepairMutationIndex;
     private final MutationType mutationType;
     private final SpecInOutManager tInOutManager;
     private final ShouldApplyMutation shouldApplyMutation;
     public List<GenericRepairNode> repairNodes = new ArrayList<>();
 
     private int mutationIndex;
+    private int repairMutationIndex;
 
-    MutateExpr(MutationType mutationType, int previousMutationIndex, SpecInOutManager tInOutManager) {
+    MutateExpr(MutationType mutationType, int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager) {
         this.mutationType = mutationType;
-        this.previousMutationIndex = previousMutationIndex;
+        this.prevMutationIndex = prevMutationIndex;
+        this.prevRepairMutationIndex = prevRepairMutationIndex;
         this.mutationIndex = -1;
+        this.repairMutationIndex = -1;
         this.tInOutManager = tInOutManager;
         this.shouldApplyMutation = new ShouldApplyMutation();
     }
 
     boolean didMutation() {
-        return mutationIndex > previousMutationIndex;
+        return mutationIndex > prevMutationIndex;
     }
 
     private int incAndGetMutationIndex() {
         return ++mutationIndex;
     }
 
+    private int incAndGetRepairMutationIndex() {
+        return ++repairMutationIndex;
+    }
+
+    public boolean addedRepairWrapper() {
+        return repairMutationIndex > prevRepairMutationIndex;
+    }
+
     public class ShouldApplyMutation {
         public boolean shouldApplyMutation() {
-            return incAndGetMutationIndex() == previousMutationIndex + 1;
+            return incAndGetMutationIndex() == prevMutationIndex + 1;
+        }
+        public boolean shouldApplyRepairMutation() {
+            return incAndGetRepairMutationIndex() == prevRepairMutationIndex + 1;
         }
     };
 
@@ -68,17 +83,17 @@ public class MutateExpr implements ExprVisitor<Expr> {
     @Override
     public Expr visit(BinaryExpr e) {
         Expr repairExpr = wrapRepairExpr(e);
-        if (!didMutation()) {
-            Expr applyMCO = mutateMCO(e);
-            if (!didMutation()) {
-                Expr applyORO = mutateORO(e);
-                if (!didMutation()) {
-                    return new BinaryExpr(e.location,
-                            e.left.accept(this), mutate(mutationType, e.op, this), e.right.accept(this));
-                } else return applyORO;
-            } else return applyMCO;
+        if (repairExpr instanceof RepairExpr) {
+            return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
         }
-        else return repairExpr;
+        Expr applyMCO = mutateMCO((BinaryExpr) repairExpr);
+        if (!didMutation()) {
+            Expr applyORO = mutateORO(e);
+            if (!didMutation()) {
+                return new BinaryExpr(e.location,
+                        e.left.accept(this), mutate(mutationType, e.op, this), e.right.accept(this));
+            } else return applyORO;
+        } else return applyMCO;
     }
 
     private Expr mutateORO(BinaryExpr e) {
@@ -114,7 +129,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
     }
 
     private Expr wrapRepairExpr(BinaryExpr e) {
-        if (mutationType == MutationType.REPAIR_EXPR_MUT && shouldApplyMutation.shouldApplyMutation()) {
+        if (shouldApplyMutation.shouldApplyRepairMutation()) {
             IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
             e.accept(idExprVisitor);
             List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
