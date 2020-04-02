@@ -125,6 +125,7 @@ public class InOutManager {
 
             discoverContractOutputPad();
             doContractOutputTypeConversion();
+            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
 
         } else if (Config.spec.equals("even")) {
             discoverFreeInputEven();
@@ -139,6 +140,8 @@ public class InOutManager {
             discoverContractOutputEven();
             doContractOutputTypeConversion();
 
+            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+
         } else if (Config.spec.equals("wbs")) {
             discoverFreeInputWBS();
             doFreeTypeConversion();
@@ -151,6 +154,9 @@ public class InOutManager {
 
             discoverContractOutputWBS();
             doContractOutputTypeConversion();
+
+            discoverSsaOutToStateInputWBS();
+
         } else if (Config.spec.equals("tcas")) {
             discoverFreeInputTCAS();
             doFreeTypeConversion();
@@ -163,6 +169,8 @@ public class InOutManager {
 
             discoverContractOutputTCAS();
             doContractOutputTypeConversion();
+
+            discoverSsaOutToStateInputTCAS();
 
         } else if (Config.spec.equals("gpca")) {
             discoverFreeInputGPCA();
@@ -207,6 +215,8 @@ public class InOutManager {
             discoverContractOutputVote();
             doContractOutputTypeConversion();
 
+            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+
         } else if (Config.spec.equals("vote2")) {
             discoverFreeInputVote2();
             doFreeTypeConversion();
@@ -219,6 +229,8 @@ public class InOutManager {
 
             discoverContractOutputVote2();
             doContractOutputTypeConversion();
+
+            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
 
         } else {
             System.out.println("unexpected spec to run.!");
@@ -316,6 +328,12 @@ public class InOutManager {
 
     //====================== WBS ====================================
 
+    private void discoverSsaOutToStateInputWBS() {
+        ssaOutToStateInputInf.add(referenceObjectName + ".Nor_Pressure.1.13.2", Arrays.asList("Nor_Pressure_7_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName + ".Alt_Pressure.1.13.2", Arrays.asList("Alt_Pressure_8_SYMINT"));
+        ssaOutToStateInputInf.add(referenceObjectName + ".Sys_Mode.1.5.2", Arrays.asList("Sys_Mode_9_SYMINT"));
+    }
+
     //entered by hand for now - this defines the output that we expect to validate with the T_node,i.e, this is the
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
     // the method output of the implementation, instead it is the output of the to-be-created r_wrapper node.
@@ -378,6 +396,11 @@ public class InOutManager {
 
 
     //====================== TCAS ====================================
+
+    private void discoverSsaOutToStateInputTCAS() {
+        ssaOutToStateInputInf.add("r-1.result_alt_sep_test.1.4.33", Arrays.asList("result_alt_sep_test_13_SYMINT"));
+        ssaOutToStateInputInf.add("r-1.alim_res.1.4.33", Arrays.asList("alim_res_14_SYMINT"));
+    }
 
     //entered by hand for now - this defines the output that we expect to validate with the T_node,i.e, this is the
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
