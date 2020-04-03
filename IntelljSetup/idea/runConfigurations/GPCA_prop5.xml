@@ -12,6 +12,7 @@
       <env name="JKIND_HOME" value="$PROJECT_DIR$/lib" />
     </envs>
     <method v="2">
+      <option name="AntTarget" enabled="true" antfile="file://$PROJECT_DIR$/build.xml" target="clean" />
       <option name="AntTarget" enabled="true" antfile="file://$PROJECT_DIR$/build.xml" target="build" />
     </method>
   </configuration>
