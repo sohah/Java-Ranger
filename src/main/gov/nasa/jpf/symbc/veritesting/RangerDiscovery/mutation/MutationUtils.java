@@ -111,6 +111,7 @@ public class MutationUtils {
             } else {
                 if (!mutateExpr.addedRepairWrapper()) {
                     mutationIndex++;
+                    repairMutationIndex = -1;
                 } else {
                     repairMutationIndex++;
                     if (Config.printMutantDir)
