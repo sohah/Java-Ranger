@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.addProperty;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.removeNodeStr;
 
 public class MinimalRepairCheck {

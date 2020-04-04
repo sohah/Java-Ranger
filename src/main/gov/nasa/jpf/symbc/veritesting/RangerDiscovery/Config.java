@@ -62,20 +62,8 @@ public class Config {
     public static boolean defaultBoolValue = false;
     public static int initialIntValue = 0;
 
-    public static String methodReturnName = "result";
-
-    public static Program auxilaryRepairProgram;
-
-    public static String repairLustreFileName = "RepairLibrary";
-
-    public static int costLimit = 10; // value entered by hand for now
-
     public static boolean printMutantDir = false;
-    public static boolean mutationEnabled = true;
-    public static boolean rangeValueAnalysis = false;
-
-    public static int faultyEquationNumber = 1;
-
+    public static boolean mutationEnabled = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static boolean repairInitialValues;
 
