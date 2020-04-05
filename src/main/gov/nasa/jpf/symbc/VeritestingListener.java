@@ -291,6 +291,9 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 }
                 if (conf.hasValue("limitedSteps"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps = conf.getBoolean("limitedSteps");
+
+                if (conf.hasValue("randZ3Seed"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
             }
             StatisticManager.veritestingRunning = true;
             jpf.addPublisherExtension(ConsolePublisher.class, this);

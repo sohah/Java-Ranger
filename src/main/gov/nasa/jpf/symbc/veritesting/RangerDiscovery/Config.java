@@ -24,6 +24,7 @@ public class Config {
     public static boolean z3Solver;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static String origFaultySpec;
+    public static boolean rangeValueAnalysis;
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -40,6 +41,7 @@ public class Config {
     // of finding a different R.
 
     public static String tnodeSpecPropertyName;
+    public static boolean randZ3Seed = false;
 
     public static String candidateSpecPropertyName = "discovery_out";
 
