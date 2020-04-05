@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.folderName;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
 import static jkind.lustre.UnaryOp.NEGATIVE;
 import static jkind.lustre.UnaryOp.NOT;
 
@@ -453,7 +452,10 @@ public class DiscoveryUtil {
         }
 
 
-        api.setJKindJar("../../../jkind/jkind.jar");
+        if (randZ3Seed)
+            api.setJKindJar("../../../jkind/jkind.jar");
+        else
+            api.setJKindJar("../../../jkindNoRand/jkind.jar");
 
         api.disableSlicing();
 
@@ -474,7 +476,7 @@ public class DiscoveryUtil {
         if (Config.z3Solver)
             api.setSolver(SolverOption.Z3);
 
-        //api.setTimeout(300);
+        api.setTimeout(300);
         // The monitor is only currently used to detect cancellation NullProgressMonitor
 
         api.execute(file, result, new NullProgressMonitor());

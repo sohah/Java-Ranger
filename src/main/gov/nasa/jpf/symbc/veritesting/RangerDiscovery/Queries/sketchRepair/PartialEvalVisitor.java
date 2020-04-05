@@ -24,6 +24,7 @@ public class PartialEvalVisitor extends AstMapVisitor {
         if (e.left == left && e.right == right) {
             return e;
         }
+
         return new BinaryExpr(e.location, left, e.op, right);
     }
 
@@ -51,24 +52,22 @@ public class PartialEvalVisitor extends AstMapVisitor {
                     intVal = ((IntExpr) left).value.mod(((IntExpr) right).value);
                     return new IntExpr(intVal);
                 case EQUAL:
-                    boolVal = ((IntExpr) left).value.compareTo(((IntExpr) right).value) == 0;
+                    boolVal = ((IntExpr) left).value.intValue() == (((IntExpr) right).value.intValue());
                     return new BoolExpr(boolVal);
                 case NOTEQUAL:
-                    boolVal = ((IntExpr) left).value.compareTo(((IntExpr) right).value) != 0;
+                    boolVal = ((IntExpr) left).value.intValue() != (((IntExpr) right).value.intValue());
                     return new BoolExpr(boolVal);
                 case GREATER:
-                    boolVal = ((IntExpr) left).value.compareTo(((IntExpr) right).value) == 1;
+                    boolVal = ((IntExpr) left).value.intValue() > (((IntExpr) right).value.intValue());
                     return new BoolExpr(boolVal);
                 case LESS:
-                    boolVal = ((IntExpr) left).value.compareTo(((IntExpr) right).value) == -1;
+                    boolVal = ((IntExpr) left).value.intValue() < (((IntExpr) right).value.intValue());
                     return new BoolExpr(boolVal);
                 case GREATEREQUAL:
-                    boolVal = (((IntExpr) left).value.compareTo(((IntExpr) right).value) == 0)
-                            || (((IntExpr) left).value.compareTo(((IntExpr) right).value) == 1);
+                    boolVal = (((IntExpr) left).value.intValue() >= (((IntExpr) right).value.intValue()));
                     return new BoolExpr(boolVal);
                 case LESSEQUAL:
-                    boolVal = (((IntExpr) left).value.compareTo(((IntExpr) right).value) == 0)
-                            || (((IntExpr) left).value.compareTo(((IntExpr) right).value) == -11);
+                    boolVal = (((IntExpr) left).value.intValue() <= (((IntExpr) right).value.intValue()));
                     return new BoolExpr(boolVal);
                 case OR:
                 case AND:
