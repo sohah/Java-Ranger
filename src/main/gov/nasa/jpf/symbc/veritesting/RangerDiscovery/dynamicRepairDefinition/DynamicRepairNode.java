@@ -31,16 +31,21 @@ public class DynamicRepairNode {
         this.id = id;
     }
 
-    public RepairNode create(List<VarDecl> actualParamVarDecls, int exprSize) {
+    public RepairNode create(List<VarDecl> actualParamVarDecls, int exprSize) { //exprSize here indecates how many boolean nodes are in the expression, not how many possible terms.
         populateBoolIntInputs(actualParamVarDecls);
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
         if (Config.depthFixed)
             outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
         else {
-            double logDepth = (Math.log(exprSize) / Math.log(2)); //exprSize here indecates how many boolean nodes are in the expression
-            int balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
-            outputs.add(defineTreeLevel(balancedTreeDepth, pathLabel));
+            int balancedTreeDepth;
+            double logDepth = (Math.log(exprSize) / Math.log(2));
+            if (logDepth == 0) {
+                assert exprSize == 1;
+                balancedTreeDepth = exprSize;
+            } else
+                balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
+            outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
         }
         return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
     }
@@ -172,7 +177,7 @@ public class DynamicRepairNode {
                                     new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
                                     new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
                                             new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                            new BinaryExpr(sectionHoleExpr, BinaryOp.XOR, new IntExpr(3)))));
+                                            new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         } else expr =
                 new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
                         new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),

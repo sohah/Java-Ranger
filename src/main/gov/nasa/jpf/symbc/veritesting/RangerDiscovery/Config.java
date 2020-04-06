@@ -21,7 +21,6 @@ public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
-    public static String origFaultySpec;
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -79,11 +78,10 @@ public class Config {
 
     public static boolean canSetup() throws IOException {
 
-        DiscoverContract.contract = new Contract();
-        tFileName = folderName + currFaultySpec;
-
         if (firstTime) {
+            DiscoverContract.contract = new Contract();
             firstTime = false;
+            tFileName = folderName + currFaultySpec;
             Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
             if (mutationEnabled) {
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
@@ -110,6 +108,5 @@ public class Config {
 
         VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
-
     }
 }

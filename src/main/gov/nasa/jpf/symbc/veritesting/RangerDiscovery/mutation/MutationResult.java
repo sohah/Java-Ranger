@@ -13,11 +13,12 @@ public class MutationResult {
     final List<GenericRepairNode> repairNodes;
 
 
-    public MutationResult(Expr mutatedExpr, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes) {
+    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes) {
         this.mutatedExpr = mutatedExpr;
         this.mutationIndex = mutationIndex;
         this.mutationType = mutationType;
-        this.mutationIdentifier = "-" + MutationUtils.mutationTypeToString(mutationType) + "-" + mutationIndex;
+        this.mutationIdentifier = ("-" + MutationUtils.mutationTypeToString(mutationType) + "-" + repairMutationIndex +
+                "-" + mutationIndex);
         this.repairNodes = repairNodes;
         assert repairNodes.size() == 1; // currently we are not expecting multiple repair nodes with a single mutant.
     }

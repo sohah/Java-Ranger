@@ -32,8 +32,8 @@ public class RepairStatistics {
 
     public RepairStatistics(String fileName, String depth, MutationType mutationType) {
         LocalDateTime time = LocalDateTime.now();
-        String statisticFileName = Config.folderName + "statistics" + time + ".txt";
-        repairPropFileName = Config.folderName + "statistics_prop" + time + ".txt";
+        String statisticFileName = Config.folderName + Config.currFaultySpec + "-stat" + time + ".txt";
+        repairPropFileName = Config.folderName + Config.currFaultySpec + "-stat_prop" + time + ".txt";
 
         try {
             fw = new FileWriter(statisticFileName, true);
@@ -73,7 +73,10 @@ public class RepairStatistics {
         out.print(candidateStatistics.totalForallTime + ",     ");
         out.print(candidateStatistics.repairsFoundNum + ",     ");
         out.print(candidateStatistics.totalTime + ",     ");
-        out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + ",     ");
+        if (candidateStatistics.totalExistsNum != 0)
+            out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + ",     ");
+        else
+            out.print("N/A,     ");
         if (candidateStatistics.totalForallNum != 0)
             out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + ",     ");
         else
