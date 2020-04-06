@@ -22,22 +22,22 @@ public class CandidateStatistics {
     public long totalTime;
 
     public CandidateStatistics() {
-        RepairStatistics.out.print("Minimal     ");
-        RepairStatistics.out.print("LoopCount     "); //number of iterations in the outer loop
-        RepairStatistics.out.print("CandidateNum     ");
-        RepairStatistics.out.print("QueryTime     ");
-        RepairStatistics.out.print("QueryType     ");
+        RepairStatistics.out.print("Minimal,     ");
+        RepairStatistics.out.print("LoopCount,     "); //number of iterations in the outer loop
+        RepairStatistics.out.print("CandidateNum,     ");
+        RepairStatistics.out.print("QueryTime,     ");
+        RepairStatistics.out.print("QueryType,     ");
         RepairStatistics.out.println();
     }
 
 
     public void printCandStatistics(String loopCount, boolean minimal, int candidateNum, QueryType queryType,
                                     long queryTime) {
-        RepairStatistics.out.print(minimal + "     ");
-        RepairStatistics.out.print(loopCount + "     "); //iteration number
-        RepairStatistics.out.print(candidateNum + "     ");
-        RepairStatistics.out.print(queryTime + "     ");
-        RepairStatistics.out.print(queryType + "     ");
+        RepairStatistics.out.print(minimal + ",     ");
+        RepairStatistics.out.print(loopCount + ",     "); //iteration number
+        RepairStatistics.out.print(candidateNum + ",     ");
+        RepairStatistics.out.print(queryTime + ",     ");
+        RepairStatistics.out.print(queryType + ",     ");
         RepairStatistics.out.println();
 
         totalLoopTimeUntilRepair += queryTime;
@@ -51,8 +51,6 @@ public class CandidateStatistics {
             thereExistTimeTillRepair += queryTime;
             ++thereExistsQueryNumTillRepair;
         }
-
-
     }
 
     //Advancing prints
@@ -68,29 +66,29 @@ public class CandidateStatistics {
         RepairStatistics.out.println("---------------------------LOOP STATS------------------------------");
         RepairStatistics.out.println();
 
-        RepairStatistics.out.print("forallTime     ");
-        RepairStatistics.out.print("existTime     "); //number of iterations in the outer loop
-        RepairStatistics.out.print("forallNum     ");
-        RepairStatistics.out.print("existsNum     ");
-        RepairStatistics.out.print("totalTime     ");
-        RepairStatistics.out.print("avgForallTime     ");
-        RepairStatistics.out.print("avgExistsTime     ");
-        RepairStatistics.out.print("avgTotalTime     ");
+        RepairStatistics.out.print("forallTime,     ");
+        RepairStatistics.out.print("existTime,     "); //number of iterations in the outer loop
+        RepairStatistics.out.print("forallNum,     ");
+        RepairStatistics.out.print("existsNum,     ");
+        RepairStatistics.out.print("totalTime,     ");
+        RepairStatistics.out.print("avgForallTime,     ");
+        RepairStatistics.out.print("avgExistsTime,     ");
+        RepairStatistics.out.print("avgTotalTime,     ");
         RepairStatistics.out.println();
 
 
-        RepairStatistics.out.print(forallTimeTillRepair + "     ");
-        RepairStatistics.out.print(thereExistTimeTillRepair + "     "); //number of iterations in the outer loop
-        RepairStatistics.out.print(forallQueryNumTillRepair + "     ");
-        RepairStatistics.out.print(thereExistsQueryNumTillRepair + "     ");
-        RepairStatistics.out.print(totalLoopTimeUntilRepair + "     ");
+        RepairStatistics.out.print(forallTimeTillRepair + ",     ");
+        RepairStatistics.out.print(thereExistTimeTillRepair + ",     "); //number of iterations in the outer loop
+        RepairStatistics.out.print(forallQueryNumTillRepair + ",     ");
+        RepairStatistics.out.print(thereExistsQueryNumTillRepair + ",     ");
+        RepairStatistics.out.print(totalLoopTimeUntilRepair + ",     ");
         if (forallQueryNumTillRepair == 0) { //this condition should happen in two cases, either if the contract is
             // already matching the specification, so the outer loop will already pass. The other case is when we
             // have tightened the spec enough and we have no more tightness in the next iteration. In the former case
             // we will be calling this method with repairFound=true, the second case will call this method with
             // repairFound=false.
-            RepairStatistics.out.print("N/A     ");
-        } else RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + "     ");
+            RepairStatistics.out.print("N/A,     ");
+        } else RepairStatistics.out.print(forallTimeTillRepair / forallQueryNumTillRepair + ",     ");
 
         if (thereExistsQueryNumTillRepair == 0) { // this condition is not expected to occur since at least one
             // thereExists query must happen in either the outer or the inner loop.
@@ -100,11 +98,11 @@ public class CandidateStatistics {
         RepairStatistics.out.println();
         RepairStatistics.out.println();
 
-        RepairStatistics.out.print("Minimal     ");
-        RepairStatistics.out.print("LoopCount     "); //number of iterations in the outer loop
-        RepairStatistics.out.print("CandidateNum     ");
-        RepairStatistics.out.print("QueryTime     ");
-        RepairStatistics.out.print("QueryType     ");
+        RepairStatistics.out.print("Minimal,     ");
+        RepairStatistics.out.print("LoopCount,     "); //number of iterations in the outer loop
+        RepairStatistics.out.print("CandidateNum,     ");
+        RepairStatistics.out.print("QueryTime,     ");
+        RepairStatistics.out.print("QueryType,     ");
         RepairStatistics.out.println();
 
         //reset state

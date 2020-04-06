@@ -362,7 +362,7 @@ public class DiscoveryUtil {
 
     //takes an expr and tries to find its correponding type in the declartion list.
 
-    private static VarDecl findInList(List<VarDecl> inputs, Expr def) {
+    public static VarDecl findInList(List<VarDecl> inputs, Expr def) {
         for (int i = 0; i < inputs.size(); i++) {
             if (inputs.get(i).id.equals(def.toString()))
                 return inputs.get(i);

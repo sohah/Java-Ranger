@@ -31,12 +31,17 @@ public class DynamicRepairNode {
         this.id = id;
     }
 
-    public RepairNode create(List<VarDecl> actualParamVarDecls) {
+    public RepairNode create(List<VarDecl> actualParamVarDecls, int exprSize) {
         populateBoolIntInputs(actualParamVarDecls);
-//        int balancedTreeDepth = Config.repairNodeDepth % 2 != 0 ? Config.repairNodeDepth + 1 : Config.repairNodeDepth;
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
-        outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        if (Config.depthFixed)
+            outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        else {
+            double logDepth = (Math.log(exprSize) / Math.log(2)); //exprSize here indecates how many boolean nodes are in the expression
+            int balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
+            outputs.add(defineTreeLevel(balancedTreeDepth, pathLabel));
+        }
         return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
     }
 

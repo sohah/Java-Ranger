@@ -1,7 +1,9 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair.MinimalRepairDriver;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
+import jkind.lustre.Node;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -25,10 +27,14 @@ public class RepairStatistics {
     public static PrintWriter out;
 
     CandidateStatistics candidateStatistics;
+    String repairPropFileName;
 
 
     public RepairStatistics(String fileName, String depth, MutationType mutationType) {
-        String statisticFileName = Config.folderName + "statistics" + LocalDateTime.now() + ".txt";
+        LocalDateTime time = LocalDateTime.now();
+        String statisticFileName = Config.folderName + "statistics" + time + ".txt";
+        repairPropFileName = Config.folderName + "statistics_prop" + time + ".txt";
+
         try {
             fw = new FileWriter(statisticFileName, true);
             bw = new BufferedWriter(fw);
@@ -36,7 +42,7 @@ public class RepairStatistics {
             out.print(fileName + "     ");
             out.print("depth:" + depth + "     ");
             out.print("mutationType:" + mutationType + "     "); //number of iterations in the outer loop
-            out.println("z3Enabled:" + Config.z3Solver);
+            out.println("randZ3Seed:" + Config.randZ3Seed);
             out.println();
             candidateStatistics = new CandidateStatistics();
         } catch (IOException e) {
@@ -54,27 +60,38 @@ public class RepairStatistics {
         candidateStatistics.advanceTightLoop(repairFound);
     }
 
-    public void printSpecStatistics() {
+    public void printSpecStatistics() throws IOException {
         out.println("---------------------------SPEC STATS-------------------");
-        out.print("totalExistsTime     ");
-        out.print("totalForallTime     ");
-        out.print("repairsFoundNum     ");
-        out.print("totalTime     ");
-        out.print("avgExistsTime     ");
-        out.print("avgForallTime     ");
+        out.print("totalExistsTime,     ");
+        out.print("totalForallTime,     ");
+        out.print("repairsFoundNum,     ");
+        out.print("totalTime,     ");
+        out.print("avgExistsTime,     ");
+        out.print("avgForallTime,     ");
         out.println();
-        out.print(candidateStatistics.totalExistsTime + "     ");
-        out.print(candidateStatistics.totalForallTime + "     ");
-        out.print(candidateStatistics.repairsFoundNum + "     ");
-        out.print(candidateStatistics.totalTime + "     ");
-        out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + "     ");
+        out.print(candidateStatistics.totalExistsTime + ",     ");
+        out.print(candidateStatistics.totalForallTime + ",     ");
+        out.print(candidateStatistics.repairsFoundNum + ",     ");
+        out.print(candidateStatistics.totalTime + ",     ");
+        out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + ",     ");
         if (candidateStatistics.totalForallNum != 0)
-            out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + "     ");
+            out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + ",     ");
         else
-            out.print("N/A     ");
+            out.print("N/A,     ");
+        out.println();
+        out.close();
+
+        printRepairProp();
+    }
+
+    private void printRepairProp() throws IOException {
+        fw = new FileWriter(repairPropFileName, true);
+        bw = new BufferedWriter(fw);
+        out = new PrintWriter(bw);
+        for (Node node : MinimalRepairDriver.repairs) {
+            out.println(node.equations);
+        }
         out.println();
         out.close();
     }
-
-
 }

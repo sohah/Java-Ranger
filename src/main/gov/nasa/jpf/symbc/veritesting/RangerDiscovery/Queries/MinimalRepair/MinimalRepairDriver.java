@@ -191,7 +191,7 @@ public class MinimalRepairDriver {
         if (!tighterRepairFound)
             repairStatistics.advanceTighterLoop(false);
 
-        repairStatistics.printSpecStatistics();
+     //   repairStatistics.printSpecStatistics();
 
         System.out.println("Minimal repair finished with the following result, outer loop # = " + DiscoverContract.outerLoopRepairNum +
                 " minimal repair loop # = " + lastKnownRepairLoopCount + " the LAST candidate repair loop # = " + successfulCandidateNum);

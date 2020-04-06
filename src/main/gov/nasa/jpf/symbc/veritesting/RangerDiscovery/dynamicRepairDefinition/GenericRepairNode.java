@@ -17,10 +17,17 @@ public class GenericRepairNode {
     public final RepairNode nodeDefinition;
     public final NodeCallExpr callExpr;
 
-    public GenericRepairNode(List<VarDecl> actualParamVarDecls) {
+    /**
+     * Takes the number of declared variables as well as the original expression size.
+     * The depth of the dynamic node created is relevant/extracted from the size of the
+     * original expression that needs repair.
+     * @param actualParamVarDecls
+     * @param exprSize
+     */
+    public GenericRepairNode(List<VarDecl> actualParamVarDecls, int exprSize) {
         this.actualParamVarDecls = actualParamVarDecls;
         callExpr = generateCallExpr();
-        nodeDefinition = generateRepairDef();
+        nodeDefinition = generateRepairDef(exprSize);
     }
 
 
@@ -28,7 +35,7 @@ public class GenericRepairNode {
         return new NodeCallExpr(name, (List<Expr>) (List<?>) varDeclToIdExpr(actualParamVarDecls));
     }
 
-    private RepairNode generateRepairDef() {
-        return new DynamicRepairNode(name).create(actualParamVarDecls);
+    private RepairNode generateRepairDef(int exprSize) {
+        return new DynamicRepairNode(name).create(actualParamVarDecls, exprSize);
     }
 }

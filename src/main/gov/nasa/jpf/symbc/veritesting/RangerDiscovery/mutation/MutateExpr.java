@@ -2,6 +2,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import jkind.lustre.*;
 import jkind.lustre.visitors.ExprVisitor;
@@ -133,7 +134,8 @@ public class MutateExpr implements ExprVisitor<Expr> {
             IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
             e.accept(idExprVisitor);
             List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
-            GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls);
+            int exprSize = e.accept(new ExprSizeVisitor(varDecls, true));
+            GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls, exprSize);
             repairNodes.add(genericRepairNode);
             NodeCallExpr callExpr = genericRepairNode.callExpr;
             RepairExpr repairExpr = new RepairExpr(e, callExpr);

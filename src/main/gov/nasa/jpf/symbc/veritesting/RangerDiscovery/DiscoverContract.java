@@ -118,7 +118,7 @@ public class DiscoverContract {
         else
             System.out.println("Repair does NOT include initial values");
 
-        repairStatistics = new RepairStatistics(tFileName, "undefined", MutationType.UNKNOWN);
+        repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
 
         //print out the translation once, for very first time we hit linearlization for the method of
         // interest.

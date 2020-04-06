@@ -21,10 +21,7 @@ public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
-    public static boolean z3Solver;
-    public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static String origFaultySpec;
-    public static boolean rangeValueAnalysis;
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -41,37 +38,42 @@ public class Config {
     // of finding a different R.
 
     public static String tnodeSpecPropertyName;
-    public static boolean randZ3Seed = false;
-
     public static String candidateSpecPropertyName = "discovery_out";
 
     public static Ast defaultHoleValBool = new BoolExpr(false);
     public static Ast defaultHoleValInt = new IntExpr(1);
-    public static boolean useInitialSpecValues = true;
-    public static String genericRepairNodeName = "repairNode";
-    public static RepairScopeType repairScope = RepairScopeType.ENCLOSED_TERMS; //the default configuration.
-
-    //this boolean toggles between equation based repair and whole spec repair.
-    public static boolean specLevelRepair;// = false;
-
-    public static String spec;// = "even";
-
-    public static String currFaultySpec;
-    public static String[] faultySpecs;
-
-    public static int faultySpecIndex = 0;
-
     public static boolean defaultBoolValue = false;
     public static int initialIntValue = 0;
 
-    public static boolean printMutantDir = false;
-    public static boolean mutationEnabled = false;
-    public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
-    public static boolean repairInitialValues;
-
+    public static boolean useInitialSpecValues = true;
+    public static String genericRepairNodeName = "repairNode";
+    //this boolean toggles between equation based repair and whole spec repair.
+    public static boolean specLevelRepair;// = false;
     //this contains specific equations we would like to repair, instead of repairing the whole thing. This is now used for testing only.
     public static Integer[] equationNumToRepair = {1};
     public static boolean allEqRepair = true;
+
+
+    /***** configurations needs consideration for each run in .jpf file *********/
+    public static RepairScopeType repairScope = RepairScopeType.ENCLOSED_TERMS; //the default configuration.
+    public static boolean randZ3Seed = false;
+    public static String spec;
+    public static String currFaultySpec;
+    public static boolean printMutantDir = false;
+    public static boolean mutationEnabled = true;
+    public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
+    public static String[] faultySpecs;
+    public static boolean z3Solver = true;
+    public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
+    public static boolean depthFixed=false;
+    public static boolean rangeValueAnalysis;
+
+
+
+    public static int faultySpecIndex = 0;
+
+    public static boolean repairInitialValues;
+
     private static boolean firstTime = true;
 
     static String mutationDir = "../src/DiscoveryExamples/mutants";
