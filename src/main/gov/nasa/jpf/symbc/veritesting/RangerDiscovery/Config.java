@@ -65,9 +65,8 @@ public class Config {
     public static String[] faultySpecs;
     public static boolean z3Solver = true;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
-    public static boolean depthFixed=false;
-    public static boolean rangeValueAnalysis;
-
+    public static boolean depthFixed = false;
+    public static boolean rangeValueAnalysis = true;
 
 
     public static int faultySpecIndex = 0;

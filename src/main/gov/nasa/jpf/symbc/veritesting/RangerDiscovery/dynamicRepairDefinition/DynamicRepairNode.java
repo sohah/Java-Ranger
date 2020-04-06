@@ -102,7 +102,9 @@ public class DynamicRepairNode {
 
         Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl), createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs));
 
-        locals.add(myNodeNameVarDecl);
+        if (!getPathLabelStr(pathLabel).equals("R")) //add only local variables other than R, since R should be a return
+            locals.add(myNodeNameVarDecl);
+
         equations.add(myEquation);
 
         return myNodeNameVarDecl;

@@ -264,6 +264,7 @@ public class DiscoverContract {
                 default:
                     System.out.println("Outerloop unexpected status for the counter example query");
                     DiscoverContract.repaired = false;
+                    repairStatistics.printSpecStatistics();
                     return;
             }
             ++loopCount;

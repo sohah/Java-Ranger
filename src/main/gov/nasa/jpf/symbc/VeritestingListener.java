@@ -271,7 +271,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }
-                if(conf.hasValue("mutationEnabled"))
+                if (conf.hasValue("mutationEnabled"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled = conf.getBoolean("mutationEnabled");
 
                 if (conf.hasValue("repairInitialValues"))
@@ -294,6 +294,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
                 if (conf.hasValue("randZ3Seed"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
+                if (conf.hasValue("rangeValueAnalysis"))
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.rangeValueAnalysis = conf.getBoolean("rangeValueAnalysis");
             }
             StatisticManager.veritestingRunning = true;
             jpf.addPublisherExtension(ConsolePublisher.class, this);
