@@ -83,6 +83,10 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(BinaryExpr e) {
+        if (e.op == BinaryOp.ARROW) {
+            return new BinaryExpr(e.location,
+                    e.left.accept(this), e.op, e.right.accept(this));
+        }
         Expr repairExpr = wrapRepairExpr(e);
         if (repairExpr instanceof RepairExpr) {
             return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
