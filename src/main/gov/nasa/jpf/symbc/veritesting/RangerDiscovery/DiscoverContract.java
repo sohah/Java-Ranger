@@ -255,14 +255,14 @@ public class DiscoverContract {
                                 break;
                             }
                         default:
-                            System.out.println("unexpected status for the jkind synthesis query.");
+                            System.out.println("unexpected property status for synthesis query" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             DiscoverContract.repaired = false;
                             assert false;
                             break;
                     }
                     break;
                 default:
-                    System.out.println("Outerloop unexpected status for the counter example query");
+                    System.out.println("Outerloop unexpected property status for the counter example query: " + counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus().toString());
                     DiscoverContract.repaired = false;
                     repairStatistics.printSpecStatistics();
                     return;

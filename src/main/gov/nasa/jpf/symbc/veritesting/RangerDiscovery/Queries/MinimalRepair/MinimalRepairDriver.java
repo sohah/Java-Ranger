@@ -165,14 +165,16 @@ public class MinimalRepairDriver {
                                 break;
                             default:
                                 System.out.println("^-^ Ranger Discovery Result ^-^");
-                                System.out.println("Unknown solver output, No more R' can be found, returning last known good repair.");
+                                System.out.println(" Property unexpected output:" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
+                                System.out.println(" No more R' can be found, returning last known good repair.");
                                 canFindMoreTighterRepair = false;
                                 break;
                         }
                         break;
                     default:
                         System.out.println("^-^ Ranger Discovery Result ^-^");
-                        System.out.println("Unknown solver output , No more R' can be found, returning last known good repair.");
+                        System.out.println(" Property unexpected output:" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                        System.out.println(" No more R' can be found, returning last known good repair.");
                         canFindMoreTighterRepair = false;
                         break;
                 }
@@ -191,7 +193,7 @@ public class MinimalRepairDriver {
         if (!tighterRepairFound)
             repairStatistics.advanceTighterLoop(false);
 
-     //   repairStatistics.printSpecStatistics();
+        //   repairStatistics.printSpecStatistics();
 
         System.out.println("Minimal repair finished with the following result, outer loop # = " + DiscoverContract.outerLoopRepairNum +
                 " minimal repair loop # = " + lastKnownRepairLoopCount + " the LAST candidate repair loop # = " + successfulCandidateNum);

@@ -70,7 +70,11 @@ public class SketchVisitor extends AstMapVisitor {
 
         Expr evaluatedExpr = CollapseExprVisitor.execute(partEvalNode, new HashSet<>(paramToActualBindMap.values()));
 
-        return new RepairExpr(e.location, evaluatedExpr, e.repairNode);
+        Ast simplifiedExpr = PartialEvalVisitor.execute(evaluatedExpr);
+
+        assert simplifiedExpr instanceof Expr;
+
+        return new RepairExpr(e.location, (Expr) simplifiedExpr, e.repairNode);
     }
 
     // this method collects the binding for the input of the repair nodes.
@@ -138,7 +142,7 @@ public class SketchVisitor extends AstMapVisitor {
         //logging
         String fileName;
         if (isMinimal)
-            fileName = currFaultySpec + "_" + knownRepairLoopCount+ "_" + candidateLoopCount + "_" + "holeCEX.txt";
+            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "holeCEX.txt";
         else
             fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
 

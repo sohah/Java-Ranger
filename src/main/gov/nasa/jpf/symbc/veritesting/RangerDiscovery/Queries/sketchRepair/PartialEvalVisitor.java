@@ -19,6 +19,40 @@ public class PartialEvalVisitor extends AstMapVisitor {
                 return newVal;
             else //case where we could not do partial evaluation for any reason, we just propagate the binary expr.
                 return new BinaryExpr(e.location, left, e.op, right);
+        } else if (left instanceof BoolExpr) {
+            switch (e.op) {
+                case OR:
+                    if (((BoolExpr) left).value)
+                        return new BoolExpr(true);
+                    else return right;
+                case AND:
+                    if (((BoolExpr) left).value)
+                        return right;
+                    else return new BoolExpr(false);
+                case IMPLIES:
+                    if (((BoolExpr) left).value)
+                        return right;
+                    else return new BoolExpr(true);
+                default:
+                    return new BinaryExpr(e.location, left, e.op, right);
+            }
+        } else if (right instanceof BoolExpr) {
+            switch (e.op) {
+                case OR:
+                    if (((BoolExpr) right).value)
+                        return new BoolExpr(true);
+                    else return left;
+                case AND:
+                    if (((BoolExpr) right).value)
+                        return left;
+                    else return new BoolExpr(false);
+                case IMPLIES:
+                    if (((BoolExpr) right).value)
+                        return new BoolExpr(true);
+                    else return new UnaryExpr(UnaryOp.NOT, left);
+                default:
+                    return new BinaryExpr(e.location, left, e.op, right);
+            }
         }
 
         if (e.left == left && e.right == right) {
