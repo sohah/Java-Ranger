@@ -1,3 +1,4 @@
+(*
 -- RESULT :
 
 
@@ -76,7 +77,7 @@ let
 
     out = bExprlevel_1;
 tel;
-
+*)
 node main(
 Commanded_Flow_Rate: int;
 Current_System_Mode: int;
@@ -132,11 +133,11 @@ out_Log_Message_ID5:int
 
 let  -- Prop10: audio_disabled_range
 
--- fault: negating implication outcome
-
-    p1 = true -> (System_On) =>
-repair((out_Is_Audio_Disabled = Disable_Audio), discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,
+    p1 = true -> ((System_On) => (out_Is_Audio_Disabled = Disable_Audio));
+(*
+repair(, discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
-      --%PROPERTY p1;
+*)
+    --%PROPERTY p1;
 
 tel;

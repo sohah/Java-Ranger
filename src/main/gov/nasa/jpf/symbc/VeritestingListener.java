@@ -60,6 +60,7 @@ import java.util.concurrent.TimeUnit;
 
 import static gov.nasa.jpf.symbc.veritesting.ChoiceGenerator.SamePathOptimization.*;
 import static gov.nasa.jpf.symbc.veritesting.ChoiceGenerator.StaticBranchChoiceGenerator.*;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.*;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.ExceptionPhase.INSTANTIATION;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.throwException;
@@ -254,9 +255,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 }
                 if (conf.hasValue("spec"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.spec = conf.getString("spec");
-                if (conf.hasValue("faultySpec")) {
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString("faultySpec");
-                }
+
                 if (conf.hasValue("z3Solver")) {
                     //gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString(
                     //"faultySpec");
@@ -270,8 +269,23 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }
-                if (conf.hasValue("mutationEnabled"))
+                if (conf.hasValue("mutationEnabled")) {
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled = conf.getBoolean("mutationEnabled");
+                    if (mutationEnabled)//only a single spec is expected
+                        if (conf.hasValue("faultySpec")) {
+                            gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString("faultySpec");
+                        } else {
+                            System.out.println("A spec to be mutated must be supplied. Aborting");
+                            assert false;
+                        } //
+                    else // a bunch of already mutated specs are expected.
+                        if (conf.hasValue("faultySpec")) {
+                            gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.faultySpecs = conf.getStringArray("faultySpec");
+                        } else {
+                            System.out.println("A faulty spec must be supplied. Aborting");
+                            assert false;
+                        }
+                }
 
                 if (conf.hasValue("repairInitialValues"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairInitialValues = conf.getBoolean("repairInitialValues");

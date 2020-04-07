@@ -81,19 +81,14 @@ public class Config {
         if (firstTime) {
             DiscoverContract.contract = new Contract();
             firstTime = false;
-            tFileName = folderName + currFaultySpec;
-            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
             if (mutationEnabled) {
+                tFileName = folderName + currFaultySpec;
+                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
                 faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
-            } else {
-                if (origSpec.repairNodes.size() == 0) {
-                    System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
-                    assert false;
-                }
-                faultySpecs = new String[]{currFaultySpec};
             }
         }
+
         if ((faultySpecIndex) >= faultySpecs.length)
             return false;
 
@@ -101,6 +96,13 @@ public class Config {
         ++faultySpecIndex;
 
         tFileName = folderName + currFaultySpec;
+        if (!mutationEnabled) { //sanity check
+            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+            if (origSpec.repairNodes.size() == 0) {
+                System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
+                assert false;
+            }
+        }
         tnodeSpecPropertyName = "T_node~0.p1";
 
         //make a new directory for the output of that spec

@@ -12,10 +12,10 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.repair.Hol
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.FlattenNodes;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.*;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
+import jkind.JKindException;
 import jkind.api.results.JKindResult;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
@@ -28,7 +28,6 @@ import java.util.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.callJkind;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
 
 public class DiscoverContract {
     /**
@@ -81,7 +80,11 @@ public class DiscoverContract {
                 resetState();
                 assert (userSynNodes.size() > 0);
                 if (Config.specLevelRepair)
-                    repairSpec();
+                    try {
+                        repairSpec();
+                    } catch (JKindException jkindExp) {
+                        System.out.println("jkind exception encountered aborting specification");
+                    }
                 else
                     assert false; //removed definition repair for now.
                 //repairDef(dynRegion);
@@ -184,7 +187,6 @@ public class DiscoverContract {
                                         (), originalProgram,
                                 aRepairSynthesis, flatExtendedPgm);
                     } else {
-                        specAlreadyMatching = true;
                         System.out.println("Contract Matching! Printing repair and aborting!");
                     }
                     //System.out.println(getTnodeFromStr(fileName));
