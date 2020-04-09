@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMutantsOnly;
 import static jkind.lustre.BinaryOp.*;
 
 public class MutationUtils {
@@ -86,9 +87,10 @@ public class MutationUtils {
         writeUsingFileWriter(mainNode.equations.get(0).expr.toString(),
                 mutationDirectory + "/origSpec");
 
-        MutationType[] mutationTypes = new MutationType[]{
+        MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
                 MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
-                MutationType.REPAIR_EXPR_MUT, MutationType.MISSING_COND_MUT, MutationType.OPERAND_REPLACEMENT_MUT};
+                MutationType.REPAIR_EXPR_MUT, MutationType.MISSING_COND_MUT, MutationType.OPERAND_REPLACEMENT_MUT} :
+                new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
             mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager));
@@ -106,12 +108,16 @@ public class MutationUtils {
         while (true) {
             MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, repairMutationIndex, tInOutManager);
             Expr mutatedExpr = originalProgram.nodes.get(0).equations.get(0).expr.accept(mutateExpr);
-            if (!mutateExpr.didMutation()) {
+            if (!mutateExpr.didMutation() && !repairMutantsOnly) {
                 break;
             } else {
                 if (!mutateExpr.addedRepairWrapper()) {
-                    mutationIndex++;
-                    repairMutationIndex = -1;
+                    if (!repairMutantsOnly) {
+                        mutationIndex++;
+                        repairMutationIndex = -1;
+                    } else {
+                        break;
+                    }
                 } else {
                     repairMutationIndex++;
                     if (Config.printMutantDir)
