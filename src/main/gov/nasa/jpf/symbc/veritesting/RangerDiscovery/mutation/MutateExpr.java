@@ -109,7 +109,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
             ConstExprVisitor constExprVisitor = new ConstExprVisitor();
             e.accept(constExprVisitor);
             ArrayList<Expr> constExprs = constExprVisitor.getConstExprs();
-            OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs);
+            OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs, idExprVisitor.getTypes());
             return e.accept(oroVisitor);
         }
         return e;

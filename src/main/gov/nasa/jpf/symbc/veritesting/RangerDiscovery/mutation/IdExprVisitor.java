@@ -28,6 +28,7 @@ import jkind.lustre.VarDecl;
 import jkind.lustre.visitors.ExprVisitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -173,16 +174,20 @@ public class IdExprVisitor implements ExprVisitor<Expr> {
     }
 
     private NamedType getType(String idExpr) {
-        ArrayList<Pair<String, NamedType>> nameTypePairs = new ArrayList<>();
-        nameTypePairs.addAll(tInOutManager.getInOutput().varList);
-        nameTypePairs.addAll(tInOutManager.getFreeInputs().varList);
-        for(Pair<String, NamedType> nameTypePair: nameTypePairs) {
-           String idExprName = nameTypePair.getFirst();
-           NamedType type = nameTypePair.getSecond();
-           if (idExpr.equals(idExprName))
-               return type;
+        HashMap<String, NamedType> nameTypePairs = getTypes();
+        if (nameTypePairs.containsKey(idExpr)) return nameTypePairs.get(idExpr);
+        else throw new IllegalArgumentException("failed to figure out type for " + idExpr);
+    }
+
+    public HashMap<String, NamedType> getTypes() {
+        HashMap<String, NamedType> nameTypePairs = new HashMap<>();
+        for (Pair<String, NamedType> typePair: tInOutManager.getInOutput().varList) {
+            nameTypePairs.put(typePair.getFirst(), typePair.getSecond());
         }
-        throw new IllegalArgumentException("failed to figure out type for " + idExpr);
+        for (Pair<String, NamedType> typePair: tInOutManager.getFreeInputs().varList) {
+            nameTypePairs.put(typePair.getFirst(), typePair.getSecond());
+        }
+        return nameTypePairs;
     }
 
     public ArrayList<IdExpr> getIdExprs() { return idExprList; }
