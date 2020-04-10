@@ -85,8 +85,8 @@ public class TestCaseManager {
                 else
                     fileName = "def_" + currFaultySpec + "_" + DiscoverContract.permutationCount + "_" + loopCount + "_" + "CEX" +
                             ".lus";
-
-                DiscoveryUtil.writeToFile(fileName, counterExample.toString(), false, false);
+                if (!evaluationMode)
+                    DiscoveryUtil.writeToFile(fileName, counterExample.toString(), false, false);
                 translateTestCase(counterExample);
             }
         }
@@ -105,7 +105,8 @@ public class TestCaseManager {
 
                 fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" +
                         "existsCEX.lus";
-                DiscoveryUtil.writeToFile(fileName, counterExample.toString(), true, false);
+                if (!evaluationMode)
+                    DiscoveryUtil.writeToFile(fileName, counterExample.toString(), true, false);
                 translateTestCaseMinimal(counterExample, lastSynMainNode);
                 return;
             }

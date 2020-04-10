@@ -74,7 +74,8 @@ public class HoleRepairState {
                         fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
                     else
                         fileName = "def_" + currFaultySpec + "_" + permutationCount + "_" + loopCount + "_" + "holeCEX.txt";
-                    DiscoveryUtil.writeToFile(fileName, counterExample.toString(),false, false);
+                    if (!Config.evaluationMode)
+                        DiscoveryUtil.writeToFile(fileName, counterExample.toString(), false, false);
                 }
             }
         }

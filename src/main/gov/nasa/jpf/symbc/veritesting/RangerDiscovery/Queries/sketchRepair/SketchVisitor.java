@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import jkind.api.results.JKindResult;
 import jkind.api.results.PropertyResult;
@@ -146,7 +147,8 @@ public class SketchVisitor extends AstMapVisitor {
         else
             fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
 
-        DiscoveryUtil.writeToFile(fileName, counterExample.toString(), isMinimal, false);
+        if (!Config.evaluationMode)
+            DiscoveryUtil.writeToFile(fileName, counterExample.toString(), isMinimal, false);
 
         SketchVisitor sketchVisitor = new SketchVisitor(originalExtPgm, counterExample);
 

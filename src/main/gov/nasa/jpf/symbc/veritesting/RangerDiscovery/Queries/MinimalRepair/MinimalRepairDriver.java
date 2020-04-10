@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Contract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
@@ -7,6 +8,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation.ToLutre;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.ARepairSynthesis;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.TerminationResult;
 import jkind.api.results.JKindResult;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
@@ -79,7 +81,8 @@ public class MinimalRepairDriver {
         boolean canFindMoreTighterRepair = true;
         boolean tighterRepairFound = false;
 
-        long singleQueryTime;
+        long singleQueryTime1;
+        long singleQueryTime2;
 
         MinimalRepairSynthesis tPrimeExistsQ = new MinimalRepairSynthesis(lastSynthizedContract, laskKnwnGoodRepairPgm.getMainNode());
 
@@ -95,22 +98,23 @@ public class MinimalRepairDriver {
 
                 System.out.println("ThereExists Query of : " + fileName);
 
-                singleQueryTime = System.currentTimeMillis();
+                singleQueryTime1 = System.currentTimeMillis();
                 JKindResult synthesisResult = callJkind(fileName, false, (tPrimeExistsQ
                         .getMaxTestCaseK() - 2), true, true);
 
-                singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+                singleQueryTime1 = (System.currentTimeMillis() - singleQueryTime1) / Config.milliSecondSimplification;
 
                 //System.out.println("TIME of ThereExists Query of : " + fileName + "= " + singleQueryTime);
-                System.out.println("TIME = " + singleQueryTime);
+                System.out.println("TIME = " + singleQueryTime1);
                 repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount,
-                        QueryType.THERE_EXISTS, singleQueryTime);
+                        QueryType.THERE_EXISTS, singleQueryTime1);
                 switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                     case VALID:
                         System.out.println("^-^ Ranger Discovery Result ^-^");
                         System.out.println("No more R' can be found, last known good repair was found at, outer loop # = " +
                                 DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount);
                         canFindMoreTighterRepair = false;
+                        repairStatistics.terminationResult = TerminationResult.TIGHTEST_REACHED;
                         break;
                     case INVALID:
                         Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
@@ -126,18 +130,18 @@ public class MinimalRepairDriver {
                         writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 
 
-                        singleQueryTime = System.currentTimeMillis();
+                        singleQueryTime2 = System.currentTimeMillis();
 
                         System.out.println("ForAll Query of : " + fileName);
 
                         JKindResult counterExampleResult = callJkind(fileName, true, -1, true, false);
 
-                        singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+                        singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2) / milliSecondSimplification;
 
                         //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
-                        System.out.println("TIME = " + singleQueryTime);
+                        System.out.println("TIME = " + singleQueryTime2);
                         repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount,
-                                QueryType.FORALL, singleQueryTime);
+                                QueryType.FORALL, singleQueryTime2);
 
                         switch (counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus()) {
                             case VALID:
@@ -168,6 +172,10 @@ public class MinimalRepairDriver {
                                 System.out.println(" Property unexpected output:" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
                                 System.out.println(" No more R' can be found, returning last known good repair.");
                                 canFindMoreTighterRepair = false;
+                                if (singleQueryTime2 >= timeOut)
+                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
+                                else
+                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
                                 break;
                         }
                         break;
@@ -176,6 +184,10 @@ public class MinimalRepairDriver {
                         System.out.println(" Property unexpected output:" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                         System.out.println(" No more R' can be found, returning last known good repair.");
                         canFindMoreTighterRepair = false;
+                        if (singleQueryTime1 >= timeOut)
+                            repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
+                        else
+                            repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
                         break;
                 }
             }

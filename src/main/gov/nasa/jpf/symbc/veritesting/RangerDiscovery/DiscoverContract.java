@@ -3,6 +3,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ThereExistsQuery;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.RepairStatistics;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.TerminationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.LustreAstMapExtnVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
@@ -63,7 +64,6 @@ public class DiscoverContract {
      * and the class of interest.
      */
     public static String className;
-    public static String packageName;
     private static boolean repaired;
     private static String innerDirectory; // directory under ../src/DiscoveryExample
 
@@ -88,8 +88,8 @@ public class DiscoverContract {
                 else
                     assert false; //removed definition repair for now.
                 //repairDef(dynRegion);
-                singleTermTime = (System.currentTimeMillis() - singleTermTime) / 1000;
-                System.out.println("The overall time for : " + currFaultySpec + "= " + singleTermTime + " sec");
+                singleTermTime = (System.currentTimeMillis() - singleTermTime) / milliSecondSimplification;
+                System.out.println("The overall time for : " + currFaultySpec + "= " + singleTermTime + " milli-sec");
             }
         } catch (IOException e) {
             System.out.println("Unable to read specification file.! Aborting");
@@ -171,7 +171,7 @@ public class DiscoverContract {
             long singleQueryTime = System.currentTimeMillis();
 
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
-            singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+            singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / milliSecondSimplification;
 
             repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
@@ -188,10 +188,12 @@ public class DiscoverContract {
                                 aRepairSynthesis, flatExtendedPgm);
                     } else {
                         System.out.println("Contract Matching! Printing repair and aborting!");
+                        repairStatistics.terminationResult = TerminationResult.ALREADY_MATCHING;
+                        repairStatistics.printSpecStatistics();
                     }
                     //System.out.println(getTnodeFromStr(fileName));
                     DiscoverContract.repaired = true;
-                    repairStatistics.printSpecStatistics();
+                    //repairStatistics.printSpecStatistics();
                     return;
                 case INVALID: //synthesis is needed
                     if (aRepairSynthesis == null) {
@@ -226,7 +228,7 @@ public class DiscoverContract {
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 2, false, false);
-                    singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / 1000;
+                    singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / milliSecondSimplification;
                     repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
@@ -234,6 +236,7 @@ public class DiscoverContract {
                             System.out.println("Cannot find a synthesis");
                             DiscoverContract.repaired = false;
                             repairStatistics.advanceTighterLoop(false);
+                            repairStatistics.terminationResult = TerminationResult.NO_VALID_SYNTHESIS_FOR_GRAMMAR;
                             repairStatistics.printSpecStatistics();
                             return;
                         case INVALID:
@@ -266,6 +269,11 @@ public class DiscoverContract {
                 default:
                     System.out.println("Outerloop unexpected property status for the counter example query: " + counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus().toString());
                     DiscoverContract.repaired = false;
+                    if (singleQueryTime >= timeOut)
+                        repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
+                    else
+                        repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+
                     repairStatistics.printSpecStatistics();
                     return;
             }

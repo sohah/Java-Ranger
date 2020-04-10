@@ -476,7 +476,7 @@ public class DiscoveryUtil {
         if (Config.z3Solver)
             api.setSolver(SolverOption.Z3);
 
-        api.setTimeout(300);
+        api.setTimeout(timeOut);
         // The monitor is only currently used to detect cancellation NullProgressMonitor
 
         api.execute(file, result, new NullProgressMonitor());
