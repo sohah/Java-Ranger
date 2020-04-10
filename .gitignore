@@ -22,10 +22,10 @@ src/examples/VeritestingPerf.jpf
 statistics*.txt
 mutants/
 *LOR*.*
-*MOC*.*
+*MCO*.*
 *ORO*.*
 *ROR*.*
 *LOR*
-*MOC*
+*MCO*
 *ORO*
 *ROR*
