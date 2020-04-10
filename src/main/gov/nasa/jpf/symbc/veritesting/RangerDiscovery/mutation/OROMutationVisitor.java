@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.ArrayAccessExpr;
 import jkind.lustre.ArrayExpr;
 import jkind.lustre.ArrayUpdateExpr;
@@ -12,6 +13,7 @@ import jkind.lustre.FunctionCallExpr;
 import jkind.lustre.IdExpr;
 import jkind.lustre.IfThenElseExpr;
 import jkind.lustre.IntExpr;
+import jkind.lustre.NamedType;
 import jkind.lustre.NodeCallExpr;
 import jkind.lustre.RealExpr;
 import jkind.lustre.RecordAccessExpr;
@@ -23,6 +25,7 @@ import jkind.lustre.UnaryExpr;
 import jkind.lustre.visitors.ExprVisitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +34,14 @@ import java.util.SortedMap;
 public class OROMutationVisitor implements ExprVisitor<Expr> {
     private final ArrayList<IdExpr> idExprs;
     private final ArrayList<Expr> constExprs;
+    private final HashMap<String, NamedType> types;
     private final MutateExpr.ShouldApplyMutation shouldApplyMutation;
-    public OROMutationVisitor(MutateExpr.ShouldApplyMutation shouldApplyMutation, ArrayList<IdExpr> idExprs, ArrayList<Expr> constExprs) {
+    public OROMutationVisitor(MutateExpr.ShouldApplyMutation shouldApplyMutation, ArrayList<IdExpr> idExprs,
+                              ArrayList<Expr> constExprs, HashMap<String, NamedType> types) {
         this.idExprs = idExprs;
         this.constExprs = constExprs;
         this.shouldApplyMutation = shouldApplyMutation;
+        this.types = types;
     }
 
     @Override
@@ -100,11 +106,15 @@ public class OROMutationVisitor implements ExprVisitor<Expr> {
     public Expr visit(IdExpr e) {
         for (IdExpr newIdExpr: idExprs) {
             if (!newIdExpr.id.equals(e.id)) {
-                if (shouldApplyMutation.shouldApplyMutation())
+                if (getType(newIdExpr).equals(getType(e)) && shouldApplyMutation.shouldApplyMutation())
                     return new IdExpr(newIdExpr.id);
             }
         }
         return e;
+    }
+
+    private NamedType getType(IdExpr idExpr) {
+        return types.get(idExpr.id);
     }
 
     @Override

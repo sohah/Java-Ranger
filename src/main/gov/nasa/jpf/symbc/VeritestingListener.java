@@ -271,6 +271,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 }
                 if (conf.hasValue("mutationEnabled")) {
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled = conf.getBoolean("mutationEnabled");
+                    if (conf.hasValue("repairMutantsOnly"))
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMutantsOnly = conf.getBoolean("repairMutantsOnly");
                     if (mutationEnabled)//only a single spec is expected
                         if (conf.hasValue("faultySpec")) {
                             gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString("faultySpec");

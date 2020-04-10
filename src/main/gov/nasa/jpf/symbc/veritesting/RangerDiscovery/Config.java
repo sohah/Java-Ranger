@@ -58,8 +58,9 @@ public class Config {
     public static boolean randZ3Seed = false;
     public static String spec;
     public static String currFaultySpec;
-    public static boolean printMutantDir = false;
+    public static boolean printMutantDir = true;
     public static boolean mutationEnabled = true;
+    public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static String[] faultySpecs;
     public static boolean z3Solver = true;
