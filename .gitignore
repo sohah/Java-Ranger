@@ -21,3 +21,11 @@ src/examples/VeritestingPerf.jpf
 *.log
 statistics*.txt
 mutants/
+*LOR*.*
+*.MOC*.*
+*.ORO*.*
+*ROR*.*
+*LOR*
+*.MOC*
+*.ORO*
+*ROR*
