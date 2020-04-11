@@ -1731,9 +1731,9 @@ public class ALARM_Functional_Recovered {
 */
 
         //Prop2: air_in_line_implies_grt_L3_alarm
-        checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Air_In_Line);
         checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
-        assert (!checkCondition || checkOutput);
+        assert (!checkCondition || checkOutput);*/
 
         /*
         // Prop3: volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm
@@ -1788,7 +1788,6 @@ public class ALARM_Functional_Recovered {
         checkOutput = (rty_ALARM_OUT.Log_Message_ID ==0) ^ (rty_ALARM_OUT.Log_Message_ID == 77);
         assert (!checkCondition || checkOutput);
 */
-
 
         //assert ((rty_ALARM_OUT.Notification_Message <= 19) && (rty_ALARM_OUT.Notification_Message > 0));
     }
@@ -2130,7 +2129,6 @@ public class ALARM_Functional_Recovered {
                 rtu_sys_stat_in,
                 rtu_config_in, rty_alarm_out, localB,
                 localDW);
-
 
     }
 

@@ -1718,6 +1718,7 @@ public class ALARM_Functional {
         boolean checkCondition;
         boolean checkOutput;
 
+
         //Prop1: empty_reservoir_implies_alarm_L4
         /*checkCondition = rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && rtu_SYS_STAT_IN.Reservoir_Empty;
         checkOutput = rty_ALARM_OUT.Highest_Level_Alarm == 4;
@@ -1745,36 +1746,36 @@ public class ALARM_Functional {
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && rtu_SENSOR_IN.Door_Open);
         checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 3);
         assert (!checkCondition || checkOutput);*/
-
+/*
         //Prop6: alarm_gte_L3_causes_audio_output_EQ_audio_level
-  /*      checkCondition =
+        checkCondition =
                 (rtu_TLM_MODE_IN.System_On && (rty_ALARM_OUT.Highest_Level_Alarm >= 3) && (rtu_OP_CMD_IN.Disable_Audio == 0));
         checkOutput =
                 ((rty_ALARM_OUT.Audio_Notification_Command == rtu_CONST_IN.Audio_Level) && (rty_ALARM_OUT.Is_Audio_Disabled == 0));
-        assert (!checkCondition || checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
 
         //Prop7: no_audio_if_audio_disabled
-        /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_OP_CMD_IN.Disable_Audio > 0));
+        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_OP_CMD_IN.Disable_Audio > 0));
         checkOutput =
                 ((rty_ALARM_OUT.Audio_Notification_Command == 0) && (rty_ALARM_OUT.Is_Audio_Disabled == rtu_OP_CMD_IN.Disable_Audio));
-        assert (!checkCondition || checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
         //Prop8: low_reservoir_implies_grt_L2_alarm
-        /*checkCondition =
+        checkCondition =
                 (rtu_TLM_MODE_IN.System_On && rtu_SYS_STAT_IN.In_Therapy && (rtu_SYS_STAT_IN.Reservoir_Volume < rtu_CONST_IN.Low_Reservoir));
         checkOutput = (rty_ALARM_OUT.Highest_Level_Alarm >= 2);
-        assert (!checkCondition || checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
         //Prop9 : alarm_value_range
-        /*checkCondition = (rtu_TLM_MODE_IN.System_On);
+        checkCondition = (rtu_TLM_MODE_IN.System_On);
         checkOutput = ((rty_ALARM_OUT.Highest_Level_Alarm >= 0) && (rty_ALARM_OUT.Highest_Level_Alarm <= 4));
-        assert (!checkCondition || checkOutput);*/
-
+        assert (!checkCondition || checkOutput);
+*/
         //Prop10: audio_disabled_range
-        /*checkCondition = (rtu_TLM_MODE_IN.System_On);
+        checkCondition = (rtu_TLM_MODE_IN.System_On);
         checkOutput = (rty_ALARM_OUT.Is_Audio_Disabled == rtu_OP_CMD_IN.Disable_Audio);
-        assert (!checkCondition || !checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
 
         /*************** discovery repaired properties *******************/
@@ -1785,6 +1786,8 @@ public class ALARM_Functional {
 
 
         //assert ((rty_ALARM_OUT.Notification_Message <= 19) && (rty_ALARM_OUT.Notification_Message > 0));
+//        assert !(rty_ALARM_OUT.Highest_Level_Alarm == 0 && (rtu_TLM_MODE_IN.System_On));
+
     }
 
 
