@@ -26,11 +26,13 @@ contractDiscoveryOn = true
 spec = gpca
 specRepair = true
 repairMode = 2
-mutationEnabled=true
-
 
 SpecDirectory = GPCA_Alarm/Prop3
 faultySpec=Faulty_GPCA_Prop3
 repairInitialValues = true
 z3Solver=true
-randZ3Seed=false
+mutationEnabled = false;
+repairMutantsOnly = false;
+depthFixed = false;
+rangeValueAnalysis = true;
+evaluationMode = true;

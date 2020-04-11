@@ -134,7 +134,6 @@ out_Log_Message_ID5:int
 
 let  -- Prop9: alarm_value_range
 
--- fault: negating implication outcome
 
     p1 = true -> ((System_On ) => ((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)));
 (*

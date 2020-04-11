@@ -134,8 +134,6 @@ out_Log_Message_ID5:int
 
 let  -- Prop3: volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm
 
--- fault: negating implication outcome
-
     p1 = true -> ((System_On and In_Therapy and Reservoir_Empty and (Volume_Infused > VTBI_High)) => (out_Highest_Level_Alarm >= 3));
 (*
 repair( , discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,

@@ -50,37 +50,43 @@ function check_alarm_properties(System_On, Reservoir_Volume, Reservoir_Empty, Lo
     is_audio_disabled_range =  audio_disabled_range (System_On, Is_Audio_Disabled, Disable_Audio);
     sldv.prove(is_audio_disabled_range);
 
+-- Prop1
 function result = volume_infused_grt_VTBI_Hi_causes_grt_L3_alarm(System_On, Volume_Infused, VTBI_Hi, In_Therapy, Highest_Level_Alarm)
     checkCondition = (System_On && In_Therapy && (Volume_Infused > VTBI_Hi ) );
     checkOutput = (Highest_Level_Alarm >= 3);
     result = implies(checkCondition, checkOutput);
 
-
+-- Prop2
 function result = empty_reservoir_implies_alarm_L4(System_On,Reservoir_Empty, In_Therapy, Highest_Level_Alarm)
     checkCondition = (System_On && In_Therapy && Reservoir_Empty);
     checkOutput = (Highest_Level_Alarm == 4);
     result = implies(checkCondition, checkOutput);
 
+-- Prop3
 function result = air_in_line_implies_grt_L3_alarm(System_On, Air_In_Line, Highest_Level_Alarm)
     checkCondition = (System_On && Air_In_Line );
     checkOutput = (Highest_Level_Alarm >= 3);
     result = implies(checkCondition, checkOutput);
 
+-- Prop4
 function result = occlusion_implies_grt_L3_alarm(System_On, Occlusion, Highest_Level_Alarm)
     checkCondition = (System_On && Occlusion );
     checkOutput = (Highest_Level_Alarm >= 3);
     result = implies(checkCondition, checkOutput);
 
+-- Prop5
 function result = door_open_implies_grt_L3_alarm(System_On, Door_Open, Highest_Level_Alarm)
     checkCondition = (System_On && Door_Open );
     checkOutput = (Highest_Level_Alarm >= 3);
     result = implies(checkCondition, checkOutput);
 
+-- Prop6
 function result = alarm_gte_L3_causes_audio_output_EQ_audio_level(System_On, Highest_Level_Alarm, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command, Audio_Level)
     checkCondition = (System_On && (Highest_Level_Alarm >=3 ) && (Disable_Audio == 0) );
     checkOutput = ((Audio_Notification_Command == Audio_Level) && (Is_Audio_Disabled == 0) );
     result = implies(checkCondition, checkOutput);
 
+-- Prop7
 function result = no_audio_if_audio_disabled(System_On, Disable_Audio, Is_Audio_Disabled, Audio_Notification_Command)
     checkCondition = (System_On && (Disable_Audio > 0 ) );
     checkOutput = ((Audio_Notification_Command == 0) && (Is_Audio_Disabled == Disable_Audio));
@@ -92,16 +98,19 @@ function result = flow_rate_grt_flow_rate_hi_causes_grt_L3_alarm(System_On, In_T
     checkOutput = (Highest_Level_Alarm >= 3);
     result = implies(checkCondition, checkOutput);
 
+-- Prop8
 function result = low_reservoir_implies_grt_L2_alarm(System_On, Reservoir_Volume, Low_Reservoir, In_Therapy, Highest_Level_Alarm)
     checkCondition = (System_On && In_Therapy && (Reservoir_Volume < Low_Reservoir ) );
     checkOutput = (Highest_Level_Alarm >= 2);
     result = implies(checkCondition, checkOutput);
 
+-- Prop9
 function result = alarm_value_range (System_On, Highest_Level_Alarm)
     checkCondition = (System_On);
     checkOutput = ((Highest_Level_Alarm >= 0) && (Highest_Level_Alarm <= 4)) ;
     result = implies(checkCondition, checkOutput);
 
+-- Prop10
 function result = audio_disabled_range (System_On, Is_Audio_Disabled, Disable_Audio)
     checkCondition = (System_On);
     checkOutput = (Is_Audio_Disabled == Disable_Audio) ;

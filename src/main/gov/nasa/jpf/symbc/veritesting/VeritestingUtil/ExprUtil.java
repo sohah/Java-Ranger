@@ -117,7 +117,8 @@ public class ExprUtil {
     performance mode. It avoids the solver call if the isSatisfiable method returns false.
      */
     public static boolean isPCSat(PathCondition pc) throws StaticRegionException {
-        long startTime = System.nanoTime();
+        return true;
+        /*long startTime = System.nanoTime();
         boolean isPCSat = isSatisfiable(pc);
         StatisticManager.constPropTime += (System.nanoTime() - startTime);
         // verify that static unsatisfiability is confirmed by solver if we dont want to run fast
@@ -137,7 +138,7 @@ public class ExprUtil {
             isPCSat = pc.simplify();
             StatisticManager.PCSatSolverTime += (System.nanoTime() - startTime);
         }
-        return isPCSat;
+        return isPCSat;*/
     }
 
     /*

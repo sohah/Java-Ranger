@@ -55,11 +55,11 @@ var
 
 let
 
-    prop1 =  (true -> ((System_On and Door_Open) => ((out_Highest_Level_Alarm > 4) => (out_Highest_Level_Alarm <= 3))));
+    prop2 = true->((System_On => Door_Open) => (out_Highest_Level_Alarm <= 4));
 
-    prop2 =  (true -> ((System_On and Door_Open) => ((out_Notification_Message <= 25) and (out_Highest_Level_Alarm <= 4))));
+    prop1 = true -> ((System_On and Door_Open) or (out_Highest_Level_Alarm <= 4));
 
-    p1 = prop2 => prop1  ;
+    p1 = (prop1 => prop2) ;
 
   --%PROPERTY p1;
 

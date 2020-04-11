@@ -134,8 +134,6 @@ out_Log_Message_ID5:int
 
 let  -- Prop8: low_reservoir_implies_grt_L2_alarm
 
--- fault: negating implication outcome
-
     p1 = true -> ((System_On and In_Therapy and (Reservoir_Volume < Low_Reservoir)) => (out_Highest_Level_Alarm >= 2));
 (*
 repair( , discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,

@@ -26,9 +26,14 @@ contractDiscoveryOn = true
 spec = gpca
 specRepair = true
 repairMode = 2
-mutationEnabled=false
 
 SpecDirectory = GPCA_Alarm/Prop5
+#faultySpec=Faulty_GPCA_Prop5-ORO-0-0,Faulty_GPCA_Prop5-ORO-0-1,Faulty_GPCA_Prop5-ORO-0-2,Faulty_GPCA_Prop5-ORO-0-3,Faulty_GPCA_Prop5-ORO-0-4,Faulty_GPCA_Prop5-ORO-0-5,Faulty_GPCA_Prop5-ORO-0-6,Faulty_GPCA_Prop5-ORO-1-5,Faulty_GPCA_Prop5-ORO-1-6,Faulty_GPCA_Prop5-ORO-2-5,Faulty_GPCA_Prop5-ORO-2-6
 faultySpec=Faulty_GPCA_Prop5
-repairInitialValues = true
+repairInitialValues = false
 z3Solver=true
+mutationEnabled = false;
+repairMutantsOnly = false;
+depthFixed = false;
+rangeValueAnalysis = true;
+evaluationMode = true;
