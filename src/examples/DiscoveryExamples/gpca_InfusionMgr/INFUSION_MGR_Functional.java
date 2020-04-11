@@ -1176,27 +1176,37 @@ public class INFUSION_MGR_Functional {
                 rtu_SYS_STAT_IN, rty_IM_OUT,
                 localB, localDW);
 
+        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                rtu_CONFIG_IN, rtu_ALARM_IN,
+                rtu_SYS_STAT_IN, rty_IM_OUT,
+                localB, localDW);
+
+        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                rtu_CONFIG_IN, rtu_ALARM_IN,
+                rtu_SYS_STAT_IN, rty_IM_OUT,
+                localB, localDW);
 
         boolean checkCondition;
         boolean checkOutput;
 
         //Prop1: mode_range
-        /*checkCondition =
-                ((rty_IM_OUT.Current_System_Mode == 0) || (rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 2) || (rty_IM_OUT.Current_System_Mode == 3) || (rty_IM_OUT.Current_System_Mode == 4) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7) || (rty_IM_OUT.Current_System_Mode == 8));
-        assert checkCondition;*/
-
+        /*checkCondition = ((rty_IM_OUT.Current_System_Mode == 0) || (rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 2) || (rty_IM_OUT.Current_System_Mode == 3) || (rty_IM_OUT.Current_System_Mode == 4) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7) || (rty_IM_OUT.Current_System_Mode == 8));
+        assert checkCondition;
+*/
         //prop2: system_on_implies_idle -------- couldn't be mapped to source
 //        checkCondition = ((!(prev_On_Start)) && curr_On_Start);
 //        checkOutput = (rty_IM_OUT.Current_System_Mode == 1);
 //        assert(!checkCondition || checkOutput);
 
-        //prop3 not_system_on_implies_mode_0
+        //prop2 not_system_on_implies_mode_0
         /*checkCondition = (!(rtu_TLM_MODE_IN.System_On));
         checkOutput = (rty_IM_OUT.Current_System_Mode == 0);
         assert (!checkCondition || checkOutput);
 */
 
-        //prop4 alarm_L4_implies_flow_rate_zero
+        //prop3 alarm_L4_implies_flow_rate_zero
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
@@ -1233,32 +1243,32 @@ public class INFUSION_MGR_Functional {
         checkOutput = (rty_IM_OUT.Current_System_Mode != 3) && (rty_IM_OUT.Current_System_Mode  != 4);
         assert (!checkCondition || checkOutput);*/
 
-        //assert (!checkCondition || checkOutput);
+
         //Prop9: alarm_GTE_3_implies_in_paused_or_idle
   /*      checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput =
                 ((rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7));
         assert (!checkCondition || checkOutput);*/
 
-        //Prop9: mode_basal_implies_infusion_rate_basal
+        //Prop10: mode_basal_implies_infusion_rate_basal
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && rty_IM_OUT.Current_System_Mode == 2);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Basal);
         assert (!checkCondition || checkOutput);*/
 
 
-        //Prop10: mode_intermittent_implies_infusion_rate_intermittent_bolus
+        //Prop11: mode_intermittent_implies_infusion_rate_intermittent_bolus
   /*      checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 3);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Intermittent_Bolus);
         assert (!checkCondition || checkOutput);
 */
 /*
-        //Prop11: mode_patient_implies_infusion_rate_patient_bolus
+        //Prop12: mode_patient_implies_infusion_rate_patient_bolus
         checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 4);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Patient_Bolus);
         assert (!checkCondition || checkOutput);
 */
 
-  /*      //Prop12: not_infusing_eq_rate_zero -- Could not map Infusing var
+  /*      // not_infusing_eq_rate_zero -- Could not map Infusing var
         checkCondition = (rtu_TLM_MODE_IN.System_On && (! (Infusing)));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);*/
@@ -1271,10 +1281,10 @@ public class INFUSION_MGR_Functional {
 */
 
         //Prop14: mode_paused_implies_infusion_rate_kvo
-        /*checkCondition =
+        checkCondition =
                 rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
     }
 

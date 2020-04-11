@@ -1207,10 +1207,9 @@ public class INFUSION_MGR_FunctionalRecovered {
         //Prop1: mode_range
         /*checkCondition =
                 ((rty_IM_OUT.Current_System_Mode == 0) || (rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 2) || (rty_IM_OUT.Current_System_Mode == 3) || (rty_IM_OUT.Current_System_Mode == 4) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7) || (rty_IM_OUT.Current_System_Mode == 8));
-        assert checkCondition;
-*/
+        assert checkCondition;*/
 
-        //system_on_implies_idle -------- couldn't be mapped to source
+        //prop2: system_on_implies_idle -------- couldn't be mapped to source
 //        checkCondition = ((!(prev_On_Start)) && curr_On_Start);
 //        checkOutput = (rty_IM_OUT.Current_System_Mode == 1);
 //        assert(!checkCondition || checkOutput);
@@ -1221,27 +1220,20 @@ public class INFUSION_MGR_FunctionalRecovered {
         assert (!checkCondition || checkOutput);
 */
 
-        /*//prop3 alarm_L4_implies_flow_rate_zero
-        checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
+        //prop3 alarm_L4_implies_flow_rate_zero
+        /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
 */
-
         //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        Debug.printPC("pc before violation");
-        //assert (!checkCondition || checkOutput);
         if (checkCondition && !checkOutput) {
             Debug.printPC("pc for the violation");
-            System.out.println(Debug.getSymbolicBooleanValue(rtu_TLM_MODE_IN.System_On));
-            System.out.println(Debug.getSymbolicIntegerValue(rtu_ALARM_IN.Highest_Level_Alarm ));
             System.out.println(Debug.getSymbolicIntegerValue(rty_IM_OUT.Commanded_Flow_Rate));
-            System.out.println(Debug.getSymbolicIntegerValue(rtu_CONFIG_IN.Flow_Rate_KVO));
-
             assert false;
-        }
-*/
+        }*/
+
   /*      //Prop5: configured_lt_1_flow_rate_zero
         checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_CONFIG_IN.Configured < 1));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
@@ -1265,7 +1257,7 @@ public class INFUSION_MGR_FunctionalRecovered {
         checkOutput = (rty_IM_OUT.Current_System_Mode != 3) && (rty_IM_OUT.Current_System_Mode  != 4);
         assert (!checkCondition || checkOutput);*/
 
-        //assert (!checkCondition || checkOutput);
+
         //Prop9: alarm_GTE_3_implies_in_paused_or_idle
   /*      checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput =
@@ -1302,11 +1294,12 @@ public class INFUSION_MGR_FunctionalRecovered {
         assert (!checkCondition || checkOutput);
 */
 
-        //Prop14: mode_paused_implies_infusion_rate_kvo -- this is only  valid on the initial step, but false afterwards.
-        /*checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
+        //Prop14: mode_paused_implies_infusion_rate_kvo
+        /*checkCondition =
+                rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);
-*/
+        assert (!checkCondition || checkOutput);*/
+
 
         /************Discovery properties**********/
 

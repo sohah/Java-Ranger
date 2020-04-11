@@ -107,12 +107,9 @@ node main(
 ) returns (p1: bool);
 
 
-let  -- Prop: mode_range
+let  -- Prop7: mode_off_implies_infusion_rate_zero
 
-    p1 = true -> repair((System_On and (Highest_Level_Alarm = 2))
-                        => (not(Current_System_Mode = 3) and not(Current_System_Mode = 4)),
-     discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
-     Log_Message_ID));
-      --%PROPERTY p1;
+    p1 = true -> (Current_System_Mode = 0) => (Commanded_Flow_Rate = 0);
+    --%PROPERTY p1;
 
 tel;

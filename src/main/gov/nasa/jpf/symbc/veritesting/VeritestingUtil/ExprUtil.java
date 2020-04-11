@@ -11,6 +11,7 @@ import za.ac.sun.cs.green.expr.RealConstant;
 import java.util.EmptyStackException;
 
 import static gov.nasa.jpf.symbc.VeritestingListener.performanceMode;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.contractDiscoveryOn;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.ExceptionPhase.INSTANTIATION;
 import static gov.nasa.jpf.symbc.veritesting.StaticRegionException.throwException;
 import static gov.nasa.jpf.symbc.veritesting.VeritestingUtil.ExprUtil.SatResult.DONTKNOW;
@@ -24,6 +25,7 @@ public class ExprUtil {
 
     /**
      * Translates an SPF expression to a Green Expression.
+     *
      * @param spfExp SPF Expression
      * @return Green Expression.
      */
@@ -40,6 +42,7 @@ public class ExprUtil {
 
     /**
      * Pretty print method to print Green expression.
+     *
      * @param expression Green expression.
      * @return String of Green Expression.
      */
@@ -59,19 +62,21 @@ public class ExprUtil {
 
     /**
      * Translates Green Expession to SPF.
+     *
      * @param greenExpression A Green expression to be translated to SPF.
      * @return SPF expression.
      */
     public static gov.nasa.jpf.symbc.numeric.Expression greenToSPFExpression(Expression greenExpression) {
         GreenToSPFTranslator toSPFTranslator = new GreenToSPFTranslator();
-        gov.nasa.jpf.symbc.numeric.Expression retExp =  toSPFTranslator.translate(greenExpression);
+        gov.nasa.jpf.symbc.numeric.Expression retExp = toSPFTranslator.translate(greenExpression);
         assert retExp != null;
         return retExp;
     }
 
     /**
      * Creates a Green variable depending on its type.
-     * @param type Type of the variable.
+     *
+     * @param type  Type of the variable.
      * @param varId Name of the variable.
      * @return A Green variable.
      */
@@ -117,28 +122,31 @@ public class ExprUtil {
     performance mode. It avoids the solver call if the isSatisfiable method returns false.
      */
     public static boolean isPCSat(PathCondition pc) throws StaticRegionException {
-        return true;
-        /*long startTime = System.nanoTime();
-        boolean isPCSat = isSatisfiable(pc);
-        StatisticManager.constPropTime += (System.nanoTime() - startTime);
-        // verify that static unsatisfiability is confirmed by solver if we dont want to run fast
-        if (!performanceMode && !isPCSat)
-            assert (!pc.simplify());
-        // in performanceMode, ask the solver for satisfiability only if we didn't find the PC to be unsat.
-        if (performanceMode) {
-            if (isPCSat) {
+        if (contractDiscoveryOn)
+            return true;
+        else {
+            long startTime = System.nanoTime();
+            boolean isPCSat = isSatisfiable(pc);
+            StatisticManager.constPropTime += (System.nanoTime() - startTime);
+            // verify that static unsatisfiability is confirmed by solver if we dont want to run fast
+            if (!performanceMode && !isPCSat)
+                assert (!pc.simplify());
+            // in performanceMode, ask the solver for satisfiability only if we didn't find the PC to be unsat.
+            if (performanceMode) {
+                if (isPCSat) {
+                    StatisticManager.PCSatSolverCount++;
+                    startTime = System.nanoTime();
+                    isPCSat = pc.simplify();
+                    StatisticManager.PCSatSolverTime += (System.nanoTime() - startTime);
+                }
+            } else {
                 StatisticManager.PCSatSolverCount++;
                 startTime = System.nanoTime();
                 isPCSat = pc.simplify();
                 StatisticManager.PCSatSolverTime += (System.nanoTime() - startTime);
             }
-        } else {
-            StatisticManager.PCSatSolverCount++;
-            startTime = System.nanoTime();
-            isPCSat = pc.simplify();
-            StatisticManager.PCSatSolverTime += (System.nanoTime() - startTime);
+            return isPCSat;
         }
-        return isPCSat;*/
     }
 
     /*
@@ -166,7 +174,9 @@ public class ExprUtil {
         return true;
     }
 
-    public enum SatResult { TRUE, FALSE, DONTKNOW };
+    public enum SatResult {TRUE, FALSE, DONTKNOW}
+
+    ;
 
     public static SatResult isSatGreenExpression(Expression expression) {
         if (expression instanceof Operation) {
@@ -177,24 +187,26 @@ public class ExprUtil {
                 SatResult operand1Sat = isSatGreenExpression(operation.getOperand(0));
                 SatResult operand2Sat = isSatGreenExpression(operation.getOperand(1));
                 SatResult result;
-                switch(operation.getOperator()) {
+                switch (operation.getOperator()) {
                     case AND:
                         result = (operand1Sat == FALSE || operand2Sat == FALSE) ? FALSE :
                                 ((operand1Sat == TRUE && operand2Sat == TRUE) ? TRUE : DONTKNOW);
                         return result;
                     case OR:
-                        result = (operand1Sat == TRUE || operand2Sat == TRUE) ? TRUE:
-                            ((operand1Sat == FALSE && operand2Sat == FALSE) ? FALSE: DONTKNOW);
+                        result = (operand1Sat == TRUE || operand2Sat == TRUE) ? TRUE :
+                                ((operand1Sat == FALSE && operand2Sat == FALSE) ? FALSE : DONTKNOW);
                         return result;
-                    default: return DONTKNOW;
+                    default:
+                        return DONTKNOW;
                 }
-            }
-            else if (operation.getArity() == 1) {
+            } else if (operation.getArity() == 1) {
                 SatResult operand1Sat = isSatGreenExpression(operation.getOperand(0));
                 if (operand1Sat == DONTKNOW) return DONTKNOW;
-                switch(operation.getOperator()) {
-                    case NOT: return operand1Sat == FALSE ? TRUE : FALSE;
-                    default: return DONTKNOW;
+                switch (operation.getOperator()) {
+                    case NOT:
+                        return operand1Sat == FALSE ? TRUE : FALSE;
+                    default:
+                        return DONTKNOW;
                 }
             }
         }
@@ -206,40 +218,71 @@ public class ExprUtil {
             Expression operand1 = operation.getOperand(0);
             Expression operand2 = operation.getOperand(1);
             if (operand1 instanceof IntConstant && operand2 instanceof IntConstant) {
-                int val1 = ((IntConstant)operand1).getValue();
-                int val2 = ((IntConstant)operand2).getValue();
-                switch(operation.getOperator()) {
-                    case EQ: return val1 == val2 ? TRUE: FALSE;
-                    case NE: return val1 != val2 ? TRUE: FALSE;
-                    case LT: return val1 < val2 ? TRUE: FALSE;
-                    case LE: return val1 <= val2 ? TRUE: FALSE;
-                    case GT: return val1 > val2 ? TRUE: FALSE;
-                    case GE: return val1 >= val2 ? TRUE: FALSE;
-                    default: return DONTKNOW;
+                int val1 = ((IntConstant) operand1).getValue();
+                int val2 = ((IntConstant) operand2).getValue();
+                switch (operation.getOperator()) {
+                    case EQ:
+                        return val1 == val2 ? TRUE : FALSE;
+                    case NE:
+                        return val1 != val2 ? TRUE : FALSE;
+                    case LT:
+                        return val1 < val2 ? TRUE : FALSE;
+                    case LE:
+                        return val1 <= val2 ? TRUE : FALSE;
+                    case GT:
+                        return val1 > val2 ? TRUE : FALSE;
+                    case GE:
+                        return val1 >= val2 ? TRUE : FALSE;
+                    default:
+                        return DONTKNOW;
                 }
             } else if (operand2 instanceof IntConstant) {
                 int val2 = ((IntConstant) operand2).getValue();
-                switch(operation.getOperator()) {
-                    case LE: if (val2 == Integer.MAX_VALUE) { return TRUE; } // every val1 <= MAX_VALUE
-                    else break;
-                    case GE: if (val2 == Integer.MIN_VALUE) { return TRUE; } // every val1 >= MIN_VALUE
-                    else break;
-                    case GT: if (val2 == Integer.MAX_VALUE) { return FALSE; } // val1 > MAX_VALUE for no val1
-                    else break;
-                    case LT: if (val2 == Integer.MIN_VALUE) { return FALSE; } // val1 < MIN_VALUE for no val1
-                    else break;
+                switch (operation.getOperator()) {
+                    case LE:
+                        if (val2 == Integer.MAX_VALUE) {
+                            return TRUE;
+                        } // every val1 <= MAX_VALUE
+                        else break;
+                    case GE:
+                        if (val2 == Integer.MIN_VALUE) {
+                            return TRUE;
+                        } // every val1 >= MIN_VALUE
+                        else break;
+                    case GT:
+                        if (val2 == Integer.MAX_VALUE) {
+                            return FALSE;
+                        } // val1 > MAX_VALUE for no val1
+                        else break;
+                    case LT:
+                        if (val2 == Integer.MIN_VALUE) {
+                            return FALSE;
+                        } // val1 < MIN_VALUE for no val1
+                        else break;
                 }
             } else if (operand1 instanceof IntConstant) {
                 int val1 = ((IntConstant) operand1).getValue();
-                switch(operation.getOperator()) {
-                    case LE: if (val1 == Integer.MIN_VALUE) { return TRUE; } // for all val2, MIN_VALUE <= val2
-                    else break;
-                    case GE: if (val1 == Integer.MAX_VALUE) { return TRUE; } // for all val2, MAX_VALUE >= val2
-                    else break;
-                    case GT: if (val1 == Integer.MIN_VALUE) { return FALSE; } // MIN_VALUE > val2 for no val2
-                    else break;
-                    case LT: if (val1 == Integer.MAX_VALUE) { return FALSE; } // MAX_VALUE < val2 for no val2
-                    else break;
+                switch (operation.getOperator()) {
+                    case LE:
+                        if (val1 == Integer.MIN_VALUE) {
+                            return TRUE;
+                        } // for all val2, MIN_VALUE <= val2
+                        else break;
+                    case GE:
+                        if (val1 == Integer.MAX_VALUE) {
+                            return TRUE;
+                        } // for all val2, MAX_VALUE >= val2
+                        else break;
+                    case GT:
+                        if (val1 == Integer.MIN_VALUE) {
+                            return FALSE;
+                        } // MIN_VALUE > val2 for no val2
+                        else break;
+                    case LT:
+                        if (val1 == Integer.MAX_VALUE) {
+                            return FALSE;
+                        } // MAX_VALUE < val2 for no val2
+                        else break;
                 }
             }
         } else if (operation.getArity() == 1) {
@@ -247,8 +290,10 @@ public class ExprUtil {
             if (operand1 instanceof IntConstant) {
                 int val1 = ((IntConstant) operand1).getValue();
                 switch (operation.getOperator()) {
-                    case NOT: return val1 == 0 ? TRUE: FALSE;
-                    default: return DONTKNOW;
+                    case NOT:
+                        return val1 == 0 ? TRUE : FALSE;
+                    default:
+                        return DONTKNOW;
                 }
             }
         }
@@ -282,10 +327,9 @@ public class ExprUtil {
         if (s1 == null && s2 == null) {
             if (!allowBothNull)
                 throwException(new IllegalArgumentException("trying to compose with two null statements"),
-                    gov.nasa.jpf.symbc.veritesting.StaticRegionException.ExceptionPhase.DONTKNOW);
+                        gov.nasa.jpf.symbc.veritesting.StaticRegionException.ExceptionPhase.DONTKNOW);
             else return null;
-        }
-        else if (s1 == null) return s2;
+        } else if (s1 == null) return s2;
         else if (s2 == null) return s1;
         else return new CompositionStmt(s1, s2);
         return null;

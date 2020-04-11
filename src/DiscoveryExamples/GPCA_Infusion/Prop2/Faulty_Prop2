@@ -106,11 +106,8 @@ node main(
              Actual_Infusion_Duration:int
 ) returns (p1: bool);
 
-let
-
---fault negating outcome
-    p1 = true -> repair(not(System_On) => Current_System_Mode = 0, discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
-     Log_Message_ID));
+let  -- prop2: not_system_on_implies_mode_0
+    p1 = true -> (not(System_On) => Current_System_Mode = 0);
       --%PROPERTY p1;
 
 tel;

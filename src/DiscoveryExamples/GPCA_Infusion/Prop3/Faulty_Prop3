@@ -106,12 +106,9 @@ node main(
              Actual_Infusion_Duration:int
 ) returns (p1: bool);
 
-let
+let --prop3: alarm_L4_implies_flow_rate_zero
 
-    p1 = true -> repair((System_On and (Highest_Level_Alarm = 4))
-                        => (Commanded_Flow_Rate = 0),
-     discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
-     Log_Message_ID));
+    p1 = true -> (System_On and (Highest_Level_Alarm = 4) => (Commanded_Flow_Rate = 0));
       --%PROPERTY p1;
 
 tel;

@@ -106,10 +106,9 @@ node main(
              Actual_Infusion_Duration:int
 ) returns (p1: bool);
 
+let  -- Prop13: mode_idle_implies_infusion_rate_zero
 
-let  -- Prop8: alarm_L2_implies_no_bolus
-
-    p1 = true -> (System_On and (Highest_Level_Alarm = 2)) => (not(Current_System_Mode = 3) and not(Current_System_Mode = 4));
+    p1 = true -> (System_On and (Current_System_Mode = 1)) => (Commanded_Flow_Rate = 0);
     --%PROPERTY p1;
 
 tel;

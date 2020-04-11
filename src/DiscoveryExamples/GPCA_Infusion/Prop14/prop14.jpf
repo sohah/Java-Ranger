@@ -27,8 +27,8 @@ spec = infusion
 specRepair = true
 repairMode = 2
 
-SpecDirectory = GPCA_Infusion/Prop8
-faultySpec=Faulty_Prop8
+SpecDirectory = GPCA_Infusion/Prop14
+faultySpec=Faulty_Prop14
 repairInitialValues = true
 z3Solver=true
 mutationEnabled = false;

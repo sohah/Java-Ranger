@@ -107,13 +107,9 @@ node main(
 ) returns (p1: bool);
 
 
--- mode_paused_implies_infusion_rate_kvo
-let  -- Prop: mode_range
+let  -- Prop12: mode_patient_implies_infusion_rate_patient_bolus
 
-    p1 = true -> repair(System_On and (Current_System_Mode = 6 or Current_System_Mode = 7 or Current_System_Mode = 8 )
-                        => (Commanded_Flow_Rate <= Flow_Rate_KVO),
-     discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
-     Log_Message_ID));
+    p1 = true -> (System_On and (Current_System_Mode = 4 ))  => (Commanded_Flow_Rate = Flow_Rate_Patient_Bolus);
       --%PROPERTY p1;
 
 tel;

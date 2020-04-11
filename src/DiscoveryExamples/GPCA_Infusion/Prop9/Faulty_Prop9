@@ -107,12 +107,9 @@ node main(
 ) returns (p1: bool);
 
 
-let  -- Prop: mode_range
+let  -- Prop9: alarm_GTE_3_implies_in_paused_or_idle
 
-    p1 = true -> repair((System_On and Current_System_Mode = 2 )
-                        => Commanded_Flow_Rate = Flow_Rate_Basal,
-     discover_binary_Bool_0_Int_4_Terms2(Commanded_Flow_Rate, Current_System_Mode, Actual_Infusion_Duration,
-     Log_Message_ID));
+    p1 = true -> (System_On and (Highest_Level_Alarm = 4)) => ((Current_System_Mode = 1) or (Current_System_Mode = 6) or (Current_System_Mode = 7));
       --%PROPERTY p1;
 
 tel;
