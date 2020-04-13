@@ -1,0 +1,27 @@
+target=DiscoveryExamples.tcas.SpfTCAS2
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+
+vm.storage.class=nil
+symbolic.lazy = true
+
+
+symbolic.method=DiscoveryExamples.tcas.SpfTCAS2.mainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+
+########## JavaRanger needs incremental solver but it is buggy, sample on that was the failing TCAS assertion #4 which should not be failing.
+#### after this incident I decided to use plain SPF with z3 as the decision procedure.
+#### The setup that used to be invalid in both JavaRanger and SPF is if we enable incremental solver with z3bitVector
+### if we have optimizechocies=false, we will not execute many paths, and if we had that flag true then we put unsat queries on the pc this case shows up on property #4 in TCAS.
+#listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+
+listener = .symbc.SymbolicListener
+symbolic.dp=z3
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify=false
+
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = false

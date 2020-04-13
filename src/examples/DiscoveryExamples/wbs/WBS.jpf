@@ -1,0 +1,21 @@
+target=DiscoveryExamples.wbs.WBS
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+
+vm.storage.class=nil
+symbolic.lazy = true
+
+
+symbolic.method = DiscoveryExamples.wbs.WBS.launch(sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+
+listener = .symbc.SymbolicListener
+symbolic.dp=z3
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify=false
+
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = false

@@ -1,21 +1,19 @@
+### SPF version of running InfusionMgr############
+
 target=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_FunctionalRecovered
 classpath=${jpf-symbc}/build/examples
 sourcepath=${jpf-symbc}/src/examples
 #symbolic.debug=false
 vm.storage.class=nil
 symbolic.lazy = true
-symbolic.optimizechoices=false
+#symbolic.optimizechoices=false
 
 
 symbolic.method=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_FunctionalRecovered.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
 
-vm.storage.class=nil
+symbolic.dp=z3
 
-
-symbolic.dp=z3bitvectorinc
-
-#listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
-listener = gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+listener = .symbc.SymbolicListener
 jitAnalysis = true
 veritestingMode = 3
 performanceMode = false

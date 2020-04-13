@@ -1,0 +1,38 @@
+target=DiscoveryExamples.tcas.DiscoveryTCAS_sr
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+symbolic.debug=false
+vm.storage.class=nil
+symbolic.lazy = true
+symbolic.debug=false
+symbolic.optimizechoices=false
+
+
+symbolic.method =DiscoveryExamples.tcas.DiscoveryTCAS_sr.discoveryMainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+vm.storage.class=nil
+
+
+symbolic.dp=z3bitvectorinc
+
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify = false
+
+################## contract Discovery configurations ###############
+spec = tcas
+specRepair = true
+repairMode = 2
+contractDiscoveryOn = true
+
+SpecDirectory=TCAS/Prop2
+faultySpec=Prop2
+repairInitialValues = true
+z3Solver=true
+mutationEnabled = false;
+repairMutantsOnly = false;
+depthFixed = false;
+rangeValueAnalysis = true;
+evaluationMode = true;

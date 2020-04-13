@@ -1,0 +1,25 @@
+target=DiscoveryExamples.tcas.SpfTCAS
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+#symbolic.debug=false
+vm.storage.class=nil
+symbolic.lazy = true
+symbolic.method=DiscoveryExamples.tcas.SpfTCAS.mainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+
+#### good configuration for prop4 -- note that optimizechoices is not setup here, or it can be setup to false.
+symbolic.dp=z3
+listener = .symbc.SymbolicListener
+
+
+### configuration if enabled instead of the one above then prop4 will not validate
+#symbolic.dp=z3bitvectorinc
+#listener = gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+#symbolic.optimizechoices=false
+
+
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = false

@@ -4,13 +4,10 @@ sourcepath=${jpf-symbc}/src/examples
 #symbolic.debug=false
 vm.storage.class=nil
 symbolic.lazy = true
-symbolic.optimizechoices=false
+#symbolic.optimizechoices=false  #not sure if this works in our fork for either javaRanger or spf
 
 
 symbolic.method=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_Functional.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
-
-vm.storage.class=nil
-
 
 symbolic.dp=z3bitvectorinc
 
