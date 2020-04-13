@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DiscoveryInfusion" type="CompoundRunConfigurationType">
+    <toRun name="Infusion Prop13" type="JarApplication" />
+    <toRun name="Infusion Prop4" type="JarApplication" />
+    <toRun name="Infusion Prop5" type="JarApplication" />
+    <toRun name="Infusion Prop9" type="JarApplication" />
+    <toRun name="Infusion Prop1" type="JarApplication" />
+    <toRun name="Infusion Prop8" type="JarApplication" />
+    <toRun name="Infusion Prop12" type="JarApplication" />
+    <toRun name="Infusion Prop14" type="JarApplication" />
+    <toRun name="Infusion Prop7" type="JarApplication" />
+    <toRun name="Infusion Prop3" type="JarApplication" />
+    <toRun name="Infusion Prop6" type="JarApplication" />
+    <toRun name="Infusion Prop11" type="JarApplication" />
+    <toRun name="Infusion Prop10" type="JarApplication" />
+    <toRun name="Infusion Prop2" type="JarApplication" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,6 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DiscoveryWBS" type="CompoundRunConfigurationType">
-    <toRun name="Faulty_WBS_Ass1_All" type="JarApplication" />
+    <toRun name="WBS Prop3" type="JarApplication" />
+    <toRun name="WBS Prop4" type="JarApplication" />
+    <toRun name="WBS Prop2" type="JarApplication" />
+    <toRun name="WBS Prop5" type="JarApplication" />
+    <toRun name="WBS Prop1" type="JarApplication" />
     <method v="2" />
   </configuration>
 </component>

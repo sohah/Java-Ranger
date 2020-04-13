@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TCAS" type="CompoundRunConfigurationType">
+    <toRun name="TCAS_Prop4" type="JarApplication" />
+    <toRun name="TCAS_Prop2" type="JarApplication" />
+    <toRun name="TCAS_Prop1" type="JarApplication" />
+    <toRun name="TCAS_Prop3" type="JarApplication" />
+    <method v="2" />
+  </configuration>
+</component>
