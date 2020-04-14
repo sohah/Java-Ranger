@@ -14,7 +14,6 @@ trace
 *.iml
 output/
 .idea/*
-logs/
 out/
 src/examples/VeritestingPerf.java
 src/examples/VeritestingPerf.jpf
