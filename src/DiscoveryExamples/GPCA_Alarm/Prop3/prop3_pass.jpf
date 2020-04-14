@@ -1,0 +1,38 @@
+target=DiscoveryExamples.gpca.ALARM_Functional_Discovery
+classpath=${jpf-symbc}/build/examples
+sourcepath=${jpf-symbc}/src/examples
+symbolic.debug=false
+vm.storage.class=nil
+symbolic.lazy = true
+symbolic.debug=false
+symbolic.optimizechoices=false
+
+
+symbolic.method=DiscoveryExamples.gpca.ALARM_Functional_Discovery.ALARM_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#symsym#sym#sym#sym)
+
+vm.storage.class=nil
+
+
+symbolic.dp=z3bitvectorinc
+
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify = false
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = true
+spec = gpca
+specRepair = true
+repairMode = 2
+
+SpecDirectory = GPCA_Alarm/Prop3
+faultySpec=Faulty_GPCA_Prop3
+repairInitialValues = true
+z3Solver=true
+mutationEnabled = false
+repairMutantsOnly = false
+depthFixed = false
+rangeValueAnalysis = true
+evaluationMode = true
