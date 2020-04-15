@@ -106,8 +106,9 @@ public class MutationUtils {
         int mutationIndex = -1, repairMutationIndex = -1;
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
-            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, repairMutationIndex, tInOutManager);
-            Expr mutatedExpr = originalProgram.nodes.get(0).equations.get(0).expr.accept(mutateExpr);
+            Node mainNode = originalProgram.nodes.get(0);
+            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, repairMutationIndex, tInOutManager, mainNode.inputs, mainNode.outputs);
+            Expr mutatedExpr = mainNode.equations.get(0).expr.accept(mutateExpr);
             if (!mutateExpr.didMutation() && !repairMutantsOnly) {
                 break;
             } else {
