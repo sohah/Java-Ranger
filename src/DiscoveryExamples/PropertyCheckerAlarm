@@ -51,15 +51,12 @@ node main(Commanded_Flow_Rate : int;
 var
 
    prop1: bool;
-   prop2:bool;
 
 let
 
-    prop2 = true->((System_On => Door_Open) => (out_Highest_Level_Alarm <= 4));
+    prop1 = (true -> ((((out_Highest_Level_Alarm <= 3) => (out_Highest_Level_Alarm < 4)) => (out_Highest_Level_Alarm > 3)) => ((false xor (out_Highest_Level_Alarm > 1)) => ((out_Highest_Level_Alarm = 4) xor false))));
 
-    prop1 = true -> ((System_On and Door_Open) or (out_Highest_Level_Alarm <= 4));
-
-    p1 = (prop1 => prop2) ;
+    p1 = (prop1 = true) ;
 
   --%PROPERTY p1;
 
