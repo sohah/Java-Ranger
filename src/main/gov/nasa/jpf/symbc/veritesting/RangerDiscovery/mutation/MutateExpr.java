@@ -1,7 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import jkind.lustre.*;
@@ -18,11 +17,12 @@ public class MutateExpr implements ExprVisitor<Expr> {
     private final SpecInOutManager tInOutManager;
     private final ShouldApplyMutation shouldApplyMutation;
     public List<GenericRepairNode> repairNodes = new ArrayList<>();
+    private final List<VarDecl> inputs, outputs;
 
     private int mutationIndex;
     private int repairMutationIndex;
 
-    MutateExpr(MutationType mutationType, int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager) {
+    MutateExpr(MutationType mutationType, int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
         this.mutationType = mutationType;
         this.prevMutationIndex = prevMutationIndex;
         this.prevRepairMutationIndex = prevRepairMutationIndex;
@@ -30,6 +30,8 @@ public class MutateExpr implements ExprVisitor<Expr> {
         this.repairMutationIndex = -1;
         this.tInOutManager = tInOutManager;
         this.shouldApplyMutation = new ShouldApplyMutation();
+        this.inputs = inputs;
+        this.outputs = outputs;
     }
 
     boolean didMutation() {
@@ -103,7 +105,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     private Expr mutateORO(BinaryExpr e) {
         if (mutationType == MutationType.OPERAND_REPLACEMENT_MUT) {
-            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
+            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager, inputs, outputs);
             e.accept(idExprVisitor);
             ArrayList<IdExpr> idExprs = idExprVisitor.getIdExprs();
             ConstExprVisitor constExprVisitor = new ConstExprVisitor();
@@ -135,7 +137,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     private Expr wrapRepairExpr(BinaryExpr e) {
         if (shouldApplyMutation.shouldApplyRepairMutation()) {
-            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager);
+            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager, inputs, outputs);
             e.accept(idExprVisitor);
             List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
             int exprSize = e.accept(new ExprSizeVisitor(varDecls, true));
