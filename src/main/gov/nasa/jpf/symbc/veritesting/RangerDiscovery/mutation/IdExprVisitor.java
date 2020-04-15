@@ -1,6 +1,8 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairScopeType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.ArrayAccessExpr;
 import jkind.lustre.ArrayExpr;
@@ -22,7 +24,6 @@ import jkind.lustre.RecordExpr;
 import jkind.lustre.RecordUpdateExpr;
 import jkind.lustre.RepairExpr;
 import jkind.lustre.TupleExpr;
-import jkind.lustre.Type;
 import jkind.lustre.UnaryExpr;
 import jkind.lustre.VarDecl;
 import jkind.lustre.visitors.ExprVisitor;
@@ -36,11 +37,14 @@ public class IdExprVisitor implements ExprVisitor<Expr> {
     private final HashSet<String> idExprSet;
     private final ArrayList<IdExpr> idExprList;
     private final SpecInOutManager tInOutManager;
+    private final List<VarDecl> inputs, outputs;
 
-    public IdExprVisitor(Expr e, SpecInOutManager tInOutManager) {
+    public IdExprVisitor(Expr e, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
         idExprSet = new HashSet<>();
         this.tInOutManager = tInOutManager;
         idExprList = new ArrayList<>();
+        this.inputs = inputs;
+        this.outputs = outputs;
     }
 
     @Override
@@ -165,12 +169,40 @@ public class IdExprVisitor implements ExprVisitor<Expr> {
     }
 
     public List<VarDecl> getVarDeclList() {
-        ArrayList<VarDecl> varDecls = new ArrayList<>();
-        for(String idExpr: idExprSet) {
-            NamedType type = getType(idExpr);
-            varDecls.add(new VarDecl(idExpr, type));
+        List<VarDecl> varDecls = new ArrayList<>();
+        if (Config.repairScope == RepairScopeType.ENCLOSED_TERMS) {
+            for (String idExpr : idExprSet) {
+                NamedType type = getType(idExpr);
+                varDecls.add(new VarDecl(idExpr, type));
+            }
+        } else if (Config.repairScope == RepairScopeType.ENCLOSE_IN_OUT_CATEGORY) {
+            boolean hasInputs = false, hasOutputs = false;
+            for (String idExpr : idExprSet) {
+                hasInputs |= isInput(idExpr);
+                hasOutputs |= isOutput(idExpr);
+            }
+            if (hasInputs && !hasOutputs) varDecls = new ArrayList<>(inputs);
+            else if (hasOutputs && !hasInputs) varDecls = new ArrayList<>(outputs);
+            else if (hasInputs && hasOutputs) {
+                varDecls = new ArrayList<>(inputs);
+                varDecls.addAll(outputs);
+            }
         }
         return varDecls;
+    }
+
+    private boolean isInput(String idExpr) {
+        for (VarDecl varDecl: inputs) {
+            if (varDecl.id.equals(idExpr)) return true;
+        }
+        return false;
+    }
+
+    private boolean isOutput(String idExpr) {
+        for (VarDecl varDecl: outputs) {
+            if (varDecl.id.equals(idExpr)) return true;
+        }
+        return false;
     }
 
     private NamedType getType(String idExpr) {
