@@ -37,7 +37,7 @@ repairMode = 2
 contractDiscoveryOn = true
 
 SpecDirectory=Vote/RepairAllConstraint
-faultySpec=Vote_All_terms4
+faultySpec=Vote_All_terms4-LOR-0-0,Vote_All_terms4-LOR-1-0
 repairInitialValues = true
 z3Solver=true
 mutationEnabled = false

@@ -31,12 +31,12 @@ public class EquationVisitor extends ExprMapVisitor implements AstVisitor<Ast> {
     public Ast visit(AssignmentStmt a) {
         Ast rhs = eva.accept(a.rhs);
         IdExpr lhs = new IdExpr(a.lhs.toString());
-        if ((rInOutManager.isContractOutputStr(lhs.id)) && (!rInOutManager.isOutputConverted()))
+        /*if ((rInOutManager.isContractOutputStr(lhs.id)) && (!rInOutManager.isOutputConverted()))
             equationList.add(addMethodReturnInit(new Equation(lhs, (Expr) rhs)));
-        else if ((rInOutManager.isStateOutVar(lhs.id)) && (!rInOutManager.isOutputConverted()))
+        else*/
+        if ((rInOutManager.isStateOutVar(lhs.id)) && (!rInOutManager.isOutputConverted()))
             equationList.add(addStateOutInit(new Equation(lhs, (Expr) rhs)));
-        else
-            equationList.add(new Equation(lhs, (Expr) rhs));
+        else equationList.add(new Equation(lhs, (Expr) rhs));
         return null;
     }
 
@@ -46,16 +46,14 @@ public class EquationVisitor extends ExprMapVisitor implements AstVisitor<Ast> {
      * @param equation
      * @return
      */
-    private Equation addMethodReturnInit(Equation equation) {
+    /*private Equation addMethodReturnInit(Equation equation) {
         IdExpr lhs = equation.lhs.get(0);
         if (rInOutManager.isContractOutputStr(lhs.id)) //if it is a method retrun equation, then proceed it with the initial value
             return DiscoveryUtil.addInitToEq(equation, rInOutManager.getContractOutputInit(lhs.id));
 
         assert false; //there must be an init value for a method output
         return null;
-    }
-
-
+    }*/
     private Equation addStateOutInit(Equation equation) {
         IdExpr lhs = equation.lhs.get(0);
         if (rInOutManager.isStateOutVar(lhs.id)) //if it is state output, then proceed it with the initial value

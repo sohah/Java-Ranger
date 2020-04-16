@@ -41,8 +41,6 @@ public class Config {
 
     public static Ast defaultHoleValBool = new BoolExpr(false);
     public static Ast defaultHoleValInt = new IntExpr(1);
-    public static boolean defaultBoolValue = false;
-    public static int initialIntValue = 0;
 
     public static boolean useInitialSpecValues = true;
     public static String genericRepairNodeName = "repairNode";
@@ -68,7 +66,7 @@ public class Config {
     public static boolean depthFixed = false;
     public static boolean rangeValueAnalysis = true;
     public static boolean evaluationMode = false;
-    public static int timeOut = 300;
+    public static int timeOut = 30;
 
 
     public static int faultySpecIndex = 0;

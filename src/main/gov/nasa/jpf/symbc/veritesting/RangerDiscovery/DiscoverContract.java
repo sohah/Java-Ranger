@@ -227,7 +227,7 @@ public class DiscoverContract {
                     writeToFile(fileName, synthesisContractStr, false, false);
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
-                            .getMaxTestCaseK() - 2, false, false);
+                            .getMaxTestCaseK() - 1, false, false);
                     singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / milliSecondSimplification;
                     repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {

@@ -94,18 +94,12 @@ public class InOutManager {
     // symbolic variables for which we need a dynamic mechanism to get the right name. This can be handled in a
     // later stage.
     public static String setSymVarName() {
-        if (Config.spec.equals("wbs"))
-            Config.symVarName = "symVar_10_SYMINT";
-        else if (Config.spec.equals("tcas"))
-            Config.symVarName = "symVar_15_SYMINT";
-        else if (Config.spec.equals("vote"))
-            Config.symVarName = "symVar_7_SYMINT";
-        else if (Config.spec.equals("gpca"))
-            Config.symVarName = "symVar_217_SYMINT";
-        else if (Config.spec.equals("infusion"))
-            Config.symVarName = "symVar_108_SYMINT";
-        else
-            assert false;
+        if (Config.spec.equals("wbs")) Config.symVarName = "symVar_10_SYMINT";
+        else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_15_SYMINT";
+        else if (Config.spec.equals("vote")) Config.symVarName = "symVar_7_SYMINT";
+        else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_217_SYMINT";
+        else if (Config.spec.equals("infusion")) Config.symVarName = "symVar_108_SYMINT";
+        else assert false;
         return Config.symVarName;
     }
 
@@ -242,7 +236,8 @@ public class InOutManager {
     }
 
     private void checkAsserts() {
-        assert contractOutput.varInitValuePair.size() == contractOutput.varList.size();
+        assert contractOutput.varInitValuePair.size() == 0; // contract cannot have initial values
+        assert contractOutput.varList.size() != 0; // an implementation must define a contract output.
         assert stateOutput.varInitValuePair.size() == stateOutput.varList.size();
         assert freeInput.size > 0;
         assert wrapperOutputNum == contractOutput.size;
@@ -252,8 +247,8 @@ public class InOutManager {
     //================================= Type Conversion ========================
 
     private void doContractOutputTypeConversion() {
-        if (contractOutput.containsBool()) { // isn't that replicated with the state output.
-            ArrayList<Equation> conversionResult = contractOutput.convertOutput();
+        if (contractOutput.containsBool()) {
+            ArrayList<Equation> conversionResult = contractOutput.convertContractOutput();
             assert conversionResult.size() == 1;
             typeConversionEq.addAll(conversionResult);
             isOutputConverted = true;
@@ -1353,8 +1348,8 @@ public class InOutManager {
 
     private void discoverContractOutputVote() {
 
-        contractOutput.add(referenceObjectName + ".out.1.7.3", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName + ".out.1.7.3", new BoolExpr(false));
+        contractOutput.add(referenceObjectName + ".out.1.9.4", NamedType.BOOL);
+        //contractOutput.addInit(referenceObjectName + ".out.1.9.4", new BoolExpr(false));
 
         /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
             ArrayList<Equation> conversionResult = contractOutput.convertOutput();
@@ -1390,8 +1385,8 @@ public class InOutManager {
 
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputVote() {
-        stateOutput.add(referenceObjectName + ".counter.1.4.3", NamedType.INT);
-        stateOutput.addInit(referenceObjectName + ".counter.1.4.3", new IntExpr(0));
+        stateOutput.add(referenceObjectName + ".counter.1.4.4", NamedType.INT);
+        stateOutput.addInit(referenceObjectName + ".counter.1.4.4", new IntExpr(0));
     }
 
 
@@ -1499,27 +1494,30 @@ public class InOutManager {
         return stateOutput.hasName(name);
     }
 
-    public Pair<VarDecl, Equation> replicateContractOutput(String outVarName) {
+    /*public Pair<VarDecl, Equation> replicateContractOutput(String outVarName) {
         return contractOutput.replicateMe(outVarName);
     }
-
-    public NamedType getContractOutType() {
+*/
+    /*public NamedType getContractOutType() {
         if (contractOutput.varList.size() == 0) {
             System.out.println("Contract has no output, this is unexpected signature for contract R! Aborting!");
             assert false;
         }
         return contractOutput.varList.get(0).getSecond();
     }
-
+*/
     //gets the initial value of a wrapper output.
-    public Expr getContractOutputInit(String name) {
+    /*public Expr getContractOutputInit(String name) {
         return contractOutput.getReturnInitVal(name);
-    }
+    }*/
 
     public Expr getStateOutInit(String name) {
         return stateOutput.getReturnInitVal(name);
     }
 
+    public Expr getStateOutInit(int index) {
+        return stateOutput.getReturnInitVal(index);
+    }
     public int getContractOutputCount() {
         return contractOutput.size;
     }

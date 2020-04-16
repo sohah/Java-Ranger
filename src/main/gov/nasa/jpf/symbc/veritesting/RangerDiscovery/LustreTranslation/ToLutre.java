@@ -31,8 +31,7 @@ public class ToLutre {
 
         //this line assumes that the setup of in the InOutManager for the program has not included the method output as a state output, we need to add some mechanism to enforce that or avoid adding existing values.
         ouputDeclList.addAll(methodOutDeclList);
-        return new Node(RNODE, inputDeclList, ouputDeclList, localDeclList, equationList, new ArrayList<>(),
-                new ArrayList<>(), null, null, null);
+        return new Node(RNODE, inputDeclList, ouputDeclList, localDeclList, equationList, new ArrayList<>(), new ArrayList<>(), null, null, null);
     }
 
     //adding symVar equation, this can be taken out if we do not need symVar wrapper
@@ -54,15 +53,14 @@ public class ToLutre {
         ArrayList<VarDecl> wrapperLocalDeclList = new ArrayList<>(stateInDeclList);
 
         //preparing wrapperOutput which should be a record that contains as many as method outputs.
-        ArrayList<Pair<VarDecl, Equation>> methodOutVarEqs = makeWrapperOutput(stateInDeclList, inOutManager
-                .getContractOutputCount());
+        ArrayList<Pair<VarDecl, Equation>> methodOutVarEqs = makeWrapperOutput(stateInDeclList, inOutManager.getContractOutputCount());
         ArrayList<VarDecl> wrapperOutput = new ArrayList<VarDecl>();
         wrapperOutput.addAll(collectFirst(methodOutVarEqs));
 
         //call node_R
         ArrayList<Expr> actualParameters = new ArrayList<>();
         actualParameters.addAll(varDeclToIdExpr(freeDeclList));
-        actualParameters.addAll(initPreTerm(wrapperLocalDeclList));
+        actualParameters.addAll(initPreTerm(wrapperLocalDeclList, inOutManager));
         NodeCallExpr r_nodeCall = new NodeCallExpr(RNODE, actualParameters);
         Equation wrapperEq = new Equation(varDeclToIdExpr(wrapperLocalDeclList), r_nodeCall);
 
@@ -70,8 +68,7 @@ public class ToLutre {
         wrapperEqList.add(wrapperEq);
         wrapperEqList.addAll(collectSecond(methodOutVarEqs)); //adding equation for output
 
-        return new Node(WRAPPERNODE, freeDeclList, wrapperOutput, wrapperLocalDeclList, wrapperEqList
-                , new ArrayList<>(), new ArrayList<>(), null, null, null);
+        return new Node(WRAPPERNODE, freeDeclList, wrapperOutput, wrapperLocalDeclList, wrapperEqList, new ArrayList<>(), new ArrayList<>(), null, null, null);
     }
 
     private static ArrayList collectFirst(ArrayList<Pair<VarDecl, Equation>> listOfPair) {
@@ -102,22 +99,51 @@ public class ToLutre {
         return outputList;
     }
 
-    private static ArrayList<Expr> initPreTerm(ArrayList<VarDecl> wrapperLocalDeclList) {
+    private static ArrayList<Expr> initPreTerm(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
         ArrayList<Expr> initPreExprList = new ArrayList<>();
+        ArrayList<VarDecl> onlyStateVars = pruneContractOutVars(wrapperLocalDeclList, inOutManager);
 
-        for (int i = 0; i < wrapperLocalDeclList.size(); i++) {
-            if (wrapperLocalDeclList.get(i).type == NamedType.BOOL)
-                initPreExprList.add(new BinaryExpr(new BoolExpr(Config.defaultBoolValue), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE,
-                        varDeclToIdExpr(wrapperLocalDeclList.get(i)))));
-            else if (wrapperLocalDeclList.get(i).type == NamedType.INT)
-                initPreExprList.add(new BinaryExpr(new IntExpr(Config.initialIntValue), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE,
-                        varDeclToIdExpr(wrapperLocalDeclList.get(i)))));
+        for (int i = 0; i < onlyStateVars.size(); i++) {
+            VarDecl objectVarDecl = onlyStateVars.get(i);
+            if (objectVarDecl.type == NamedType.BOOL) initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
+            else if (objectVarDecl.type == NamedType.INT) initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
             else {
                 System.out.println("unsupported type for initial value in the wrapper");
                 assert false;
             }
         }
+
+        for (int i = onlyStateVars.size(); i < wrapperLocalDeclList.size(); i++) { // the rest of the wrapper list must be an output which we want to call without an init value
+            initPreExprList.add(DiscoveryUtil.varDeclToIdExpr(wrapperLocalDeclList.get(i)));
+        }
         return initPreExprList;
+    }
+
+    /**
+     * This is used to stop the contract output from having an initial value
+     *
+     * @param wrapperLocalDeclList
+     * @param inOutManager
+     * @return
+     */
+    private static ArrayList<VarDecl> pruneContractOutVars(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
+        ArrayList<VarDecl> noContractVars = new ArrayList<>();
+
+        int contractOutputSize = inOutManager.getContractOutputCount();
+        for (int i = 0; i < wrapperLocalDeclList.size() - contractOutputSize; i++) {
+            noContractVars.add(wrapperLocalDeclList.get(i));
+        }
+        return noContractVars;
+    }
+
+    private static ArrayList<VarDecl> pruneStateOutVars(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
+        ArrayList<VarDecl> contractVars = new ArrayList<>();
+
+        int contractOutputSize = inOutManager.getContractOutputCount();
+        for (int i = 0; i < wrapperLocalDeclList.size() - contractOutputSize; i++) {
+            contractVars.add(wrapperLocalDeclList.get(i));
+        }
+        return contractVars;
     }
 
     /**

@@ -16,12 +16,16 @@ public class ContractOutput extends Output {
     public ArrayList<Pair<String, Expr>> varInitValuePair = new ArrayList<>();
 
     public Expr getReturnInitVal(String name) {
-        for(Pair<String,Expr> varInitPair: varInitValuePair){
-            if(varInitPair.getFirst().equals(name))
-                return varInitPair.getSecond();
+        for (Pair<String, Expr> varInitPair : varInitValuePair) {
+            if (varInitPair.getFirst().equals(name)) return varInitPair.getSecond();
         }
         assert false; //this method must be called for method output vars for which we must have an initalization.
         return null;
+    }
+
+    public Expr getReturnInitVal(int index) {
+        assert index < varInitValuePair.size();
+        return varInitValuePair.get(index).getSecond();
     }
 
     /**
