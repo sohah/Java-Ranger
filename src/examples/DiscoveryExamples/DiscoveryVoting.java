@@ -2,6 +2,7 @@ package DiscoveryExamples;
 
 public class DiscoveryVoting {
     boolean out = false;
+    int counter = 0;
 
     public void vote1(boolean a, boolean b, boolean c) {
         out = (a && b) || (b && c) || (a && c);
@@ -16,7 +17,7 @@ public class DiscoveryVoting {
     }
 
     public void vote4(boolean a, boolean b, boolean c) {
-        out = (a || b) && (b ||c) && (a || c);
+        out = (a || b) && (b || c) && (a || c);
     }
 
     public void vote0(boolean a, boolean b, boolean c) {
@@ -24,20 +25,28 @@ public class DiscoveryVoting {
     }
 
     public void vote5(boolean a, boolean b, boolean c) {
-        out = ((a && b) || (b && c) || (a && c)) ;
+        out = ((a && b) || (b && c) || (a && c));
     }
 
     public static void main(String[] args) {
         DiscoveryVoting discoveryVoting = new DiscoveryVoting();
-        discoveryVoting.makeStep(true, true, true, 4, false, true);
+        discoveryVoting.makeStep(true, true, true, 4, 1, false, true);
     }
 
 
-    public void makeStep(boolean a, boolean b, boolean c, int threshold, boolean out, boolean symVar) {
+    public void makeStep(boolean a, boolean b, boolean c, int threshold, int counter, boolean out, boolean symVar) {
         this.out = out;
-
-        if (symVar)
-            vote5(a, b, c);
+        if (symVar) {
+            //vote5(a, b, c);
             //vote2(a, b, c, threshold);
+            this.counter = counter;
+            if ((this.counter == 0))
+                vote3(a, a, a);
+            else if (this.counter == 3)
+                vote3(b, b, b);
+            else
+                this.out = false;
+            ++this.counter;
+        }
     }
 }

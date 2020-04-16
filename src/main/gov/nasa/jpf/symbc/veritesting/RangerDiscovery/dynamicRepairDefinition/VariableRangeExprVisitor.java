@@ -57,7 +57,9 @@ public class VariableRangeExprVisitor extends ExprMapVisitor implements ExprVisi
     @Override
     public Expression visit(GammaVarExpr expr) {
         if (expr.condition.toString().contains("symVar")) { //used to avoid tracing one side that is outside of the symVar condition, not interesting for contract discovery
-            assert (expr.elseExpr instanceof IntVariable);
+            assert (expr.elseExpr instanceof IntVariable) || (expr.elseExpr instanceof IntConstant);
+            if (expr.elseExpr instanceof IntConstant && (inVarOfInterestScope))
+                rangeValues.add(((IntConstant) expr.elseExpr).getValue());
             return eva.accept(expr.thenExpr);
         } else
             return new GammaVarExpr(expr.condition,

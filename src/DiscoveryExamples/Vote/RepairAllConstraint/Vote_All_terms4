@@ -1,105 +1,48 @@
--- depth 3 of four bools, that tries to discover the relationship among the input and the output.
--- This version is different than Vote_All_depth3, in that it lifted the True and False at the upper level instead of
--- being part of the inner clauses.
--- RESULT:
-
--- Tried:  minimal/tight candidate
--- INITIAL REPAIRED PROPERTY:
-
--- TIGHT 1:
--- TIGHT 2:
--- TIGHT 3:
--- TIGHT 4:
-
-
-repair node discover_binary_Bool_1_Int_4_Terms4(a0: bool; a1:bool; a2:bool; a3:bool)
-[valhole_0: inthole;
-valhole_1:inthole;
-valhole_2: inthole;
-valhole_3: inthole;
-
-level_0_hole:inthole;
-level_1_hole:inthole;
-level_2_hole:inthole;
-level_3_hole:inthole;
-level_4_hole:inthole;
-level_5_hole:inthole
-]
-
-returns (out: bool);
+repair node repairNode(
+  a : bool;
+  b : bool;
+  c : bool) [  inner_hole_0 : inthole;
+  inner_hole_1 : inthole;
+  inner_hole_2 : inthole;
+  inner_hole_3 : inthole;
+  inner_hole_4 : inthole;
+  inner_hole_5 : inthole;
+  inner_hole_6 : inthole]
+returns (
+  R : bool
+);
 var
-
-leaf_0:bool;
-leaf_1:bool;
-leaf_2:bool;
-leaf_3:bool;
-
-bExprlevel_1:bool;
-bExprlevel_2:bool;
-bExprlevel_3:bool;
-
+  R_l_l : bool;
+  R_l_r : bool;
+  R_l : bool;
+  R_r_l : bool;
+  R_r_r : bool;
+  R_r : bool;
 let
+  R_l_l = (if (inner_hole_0 = 6) then a else (if (inner_hole_0 = 5) then b else (if (inner_hole_0 = 4) then c else (if (inner_hole_0 = 3) then (not a) else (if (inner_hole_0 = 2) then (not b) else (not c))))));
 
-    leaf_0 = if(valhole_0 = 0) then a0
-                   else if(valhole_0 = 1) then a1
-                   else if(valhole_0 = 2) then a2
-                   else a3;
+  R_l_r = (if (inner_hole_1 = 6) then a else (if (inner_hole_1 = 5) then b else (if (inner_hole_1 = 4) then c else (if (inner_hole_1 = 3) then (not a) else (if (inner_hole_1 = 2) then (not b) else (not c))))));
 
+  R_l = (if (inner_hole_2 = 1) then (R_l_l and R_l_r) else (if (inner_hole_2 = 2) then (R_l_l or R_l_r) else (if (inner_hole_2 = 3) then (R_l_l => R_l_r) else (R_l_l xor R_l_r))));
 
-    leaf_1 = if(valhole_1 = 0) then a0
-                   else if(valhole_1 = 1) then a1
-                   else if(valhole_1 = 2) then a2
-                   else a3;
+  R_r_l = (if (inner_hole_3 = 6) then a else (if (inner_hole_3 = 5) then b else (if (inner_hole_3 = 4) then c else (if (inner_hole_3 = 3) then (not a) else (if (inner_hole_3 = 2) then (not b) else (not c))))));
 
+  R_r_r = (if (inner_hole_4 = 6) then a else (if (inner_hole_4 = 5) then b else (if (inner_hole_4 = 4) then c else (if (inner_hole_4 = 3) then (not a) else (if (inner_hole_4 = 2) then (not b) else (not c))))));
 
-    bExprlevel_1 =  if(level_2_hole = 1) then leaf_0 and leaf_1
-                   else if(level_2_hole = 2) then leaf_0 or leaf_1
-                   else if(level_2_hole = 3) then leaf_0 => leaf_1
-                   else if(level_2_hole = 4) then leaf_0 xor leaf_1
-                   else if(level_2_hole = 5) then not leaf_0
-                   else not leaf_1;
+  R_r = (if (inner_hole_5 = 1) then (R_r_l and R_r_r) else (if (inner_hole_5 = 2) then (R_r_l or R_r_r) else (if (inner_hole_5 = 3) then (R_r_l => R_r_r) else (R_r_l xor R_r_r))));
 
+  R = (if (inner_hole_6 = 1) then (R_l and R_r) else (if (inner_hole_6 = 2) then (R_l or R_r) else (if (inner_hole_6 = 3) then (R_l => R_r) else (if (inner_hole_6 = 4) then (R_l xor R_r) else (if (inner_hole_6 = 4) then true else false)))));
 
-
-    leaf_2 = if(valhole_2 = 0) then a0
-                   else if(valhole_2 = 1) then a1
-                   else if(valhole_2 = 2) then a2
-                   else a3;
-
-
-    bExprlevel_2 =  if(level_3_hole = 1) then bExprlevel_1 and leaf_2
-                     else if(level_3_hole = 2) then bExprlevel_1 or leaf_2
-                     else if(level_3_hole = 3) then bExprlevel_1 => leaf_2
-                     else if(level_3_hole = 4) then bExprlevel_1 xor leaf_2
-                     else not leaf_2;
-
-
-    leaf_3 = if(valhole_3 = 0) then a0
-                   else if(valhole_3 = 1) then a1
-                   else if(valhole_3 = 2) then a2
-                   else a3;
-
-
-    bExprlevel_3 =  if(level_4_hole = 1) then bExprlevel_2 and leaf_3
-                     else if(level_4_hole = 2) then bExprlevel_2 or leaf_3
-                     else if(level_4_hole = 3) then bExprlevel_2 => leaf_3
-                     else if(level_5_hole = 4) then bExprlevel_2 xor leaf_3
-                     else if(level_5_hole = 5) then not leaf_3
-                     else if(level_5_hole = 6) then true
-                     else false;
-
-    out = bExprlevel_3;
 tel;
 
 
-
-
-node main(a: bool; b:bool; c:bool; threshold :int; out: bool) returns (p1: bool);
+node main(a: bool; b:bool; c:bool; out: bool) returns (p1: bool);
 
 let
 
-p1 = true -> (repair(a and a, discover_binary_Bool_1_Int_4_Terms4(a,b,c,out)));
+p1 = true -> repair((a or b or c), repairNode(a,b,c));
 
   --%PROPERTY p1;
 
 tel;
+

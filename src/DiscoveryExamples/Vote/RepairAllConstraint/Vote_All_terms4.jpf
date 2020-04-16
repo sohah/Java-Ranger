@@ -1,25 +1,24 @@
 target=DiscoveryExamples.DiscoveryVoting
 classpath=${jpf-symbc}/build/examples,${jpf-symbc}/lib/com.ibm.wala.util-1.4.4-SNAPSHOT.jar
 sourcepath=${jpf-symbc}/src/examples
+symbolic.debug=false
 vm.storage.class=nil
-symbolic.debug=true
+symbolic.lazy = true
+symbolic.debug=false
+symbolic.optimizechoices=false
 
 
 ######## miscellaneous  ######
-symbolic.method=DiscoveryExamples.DiscoveryVoting.makeStep(sym#sym#sym#sym#sym#sym)
+symbolic.method=DiscoveryExamples.DiscoveryVoting.makeStep(sym#sym#sym#sym#sym#sym#sym)
 
-symbolic.dp=z3
 
-#symbolic.min_int=-1
-#symbolic.max_int=2
+symbolic.dp=z3bitvectorinc
 
-#symbolic.min_int=-15
-#symbolic.max_int=16
-
-#symbolic.min_int=-2147483648
-#symbolic.max_int=2147483647
-listener = .symbc.VeritestingListener
-#listener = .symbc.SymbolicListener
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify = false
 
 #####running test case generation
 #listener = gov.nasa.jpf.symbc.sequences.SymbolicSequenceListener
@@ -35,7 +34,14 @@ spec = vote
 specRepair = true
 repairMode = 2
 
-SpecDirectory = Vote/RepairAllConstraint
 contractDiscoveryOn = true
-faultySpec = Vote_All_terms4
-repairInitialValues = false
+
+SpecDirectory=Vote/RepairAllConstraint
+faultySpec=Vote_All_terms4
+repairInitialValues = true
+z3Solver=true
+mutationEnabled = false
+repairMutantsOnly = false
+depthFixed = false
+rangeValueAnalysis = true
+evaluationMode = false

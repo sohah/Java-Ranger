@@ -99,7 +99,7 @@ public class InOutManager {
         else if (Config.spec.equals("tcas"))
             Config.symVarName = "symVar_15_SYMINT";
         else if (Config.spec.equals("vote"))
-            Config.symVarName = "symVar_6_SYMINT";
+            Config.symVarName = "symVar_7_SYMINT";
         else if (Config.spec.equals("gpca"))
             Config.symVarName = "symVar_217_SYMINT";
         else if (Config.spec.equals("infusion"))
@@ -1353,8 +1353,9 @@ public class InOutManager {
 
     private void discoverContractOutputVote() {
 
-        contractOutput.add(referenceObjectName + ".out.1.3.2", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName + ".out.1.3.2", new BoolExpr(false));
+        contractOutput.add(referenceObjectName + ".out.1.7.3", NamedType.BOOL);
+        contractOutput.addInit(referenceObjectName + ".out.1.7.3", new BoolExpr(false));
+
         /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
             ArrayList<Equation> conversionResult = contractOutput.convertOutput();
             assert conversionResult.size() == 1;
@@ -1368,7 +1369,6 @@ public class InOutManager {
         freeInput.add("a_1_SYMINT", NamedType.BOOL);
         freeInput.add("b_2_SYMINT", NamedType.BOOL);
         freeInput.add("c_3_SYMINT", NamedType.BOOL);
-        freeInput.add("threshold_4_SYMINT", NamedType.INT);
 
         /*if (freeInput.containsBool()) {
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
@@ -1379,7 +1379,8 @@ public class InOutManager {
 
     //entered by hand for now
     private void discoverStateInputVote() {
-        stateInput.add("out_5_SYMINT", NamedType.BOOL);
+        stateInput.add("counter_5_SYMINT", NamedType.INT);
+        stateInput.add("out_6_SYMINT", NamedType.BOOL);
         /*if (stateInput.containsBool()) { //type conversion to spf int type is needed
             Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = stateInput.convertInput();
             typeConversionEq.addAll(conversionResult.getSecond());
@@ -1389,6 +1390,8 @@ public class InOutManager {
 
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputVote() {
+        stateOutput.add(referenceObjectName + ".counter.1.4.3", NamedType.INT);
+        stateOutput.addInit(referenceObjectName + ".counter.1.4.3", new IntExpr(0));
     }
 
 

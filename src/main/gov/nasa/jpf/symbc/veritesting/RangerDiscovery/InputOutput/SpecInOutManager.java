@@ -220,7 +220,6 @@ public class SpecInOutManager {
         freeInput.add("a", NamedType.BOOL);
         freeInput.add("b", NamedType.BOOL);
         freeInput.add("c", NamedType.BOOL);
-        freeInput.add("threshold", NamedType.INT);
     }
 
     private void discoverOutputVarVote() {
