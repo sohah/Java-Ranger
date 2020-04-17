@@ -452,11 +452,17 @@ public class DiscoveryUtil {
         }
 
 
-        if (randZ3Seed)
-            api.setJKindJar("../../../jkind/jkind.jar");
-        else
-            api.setJKindJar("../../../jkindNoRand/jkind.jar");
-
+        if (mac) {
+            if (randZ3Seed)
+                api.setJKindJar("../../../jkind/jkind.jar");
+            else
+                api.setJKindJar("../../../jkindNoRand/jkind.jar");
+        } else {//assuming linux
+            if (randZ3Seed)
+                api.setJKindJar("/home/soha/jkind/jkind.jar");
+            else
+                api.setJKindJar("/home/soha/jkindNoRand/jkind.jar");
+        }
         api.disableSlicing();
 
         // useful in minimization query where we want to not halt in the last query, for that we need to stop

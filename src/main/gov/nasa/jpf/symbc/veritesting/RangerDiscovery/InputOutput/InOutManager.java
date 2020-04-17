@@ -35,22 +35,6 @@ import java.util.List;
  */
 public class InOutManager {
 
-    //for now we are adding the reference object by hand, it changes from lunix to mac, so I am adding this here to avoid having to repeatedly change the code
-    //private String referenceObjectName = "r351"; //for lunix
-
-    private String referenceObjectName = "r347"; //for mac
-
-    //specific reference names for GPCA
-    private String referenceObjectName_gpca_Alarm_Outputs = "r390";
-    private String referenceObjectName_gpca_localB = "r394";
-    private String referenceObjectName_gpca_localDW = "r398";
-
-
-    //specific reference names for Infusion
-    private String referenceObjectName_infusion_Outputs = "r382";
-    private String referenceObjectName_infusion_localB = "r350";
-    private String referenceObjectName_infusion_localDW = "r354";
-
     //this number is very important it should be the same between the passed inputs into the spec that we think is an
     // output of the model and it must also be the same size as the list in contractOutput
     public static int wrapperOutputNum;
@@ -73,6 +57,50 @@ public class InOutManager {
     ArrayList<Equation> typeConversionEq = new ArrayList<>();
 
     ArrayList<VarDecl> conversionLocalList = new ArrayList<>();
+
+    private String referenceObjectName;
+    private String referenceObjectName_gpca_Alarm_Outputs;
+    private String referenceObjectName_gpca_localB;
+    private String referenceObjectName_gpca_localDW;
+
+
+    //specific reference names for Infusion
+    private String referenceObjectName_infusion_Outputs;
+    private String referenceObjectName_infusion_localB;
+    private String referenceObjectName_infusion_localDW;
+
+
+    public InOutManager() {
+        if (Config.mac) {
+            referenceObjectName = "r347"; //for mac
+
+            //specific reference names for GPCA
+            referenceObjectName_gpca_Alarm_Outputs = "r390";
+            referenceObjectName_gpca_localB = "r394";
+            referenceObjectName_gpca_localDW = "r398";
+
+            //specific reference names for Infusion
+            referenceObjectName_infusion_Outputs = "r382";
+            referenceObjectName_infusion_localB = "r350";
+            referenceObjectName_infusion_localDW = "r354";
+
+        } else { //assume linux
+            referenceObjectName = "r351"; //for lunix
+
+            //specific reference names for GPCA
+            referenceObjectName_gpca_Alarm_Outputs = "r398";
+            referenceObjectName_gpca_localB = "r398";
+            referenceObjectName_gpca_localDW = "r402";
+
+
+            //specific reference names for Infusion
+            referenceObjectName_infusion_Outputs = "r386";
+            referenceObjectName_infusion_localB = "r354";
+            referenceObjectName_infusion_localDW = "r358";
+
+        }
+    }
+
 
     // This data structure is a bit of tricky and hacky. The idea here is that for our range value analysis to work we need to track back values on all paths for the output variables. If on all paths we find either concrete values or the symbolic variable that is defined as an input for that output variable then we take all values as the only possible range of values for that vairable.
     // on the other hand if we encountered another symbolic input, not related to the input of this variable, then we can't claim that we can constraint it. and thus our analysis should not procduce anything for htat output vairable.
@@ -1518,6 +1546,7 @@ public class InOutManager {
     public Expr getStateOutInit(int index) {
         return stateOutput.getReturnInitVal(index);
     }
+
     public int getContractOutputCount() {
         return contractOutput.size;
     }

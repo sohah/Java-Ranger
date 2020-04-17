@@ -68,6 +68,7 @@ public class Config {
     public static boolean evaluationMode = false;
     public static int timeOut = 30;
 
+    public static boolean mac = true;
 
     public static int faultySpecIndex = 0;
 
