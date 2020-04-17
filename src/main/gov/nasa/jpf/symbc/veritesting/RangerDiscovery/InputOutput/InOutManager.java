@@ -404,7 +404,7 @@ public class InOutManager {
     private void discoverContractOutputTCAS() {
 
         contractOutput.add("r-1.result_alt_sep_test.1.4.33", NamedType.INT);
-        contractOutput.addInit("r-1.result_alt_sep_test.1.4.33", new IntExpr(0));
+//        contractOutput.addInit("r-1.result_alt_sep_test.1.4.33", new IntExpr(0));
 
         contractOutput.add("r-1.alim_res.1.4.33", NamedType.INT);
 //        contractOutput.addInit("r-1.alim_res.1.4.33", new IntExpr(0));
