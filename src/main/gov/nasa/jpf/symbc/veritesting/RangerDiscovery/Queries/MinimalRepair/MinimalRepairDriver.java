@@ -169,8 +169,8 @@ public class MinimalRepairDriver {
                                 break;
                             default:
                                 System.out.println("^-^ Ranger Discovery Result ^-^");
-                                System.out.println(" Property unexpected output:" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
-                                System.out.println(" No more R' can be found, returning last known good repair.");
+                                System.out.println(" Property unexpected output (tPrimeExists):" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
+                                System.out.println("No more R' can be found, returning last known good repair.");
                                 canFindMoreTighterRepair = false;
                                 if (singleQueryTime2 >= timeOut)
                                     repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
@@ -181,7 +181,7 @@ public class MinimalRepairDriver {
                         break;
                     default:
                         System.out.println("^-^ Ranger Discovery Result ^-^");
-                        System.out.println(" Property unexpected output:" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                        System.out.println("Property unexpected output (for all Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                         System.out.println(" No more R' can be found, returning last known good repair.");
                         canFindMoreTighterRepair = false;
                         if (singleQueryTime1 >= timeOut)

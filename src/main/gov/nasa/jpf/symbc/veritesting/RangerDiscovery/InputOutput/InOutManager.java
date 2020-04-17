@@ -288,7 +288,7 @@ public class InOutManager {
     //entered by hand for now -- this is a singleton, I need to enforce this everywhere.
     private void discoverContractOutputPad() {
         contractOutput.add(referenceObjectName + ".ignition_r.1.7.4", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName + ".ignition_r.1.7.4", new BoolExpr(false));
+//        contractOutput.addInit(referenceObjectName + ".ignition_r.1.7.4", new BoolExpr(false));
     }
 
 
@@ -336,13 +336,13 @@ public class InOutManager {
     private void discoverContractOutputWBS() {
 
         contractOutput.add(referenceObjectName + ".Nor_Pressure.1.13.2", NamedType.INT);
-        contractOutput.addInit(referenceObjectName + ".Nor_Pressure.1.13.2", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName + ".Nor_Pressure.1.13.2", new IntExpr(0));
 
         contractOutput.add(referenceObjectName + ".Alt_Pressure.1.13.2", NamedType.INT);
-        contractOutput.addInit(referenceObjectName + ".Alt_Pressure.1.13.2", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName + ".Alt_Pressure.1.13.2", new IntExpr(0));
 
         contractOutput.add(referenceObjectName + ".Sys_Mode.1.5.2", NamedType.INT);
-        contractOutput.addInit(referenceObjectName + ".Sys_Mode.1.5.2", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName + ".Sys_Mode.1.5.2", new IntExpr(0));
 
     }
 
@@ -407,7 +407,7 @@ public class InOutManager {
         contractOutput.addInit("r-1.result_alt_sep_test.1.4.33", new IntExpr(0));
 
         contractOutput.add("r-1.alim_res.1.4.33", NamedType.INT);
-        contractOutput.addInit("r-1.alim_res.1.4.33", new IntExpr(0));
+//        contractOutput.addInit("r-1.alim_res.1.4.33", new IntExpr(0));
     }
 
 
@@ -463,19 +463,19 @@ public class InOutManager {
     private void discoverContractOutputGPCA() {
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", new IntExpr(0));
 
     }
 
@@ -1019,19 +1019,19 @@ public class InOutManager {
     private void discoverContractOutputInfusion() {
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", NamedType.BOOL);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", new BoolExpr(false));
+//        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", new BoolExpr(false));
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", new IntExpr(0));
 
         contractOutput.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", NamedType.INT);
-        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", new IntExpr(0));
+//        contractOutput.addInit(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", new IntExpr(0));
 
     }
 
@@ -1317,7 +1317,7 @@ public class InOutManager {
 
     private void discoverContractOutputEven() {
         contractOutput.add(referenceObjectName + ".output.1.5.2", NamedType.INT);
-        contractOutput.addInit(referenceObjectName + ".output.1.5.2", new IntExpr(8));
+//        contractOutput.addInit(referenceObjectName + ".output.1.5.2", new IntExpr(8));
     }
 
     //entered by hand for now
