@@ -9,7 +9,7 @@ let -- Prop4
 
 -- DOWNWARD_RA, UPWARD_RA is encoded in the implementation as 2,1 respectively. we can have a different encoding for it, but lets keep it like this for now.
 
-    p1 = true -> ((Up_Separation_s >= alim_res_s) and
+    p1 = ((Up_Separation_s >= alim_res_s) and
                   (Down_Separation_s < alim_res_s)) =>  (result_alt_sep_test_s  <> 2);
 
   --%PROPERTY p1;

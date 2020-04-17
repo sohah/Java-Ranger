@@ -31,7 +31,7 @@ node main(
 
 let -- Prop1: mode_range
 
-    p1 = true -> ((Current_System_Mode = 0) or (Current_System_Mode = 1) or (Current_System_Mode = 2) or
+    p1 = ((Current_System_Mode = 0) or (Current_System_Mode = 1) or (Current_System_Mode = 2) or
     (Current_System_Mode = 3) or (Current_System_Mode = 4) or (Current_System_Mode = 6) or (Current_System_Mode = 7) or
     (Current_System_Mode =8));
       --%PROPERTY p1;

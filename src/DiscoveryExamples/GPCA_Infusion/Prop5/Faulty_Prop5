@@ -30,7 +30,7 @@ node main(
 
 let  --prop5: configured_lt_1_flow_rate_zero
 
-    p1 = true -> (System_On and (Configured < 1))=> (Commanded_Flow_Rate = 0);
+    p1 = (System_On and (Configured < 1))=> (Commanded_Flow_Rate = 0);
       --%PROPERTY p1;
 
 tel;

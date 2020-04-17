@@ -133,7 +133,7 @@ out_Log_Message_ID5:int
 
 let  -- Prop10: audio_disabled_range
 
-    p1 = true -> ((System_On) => (out_Is_Audio_Disabled = Disable_Audio));
+    p1 = ((System_On) => (out_Is_Audio_Disabled = Disable_Audio));
 (*
 repair(, discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));

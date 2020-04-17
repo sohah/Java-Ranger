@@ -30,7 +30,7 @@ node main(
 
 let --prop6: alarm_L2_implies_in_paused_or_idle_or_basal
 
-    p1 = true -> (System_On and (Highest_Level_Alarm = 2)) => ((Current_System_Mode = 1) or (Current_System_Mode = 2) or (Current_System_Mode = 6) or (Current_System_Mode = 7) or (Current_System_Mode = 8) );
+    p1 = (System_On and (Highest_Level_Alarm = 2)) => ((Current_System_Mode = 1) or (Current_System_Mode = 2) or (Current_System_Mode = 6) or (Current_System_Mode = 7) or (Current_System_Mode = 8) );
       --%PROPERTY p1;
 
 tel;

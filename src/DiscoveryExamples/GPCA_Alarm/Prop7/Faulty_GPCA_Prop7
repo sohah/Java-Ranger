@@ -134,7 +134,7 @@ out_Log_Message_ID5:int
 
 let  -- Prop7: no_audio_if_audio_disabled
 
-    p1 = true -> ((System_On and (Disable_Audio > 0)) => ((out_Audio_Notification_Command = 0) and (out_Is_Audio_Disabled = Disable_Audio)));
+    p1 = ((System_On and (Disable_Audio > 0)) => ((out_Audio_Notification_Command = 0) and (out_Is_Audio_Disabled = Disable_Audio)));
 (*
 repair(,
 discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,

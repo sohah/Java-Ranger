@@ -35,4 +35,4 @@ mutationEnabled = true
 repairMutantsOnly = false
 depthFixed = false
 rangeValueAnalysis = true
-evaluationMode = false
+evaluationMode = true

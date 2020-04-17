@@ -134,7 +134,7 @@ out_Log_Message_ID5:int
 
 let  -- Prop5 door_open_implies_grt_L3_alarm
 
-  p1 = (true -> ((System_On and Door_Open) =>  (out_Highest_Level_Alarm >= 3)));
+  p1 = ( ((System_On and Door_Open) =>  (out_Highest_Level_Alarm >= 3)));
   --%PROPERTY p1;
 
 tel;

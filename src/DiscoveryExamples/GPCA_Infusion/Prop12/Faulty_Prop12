@@ -31,7 +31,7 @@ node main(
 
 let  -- Prop12: mode_patient_implies_infusion_rate_patient_bolus
 
-    p1 = true -> (System_On and (Current_System_Mode = 4 ))  => (Commanded_Flow_Rate = Flow_Rate_Patient_Bolus);
+    p1 = (System_On and (Current_System_Mode = 4 ))  => (Commanded_Flow_Rate = Flow_Rate_Patient_Bolus);
       --%PROPERTY p1;
 
 tel;

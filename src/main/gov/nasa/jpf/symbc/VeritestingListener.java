@@ -262,10 +262,10 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.z3Solver = conf.getBoolean(
                             "z3Solver");
                 }
-                if (conf.hasValue("dimension")) {
-                    if (conf.getInt("dimension") == 1)
+                if (conf.hasValue("repairScope")) {
+                    if (conf.getInt("repairScope") == 1)
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSED_TERMS;
-                    else if (conf.getInt("dimension") == 2) {
+                    else if (conf.getInt("repairScope") == 2) {
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }

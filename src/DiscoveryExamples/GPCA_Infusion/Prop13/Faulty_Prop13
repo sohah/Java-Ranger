@@ -30,7 +30,7 @@ node main(
 
 let  -- Prop13: mode_idle_implies_infusion_rate_zero
 
-    p1 = true -> (System_On and (Current_System_Mode = 1)) => (Commanded_Flow_Rate = 0);
+    p1 = (System_On and (Current_System_Mode = 1)) => (Commanded_Flow_Rate = 0);
     --%PROPERTY p1;
 
 tel;

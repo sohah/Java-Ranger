@@ -31,7 +31,7 @@ node main(
 
 let  -- Prop9: alarm_GTE_3_implies_in_paused_or_idle
 
-    p1 = true -> (System_On and (Highest_Level_Alarm = 4)) => ((Current_System_Mode = 1) or (Current_System_Mode = 6) or (Current_System_Mode = 7));
+    p1 = (System_On and (Highest_Level_Alarm = 4)) => ((Current_System_Mode = 1) or (Current_System_Mode = 6) or (Current_System_Mode = 7));
       --%PROPERTY p1;
 
 tel;

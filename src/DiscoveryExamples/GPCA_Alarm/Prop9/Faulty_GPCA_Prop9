@@ -135,7 +135,7 @@ out_Log_Message_ID5:int
 let  -- Prop9: alarm_value_range
 
 
-    p1 = true -> ((System_On ) => ((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)));
+    p1 = ((System_On ) => ((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)));
 (*
 repair(, discover_binary_Bool_0_Int_4_Terms2
 (out_Is_Audio_Disabled,

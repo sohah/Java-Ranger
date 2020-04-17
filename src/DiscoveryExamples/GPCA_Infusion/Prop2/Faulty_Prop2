@@ -29,7 +29,7 @@ node main(
 ) returns (p1: bool);
 
 let  -- prop2: not_system_on_implies_mode_0
-    p1 = true -> (not(System_On) => Current_System_Mode = 0);
+    p1 = (not(System_On) => Current_System_Mode = 0);
       --%PROPERTY p1;
 
 tel;

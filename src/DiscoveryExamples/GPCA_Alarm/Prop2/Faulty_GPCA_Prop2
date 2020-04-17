@@ -135,7 +135,7 @@ out_Log_Message_ID5:int
 let
  -- Prop: air_in_line_implies_grt_L3_alarm
 
- p1 = true -> ((System_On and In_Therapy and Air_In_Line) => (out_Highest_Level_Alarm >= 3));
+ p1 = ((System_On and In_Therapy and Air_In_Line) => (out_Highest_Level_Alarm >= 3));
 
 (* repair( , discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,
 out_Notification_Message,out_Highest_Level_Alarm,out_Log_Message_ID5));
