@@ -88,7 +88,7 @@ public class InOutManager {
             referenceObjectName = "r351"; //for lunix
 
             //specific reference names for GPCA
-            referenceObjectName_gpca_Alarm_Outputs = "r398";
+            referenceObjectName_gpca_Alarm_Outputs = "r394";
             referenceObjectName_gpca_localB = "r398";
             referenceObjectName_gpca_localDW = "r402";
 
