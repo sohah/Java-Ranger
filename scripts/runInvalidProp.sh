@@ -6,7 +6,8 @@ shopt -s expand_aliases
 
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop10/prop10.jpf >& $DISCOVERYDIR/logs/InvalidProp/GPCA_Prop11.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop3/prop4.jpf >& $DISCOVERYDIR/logs/InvalidProp/Infusion_Prop4.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop3/prop14.jpf >& $DISCOVERYDIR/logs/InvalidProp/Infusion_Prop14.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop3/prop3.jpf >& $DISCOVERYDIR/logs/InvalidProp/TCAS_Prop3.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/WBS/Prop2/prop2.jpf >& $DISCOVERYDIR/logs/InvalidProp/WBS_Prop2.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/WBS/Prop4/prop4.jpf >& $DISCOVERYDIR/logs/InvalidProp/WBS_Prop4.log
