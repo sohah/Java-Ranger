@@ -25,8 +25,8 @@ specRepair = true
 repairMode = 2
 
 
-SpecDirectory = WBS/Prop2
-faultySpec=Prop2
+SpecDirectory = WBS/Prop1
+faultySpec=Prop1
 repairInitialValues = true
 z3Solver=true
 mutationEnabled = true
@@ -34,3 +34,4 @@ repairMutantsOnly = false
 depthFixed = false
 rangeValueAnalysis = true
 evaluationMode = true
+#repairScope=2

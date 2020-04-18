@@ -6,7 +6,7 @@ shopt -s expand_aliases
 
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop1/prop1_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/TCAS_Prop1_pass.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop2/prop2_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/TCAS_Prop2_pass.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop3/prop3_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/TCAS_Prop3_pass.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop4/prop4_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/TCAS_Prop4_pass.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop1/prop1_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/Prop1_pass.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop2/prop2_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/Prop2_pass.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop3/prop3_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/Prop3_pass.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/TCAS/Prop4/prop4_pass.jpf >& $DISCOVERYDIR/logs/pass/TCAS/Prop4_pass.log

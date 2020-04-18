@@ -37,3 +37,4 @@ repairMutantsOnly = false
 depthFixed = false
 rangeValueAnalysis = true
 evaluationMode = false
+#repairScope=2
