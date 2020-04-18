@@ -10,7 +10,7 @@ let
 
     --out = ((a and b) or (b and c) or (a and c)) and (threshold < 10) and (threshold > 5);
 
-  p1 = (true -> (((not b) and b) => (a xor (not out))));
+  p1 = ((((not c) => (not c)) and ((not c) xor (not c))) => (((not c) => (not b)) and ((not b) or (not b))));
 
 
 

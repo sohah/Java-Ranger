@@ -6,11 +6,7 @@ shopt -s expand_aliases
 
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop1/prop1.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop1.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop2/prop2.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop2.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop3/prop3.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop3.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop4/prop4.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop4.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop5/prop5.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop5.log
+
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop6/prop6.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop6.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop7/prop7.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop7.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop8/prop8.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop8.log

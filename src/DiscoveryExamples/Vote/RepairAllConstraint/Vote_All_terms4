@@ -4,7 +4,7 @@ node main(a: bool; b:bool; c:bool; out: bool) returns (p1: bool);
 
 let
 
-p1 = true -> out = (a or b and c);
+p1 = out = (a or b and c) or false;
 
   --%PROPERTY p1;
 
