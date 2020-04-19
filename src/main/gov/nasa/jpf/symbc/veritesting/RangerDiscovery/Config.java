@@ -66,9 +66,9 @@ public class Config {
     public static boolean depthFixed = false;
     public static boolean rangeValueAnalysis = true;
     public static boolean evaluationMode = false;
-    public static int timeOut = 30;
+    public static int timeOut = 300;
 
-    public static boolean mac = true;
+    public static boolean mac = false;
 
     public static int faultySpecIndex = 0;
 
