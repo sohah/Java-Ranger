@@ -116,11 +116,12 @@ public class DiscoverContract {
     private static void repairSpec() throws IOException {
         String fileName;
 
-        if (Config.repairInitialValues)
+        /*if (Config.repairInitialValues)
             System.out.println("Repair includes initial values");
         else
             System.out.println("Repair does NOT include initial values");
-
+*/
+        System.out.println("Running References on mac?   ---> " + mac);
         repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
 
         //print out the translation once, for very first time we hit linearlization for the method of
@@ -252,8 +253,10 @@ public class DiscoverContract {
                             } else {
                                 inputExtendedPgm = SketchVisitor.execute(flatExtendedPgm, synthesisResult, false);
                                 originalProgram = RemoveRepairConstructVisitor.execute(inputExtendedPgm);
-                                fileName = currFaultySpec + "_Extn" + loopCount + 1 + ".lus";
-                                writeToFile(fileName, inputExtendedPgm.toString(), false, false);
+                                /*if (!evaluationMode) {
+                                    fileName = currFaultySpec + "_Extn" + loopCount + 1 + ".lus";
+                                    writeToFile(fileName, inputExtendedPgm.toString(), false, false);
+                                }*/
 
                                 counterExampleQuery = new CounterExampleQuery(originalProgram);
                                 counterExampleQueryStrStr = counterExampleQuery.toString();
@@ -263,7 +266,7 @@ public class DiscoverContract {
                             System.out.println("unexpected property status for synthesis query " + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             DiscoverContract.repaired = false;
                             //assert false;
-                            break;
+                            return;
                     }
                     break;
                 default:

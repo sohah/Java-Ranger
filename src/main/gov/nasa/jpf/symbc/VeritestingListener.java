@@ -745,6 +745,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             discoveryAttempted = true;
             DiscoverContract.discoverLusterContract(dynRegion);
             ti.getVM().getSystemState().setIgnored(true);
+            return dynRegion;
         }
 
 
