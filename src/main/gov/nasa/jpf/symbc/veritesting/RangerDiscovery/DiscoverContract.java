@@ -278,6 +278,7 @@ public class DiscoverContract {
                         default:
                             System.out.println("unexpected property status for synthesis query " + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             DiscoverContract.repaired = false;
+                            repairStatistics.printSpecStatistics();
                             //assert false;
                             return;
                     }
