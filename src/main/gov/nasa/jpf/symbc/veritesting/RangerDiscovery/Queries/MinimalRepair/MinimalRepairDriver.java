@@ -164,8 +164,10 @@ public class MinimalRepairDriver {
                             case INVALID:
                                 tPrimeExistsQ.collectCounterExample(counterExampleResult, tPrimeExistsQ.getSynthesizedProgram().getMainNode());
                                 ++candidateLoopCount;
-                               /* if(candidateLoopCount == 30) //exit if we tried 30 candidates.
-                                    canFindMoreTighterRepair=false;*/
+                                if (candidateLoopCount == MINIMALLOOP_MAXLOOPCOUNT) {//exit if we tried 30 candidates.
+                                    canFindMoreTighterRepair = false;
+                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_MAX_LOOP_REACHED;
+                                }
                                 break;
                             default:
                                 System.out.println("^-^ Ranger Discovery Result ^-^");
