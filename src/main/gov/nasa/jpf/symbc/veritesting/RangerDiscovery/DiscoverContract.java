@@ -171,7 +171,7 @@ public class DiscoverContract {
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
-            if (evaluationMode) //use only a single file if in evaluation mode.
+            if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.
                 fileName = currFaultySpec + ".lus";
             else
                 fileName = currFaultySpec + "_" + loopCount + ".lus";
@@ -232,10 +232,11 @@ public class DiscoverContract {
                         holeRepairState.createEmptyHoleRepairValues();
 
                     String synthesisContractStr = aRepairSynthesis.toString();
-                    if (evaluationMode)
+                    if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //only a single file is used if the loop bound has not been exceeded.
                         fileName = currFaultySpec + "_" + "hole.lus";
                     else
                         fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
+
                     writeToFile(fileName, synthesisContractStr, false, false);
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
@@ -292,7 +293,7 @@ public class DiscoverContract {
                     return;
             }
             ++loopCount;
-            if (loopCount == OUTERLOOP_MAXLOOPCOUNT) {
+            if (loopCount == OUTERLOOP_MAXLOOPCOUNT + 3) {
                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_MAX_LOOP_REACHED;
                 repairStatistics.printSpecStatistics();
                 return;

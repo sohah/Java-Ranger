@@ -14,8 +14,7 @@ import jkind.results.Signal;
 
 import java.util.*;
 
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.counterExPropertyName;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.loopCount;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair.MinimalRepairDriver.candidateLoopCount;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair.MinimalRepairDriver.knownRepairLoopCount;
@@ -147,7 +146,9 @@ public class SketchVisitor extends AstMapVisitor {
         else
             fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
 
-        if (!Config.evaluationMode)
+        //if we are not in evaluation mode, or if we are in the evaluation mode but the number of loops in either the outer or the inner loop has exceeded the predefined value, then dump the file.
+        if ((!Config.evaluationMode) ||
+                ((!isMinimal && (loopCount >= OUTERLOOP_MAXLOOPCOUNT)) || (isMinimal && (candidateLoopCount >= MINIMALLOOP_MAXLOOPCOUNT))))
             DiscoveryUtil.writeToFile(fileName, counterExample.toString(), isMinimal, false);
 
         SketchVisitor sketchVisitor = new SketchVisitor(originalExtPgm, counterExample);
