@@ -195,6 +195,7 @@ public class DiscoverContract {
                         Program minimalRepair = MinimalRepairDriver.execute(counterExampleQuery.getCounterExamplePgm
                                         (), originalProgram,
                                 aRepairSynthesis, flatExtendedPgm);
+                        repairStatistics.printSpecStatistics();
                     } else {
                         System.out.println("Contract Matching! Printing repair and aborting!");
                         repairStatistics.terminationResult = TerminationResult.ALREADY_MATCHING;
