@@ -122,6 +122,8 @@ public class DiscoverContract {
             System.out.println("Repair does NOT include initial values");
 */
         System.out.println("Running References on mac?   ---> " + mac);
+        System.out.println("Running Evaluation Mode?   ---> " + evaluationMode);
+
         System.out.println("Outer loop max count:   ---> " + OUTERLOOP_MAXLOOPCOUNT);
         System.out.println("Minimal loop max count:   ---> " + MINIMALLOOP_MAXLOOPCOUNT);
         repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
@@ -169,7 +171,11 @@ public class DiscoverContract {
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
-            fileName = currFaultySpec + "_" + loopCount + ".lus";
+            if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.
+                fileName = currFaultySpec + ".lus";
+            else
+                fileName = currFaultySpec + "_" + loopCount + ".lus";
+
             writeToFile(fileName, counterExampleQueryStrStr, false, false);
             long singleQueryTime = System.currentTimeMillis();
 
@@ -226,7 +232,11 @@ public class DiscoverContract {
                         holeRepairState.createEmptyHoleRepairValues();
 
                     String synthesisContractStr = aRepairSynthesis.toString();
-                    fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
+                    if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //only a single file is used if the loop bound has not been exceeded.
+                        fileName = currFaultySpec + "_" + "hole.lus";
+                    else
+                        fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
+
                     writeToFile(fileName, synthesisContractStr, false, false);
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
@@ -283,7 +293,7 @@ public class DiscoverContract {
                     return;
             }
             ++loopCount;
-            if (loopCount == OUTERLOOP_MAXLOOPCOUNT) {
+            if (loopCount == OUTERLOOP_MAXLOOPCOUNT + 3) {
                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_MAX_LOOP_REACHED;
                 repairStatistics.printSpecStatistics();
                 return;

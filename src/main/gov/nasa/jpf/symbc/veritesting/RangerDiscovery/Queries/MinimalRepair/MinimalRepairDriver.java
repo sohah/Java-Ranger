@@ -92,8 +92,12 @@ public class MinimalRepairDriver {
 
             while (!tighterRepairFound && canFindMoreTighterRepair) { //while we haven't found a tighter repair and we know that we can find a tighter repair.
                 System.out.println("Trying candidate #: " + candidateLoopCount);
+                String fileName;
+                if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
+                    fileName = currFaultySpec + "_" + "rPrimeExists.lus";
+                else
+                    fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
 
-                String fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
                 writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
                 System.out.println("ThereExists Query of : " + fileName);
@@ -119,14 +123,20 @@ public class MinimalRepairDriver {
                     case INVALID:
                         Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
 
-                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" +
-                                "rPrimeCandidate.lus";
+                        if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
+                            fileName = currFaultySpec + "_" + "rPrimeCandidate.lus";
+                        else
+                            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
+
                         writeToFile(fileName, candTPrimePgm.toString(), true, false);
 
                         forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
 
-                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" +
-                                ".lus";
+                        if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
+                            fileName = currFaultySpec + "_" + "forAllMinimal" + ".lus";
+                        else
+                            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" + ".lus";
+
                         writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 
 
@@ -164,7 +174,7 @@ public class MinimalRepairDriver {
                             case INVALID:
                                 tPrimeExistsQ.collectCounterExample(counterExampleResult, tPrimeExistsQ.getSynthesizedProgram().getMainNode());
                                 ++candidateLoopCount;
-                                if (candidateLoopCount == MINIMALLOOP_MAXLOOPCOUNT) {//exit if we tried 30 candidates.
+                                if (candidateLoopCount == (MINIMALLOOP_MAXLOOPCOUNT + 3)) {//exit if we tried 30 candidates.
                                     canFindMoreTighterRepair = false;
                                     repairStatistics.terminationResult = TerminationResult.MINIMAL_MAX_LOOP_REACHED;
                                 }
