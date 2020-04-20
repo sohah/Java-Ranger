@@ -122,6 +122,8 @@ public class DiscoverContract {
             System.out.println("Repair does NOT include initial values");
 */
         System.out.println("Running References on mac?   ---> " + mac);
+        System.out.println("Running Evaluation Mode?   ---> " + evaluationMode);
+
         System.out.println("Outer loop max count:   ---> " + OUTERLOOP_MAXLOOPCOUNT);
         System.out.println("Minimal loop max count:   ---> " + MINIMALLOOP_MAXLOOPCOUNT);
         repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
@@ -169,7 +171,11 @@ public class DiscoverContract {
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
-            fileName = currFaultySpec + "_" + loopCount + ".lus";
+            if (evaluationMode) //use only a single file if in evaluation mode.
+                fileName = currFaultySpec + ".lus";
+            else
+                fileName = currFaultySpec + "_" + loopCount + ".lus";
+
             writeToFile(fileName, counterExampleQueryStrStr, false, false);
             long singleQueryTime = System.currentTimeMillis();
 
@@ -226,7 +232,10 @@ public class DiscoverContract {
                         holeRepairState.createEmptyHoleRepairValues();
 
                     String synthesisContractStr = aRepairSynthesis.toString();
-                    fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
+                    if (evaluationMode)
+                        fileName = currFaultySpec + "_" + "hole.lus";
+                    else
+                        fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
                     writeToFile(fileName, synthesisContractStr, false, false);
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis

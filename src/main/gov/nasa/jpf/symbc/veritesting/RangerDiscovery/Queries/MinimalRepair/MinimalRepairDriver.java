@@ -92,8 +92,12 @@ public class MinimalRepairDriver {
 
             while (!tighterRepairFound && canFindMoreTighterRepair) { //while we haven't found a tighter repair and we know that we can find a tighter repair.
                 System.out.println("Trying candidate #: " + candidateLoopCount);
+                String fileName;
+                if (evaluationMode)
+                    fileName = currFaultySpec + "_" + "rPrimeExists.lus";
+                else
+                    fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
 
-                String fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
                 writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
                 System.out.println("ThereExists Query of : " + fileName);
@@ -119,14 +123,20 @@ public class MinimalRepairDriver {
                     case INVALID:
                         Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
 
-                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" +
-                                "rPrimeCandidate.lus";
+                        if (evaluationMode)
+                            fileName = currFaultySpec + "_" + "rPrimeCandidate.lus";
+                        else
+                            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
+
                         writeToFile(fileName, candTPrimePgm.toString(), true, false);
 
                         forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
 
-                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" +
-                                ".lus";
+                        if (evaluationMode)
+                            fileName = currFaultySpec + "_" + "forAllMinimal" + ".lus";
+                        else
+                            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" + ".lus";
+
                         writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 
 
