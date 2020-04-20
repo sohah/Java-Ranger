@@ -122,6 +122,8 @@ public class DiscoverContract {
             System.out.println("Repair does NOT include initial values");
 */
         System.out.println("Running References on mac?   ---> " + mac);
+        System.out.println("Outer loop max count:   ---> " + OUTERLOOP_MAXLOOPCOUNT);
+        System.out.println("Minimal loop max count:   ---> " + MINIMALLOOP_MAXLOOPCOUNT);
         repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
 
         //print out the translation once, for very first time we hit linearlization for the method of
@@ -281,6 +283,11 @@ public class DiscoverContract {
                     return;
             }
             ++loopCount;
+            if (loopCount == OUTERLOOP_MAXLOOPCOUNT) {
+                repairStatistics.terminationResult = TerminationResult.OUTERLOOP_MAX_LOOP_REACHED;
+                repairStatistics.printSpecStatistics();
+                return;
+            }
         }
         while (true);
     }
