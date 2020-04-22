@@ -83,7 +83,7 @@ public class DiscoverContract {
                     try {
                         repairSpec();
                     } catch (JKindException jkindExp) {
-                        System.out.println("jkind exception encountered aborting specification");
+                        System.out.println("jkind exception encountered aborting specification" + jkindExp);
                     }
                 else
                     assert false; //removed definition repair for now.
@@ -278,6 +278,10 @@ public class DiscoverContract {
                         default:
                             System.out.println("unexpected property status for synthesis query " + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             DiscoverContract.repaired = false;
+                            if (singleQueryTime >= timeOut)
+                                repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
+                            else
+                                repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
                             repairStatistics.printSpecStatistics();
                             //assert false;
                             return;

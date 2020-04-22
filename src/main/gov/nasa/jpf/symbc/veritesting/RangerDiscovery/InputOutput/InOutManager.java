@@ -1376,7 +1376,7 @@ public class InOutManager {
 
     private void discoverContractOutputVote() {
 
-        contractOutput.add(referenceObjectName + ".out.1.9.4", NamedType.BOOL);
+        contractOutput.add(referenceObjectName + ".out.1.7.4", NamedType.BOOL);
         //contractOutput.addInit(referenceObjectName + ".out.1.9.4", new BoolExpr(false));
 
         /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
@@ -1413,8 +1413,8 @@ public class InOutManager {
 
     //entered by hand for now - order is important, needs to match in order of the input
     private void discoverStateOutputVote() {
-        stateOutput.add(referenceObjectName + ".counter.1.4.4", NamedType.INT);
-        stateOutput.addInit(referenceObjectName + ".counter.1.4.4", new IntExpr(0));
+        stateOutput.add(referenceObjectName + ".counter.1.3.4", NamedType.INT);
+        stateOutput.addInit(referenceObjectName + ".counter.1.3.4", new IntExpr(0));
     }
 
 

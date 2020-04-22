@@ -99,8 +99,8 @@ public class DynamicRepairNode {
             for (VarDecl intVar : intInputs)
                 leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
         }
-        for (int i = 0; i < intInputs.size(); i++) {
-            for (int j = 1; j < intInputs.size(); i++) {
+        for (int i = 0; i < intInputs.size() - 1; i++) {
+            for (int j = i + 1; j < intInputs.size(); j++) {
                 leafSelectionExprs.add(new BinaryExpr(DiscoveryUtil.varDeclToIdExpr(intInputs.get(i)), BinaryOp.EQUAL, DiscoveryUtil.varDeclToIdExpr(intInputs.get(j))));
             }
         }
@@ -180,7 +180,8 @@ public class DynamicRepairNode {
         IfThenElseExpr expr;
         if (!getPathLabelStr(myPathLabel).equals("R")) {
             expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
-        } else expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
+        } else
+            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         return expr;
     }
 
