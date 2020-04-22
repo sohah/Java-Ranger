@@ -35,16 +35,14 @@ public class DynamicRepairNode {
         populateBoolIntInputs(actualParamVarDecls);
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
-        if (Config.depthFixed)
-            outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        if (Config.depthFixed) outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
         else {
             int balancedTreeDepth;
             double logDepth = (Math.log(exprSize) / Math.log(2));
             if (logDepth == 0) {
                 assert exprSize == 1;
                 balancedTreeDepth = exprSize;
-            } else
-                balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
+            } else balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
             outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
         }
         return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
@@ -70,8 +68,7 @@ public class DynamicRepairNode {
             // variables constituting an inner node must be of type bool. Integers should only appear in the leaf.
             assert (leftVarDecl.type == NamedType.BOOL) && (rightVarDecl.type == NamedType.BOOL);
 
-            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl),
-                    constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
+            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl), constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
 
             //populate my stuff
             if (!getPathLabelStr(pathLabel).equals("R")) //add only local variables other than R, since R should be a return
@@ -100,7 +97,12 @@ public class DynamicRepairNode {
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
-                leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl)));
+                leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+        }
+        for (int i = 0; i < intInputs.size(); i++) {
+            for (int j = 1; j < intInputs.size(); i++) {
+                leafSelectionExprs.add(new BinaryExpr(DiscoveryUtil.varDeclToIdExpr(intInputs.get(i)), BinaryOp.EQUAL, DiscoveryUtil.varDeclToIdExpr(intInputs.get(j))));
+            }
         }
 
         VarDecl myNodeNameVarDecl = constructPathLabelName(pathLabel);
@@ -127,15 +129,13 @@ public class DynamicRepairNode {
     }
 
     private Expr createLeafSelectionExpr(IdExpr selectionHoleExpr, List<Expr> leafSelectionExprs) {
-        if (leafSelectionExprs.size() == 1)
-            return leafSelectionExprs.get(0);
+        if (leafSelectionExprs.size() == 1) return leafSelectionExprs.get(0);
 
-        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(leafSelectionExprs.size())), leafSelectionExprs.get(0),
-                createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs.subList(1, leafSelectionExprs.size())));
+        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(leafSelectionExprs.size())), leafSelectionExprs.get(0), createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs.subList(1, leafSelectionExprs.size())));
     }
 
     //makes a selection for every IntExpr in the input
-    private List<BinaryExpr> constructLeafIntSelection(IdExpr leftIntExpr, IdExpr holeExpr) {
+    private List<BinaryExpr> constructLeafIntSelection(IdExpr leftIntExpr, IdExpr holeExpr, List<VarDecl> intInputs) {
 
         List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
 
@@ -161,6 +161,15 @@ public class DynamicRepairNode {
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
         }
+
+        for (int i = 0; i < intInputs.size(); i++) {
+            VarDecl rhs = intInputs.get(i);
+            if (!leftIntExpr.id.equals(rhs.id)) {
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, DiscoveryUtil.varDeclToIdExpr(rhs)));
+//                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
+            }
+        }
         return selectionBinaryExpr;
     }
 
@@ -170,36 +179,16 @@ public class DynamicRepairNode {
         IdExpr sectionHoleExpr = DiscoveryUtil.varDeclToIdExpr(selectionHoleVarDecl);
         IfThenElseExpr expr;
         if (!getPathLabelStr(myPathLabel).equals("R")) {
-            expr =
-                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
-                            new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
-                            new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
-                                    new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
-                                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
-                                            new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                            new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
-        } else expr =
-                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
-                        new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
-                        new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
-                                new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
-                                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
-                                        new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                        new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
-                                                new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand),
-                                                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
-                                                        new BoolExpr(true),
-                                                        new BoolExpr(false))))));
+            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
+        } else expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         return expr;
     }
 
 
     private VarDecl createNewHole(boolean innerHole) {
         VarDecl newHole;
-        if (innerHole)
-            newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INTHOLE);
-        else
-            newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INTHOLE);
+        if (innerHole) newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INTHOLE);
+        else newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INTHOLE);
         holeInputs.add(newHole);
         ++holesCounter;
         return newHole;
@@ -218,10 +207,8 @@ public class DynamicRepairNode {
 
     private void populateBoolIntInputs(List<VarDecl> actualParamVarDecls) {
         for (VarDecl var : actualParamVarDecls) {
-            if (var.type == NamedType.BOOL)
-                boolInputs.add(var);
-            else if (var.type == NamedType.INT)
-                intInputs.add(var);
+            if (var.type == NamedType.BOOL) boolInputs.add(var);
+            else if (var.type == NamedType.INT) intInputs.add(var);
             else {
                 System.out.println("unsupported type for dynamic repair library");
                 assert false;
