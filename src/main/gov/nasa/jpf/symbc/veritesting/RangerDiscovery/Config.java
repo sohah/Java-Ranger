@@ -65,10 +65,14 @@ public class Config {
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static boolean depthFixed = false;
     public static boolean rangeValueAnalysis = true;
-    public static boolean evaluationMode = false;
-    public static int timeOut = 30;
 
-    public static boolean mac = true;
+    public static boolean evaluationMode = false;
+    public static int timeOut = 300; //in seconds
+    public static boolean mac = false;
+
+    public static final int OUTERLOOP_MAXLOOPCOUNT = 100;
+    public static final int MINIMALLOOP_MAXLOOPCOUNT = 200;
+
 
     public static int faultySpecIndex = 0;
 
@@ -79,6 +83,7 @@ public class Config {
     static String mutationDir = "../src/DiscoveryExamples/mutants";
 
     public static int milliSecondSimplification = 1;
+
     public static boolean canSetup() throws IOException {
 
         if (firstTime) {

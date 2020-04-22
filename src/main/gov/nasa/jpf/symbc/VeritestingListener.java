@@ -413,6 +413,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                             if (printRegionDigest)
                                 regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
+                            return;
                         }
                     } /*else
                         statisticManager.updateConcreteHitStatForRegion(key);*/
@@ -432,6 +433,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                             if (printRegionDigest)
                                 regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
+                            return;
                         } else
                             statisticManager.updateConcreteHitStatForRegion(key);
                     }
@@ -481,12 +483,14 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             isRegionEndOk(ti, staticRegion, instructionToExecute);
 
             DynamicRegion dynRegion = runVeritesting(ti, instructionToExecute, staticRegion, key);
-            runOnSamePath(ti, instructionToExecute, dynRegion);
+            return;
+            /*runOnSamePath(ti, instructionToExecute, dynRegion);
 
-            System.out.println("------------- Region was successfully veritested --------------- ");
+            System.out.println("------------- Region was successfully veritested --------------- ");*/
         } else {
             isRegionEndOk(ti, staticRegion, instructionToExecute);
             runVeritestingWithSPF(ti, vm, instructionToExecute, staticRegion, key);
+            return;
         }
     }
 
@@ -745,6 +749,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             discoveryAttempted = true;
             DiscoverContract.discoverLusterContract(dynRegion);
             ti.getVM().getSystemState().setIgnored(true);
+            return dynRegion;
         }
 
 
