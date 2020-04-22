@@ -312,8 +312,10 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
                 if (conf.hasValue("randZ3Seed"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
-                if (conf.hasValue("rangeValueAnalysis"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.rangeValueAnalysis = conf.getBoolean("rangeValueAnalysis");
+                if (conf.hasValue("rangeValueAnalysis")){
+                    System.out.println("range value analysis is always true, but was configured in the .jpf file");
+                //    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.rangeValueAnalysis = conf.getBoolean("rangeValueAnalysis");
+                }
             }
             StatisticManager.veritestingRunning = true;
             jpf.addPublisherExtension(ConsolePublisher.class, this);

@@ -84,6 +84,8 @@ public class DiscoverContract {
                         repairSpec();
                     } catch (JKindException jkindExp) {
                         System.out.println("jkind exception encountered aborting specification" + jkindExp);
+                        repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;
+                        repairStatistics.printSpecStatistics();
                     }
                 else
                     assert false; //removed definition repair for now.

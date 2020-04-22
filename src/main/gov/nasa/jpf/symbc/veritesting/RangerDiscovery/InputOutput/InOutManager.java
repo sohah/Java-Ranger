@@ -147,7 +147,9 @@ public class InOutManager {
 
             discoverContractOutputPad();
             doContractOutputTypeConversion();
-            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+
+            System.out.println("saOutToStateInput undefined for the benchmark");
+            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else if (Config.spec.equals("even")) {
             discoverFreeInputEven();
@@ -162,7 +164,8 @@ public class InOutManager {
             discoverContractOutputEven();
             doContractOutputTypeConversion();
 
-            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+            System.out.println("saOutToStateInput undefined for the benchmark");
+            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else if (Config.spec.equals("wbs")) {
             discoverFreeInputWBS();
@@ -237,7 +240,8 @@ public class InOutManager {
             discoverContractOutputVote();
             doContractOutputTypeConversion();
 
-            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+            System.out.println("saOutToStateInput undefined for the benchmark");
+            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else if (Config.spec.equals("vote2")) {
             discoverFreeInputVote2();
@@ -252,7 +256,8 @@ public class InOutManager {
             discoverContractOutputVote2();
             doContractOutputTypeConversion();
 
-            Config.rangeValueAnalysis = false; //ssaOutToStateInput undefined for the benchmark
+            System.out.println("saOutToStateInput undefined for the benchmark");
+            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else {
             System.out.println("unexpected spec to run.!");

@@ -1,0 +1,91 @@
+Prescription Data
+
+DrugConcentration ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+VTBI total ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+Duration total ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+FlowRate sbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+Duration sbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+Interval sbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+FlowRate pbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+Duration pbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+LockOutPeriod pbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+NumberMax pbolus ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+Commands
+System start ----> Boolean  ---------> Values : Default-FALSE
+System stop ----> Boolean  ---------> Values : Default-FALSE
+Infusion initiate ----> Boolean  ---------> Values : Default-FALSE
+Infusion inhibit ----> Boolean  ---------> Values : Default-FALSE
+System save ----> Boolean  ---------> Values : Default-FALSE
+Notification cancel ----> Boolean  ---------> Values : Default-FALSE
+Disable audio ----> Boolean  ---------> Values : Default-FALSE
+Enable audio ----> Boolean  ---------> Values : Default-FALSE
+DataCofig ----> Boolean  ---------> Values : Default-FALSE
+
+
+Drug Reservoir Data
+ReservoirInitialV olume ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+Bolus Request Interface
+BolusRequest ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+Drug Flow Interface
+FlowRate ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+Notification Interface
+Notification Visual ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+Notification Audio ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+Hospital Pharmacy Database Interface
+DrugConcentration_hi ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+DrugConcentration lo ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+VTBI_hi ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+VTBI_lo ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+FlowRate hi ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+FlowRate lohd ----> Positive Integer   ---------> Values : Min-0 Max-999 Default:0
+
+
+
+
+
+-------------- vars used in properties ----------------------------
+Alarm                                           Infusion
+-----------------                   ------------------------------
+System_On      -- I/P       BOOL        System_On             -- I/P
+In_Therapy     -- I/P       BOOL
+Reservoir_Empty    -- I/P   BOOL
+Air_In_Line   -- I/P        BOOL
+Occlusion      -- I/P       BOOL
+Door_Open    -- I/P         BOOL
+Volume_Infused    -- I/P    INT  uint8_T
+VTBI_High   -- I/P          INT (0..999) && uint8_T
+Reservoir_Volume   -- I/P   INT (0..999) && uint8_T
+Low_Reservoir   -- I/P      INT uint8_T
+Disable_Audio   -- I/P      INT (PERM,TEMP,FALSE) && uint8_T && (implementation 0,1,2)
+Audio_Level    -- I/P       INT uint8_T
+
+out_Is_Audio_Disabled  -- O/P
+out_Audio_Notification_Command -- O/P
+out_Highest_Level_Alarm   -- O/P      -- I should be able to get there using the range value analysis
+
+                                        Highest_Level_Alarm         -- I/P          INT  ---- I can constraint that based on the Range Value analysis from the Alarm benchmark
+                                        Flow_Rate_KVO                -- I/P         INT  ---- 0 to 5 according to the requirements
+                                        Configured                   -- I/P         INT  uint8_T
+                                        Flow_Rate_Basal              -- I/P         INT  --- (0..999) && uint8_T
+                                        Flow_Rate_Intermittent_Bolus     -- I/P     INT  uint8_T
+                                        Flow_Rate_Patient_Bolus      -- I/P         INT  uint8_T
+
+                                        Current_System_Mode          -- O/P         INT  -- I should be able to get there using the range value analysis from 0-8
+                                        Commanded_Flow_Rate          -- O/P         INT
+
+
+I decided to constraint all input variables holes to be between 0 - 255, what the c implementation is suggesting.
+
+Special Cases
+-------------
+* Alarm
+1)I will have a special constraint for Disable_Audio to be from 0,1,2
+
+*In the infustion manager
+1) Highest_level_alarm to be from 1-4
+2) Flow_Rate_KVO to be from 0-5

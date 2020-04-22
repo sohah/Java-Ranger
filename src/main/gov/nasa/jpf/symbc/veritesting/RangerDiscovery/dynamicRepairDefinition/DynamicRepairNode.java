@@ -97,7 +97,10 @@ public class DynamicRepairNode {
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
-                leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                if (Config.spec.equals("gpca") || Config.spec.equals("infusion"))
+                    leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                else
+                    leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
         }
         for (int i = 0; i < intInputs.size() - 1; i++) {
             for (int j = i + 1; j < intInputs.size(); j++) {
@@ -139,22 +142,14 @@ public class DynamicRepairNode {
 
         List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
 
-        if (Config.rangeValueAnalysis) {
-            BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
-            if (holeRangeExpr != null) {
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-            } else {
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
-            }
-        } else {
+        BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
+        if (holeRangeExpr != null) {
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+        } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
@@ -162,17 +157,73 @@ public class DynamicRepairNode {
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
         }
 
-        for (int i = 0; i < intInputs.size(); i++) {
-            VarDecl rhs = intInputs.get(i);
+        for (VarDecl rhs : intInputs) {
             if (!leftIntExpr.id.equals(rhs.id)) {
                 selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
                 selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, DiscoveryUtil.varDeclToIdExpr(rhs)));
-//                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
             }
         }
         return selectionBinaryExpr;
     }
 
+    /**
+     * used to hard code some constraints for all int holes to be either between  0-254 to map the uint8_T type in c
+     * or to a known range according to the requirements document.
+     * Disable_Audio: 0-2
+     * Highest_level_alarm: 1-4
+     * Flow_Rate_KVO: 0-5
+     *
+     * The method also creates
+     * @param leftIntExpr
+     * @param holeExpr
+     * @param intInputs
+     * @return
+     */
+    private List<BinaryExpr> constructLeafIntSelectionAllGPCA(IdExpr leftIntExpr, IdExpr holeExpr, List<VarDecl> intInputs) {
+
+        List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
+
+        BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
+        if (holeRangeExpr != null) {
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+        } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
+            BinaryExpr hardCodedRangeConst;
+            if (leftIntExpr.id.equals("Disable_Audio")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(2)));
+            } else if (leftIntExpr.id.equals("Flow_Rate_KVO")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(5)));
+            } else if (leftIntExpr.id.equals("Highest_Level_Alarm") && Config.spec.equals("infusion")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(1)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(4)));
+            } else {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(254)));
+            }
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+        }
+
+        for (VarDecl rhs : intInputs) {
+            if (!leftIntExpr.id.equals(rhs.id)) {
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, DiscoveryUtil.varDeclToIdExpr(rhs)));
+            }
+        }
+        return selectionBinaryExpr;
+    }
 
     private Expr constructInnerBoolNode(List<Character> myPathLabel, IdExpr leftOperand, IdExpr rightOperand) {
         VarDecl selectionHoleVarDecl = createNewHole(true);
