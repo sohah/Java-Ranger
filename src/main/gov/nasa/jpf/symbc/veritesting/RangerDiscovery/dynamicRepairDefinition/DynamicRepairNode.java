@@ -207,7 +207,7 @@ public class DynamicRepairNode {
             } else {
                 hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
                         BinaryOp.AND,
-                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(254)));
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(255)));
             }
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, hardCodedRangeConst));
