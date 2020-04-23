@@ -25,7 +25,6 @@ public class RepairStatistics {
     public static FileWriter fw;
     public static BufferedWriter bw;
     public static PrintWriter out;
-
     public TerminationResult terminationResult;
     CandidateStatistics candidateStatistics;
     String repairPropFileName;
@@ -63,6 +62,7 @@ public class RepairStatistics {
 
     public void printSpecStatistics() throws IOException {
         out.println("---------------------------SPEC STATS-------------------");
+        out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
         out.print("totalExistsTime,     ");
         out.print("totalForallTime,     ");
@@ -71,6 +71,7 @@ public class RepairStatistics {
         out.print("avgExistsTime,     ");
         out.print("avgForallTime,     ");
         out.println();
+        out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
         out.print(candidateStatistics.totalExistsTime + ",     ");
         out.print(candidateStatistics.totalForallTime + ",     ");
