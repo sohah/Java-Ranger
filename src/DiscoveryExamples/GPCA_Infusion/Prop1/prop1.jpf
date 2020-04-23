@@ -26,11 +26,8 @@ repairMode = 2
 
 SpecDirectory = GPCA_Infusion/Prop1
 faultySpec=Faulty_Prop1
-repairInitialValues = true
-z3Solver=true
 mutationEnabled = true
 repairMutantsOnly = false
 depthFixed = false
-rangeValueAnalysis = true
 evaluationMode = true
 #repairScope=2

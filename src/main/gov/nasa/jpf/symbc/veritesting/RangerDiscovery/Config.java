@@ -76,7 +76,7 @@ public class Config {
 
     public static int faultySpecIndex = 0;
 
-    public static boolean repairInitialValues;
+    public static boolean repairInitialValues = true;
 
     private static boolean firstTime = true;
 

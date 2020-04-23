@@ -29,11 +29,8 @@ contractDiscoveryOn = true
 
 SpecDirectory=TCAS/Prop3
 faultySpec=Prop3
-repairInitialValues = true
-z3Solver=true
 mutationEnabled = true
 repairMutantsOnly = true
 depthFixed = false
-rangeValueAnalysis = true
 evaluationMode = true
 #repairScope=2

@@ -27,11 +27,8 @@ repairMode = 2
 
 SpecDirectory = WBS/Prop5
 faultySpec=Prop5
-repairInitialValues = true
-z3Solver=true
 mutationEnabled = true
 repairMutantsOnly = true
 depthFixed = false
-rangeValueAnalysis = true
 evaluationMode = true
 #repairScope=2

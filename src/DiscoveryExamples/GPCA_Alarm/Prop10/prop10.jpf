@@ -29,11 +29,8 @@ repairMode = 2
 
 SpecDirectory = GPCA_Alarm/Prop10
 faultySpec=Faulty_GPCA_Prop10
-repairInitialValues = true
-z3Solver=true
 mutationEnabled = true
 repairMutantsOnly = false
 depthFixed = false
-rangeValueAnalysis = true
 evaluationMode = true
 #repairScope=2
