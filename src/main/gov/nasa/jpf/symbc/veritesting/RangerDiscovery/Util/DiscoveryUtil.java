@@ -465,6 +465,10 @@ public class DiscoveryUtil {
         }
         api.disableSlicing();
 
+        List<String> vmArgs = new ArrayList<>();
+        vmArgs.add("-Xmx2000m");
+
+        api.setVmArgs(vmArgs);
         // useful in minimization query where we want to not halt in the last query, for that we need to stop
         // generation of pdr while checking the needed steps in BMC.
 
