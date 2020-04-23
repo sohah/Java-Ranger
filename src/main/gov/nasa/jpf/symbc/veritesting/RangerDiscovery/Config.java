@@ -70,8 +70,8 @@ public class Config {
     public static int timeOut = 300; //in seconds
     public static boolean mac = false;
 
-    public static final int OUTERLOOP_MAXLOOPCOUNT = 100;
-    public static final int MINIMALLOOP_MAXLOOPCOUNT = 200;
+    public static final int OUTERLOOP_MAXLOOPCOUNT = 20;
+    public static final int MINIMALLOOP_MAXLOOPCOUNT = 400; //found 378 iteration, then we find a repair.
 
 
     public static int faultySpecIndex = 0;

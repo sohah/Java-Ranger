@@ -35,16 +35,14 @@ public class DynamicRepairNode {
         populateBoolIntInputs(actualParamVarDecls);
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
-        if (Config.depthFixed)
-            outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        if (Config.depthFixed) outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
         else {
             int balancedTreeDepth;
             double logDepth = (Math.log(exprSize) / Math.log(2));
             if (logDepth == 0) {
                 assert exprSize == 1;
                 balancedTreeDepth = exprSize;
-            } else
-                balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
+            } else balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
             outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
         }
         return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
@@ -70,8 +68,7 @@ public class DynamicRepairNode {
             // variables constituting an inner node must be of type bool. Integers should only appear in the leaf.
             assert (leftVarDecl.type == NamedType.BOOL) && (rightVarDecl.type == NamedType.BOOL);
 
-            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl),
-                    constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
+            Equation myEquation = new Equation(DiscoveryUtil.varDeclToIdExpr(myNodeNameVarDecl), constructInnerBoolNode(pathLabel, leftOperand, rightOperand));
 
             //populate my stuff
             if (!getPathLabelStr(pathLabel).equals("R")) //add only local variables other than R, since R should be a return
@@ -100,7 +97,15 @@ public class DynamicRepairNode {
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
-                leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl)));
+                if (Config.spec.equals("gpca") || Config.spec.equals("infusion"))
+                    leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                else
+                    leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+        }
+        for (int i = 0; i < intInputs.size() - 1; i++) {
+            for (int j = i + 1; j < intInputs.size(); j++) {
+                leafSelectionExprs.add(new BinaryExpr(DiscoveryUtil.varDeclToIdExpr(intInputs.get(i)), BinaryOp.EQUAL, DiscoveryUtil.varDeclToIdExpr(intInputs.get(j))));
+            }
         }
 
         VarDecl myNodeNameVarDecl = constructPathLabelName(pathLabel);
@@ -127,79 +132,115 @@ public class DynamicRepairNode {
     }
 
     private Expr createLeafSelectionExpr(IdExpr selectionHoleExpr, List<Expr> leafSelectionExprs) {
-        if (leafSelectionExprs.size() == 1)
-            return leafSelectionExprs.get(0);
+        if (leafSelectionExprs.size() == 1) return leafSelectionExprs.get(0);
 
-        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(leafSelectionExprs.size())), leafSelectionExprs.get(0),
-                createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs.subList(1, leafSelectionExprs.size())));
+        return new IfThenElseExpr(new BinaryExpr(selectionHoleExpr, BinaryOp.EQUAL, new IntExpr(leafSelectionExprs.size())), leafSelectionExprs.get(0), createLeafSelectionExpr(selectionHoleExpr, leafSelectionExprs.subList(1, leafSelectionExprs.size())));
     }
 
     //makes a selection for every IntExpr in the input
-    private List<BinaryExpr> constructLeafIntSelection(IdExpr leftIntExpr, IdExpr holeExpr) {
+    private List<BinaryExpr> constructLeafIntSelection(IdExpr leftIntExpr, IdExpr holeExpr, List<VarDecl> intInputs) {
 
         List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
 
-        if (Config.rangeValueAnalysis) {
-            BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
-            if (holeRangeExpr != null) {
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-            } else {
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
-            }
-        } else {
+        BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
+        if (holeRangeExpr != null) {
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+        } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
             selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
         }
+
+        for (VarDecl rhs : intInputs) {
+            if (!leftIntExpr.id.equals(rhs.id)) {
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, DiscoveryUtil.varDeclToIdExpr(rhs)));
+            }
+        }
         return selectionBinaryExpr;
     }
 
+    /**
+     * used to hard code some constraints for all int holes to be either between  0-254 to map the uint8_T type in c
+     * or to a known range according to the requirements document.
+     * Disable_Audio: 0-2
+     * Highest_level_alarm: 1-4
+     * Flow_Rate_KVO: 0-5
+     *
+     * The method also creates
+     * @param leftIntExpr
+     * @param holeExpr
+     * @param intInputs
+     * @return
+     */
+    private List<BinaryExpr> constructLeafIntSelectionAllGPCA(IdExpr leftIntExpr, IdExpr holeExpr, List<VarDecl> intInputs) {
+
+        List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
+
+        BinaryExpr holeRangeExpr = VariableRangeVisitor.getRangeExpr(leftIntExpr, holeExpr);
+        if (holeRangeExpr != null) {
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
+        } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
+            BinaryExpr hardCodedRangeConst;
+            if (leftIntExpr.id.equals("Disable_Audio")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(2)));
+            } else if (leftIntExpr.id.equals("Flow_Rate_KVO")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(5)));
+            } else if (leftIntExpr.id.equals("Highest_Level_Alarm") && Config.spec.equals("infusion")) {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(1)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(4)));
+            } else {
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
+                        BinaryOp.AND,
+                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(254)));
+            }
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+            selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
+        }
+
+        for (VarDecl rhs : intInputs) {
+            if (!leftIntExpr.id.equals(rhs.id)) {
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, DiscoveryUtil.varDeclToIdExpr(rhs)));
+            }
+        }
+        return selectionBinaryExpr;
+    }
 
     private Expr constructInnerBoolNode(List<Character> myPathLabel, IdExpr leftOperand, IdExpr rightOperand) {
         VarDecl selectionHoleVarDecl = createNewHole(true);
         IdExpr sectionHoleExpr = DiscoveryUtil.varDeclToIdExpr(selectionHoleVarDecl);
         IfThenElseExpr expr;
         if (!getPathLabelStr(myPathLabel).equals("R")) {
-            expr =
-                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
-                            new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
-                            new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
-                                    new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
-                                    new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
-                                            new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                            new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
-        } else expr =
-                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)),
-                        new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand),
-                        new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)),
-                                new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand),
-                                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)),
-                                        new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand),
-                                        new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
-                                                new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand),
-                                                new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(4)),
-                                                        new BoolExpr(true),
-                                                        new BoolExpr(false))))));
+            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
+        } else
+            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         return expr;
     }
 
 
     private VarDecl createNewHole(boolean innerHole) {
         VarDecl newHole;
-        if (innerHole)
-            newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INTHOLE);
-        else
-            newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INTHOLE);
+        if (innerHole) newHole = new VarDecl(holePrefixStr + holesCounter, NamedType.INTHOLE);
+        else newHole = new VarDecl(constholePrefixStr + holesCounter, NamedType.INTHOLE);
         holeInputs.add(newHole);
         ++holesCounter;
         return newHole;
@@ -218,10 +259,8 @@ public class DynamicRepairNode {
 
     private void populateBoolIntInputs(List<VarDecl> actualParamVarDecls) {
         for (VarDecl var : actualParamVarDecls) {
-            if (var.type == NamedType.BOOL)
-                boolInputs.add(var);
-            else if (var.type == NamedType.INT)
-                intInputs.add(var);
+            if (var.type == NamedType.BOOL) boolInputs.add(var);
+            else if (var.type == NamedType.INT) intInputs.add(var);
             else {
                 System.out.println("unsupported type for dynamic repair library");
                 assert false;
