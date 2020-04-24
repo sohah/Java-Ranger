@@ -1791,7 +1791,7 @@ public class ALARM_Functional_Discovery {
                 1, 1, false, 1, 1, 1, false, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, true, false, false, false, 1,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, true, true, true, true, true, true
+                1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, true, true, true, true, true, true
                 , true, true
                 , true, true
                 , true, true
@@ -1925,12 +1925,6 @@ public class ALARM_Functional_Discovery {
                                                    int Config_Timer,
                                                    int Config_Mode,
 
-                                                   //Symbolic input of Alarm_Outputs
-                                                   int Is_Audio_Disabled,
-                                                   int Notification_Message,
-                                                   int Audio_Notification_Command,
-                                                   int Highest_Level_Alarm,
-                                                   int Log_Message_ID5,
 
                                                    //Symbolic input for state localB
                                                    int localB_Commanded_Flow_Rate,
@@ -2182,11 +2176,6 @@ public class ALARM_Functional_Discovery {
 
 
         Alarm_Outputs rty_alarm_out = new Alarm_Outputs();
-        rty_alarm_out.Is_Audio_Disabled = Is_Audio_Disabled;
-        rty_alarm_out.Notification_Message = Notification_Message;
-        rty_alarm_out.Audio_Notification_Command = Audio_Notification_Command;
-        rty_alarm_out.Highest_Level_Alarm = Highest_Level_Alarm;
-        rty_alarm_out.Log_Message_ID = Log_Message_ID5;
 
         B_ALARM_Functional_c_T localB = new B_ALARM_Functional_c_T();
         DW_ALARM_Functional_f_T localDW = new DW_ALARM_Functional_f_T();

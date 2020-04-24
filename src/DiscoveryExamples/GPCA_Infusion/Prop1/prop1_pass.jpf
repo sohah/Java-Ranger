@@ -7,7 +7,7 @@ symbolic.lazy = true
 symbolic.optimizechoices=false
 
 
-symbolic.method=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_Functional_Discovery.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.method=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_Functional_Discovery.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
 
 symbolic.dp=z3bitvectorinc
 

@@ -1072,13 +1072,6 @@ public class INFUSION_MGR_Functional_Discovery {
             int Log_Message_ID2,
             boolean In_Therapy,
 
-            //Infusion_Manager_Outputs rty_IM_OUT
-            int Commanded_Flow_Rate,
-            int Current_System_Mode,
-            boolean New_Infusion,
-            int Log_Message_ID4,
-            int Actual_Infusion_Duration,
-
             //B_INFUSION_MGR_Functional_c_T localB
             int Highest_Level_Alarm2,
             int Infusion_Total_Duration2,
@@ -1255,11 +1248,6 @@ public class INFUSION_MGR_Functional_Discovery {
         rtu_SYS_STAT_IN.In_Therapy = In_Therapy;
 
         Infusion_Manager_Outputs rty_IM_OUT = new Infusion_Manager_Outputs();
-        rty_IM_OUT.Commanded_Flow_Rate = Commanded_Flow_Rate;
-        rty_IM_OUT.Current_System_Mode = Current_System_Mode;
-        rty_IM_OUT.New_Infusion = New_Infusion;
-        rty_IM_OUT.Log_Message_ID = Log_Message_ID4;
-        rty_IM_OUT.Actual_Infusion_Duration = Actual_Infusion_Duration;
 
         if (symVar) {
             //INFUSION_MGR_Functional_Init(localB, localDW);
@@ -1276,7 +1264,7 @@ public class INFUSION_MGR_Functional_Discovery {
     public static void main(String[] args) {
         INFUSION_MGR_FunctionalSymWrapper(false, false, 1, false, false, false, false, false, false, false, false,
                 false, false, 1, false, 1, false, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, false, false, false, false
-                , 1, 1, 1, 1, 1, 1, 1, 1, false, 1, 1, 1, false, 1, 1, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                , 1, 1, 1, 1, 1, 1, 1, 1, false, 1, 1, 1, false,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, false, false, false, false, false, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, false, false,
                 false);
 

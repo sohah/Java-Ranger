@@ -119,8 +119,8 @@ public class InOutManager {
         if (Config.spec.equals("wbs")) Config.symVarName = "symVar_7_SYMINT";
         else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_13_SYMINT";
         else if (Config.spec.equals("vote")) Config.symVarName = "symVar_6_SYMINT";
-        else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_217_SYMINT";
-        else if (Config.spec.equals("infusion")) Config.symVarName = "symVar_108_SYMINT";
+        else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_212_SYMINT";
+        else if (Config.spec.equals("infusion")) Config.symVarName = "symVar_103_SYMINT";
         else assert false;
         return Config.symVarName;
     }
@@ -640,12 +640,6 @@ public class InOutManager {
         stateInput.add("idletimer_215_SYMINT", NamedType.INT);
         stateInput.add("pausedtimer_216_SYMINT", NamedType.INT);
 
-        stateInput.add("Is_Audio_Disabled_103_SYMINT", NamedType.INT);
-        stateInput.add("Notification_Message_104_SYMINT", NamedType.INT);
-        stateInput.add("Audio_Notification_Command_105_SYMINT", NamedType.INT);
-        stateInput.add("Highest_Level_Alarm_106_SYMINT", NamedType.INT);
-        stateInput.add("Log_Message_ID5_107_SYMINT", NamedType.INT);
-
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
@@ -1126,14 +1120,6 @@ public class InOutManager {
         stateInput.add("sbolusInter_timer_105_SYMINT", NamedType.INT);
         stateInput.add("sbolus_req_106_SYMINT", NamedType.BOOL);
         stateInput.add("inPatientBolus_107_SYMINT", NamedType.BOOL);
-
-
-        //output - their initial input vars
-        stateInput.add("Commanded_Flow_Rate_54_SYMINT", NamedType.INT);
-        stateInput.add("Current_System_Mode_55_SYMINT", NamedType.INT);
-        stateInput.add("New_Infusion_56_SYMINT", NamedType.BOOL);
-        stateInput.add("Log_Message_ID4_57_SYMINT", NamedType.INT);
-        stateInput.add("Actual_Infusion_Duration_58_SYMINT", NamedType.INT);
 
     }
 
