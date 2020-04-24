@@ -24,7 +24,7 @@ public class VariableRangeVisitor extends AstMapVisitor {
         super(exprVisitor);
         interestedVarName = new ArrayList<>();
         interestedVarName.add(varName);
-        assert relatedSymInput != null;
+        relatedSymInput = new ArrayList<>();
     }
 
     @Override

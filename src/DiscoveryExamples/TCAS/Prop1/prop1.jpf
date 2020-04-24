@@ -8,7 +8,7 @@ symbolic.debug=false
 symbolic.optimizechoices=false
 
 
-symbolic.method =DiscoveryExamples.tcas.DiscoveryTCAS_sr.discoveryMainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.method =DiscoveryExamples.tcas.DiscoveryTCAS_sr.discoveryMainProcess(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
 
 vm.storage.class=nil
 

@@ -50,8 +50,10 @@ public class ToLutre {
 
         //wrapperLocals are defined as stateInput TODO:this assumption needs to be changed, see simple vote example.
         ArrayList<VarDecl> stateInDeclList = inOutManager.generateStateInputDecl();
-        assert (stateInDeclList.size() > 0);
-        ArrayList<VarDecl> wrapperLocalDeclList = new ArrayList<>(stateInDeclList);
+
+        ArrayList<VarDecl> wrapperLocalDeclList = new ArrayList<>();
+        if (stateInDeclList.size() > 0)
+            wrapperLocalDeclList = new ArrayList<>(stateInDeclList);
 
 
         //preparing wrapperOutput which should be a record that contains as many as method outputs.
@@ -65,7 +67,8 @@ public class ToLutre {
         //call node_R
         ArrayList<Expr> actualParameters = new ArrayList<>();
         actualParameters.addAll(varDeclToIdExpr(freeDeclList));
-        actualParameters.addAll(initPreTerm(wrapperLocalDeclList, inOutManager));
+        if (wrapperLocalDeclList.size() != 0)
+            actualParameters.addAll(initPreTerm(wrapperLocalDeclList, inOutManager));
         NodeCallExpr r_nodeCall = new NodeCallExpr(RNODE, actualParameters);
         Equation wrapperEq = new Equation(varDeclToIdExpr(equationOutputs), r_nodeCall);
 

@@ -50,16 +50,13 @@ public class DiscoveryTCAS_sr {
 
     public static int ALIM() {
         int result;
-        if (Alt_Layer_Value == 0){
-            result =  Positive_RA_Alt_Thresh_0;
-        }
-        else if (Alt_Layer_Value == 1){
+        if (Alt_Layer_Value == 0) {
+            result = Positive_RA_Alt_Thresh_0;
+        } else if (Alt_Layer_Value == 1) {
             result = Positive_RA_Alt_Thresh_1;
-        }
-        else if (Alt_Layer_Value == 2){
+        } else if (Alt_Layer_Value == 2) {
             result = Positive_RA_Alt_Thresh_2;
-        }
-        else{
+        } else {
             result = Positive_RA_Alt_Thresh_3;
         }
         return result;
@@ -69,8 +66,7 @@ public class DiscoveryTCAS_sr {
         int result;
         if (Climb_Inhibit > 0) {
             result = Up_Separation + NOZCROSS;
-        }
-        else{
+        } else {
             result = Up_Separation;
         }
         return result;
@@ -88,28 +84,23 @@ public class DiscoveryTCAS_sr {
 
         if (upward_preferred != 0) {
             int alim = ALIM();
-            if(!(Down_Separation >= alim)){
+            if (!(Down_Separation >= alim)) {
                 result = true;
-            }
-            else{
+            } else {
                 result = false;
             }
-        }
-        else {
-            if (!(Cur_Vertical_Sep >= MINSEP)){
+        } else {
+            if (!(Cur_Vertical_Sep >= MINSEP)) {
                 result = false;
-            }
-            else{
+            } else {
                 int alim = ALIM();
-                if(!(Up_Separation >= alim)){
+                if (!(Up_Separation >= alim)) {
                     result = false;
-                }
-                else{
+                } else {
                     boolean own_above_thread = Own_Above_Threat();
-                    if (!own_above_thread){
+                    if (!own_above_thread) {
                         result = false;
-                    }
-                    else{
+                    } else {
                         result = true;
                     }
                 }
@@ -126,38 +117,31 @@ public class DiscoveryTCAS_sr {
         int inhibit_biased_climb = Inhibit_Biased_Climb();
         if (inhibit_biased_climb > Down_Separation) {
             upward_preferred = 1;
-        }
-        else {
+        } else {
             upward_preferred = 0;
         }
         if (upward_preferred != 0) {
             int alim = ALIM();
             boolean own_below_threat = Own_Below_Threat();
             // reduction source
-            if (!(Cur_Vertical_Sep >= MINSEP)){
+            if (!(Cur_Vertical_Sep >= MINSEP)) {
                 result = false;
-            }
-            else if (!(Down_Separation >= alim)){
+            } else if (!(Down_Separation >= alim)) {
                 result = false;
-            }
-            else if (!own_below_threat){
+            } else if (!own_below_threat) {
                 result = false;
-            }
-            else{
+            } else {
                 result = true;
             }
-        }
-        else {
+        } else {
             int alim = ALIM();
             boolean own_above_threat = Own_Above_Threat();
             // reduction source
-            if(!(Up_Separation >= alim)){
+            if (!(Up_Separation >= alim)) {
                 result = false;
-            }
-            else if(!own_above_threat){
+            } else if (!own_above_threat) {
                 result = false;
-            }
-            else{
+            } else {
                 result = true;
             }
         }
@@ -166,7 +150,7 @@ public class DiscoveryTCAS_sr {
 
     public static boolean Own_Below_Threat() {
         boolean ret = false;
-        if(Own_Tracked_Alt < Other_Tracked_Alt){
+        if (Own_Tracked_Alt < Other_Tracked_Alt) {
             ret = true;
         }
         return ret;
@@ -174,45 +158,42 @@ public class DiscoveryTCAS_sr {
 
     public static boolean Own_Above_Threat() {
         boolean ret = false;
-        if(Other_Tracked_Alt < Own_Tracked_Alt){
+        if (Other_Tracked_Alt < Own_Tracked_Alt) {
             ret = true;
         }
         return ret;
     }
 
-    public static int alt_assign(){
+    public static int alt_assign() {
         int alt_sep = UNRESOLVED;
         boolean need_upward_RA = false;
         boolean non_crossing_biased_climb = Non_Crossing_Biased_Climb();
         boolean own_below_threat, own_above_threat;
-        if(non_crossing_biased_climb){
+        if (non_crossing_biased_climb) {
             own_below_threat = Own_Below_Threat(); //return symbolic temp variable
-            if(own_below_threat){
+            if (own_below_threat) {
                 need_upward_RA = true; //is symbolic
             }
         }
 
         boolean need_downward_RA = false;
         boolean non_crossing_biased_descend = Non_Crossing_Biased_Descend();
-        if(non_crossing_biased_descend){
+        if (non_crossing_biased_descend) {
             own_above_threat = Own_Above_Threat();
-            if(own_above_threat){
+            if (own_above_threat) {
                 need_downward_RA = true;
             }
         }
-        if (need_upward_RA){
-            if(need_downward_RA){
+        if (need_upward_RA) {
+            if (need_downward_RA) {
                 alt_sep = UNRESOLVED;
-            }
-            else{
+            } else {
                 alt_sep = UPWARD_RA;
             }
-        }
-        else{
-            if (need_downward_RA){
+        } else {
+            if (need_downward_RA) {
                 alt_sep = DOWNWARD_RA;
-            }
-            else{
+            } else {
                 alt_sep = UNRESOLVED;
             }
         }
@@ -231,28 +212,27 @@ public class DiscoveryTCAS_sr {
         boolean intent_not_known = false;
         int alt_sep = UNRESOLVED;
 
-        if(High_Confidence){
-            if(Own_Tracked_Alt_Rate <= OLEV){
-                if(Cur_Vertical_Sep > MAXALTDIFF){
+        if (High_Confidence) {
+            if (Own_Tracked_Alt_Rate <= OLEV) {
+                if (Cur_Vertical_Sep > MAXALTDIFF) {
                     enabled = true;
                 }
             }
         }
-        if(enabled){
-            if(Other_Capability == TCAS_TA){
+        if (enabled) {
+            if (Other_Capability == TCAS_TA) {
                 tcas_equipped = true;
             }
-            if(tcas_equipped){
-                if(Two_of_Three_Reports_Valid){
-                    if(Other_RAC == NO_INTENT){
+            if (tcas_equipped) {
+                if (Two_of_Three_Reports_Valid) {
+                    if (Other_RAC == NO_INTENT) {
                         intent_not_known = true;
                     }
                 }
-                if(intent_not_known){
+                if (intent_not_known) {
                     alt_sep = alt_assign();
                 }
-            }
-            else{
+            } else {
                 alt_sep = alt_assign();
             }
         }
@@ -294,12 +274,9 @@ public class DiscoveryTCAS_sr {
                                             int Two_of_Three_Reports_Valid_flag,
                                             int Own_Tracked_Alt, int Own_Tracked_Alt_Rate, int Other_Tracked_Alt,
                                             int Alt_Layer_Value, int Up_Separation, int Down_Separation, int Other_RAC,
-                                            int Other_Capability, int Climb_Inhibit, int result_alt_sep_test,
-                                            int alim_res,
+                                            int Other_Capability, int Climb_Inhibit,
                                             boolean symVar) {
         if (symVar) {
-            DiscoveryTCAS_sr.result_alt_sep_test = result_alt_sep_test;
-            DiscoveryTCAS_sr.alim_res = alim_res;
 
             mainProcess(Cur_Vertical_Sep, High_Confidence_flag, Two_of_Three_Reports_Valid_flag, Own_Tracked_Alt,
                     Own_Tracked_Alt_Rate, Other_Tracked_Alt, Alt_Layer_Value, Up_Separation, Down_Separation,
@@ -309,6 +286,6 @@ public class DiscoveryTCAS_sr {
 
     public static void main(String[] argv) {
 
-        discoveryMainProcess(601, -1, 0, -1, 0, 0, 0, 301, 400, 0, 0, 1, 1, 1, true);
+        discoveryMainProcess(601, -1, 0, -1, 0, 0, 0, 301, 400, 0, 0, 1, true);
     }
 }

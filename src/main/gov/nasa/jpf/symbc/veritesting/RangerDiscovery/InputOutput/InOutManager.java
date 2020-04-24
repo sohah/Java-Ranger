@@ -117,7 +117,7 @@ public class InOutManager {
     // later stage.
     public static String setSymVarName() {
         if (Config.spec.equals("wbs")) Config.symVarName = "symVar_10_SYMINT";
-        else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_15_SYMINT";
+        else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_13_SYMINT";
         else if (Config.spec.equals("vote")) Config.symVarName = "symVar_6_SYMINT";
         else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_217_SYMINT";
         else if (Config.spec.equals("infusion")) Config.symVarName = "symVar_108_SYMINT";
@@ -402,10 +402,10 @@ public class InOutManager {
 
     private void discoverContractOutputTCAS() {
 
-        contractOutput.add("r-1.result_alt_sep_test.1.4.33", NamedType.INT);
+        contractOutput.add("r-1.result_alt_sep_test.1.3.33", NamedType.INT);
 //        contractOutput.addInit("r-1.result_alt_sep_test.1.4.33", new IntExpr(0));
 
-        contractOutput.add("r-1.alim_res.1.4.33", NamedType.INT);
+        contractOutput.add("r-1.alim_res.1.3.33", NamedType.INT);
 //        contractOutput.addInit("r-1.alim_res.1.4.33", new IntExpr(0));
     }
 
@@ -432,8 +432,8 @@ public class InOutManager {
         /*stateInput.add("High_Confidence", NamedType.INT);
         stateInput.add("Two_of_Three_Reports_Valid", NamedType.INT);
 */
-        stateInput.add("result_alt_sep_test_13_SYMINT", NamedType.INT);
-        stateInput.add("alim_res_14_SYMINT", NamedType.INT);
+  /*      stateInput.add("result_alt_sep_test_13_SYMINT", NamedType.INT);
+        stateInput.add("alim_res_14_SYMINT", NamedType.INT);*/
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
