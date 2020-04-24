@@ -2,6 +2,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Contract;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.ContractOutput;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.InOutManager;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
@@ -52,21 +53,24 @@ public class ToLutre {
         assert (stateInDeclList.size() > 0);
         ArrayList<VarDecl> wrapperLocalDeclList = new ArrayList<>(stateInDeclList);
 
+
         //preparing wrapperOutput which should be a record that contains as many as method outputs.
-        ArrayList<Pair<VarDecl, Equation>> methodOutVarEqs = makeWrapperOutput(stateInDeclList, inOutManager.getContractOutputCount());
+        ArrayList<VarDecl> stateOutputsVars = makeWrapperOutput(inOutManager.getContractOutput().varList);
         ArrayList<VarDecl> wrapperOutput = new ArrayList<VarDecl>();
-        wrapperOutput.addAll(collectFirst(methodOutVarEqs));
+        wrapperOutput.addAll(stateOutputsVars);
+
+        ArrayList<VarDecl> equationOutputs = new ArrayList<>(stateInDeclList);
+        equationOutputs.addAll(stateOutputsVars);
 
         //call node_R
         ArrayList<Expr> actualParameters = new ArrayList<>();
         actualParameters.addAll(varDeclToIdExpr(freeDeclList));
         actualParameters.addAll(initPreTerm(wrapperLocalDeclList, inOutManager));
         NodeCallExpr r_nodeCall = new NodeCallExpr(RNODE, actualParameters);
-        Equation wrapperEq = new Equation(varDeclToIdExpr(wrapperLocalDeclList), r_nodeCall);
+        Equation wrapperEq = new Equation(varDeclToIdExpr(equationOutputs), r_nodeCall);
 
         ArrayList<Equation> wrapperEqList = new ArrayList<Equation>();
         wrapperEqList.add(wrapperEq);
-        wrapperEqList.addAll(collectSecond(methodOutVarEqs)); //adding equation for output
 
         return new Node(WRAPPERNODE, freeDeclList, wrapperOutput, wrapperLocalDeclList, wrapperEqList, new ArrayList<>(), new ArrayList<>(), null, null, null);
     }
@@ -87,13 +91,12 @@ public class ToLutre {
         return eqs;
     }
 
-    public static ArrayList<Pair<VarDecl, Equation>> makeWrapperOutput(ArrayList<VarDecl> stateInDeclList, int methodOutCount) {
-        ArrayList outputList = new ArrayList();
-        int listSize = stateInDeclList.size();
+    public static ArrayList<VarDecl> makeWrapperOutput(ArrayList<Pair<String, NamedType>> contractOutput) {
+        ArrayList<VarDecl> outputList = new ArrayList();
 
         int outIndex = 0;
-        for (int i = listSize - methodOutCount; i < listSize; i++) {
-            outputList.add(DiscoveryUtil.replicateToOut(stateInDeclList.get(i), "out_" + outIndex));
+        for (int i = 0; i < contractOutput.size(); i++) {
+            outputList.add(new VarDecl("out_" + outIndex, contractOutput.get(i).getSecond()));
             ++outIndex;
         }
         return outputList;
@@ -101,50 +104,23 @@ public class ToLutre {
 
     private static ArrayList<Expr> initPreTerm(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
         ArrayList<Expr> initPreExprList = new ArrayList<>();
-        ArrayList<VarDecl> onlyStateVars = pruneContractOutVars(wrapperLocalDeclList, inOutManager);
 
-        for (int i = 0; i < onlyStateVars.size(); i++) {
-            VarDecl objectVarDecl = onlyStateVars.get(i);
-            if (objectVarDecl.type == NamedType.BOOL) initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
-            else if (objectVarDecl.type == NamedType.INT) initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
+        for (int i = 0; i < wrapperLocalDeclList.size(); i++) {
+            VarDecl objectVarDecl = wrapperLocalDeclList.get(i);
+            if (objectVarDecl.type == NamedType.BOOL)
+                initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
+            else if (objectVarDecl.type == NamedType.INT)
+                initPreExprList.add(new BinaryExpr(inOutManager.getStateOutInit(i), BinaryOp.ARROW, new UnaryExpr(UnaryOp.PRE, varDeclToIdExpr(objectVarDecl))));
             else {
                 System.out.println("unsupported type for initial value in the wrapper");
                 assert false;
             }
         }
 
-        for (int i = onlyStateVars.size(); i < wrapperLocalDeclList.size(); i++) { // the rest of the wrapper list must be an output which we want to call without an init value
-            initPreExprList.add(DiscoveryUtil.varDeclToIdExpr(wrapperLocalDeclList.get(i)));
-        }
+
         return initPreExprList;
     }
 
-    /**
-     * This is used to stop the contract output from having an initial value
-     *
-     * @param wrapperLocalDeclList
-     * @param inOutManager
-     * @return
-     */
-    private static ArrayList<VarDecl> pruneContractOutVars(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
-        ArrayList<VarDecl> noContractVars = new ArrayList<>();
-
-        int contractOutputSize = inOutManager.getContractOutputCount();
-        for (int i = 0; i < wrapperLocalDeclList.size() - contractOutputSize; i++) {
-            noContractVars.add(wrapperLocalDeclList.get(i));
-        }
-        return noContractVars;
-    }
-
-    private static ArrayList<VarDecl> pruneStateOutVars(ArrayList<VarDecl> wrapperLocalDeclList, InOutManager inOutManager) {
-        ArrayList<VarDecl> contractVars = new ArrayList<>();
-
-        int contractOutputSize = inOutManager.getContractOutputCount();
-        for (int i = 0; i < wrapperLocalDeclList.size() - contractOutputSize; i++) {
-            contractVars.add(wrapperLocalDeclList.get(i));
-        }
-        return contractVars;
-    }
 
     /**
      * used to remove "." and "$" from the text generated to make it type compatible.

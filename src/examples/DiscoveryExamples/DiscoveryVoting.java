@@ -30,12 +30,11 @@ public class DiscoveryVoting {
 
     public static void main(String[] args) {
         DiscoveryVoting discoveryVoting = new DiscoveryVoting();
-        discoveryVoting.makeStep(true, true, true, 4, 1, false, true);
+        discoveryVoting.makeStep(true, true, true, 4, 1, true);
     }
 
 
-    public void makeStep(boolean a, boolean b, boolean c, int threshold, int counter, boolean out, boolean symVar) {
-        this.out = out;
+    public void makeStep(boolean a, boolean b, boolean c, int threshold, int counter, boolean symVar) {
         if (symVar) {
             //vote5(a, b, c);
             //vote2(a, b, c, threshold);

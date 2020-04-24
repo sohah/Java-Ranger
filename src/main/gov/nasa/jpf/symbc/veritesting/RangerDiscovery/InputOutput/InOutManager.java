@@ -5,8 +5,6 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -47,7 +45,7 @@ public class InOutManager {
 
     //This describes the output that is going to be validated with the specification, they are usually part of the
     // state but should NOT be mistaken as a stateOutput, a stateOutput are only those needed internally for R node
-    // and are not validated by the spec, for those that needs to be  validated by the sepc we call the
+    // and are not validated by the spec, for those that needs to be  validated by the spec we call the
     // contractOutput and must be populated there.
     ContractOutput contractOutput = new ContractOutput();
 
@@ -102,10 +100,6 @@ public class InOutManager {
     }
 
 
-    // This data structure is a bit of tricky and hacky. The idea here is that for our range value analysis to work we need to track back values on all paths for the output variables. If on all paths we find either concrete values or the symbolic variable that is defined as an input for that output variable then we take all values as the only possible range of values for that vairable.
-    // on the other hand if we encountered another symbolic input, not related to the input of this variable, then we can't claim that we can constraint it. and thus our analysis should not procduce anything for htat output vairable.
-    public SSAOutToStateInput ssaOutToStateInputInf = new SSAOutToStateInput();
-
     public ArrayList<Equation> getTypeConversionEq() {
         return typeConversionEq;
     }
@@ -124,7 +118,7 @@ public class InOutManager {
     public static String setSymVarName() {
         if (Config.spec.equals("wbs")) Config.symVarName = "symVar_10_SYMINT";
         else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_15_SYMINT";
-        else if (Config.spec.equals("vote")) Config.symVarName = "symVar_7_SYMINT";
+        else if (Config.spec.equals("vote")) Config.symVarName = "symVar_6_SYMINT";
         else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_217_SYMINT";
         else if (Config.spec.equals("infusion")) Config.symVarName = "symVar_108_SYMINT";
         else assert false;
@@ -148,9 +142,6 @@ public class InOutManager {
             discoverContractOutputPad();
             doContractOutputTypeConversion();
 
-            System.out.println("saOutToStateInput undefined for the benchmark");
-            assert false;  //ssaOutToStateInput undefined for the benchmark
-
         } else if (Config.spec.equals("even")) {
             discoverFreeInputEven();
             doFreeTypeConversion();
@@ -163,9 +154,6 @@ public class InOutManager {
 
             discoverContractOutputEven();
             doContractOutputTypeConversion();
-
-            System.out.println("saOutToStateInput undefined for the benchmark");
-            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else if (Config.spec.equals("wbs")) {
             discoverFreeInputWBS();
@@ -180,8 +168,6 @@ public class InOutManager {
             discoverContractOutputWBS();
             doContractOutputTypeConversion();
 
-            discoverSsaOutToStateInputWBS();
-
         } else if (Config.spec.equals("tcas")) {
             discoverFreeInputTCAS();
             doFreeTypeConversion();
@@ -194,8 +180,6 @@ public class InOutManager {
 
             discoverContractOutputTCAS();
             doContractOutputTypeConversion();
-
-            discoverSsaOutToStateInputTCAS();
 
         } else if (Config.spec.equals("gpca")) {
             discoverFreeInputGPCA();
@@ -210,8 +194,6 @@ public class InOutManager {
             discoverContractOutputGPCA();
             doContractOutputTypeConversion();
 
-            discoverSsaOutToStateInputGPCA();
-
         } else if (Config.spec.equals("infusion")) {
             discoverFreeInputInfusion();
             doFreeTypeConversion();
@@ -224,8 +206,6 @@ public class InOutManager {
 
             discoverContractOutputInfusion();
             doContractOutputTypeConversion();
-
-            discoverSsaOutToStateInputInf();
 
         } else if (Config.spec.equals("vote")) {
             discoverFreeInputVote();
@@ -240,9 +220,6 @@ public class InOutManager {
             discoverContractOutputVote();
             doContractOutputTypeConversion();
 
-            System.out.println("saOutToStateInput undefined for the benchmark");
-            assert false;  //ssaOutToStateInput undefined for the benchmark
-
         } else if (Config.spec.equals("vote2")) {
             discoverFreeInputVote2();
             doFreeTypeConversion();
@@ -256,8 +233,6 @@ public class InOutManager {
             discoverContractOutputVote2();
             doContractOutputTypeConversion();
 
-            System.out.println("saOutToStateInput undefined for the benchmark");
-            assert false;  //ssaOutToStateInput undefined for the benchmark
 
         } else {
             System.out.println("unexpected spec to run.!");
@@ -356,11 +331,6 @@ public class InOutManager {
 
     //====================== WBS ====================================
 
-    private void discoverSsaOutToStateInputWBS() {
-        ssaOutToStateInputInf.add(referenceObjectName + ".Nor_Pressure.1.13.2", Arrays.asList("Nor_Pressure_7_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName + ".Alt_Pressure.1.13.2", Arrays.asList("Alt_Pressure_8_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName + ".Sys_Mode.1.5.2", Arrays.asList("Sys_Mode_9_SYMINT"));
-    }
 
     //entered by hand for now - this defines the output that we expect to validate with the T_node,i.e, this is the
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
@@ -425,10 +395,6 @@ public class InOutManager {
 
     //====================== TCAS ====================================
 
-    private void discoverSsaOutToStateInputTCAS() {
-        ssaOutToStateInputInf.add("r-1.result_alt_sep_test.1.4.33", Arrays.asList("result_alt_sep_test_13_SYMINT"));
-        ssaOutToStateInputInf.add("r-1.alim_res.1.4.33", Arrays.asList("alim_res_14_SYMINT"));
-    }
 
     //entered by hand for now - this defines the output that we expect to validate with the T_node,i.e, this is the
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
@@ -482,16 +448,6 @@ public class InOutManager {
 
 //====================== GPCA ====================================
 
-    private void discoverSsaOutToStateInputGPCA() {
-        //since the output variables below are also popluated by the output variables of the localB. That is the localB really replicate the output variables for the alarm_output
-        // so we can consider symbolic variables for the outputB related fields to be related to the output of the alarm. This is helpful to ignore them when
-        // computing the range value analysis.
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Is_Audio_Disabled.1.3.51", Arrays.asList("Is_Audio_Disabled_103_SYMINT", "localB_ALARM_OUT_Display_Audio_Disabled_Indicator_128_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Notification_Message.1.3.51", Arrays.asList("Notification_Message_104_SYMINT", "localB_ALARM_OUT_Display_Notification_Command_129_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Audio_Notification_Command.1.3.51", Arrays.asList("Audio_Notification_Command_105_SYMINT", "localB_ALARM_OUT_Audio_Notification_Command_130_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Highest_Level_Alarm.1.3.51", Arrays.asList("Highest_Level_Alarm_106_SYMINT", "localB_ALARM_OUT_Highest_Level_Alarm_131_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_gpca_Alarm_Outputs + ".Log_Message_ID.1.3.51", Arrays.asList("Log_Message_ID5_107_SYMINT", "localB_ALARM_OUT_Log_Message_ID_132_SYMINT"));
-    }
 
     private void discoverContractOutputGPCA() {
 
@@ -1040,14 +996,6 @@ public class InOutManager {
     // output of the wrapper that gets plugged in the T_node to  validate it. Therefore it is not directly reflecting
     // the method output of the implementation, instead it is the output of the to-be-created r_wrapper node.
 
-    //used during the range value analysis
-    private void discoverSsaOutToStateInputInf() {
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Commanded_Flow_Rate.1.3.67", Arrays.asList("Commanded_Flow_Rate_54_SYMINT", "IM_OUT_Flow_Rate_Commanded2_73_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Current_System_Mode.1.3.67", Arrays.asList("Current_System_Mode_55_SYMINT", "IM_OUT_Current_System_Mode2_74_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".New_Infusion.1.3.67", Arrays.asList("New_Infusion_56_SYMINT", "IM_OUT_New_Infusion2_82_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Log_Message_ID.1.3.67", Arrays.asList("Log_Message_ID4_57_SYMINT", "IM_OUT_Log_Message_ID2_75_SYMINT"));
-        ssaOutToStateInputInf.add(referenceObjectName_infusion_Outputs + ".Actual_Infusion_Duration.1.3.67", Arrays.asList("Actual_Infusion_Duration_58_SYMINT", "IM_OUT_Actual_Infusion_Duration2_76_SYMINT"));
-    }
 
     private void discoverContractOutputInfusion() {
 
@@ -1356,11 +1304,6 @@ public class InOutManager {
     //entered by hand for now
     private void discoverFreeInputEven() {
         freeInput.add("signal", NamedType.BOOL);
-        /*if (freeInput.containsBool()) {
-            Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
-            typeConversionEq.addAll(conversionResult.getSecond());
-            conversionLocalList.addAll(conversionResult.getFirst());
-        }*/
     }
 
     //entered by hand for now
@@ -1384,12 +1327,6 @@ public class InOutManager {
         contractOutput.add(referenceObjectName + ".out.1.7.4", NamedType.BOOL);
         //contractOutput.addInit(referenceObjectName + ".out.1.9.4", new BoolExpr(false));
 
-        /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
-            ArrayList<Equation> conversionResult = contractOutput.convertOutput();
-            assert conversionResult.size() == 1;
-            typeConversionEq.addAll(conversionResult);
-            isOutputConverted = true;
-        }*/
     }
 
     //entered by hand for now
@@ -1398,22 +1335,12 @@ public class InOutManager {
         freeInput.add("b_2_SYMINT", NamedType.BOOL);
         freeInput.add("c_3_SYMINT", NamedType.BOOL);
 
-        /*if (freeInput.containsBool()) {
-            Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
-            typeConversionEq.addAll(conversionResult.getSecond());
-            conversionLocalList.addAll(conversionResult.getFirst());
-        }*/
     }
 
     //entered by hand for now
     private void discoverStateInputVote() {
         stateInput.add("counter_5_SYMINT", NamedType.INT);
-        stateInput.add("out_6_SYMINT", NamedType.BOOL);
-        /*if (stateInput.containsBool()) { //type conversion to spf int type is needed
-            Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = stateInput.convertInput();
-            typeConversionEq.addAll(conversionResult.getSecond());
-            conversionLocalList.addAll(conversionResult.getFirst());
-        }*/
+        //stateInput.add("out_6_SYMINT", NamedType.BOOL);
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
@@ -1429,12 +1356,6 @@ public class InOutManager {
 
         contractOutput.add(referenceObjectName + "r347.out.1.1.2", NamedType.BOOL);
         contractOutput.addInit(referenceObjectName + "r347.out.1.1.2", new BoolExpr(false));
-        /*if (contractOutput.containsBool()) { // isn't that replicated with the state output.
-            ArrayList<Equation> conversionResult = contractOutput.convertOutput();
-            assert conversionResult.size() == 1;
-            typeConversionEq.addAll(conversionResult);
-            isOutputConverted = true;
-        }*/
     }
 
     //entered by hand for now
@@ -1443,22 +1364,11 @@ public class InOutManager {
         freeInput.add("b", NamedType.INT);
         freeInput.add("c", NamedType.INT);
         freeInput.add("threshold", NamedType.INT);
-
-        /*if (freeInput.containsBool()) {
-            Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = freeInput.convertInput();
-            typeConversionEq.addAll(conversionResult.getSecond());
-            conversionLocalList.addAll(conversionResult.getFirst());
-        }*/
     }
 
     //entered by hand for now
     private void discoverStateInputVote2() {
         stateInput.add("out", NamedType.BOOL);
-        /*if (stateInput.containsBool()) { //type conversion to spf int type is needed
-            Pair<ArrayList<VarDecl>, ArrayList<Equation>> conversionResult = stateInput.convertInput();
-            typeConversionEq.addAll(conversionResult.getSecond());
-            conversionLocalList.addAll(conversionResult.getFirst());
-        }*/
     }
 
     //entered by hand for now - order is important, needs to match in order of the input
@@ -1519,9 +1429,6 @@ public class InOutManager {
         return contractOutput.contains(varName, type);
     }
 
-    public boolean isContractOutputStr(String name) {
-        return contractOutput.hasName(name);
-    }
 
     public boolean isStateOutVar(String name) {
         return stateOutput.hasName(name);
@@ -1552,8 +1459,8 @@ public class InOutManager {
         return stateOutput.getReturnInitVal(index);
     }
 
-    public int getContractOutputCount() {
-        return contractOutput.size;
+    public ContractOutput getContractOutput() {
+        return contractOutput;
     }
 
     public String varOutNameByIndex(int index) {

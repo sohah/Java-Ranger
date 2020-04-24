@@ -24,7 +24,6 @@ public class VariableRangeVisitor extends AstMapVisitor {
         super(exprVisitor);
         interestedVarName = new ArrayList<>();
         interestedVarName.add(varName);
-        relatedSymInput = DiscoverContract.contract.rInOutManager.ssaOutToStateInputInf.matchingOutput(varName);
         assert relatedSymInput != null;
     }
 

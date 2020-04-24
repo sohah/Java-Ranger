@@ -178,14 +178,14 @@ public class DiscoveryUtil {
         return true;
     }
 
-
+/*
     public static Pair<VarDecl, Equation> replicateToOut(VarDecl varDecl, String stringName) {
-        VarDecl newVarDecl = new VarDecl(stringName, varDecl.type);
+
 
         Equation eq = new Equation(varDeclToIdExpr(newVarDecl), varDeclToIdExpr(varDecl));
 
         return new Pair(newVarDecl, eq);
-    }
+    }*/
 
     public static Node renameNode(String synthesis_spec, Node node) {
         return new Node(synthesis_spec, node.inputs, node.outputs, node.locals, node.equations, new ArrayList<>(), node.assertions, node.realizabilityInputs, node.contract, node.ivc);

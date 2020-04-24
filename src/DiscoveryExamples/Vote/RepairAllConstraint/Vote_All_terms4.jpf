@@ -9,7 +9,7 @@ symbolic.optimizechoices=false
 
 
 ######## miscellaneous  ######
-symbolic.method=DiscoveryExamples.DiscoveryVoting.makeStep(sym#sym#sym#sym#sym#sym#sym)
+symbolic.method=DiscoveryExamples.DiscoveryVoting.makeStep(sym#sym#sym#sym#sym#sym)
 
 
 symbolic.dp=z3bitvectorinc
@@ -37,10 +37,10 @@ repairMode = 2
 contractDiscoveryOn = true
 
 SpecDirectory=Vote/RepairAllConstraint
-faultySpec=Vote_All_terms4-LOR-0-0,Vote_All_terms4-LOR-2-0
+faultySpec=Vote_All_terms4
 repairInitialValues = true
 z3Solver=true
-mutationEnabled = false
+mutationEnabled = true
 repairMutantsOnly = false
 depthFixed = false
 rangeValueAnalysis = true
