@@ -1,4 +1,4 @@
-target=veritesting.wbs.discovery.DiscoveryWBS
+target=DiscoveryExamples.wbs.DiscoveryWBS
 classpath=${jpf-symbc}/build/examples,${jpf-symbc}/lib/com.ibm.wala.util-1.4.4-SNAPSHOT.jar
 sourcepath=${jpf-symbc}/src/examples
 vm.storage.class=nil
@@ -6,7 +6,7 @@ vm.storage.class=nil
 
 
 ######## miscellaneous  ######
-symbolic.method=veritesting.wbs.discovery.DiscoveryWBS.discoveryLaunch(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
+symbolic.method=DiscoveryExamples.wbs.DiscoveryWBS.discoveryLaunch(sym#sym#sym#sym#sym#sym#sym)
 
 symbolic.dp=z3bitvectorinc
 

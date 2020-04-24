@@ -3,16 +3,16 @@ package DiscoveryExamples.wbs;/*
  * Administrator of the National Aeronautics and Space Administration.
  * All rights reserved.
  *
- * Symbolic Pathfinder (jpf-symbc) is licensed under the Apache License, 
+ * Symbolic Pathfinder (jpf-symbc) is licensed under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
- *        http://www.apache.org/licenses/LICENSE-2.0. 
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0.
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and 
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
@@ -321,16 +321,13 @@ public class DiscoveryWBS {
 
 
     //this is the new method that we are using for ranger discovery to work. Compare that with the original method above for the launching of the WBS. Soon we should try to support automating doing that.
-    public static void discoveryLaunch(int pedal, boolean autoBrake, boolean skid, int WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE, int WBS_Node_WBS_BSCU_rlt_PRE1, int WBS_Node_WBS_rlt_PRE2, int Nor_Pressure, int Alt_Pressure, int Sys_Mode, boolean symVar) {
+    public static void discoveryLaunch(int pedal, boolean autoBrake, boolean skid, int WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE, int WBS_Node_WBS_BSCU_rlt_PRE1, int WBS_Node_WBS_rlt_PRE2, boolean symVar) {
 
         DiscoveryWBS wbs = new DiscoveryWBS();
 
         wbs.WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE = WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE;
         wbs.WBS_Node_WBS_BSCU_rlt_PRE1 = WBS_Node_WBS_BSCU_rlt_PRE1;
         wbs.WBS_Node_WBS_rlt_PRE2 = WBS_Node_WBS_rlt_PRE2;
-        wbs.Nor_Pressure = Nor_Pressure;
-        wbs.Alt_Pressure = Alt_Pressure;
-        wbs.Sys_Mode = Sys_Mode;
 
         if (symVar) {
             wbs.update(pedal, autoBrake, skid);
@@ -392,7 +389,7 @@ public class DiscoveryWBS {
         //launch(0, false, false, 0, false, false, 0, false, false);
 
 
-        discoveryLaunch(0, false, false, 0, 0, 0, 0, 0, 0, false);
+        discoveryLaunch(0, false, false, 0, 0, 0, false);
 
 
     }

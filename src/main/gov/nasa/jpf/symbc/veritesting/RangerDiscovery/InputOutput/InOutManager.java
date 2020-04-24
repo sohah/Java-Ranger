@@ -116,7 +116,7 @@ public class InOutManager {
     // symbolic variables for which we need a dynamic mechanism to get the right name. This can be handled in a
     // later stage.
     public static String setSymVarName() {
-        if (Config.spec.equals("wbs")) Config.symVarName = "symVar_10_SYMINT";
+        if (Config.spec.equals("wbs")) Config.symVarName = "symVar_7_SYMINT";
         else if (Config.spec.equals("tcas")) Config.symVarName = "symVar_13_SYMINT";
         else if (Config.spec.equals("vote")) Config.symVarName = "symVar_6_SYMINT";
         else if (Config.spec.equals("gpca")) Config.symVarName = "symVar_217_SYMINT";
@@ -369,10 +369,6 @@ public class InOutManager {
         stateInput.add("WBS_Node_WBS_BSCU_SystemModeSelCmd_rlt_PRE_4_SYMINT", NamedType.INT);
         stateInput.add("WBS_Node_WBS_BSCU_rlt_PRE1_5_SYMINT", NamedType.INT);
         stateInput.add("WBS_Node_WBS_rlt_PRE2_6_SYMINT", NamedType.INT);
-
-        stateInput.add("Nor_Pressure_7_SYMINT", NamedType.INT);
-        stateInput.add("Alt_Pressure_8_SYMINT", NamedType.INT);
-        stateInput.add("Sys_Mode_9_SYMINT", NamedType.INT);
 
     }
 
