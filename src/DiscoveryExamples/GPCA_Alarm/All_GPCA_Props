@@ -1,0 +1,10 @@
+  p1 = ((System_On and In_Therapy and Reservoir_Empty) => (out_Highest_Level_Alarm = 4));
+  p2 = ((System_On and In_Therapy and Air_In_Line) => (out_Highest_Level_Alarm >= 3));
+  p3 = ((System_On and In_Therapy and Reservoir_Empty and (Volume_Infused > VTBI_High)) => (out_Highest_Level_Alarm >= 3));
+  p4 = ((System_On and Occlusion) => (out_Highest_Level_Alarm >=3));
+  p5 = ( ((System_On and Door_Open) =>  (out_Highest_Level_Alarm >= 3)));
+  p6 = ((System_On and (out_Highest_Level_Alarm>=3) and (Disable_Audio =0)) => ((out_Audio_Notification_Command = Audio_Level) and (out_Is_Audio_Disabled=0)));
+  p7 = ((System_On and (Disable_Audio > 0)) => ((out_Audio_Notification_Command = 0) and (out_Is_Audio_Disabled = Disable_Audio)));
+  p8 = ((System_On and In_Therapy and (Reservoir_Volume < Low_Reservoir)) => (out_Highest_Level_Alarm >= 2));
+  p9 = ((System_On ) => ((out_Highest_Level_Alarm >= 0) and (out_Highest_Level_Alarm <= 4)));
+  p10 = ((System_On) => (out_Is_Audio_Disabled = Disable_Audio));

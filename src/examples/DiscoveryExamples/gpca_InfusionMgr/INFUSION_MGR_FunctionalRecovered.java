@@ -1303,6 +1303,28 @@ public class INFUSION_MGR_FunctionalRecovered {
 
         /************Discovery properties**********/
 
+        /****************** fixing invalid properties *****************/
+         //prop 4
+        //assert (!((!rtu_TLM_MODE_IN.System_On) || (rtu_ALARM_IN.Highest_Level_Alarm == 4)) || ((rty_IM_OUT.Commanded_Flow_Rate == 0)));
+
+        //prop14
+        //p1
+        //assert ((((rty_IM_OUT.Current_System_Mode >= 2) || (rty_IM_OUT.Commanded_Flow_Rate == 0)) ^ ((rty_IM_OUT.Current_System_Mode > 8) ^ (rty_IM_OUT.Current_System_Mode == 5))) && (((rty_IM_OUT.Current_System_Mode < 0) || (rty_IM_OUT.Current_System_Mode >= 1)) ^ (!(rty_IM_OUT.Current_System_Mode >= 0) || (! rtu_TLM_MODE_IN.System_On))));
+
+        //p2
+        //assert (!(!((rty_IM_OUT.Current_System_Mode >= 0) ^ (rty_IM_OUT.Current_System_Mode > 6)) || ((rty_IM_OUT.Current_System_Mode < 1) ^ (! rtu_TLM_MODE_IN.System_On))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+
+        //p3
+       //assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode == 6) ^ (rty_IM_OUT.Current_System_Mode < 1)) ^ ((rty_IM_OUT.Current_System_Mode >= 5) && (rty_IM_OUT.Current_System_Mode >= 2)))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+
+        //p4
+  //      assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode <= 0) ^ (rty_IM_OUT.Current_System_Mode >= 7)) || (rty_IM_OUT.Current_System_Mode == 8))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+
+
+        //p5
+//        assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode > 6) || (rty_IM_OUT.Current_System_Mode == 7)) || (rty_IM_OUT.Current_System_Mode == 8))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+
+
     }
 
     public static void main(String[] args) {

@@ -1,0 +1,14 @@
+p1 = ((Current_System_Mode = 0) or (Current_System_Mode = 1) or (Current_System_Mode = 2) or
+    (Current_System_Mode = 3) or (Current_System_Mode = 4) or (Current_System_Mode = 6) or (Current_System_Mode = 7) or
+    (Current_System_Mode =8));
+p2 = (not(System_On) => Current_System_Mode = 0);
+    p3 = (System_On and (Highest_Level_Alarm = 4) => (Commanded_Flow_Rate = 0));
+    p5 = (System_On and (Configured < 1))=> (Commanded_Flow_Rate = 0);
+    p6 = (System_On and (Highest_Level_Alarm = 2)) => ((Current_System_Mode = 1) or (Current_System_Mode = 2) or (Current_System_Mode = 6) or (Current_System_Mode = 7) or (Current_System_Mode = 8) );
+    p7 = (Current_System_Mode = 0) => (Commanded_Flow_Rate = 0);
+    p8 = (System_On and (Highest_Level_Alarm = 2)) => (not(Current_System_Mode = 3) and not(Current_System_Mode = 4));
+    p9 = (System_On and (Highest_Level_Alarm = 4)) => ((Current_System_Mode = 1) or (Current_System_Mode = 6) or (Current_System_Mode = 7));
+    p10 = (System_On and Current_System_Mode = 2 ) => Commanded_Flow_Rate = Flow_Rate_Basal;
+    p11 = (System_On and (Current_System_Mode = 3 ))  => (Commanded_Flow_Rate = Flow_Rate_Intermittent_Bolus);
+    p12 = (System_On and (Current_System_Mode = 4 ))  => (Commanded_Flow_Rate = Flow_Rate_Patient_Bolus);
+    p13 = (System_On and (Current_System_Mode = 1)) => (Commanded_Flow_Rate = 0);
