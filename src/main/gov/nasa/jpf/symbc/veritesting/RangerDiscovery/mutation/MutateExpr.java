@@ -17,6 +17,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
     private final SpecInOutManager tInOutManager;
     private final ShouldApplyMutation shouldApplyMutation;
     public List<GenericRepairNode> repairNodes = new ArrayList<>();
+    public int repairDepth;
     private final List<VarDecl> inputs, outputs;
 
     private int mutationIndex;
@@ -143,6 +144,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
             int exprSize = e.accept(new ExprSizeVisitor(varDecls, true));
             GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls, exprSize);
             repairNodes.add(genericRepairNode);
+            repairDepth = genericRepairNode.repairDepth;
             NodeCallExpr callExpr = genericRepairNode.callExpr;
             RepairExpr repairExpr = new RepairExpr(e, callExpr);
             return repairExpr;

@@ -125,7 +125,7 @@ public class MutationUtils {
                         writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory
                                 + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-"
                                 + repairMutationIndex + "-" + mutationIndex);
-                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType, mutateExpr.repairNodes));
+                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType, mutateExpr.repairNodes, mutateExpr.repairDepth, false));
                 }
             }
         }

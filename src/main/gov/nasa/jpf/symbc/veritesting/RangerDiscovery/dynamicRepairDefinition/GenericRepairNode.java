@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.Expr;
 import jkind.lustre.NodeCallExpr;
 import jkind.lustre.RepairNode;
@@ -16,6 +17,7 @@ public class GenericRepairNode {
     final List<VarDecl> actualParamVarDecls;
     public final RepairNode nodeDefinition;
     public final NodeCallExpr callExpr;
+    public int repairDepth;
 
     /**
      * Takes the number of declared variables as well as the original expression size.
@@ -27,7 +29,9 @@ public class GenericRepairNode {
     public GenericRepairNode(List<VarDecl> actualParamVarDecls, int exprSize) {
         this.actualParamVarDecls = actualParamVarDecls;
         callExpr = generateCallExpr();
-        nodeDefinition = generateRepairDef(exprSize);
+        Pair<Integer, RepairNode> depthAndNode = generateRepairDef(exprSize);
+        repairDepth = depthAndNode.getFirst();
+        nodeDefinition = depthAndNode.getSecond();
     }
 
 
@@ -35,7 +39,7 @@ public class GenericRepairNode {
         return new NodeCallExpr(name, (List<Expr>) (List<?>) varDeclToIdExpr(actualParamVarDecls));
     }
 
-    private RepairNode generateRepairDef(int exprSize) {
+    private Pair<Integer, RepairNode> generateRepairDef(int exprSize) {
         return new DynamicRepairNode(name).create(actualParamVarDecls, exprSize);
     }
 }

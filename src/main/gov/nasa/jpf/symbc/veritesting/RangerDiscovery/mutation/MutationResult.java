@@ -11,9 +11,11 @@ public class MutationResult {
     final String mutationIdentifier;
     final MutationType mutationType;
     final List<GenericRepairNode> repairNodes;
+    final int repairDepth;
+    final boolean isPerfect;
 
 
-    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes) {
+    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect) {
         this.mutatedExpr = mutatedExpr;
         this.mutationIndex = mutationIndex;
         this.mutationType = mutationType;
@@ -21,5 +23,7 @@ public class MutationResult {
                 "-" + mutationIndex);
         this.repairNodes = repairNodes;
         assert repairNodes.size() == 1; // currently we are not expecting multiple repair nodes with a single mutant.
+        this.repairDepth = repairDepth;
+        this.isPerfect = isPerfect;
     }
 }

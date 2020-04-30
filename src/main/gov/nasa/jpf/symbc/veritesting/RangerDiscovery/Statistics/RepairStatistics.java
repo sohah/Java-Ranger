@@ -72,6 +72,7 @@ public class RepairStatistics {
 
         out.println("---------------------------SPEC STATS-------------------");
         out.print("Spec,     ");
+        out.print("Perfect,     ");
         out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
         out.print("allCandidatesAttempted,     ");
@@ -84,6 +85,7 @@ public class RepairStatistics {
         out.print("avgForallTime,     ");
         out.println();
         out.print(Config.currFaultySpec + ",     ");
+        out.print(Config.isCurrMutantPerfect() + ",     ");
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
         out.print(candidatesInAllLoops + ",     ");
@@ -113,13 +115,12 @@ public class RepairStatistics {
 
         String tightestProp;
         Node tighterNode;
-        if(MinimalRepairDriver.repairs.size() > 0){
+        if (MinimalRepairDriver.repairs.size() > 0) {
             tighterNode = MinimalRepairDriver.repairs.get(MinimalRepairDriver.repairs.size() - 1);
-            tightestProp = tighterNode.equations.get(tighterNode.equations.size()-1).toString();
-        }
-        else tightestProp = "";
+            tightestProp = tighterNode.equations.get(tighterNode.equations.size() - 1).toString();
+        } else tightestProp = "";
 
-        Config.allMutationStatistics.writeFinalResult(Config.currFaultySpec, Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
+        Config.allMutationStatistics.writeFinalResult(Config.currFaultySpec, Config.isCurrMutantPerfect(), Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
     }
 
     private void printRepairProp() throws IOException {

@@ -2,6 +2,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
@@ -31,13 +32,16 @@ public class DynamicRepairNode {
         this.id = id;
     }
 
-    public RepairNode create(List<VarDecl> actualParamVarDecls, int exprSize) { //exprSize here indecates how many boolean nodes are in the expression, not how many possible terms.
+    public Pair<Integer, RepairNode> create(List<VarDecl> actualParamVarDecls, int exprSize) { //exprSize here indecates how many boolean nodes are in the expression, not how many possible terms.
         populateBoolIntInputs(actualParamVarDecls);
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
-        if (Config.depthFixed) outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        int balancedTreeDepth;
+
+        if (Config.depthFixed){ outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+        balancedTreeDepth = Config.repairNodeDepth;
+        }
         else {
-            int balancedTreeDepth;
             double logDepth = (Math.log(exprSize) / Math.log(2));
             if (logDepth == 0) {
                 assert exprSize == 1;
@@ -45,7 +49,7 @@ public class DynamicRepairNode {
             } else balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
             outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
         }
-        return new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null);
+        return new Pair<Integer, RepairNode>(balancedTreeDepth, new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null));
     }
 
     private VarDecl defineTreeLevel(int balancedTreeDepth, List<Character> pathLabel) {
@@ -172,8 +176,9 @@ public class DynamicRepairNode {
      * Disable_Audio: 0-2
      * Highest_level_alarm: 1-4
      * Flow_Rate_KVO: 0-5
-     *
+     * <p>
      * The method also creates
+     *
      * @param leftIntExpr
      * @param holeExpr
      * @param intInputs

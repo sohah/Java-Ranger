@@ -3,6 +3,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
 import jkind.lustre.IntExpr;
@@ -62,6 +63,8 @@ public class Config {
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static String[] faultySpecs;
+    public static int[] repairDepth;
+    public static String perfectMutant;
     public static boolean z3Solver = true;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static boolean depthFixed = false;
@@ -97,7 +100,10 @@ public class Config {
                 tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-                faultySpecs = processMutants(mutationResults, origSpec, currFaultySpec);
+                Pair<Pair<String[], int[]>, String> triple = processMutants(mutationResults, origSpec, currFaultySpec);
+                faultySpecs = triple.getFirst().getFirst();
+                repairDepth = triple.getFirst().getSecond();
+                perfectMutant = triple.getSecond();
             }
         }
 
@@ -105,7 +111,10 @@ public class Config {
             return false;
 
         currFaultySpec = faultySpecs[faultySpecIndex];
+        repairNodeDepth = repairDepth[faultySpecIndex];
+
         ++faultySpecIndex;
+
 
         tFileName = folderName + currFaultySpec;
         if (!mutationEnabled) { //sanity check
@@ -122,5 +131,10 @@ public class Config {
 
         VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
+    }
+
+    public static boolean isCurrMutantPerfect() {
+        if (currFaultySpec.equals(perfectMutant)) return true;
+        else return false;
     }
 }

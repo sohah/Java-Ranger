@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 
 public class ProcessMutants {
 
-    public static String[] processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec) {
+    public static Pair<Pair<String[], int[]>, String> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec) {
         assert mutationResults.size() > 0; //there must be mutants to be processed to call this method.
         String[] mutatedSpecs = new String[mutationResults.size()];
+        int[] repairDepths = new int[mutationResults.size()];
+        String perfectMutant = null;
 
         for (int i = 0; i < mutationResults.size(); i++) {
             MutationResult mutationResult = mutationResults.get(i);
@@ -19,8 +22,13 @@ public class ProcessMutants {
             String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
             writeToFile(specFileName, newProgram.toString(), false, true);
             mutatedSpecs[i] = specFileName;
+            repairDepths[i] = mutationResult.repairDepth;
+            if (mutationResult.isPerfect)
+                perfectMutant = specFileName;
         }
-        return mutatedSpecs;
+        //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
+
+        return new Pair(new Pair(mutatedSpecs, repairDepths), perfectMutant);
     }
 
 

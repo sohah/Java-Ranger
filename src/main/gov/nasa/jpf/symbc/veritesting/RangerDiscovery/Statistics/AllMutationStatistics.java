@@ -20,7 +20,7 @@ public class AllMutationStatistics {
 
 
     public AllMutationStatistics() {
-        String out = ("currFaultySpec,     ") + ("repairNodeDepth,     ") + ("terminationResult,     ") +
+        String out = ("currFaultySpec,     ") +  ("perfect,     ") + ("repairNodeDepth,     ") + ("terminationResult,     ") +
 //                ("allCandidatesAttempted,     ") +
                 ("repairsFoundNum,     ") + ("executionTime,     ") + ("totalQueriesTime,     ") +
                 ("totalExistsTime,     ") + ("totalForallTime,     ") + ("totalExistsNum,     ") +
@@ -39,11 +39,12 @@ public class AllMutationStatistics {
 
     }
 
-    public void writeFinalResult(String currFaultySpec, int repairNodeDepth, String terminationResult, int candidatesInAllLoops, int repairsFoundNum,
+    public void writeFinalResult(String currFaultySpec, boolean isPerfectMutant, int repairNodeDepth, String terminationResult, int candidatesInAllLoops, int repairsFoundNum,
                                  long executionTime, long totalQueryTime, long totalExistsTime, long totalForallTime, long totalExistsNum,
                                  long totalForallNum, long exitsAvg, long forallAvg, String tightestProp) {
 
         String out = (currFaultySpec + ",     ") +
+                (isPerfectMutant + ",    ") +
                 (repairNodeDepth + ",    ")
                 + (terminationResult + ",     ")
 //                + (candidatesInAllLoops + ",     ")
