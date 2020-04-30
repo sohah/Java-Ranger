@@ -93,6 +93,7 @@ public class DiscoverContract {
                     assert false; //removed definition repair for now.
                 //repairDef(dynRegion);
                 //executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
+                allMutationStatistics.doneAllMutants();
                 System.out.println("The overall time for : " + currFaultySpec + "= " + executionTime + " sec");
             }
         } catch (IOException e) {
@@ -130,7 +131,7 @@ public class DiscoverContract {
 
         System.out.println("Outer loop max count:   ---> " + OUTERLOOP_MAXLOOPCOUNT);
         System.out.println("Minimal loop max count:   ---> " + MINIMALLOOP_MAXLOOPCOUNT);
-        repairStatistics = new RepairStatistics(tFileName, Integer.toString(repairNodeDepth), MutationType.UNKNOWN);
+        repairStatistics = new RepairStatistics(tFileName, MutationType.UNKNOWN);
 
         //print out the translation once, for very first time we hit linearlization for the method of
         // interest.

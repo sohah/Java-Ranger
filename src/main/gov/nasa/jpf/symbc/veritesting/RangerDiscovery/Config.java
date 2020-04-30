@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.VeritestingListener;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
@@ -82,12 +83,15 @@ public class Config {
 
     static String mutationDir = "../src/DiscoveryExamples/mutants";
 
-    public static int milliSecondSimplification = 1;
+    public static int milliSecondSimplification = 1000; // must be in thousands, since it is usually used for simplification and to also check if we exceeded the timeout which is also in seconds.
+
+    public static AllMutationStatistics allMutationStatistics;
 
     public static boolean canSetup() throws IOException {
 
         if (firstTime) {
             DiscoverContract.contract = new Contract();
+            allMutationStatistics = new AllMutationStatistics();
             firstTime = false;
             if (mutationEnabled) {
                 tFileName = folderName + currFaultySpec;

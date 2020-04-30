@@ -3,6 +3,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair.MinimalRepairDriver;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
+import jkind.lustre.Equation;
 import jkind.lustre.Node;
 
 import java.io.BufferedWriter;
@@ -10,9 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.milliSecondSimplification;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.executionTime;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.loopCount;
 
 
 /**
@@ -30,10 +33,11 @@ public class RepairStatistics {
     public static PrintWriter out;
     public TerminationResult terminationResult;
     CandidateStatistics candidateStatistics;
+    int candidatesInAllLoops = 0; //accumulative number of all candidates attempted in both the inner and the outer loop.
     String repairPropFileName;
 
 
-    public RepairStatistics(String fileName, String depth, MutationType mutationType) {
+    public RepairStatistics(String fileName, MutationType mutationType) {
         LocalDateTime time = LocalDateTime.now();
         String statisticFileName = Config.folderName + Config.currFaultySpec + "-stat" + time + ".txt";
         repairPropFileName = Config.folderName + Config.currFaultySpec + "-stat_prop" + time + ".txt";
@@ -43,7 +47,6 @@ public class RepairStatistics {
             bw = new BufferedWriter(fw);
             out = new PrintWriter(bw);
             out.print(fileName + "     ");
-            out.print("depth:" + depth + "     ");
             out.print("mutationType:" + mutationType + "     "); //number of iterations in the outer loop
             out.println("randZ3Seed:" + Config.randZ3Seed);
             out.println();
@@ -57,6 +60,7 @@ public class RepairStatistics {
     public void printCandStatistics(String loopCount, boolean minimal, int candidateNum, QueryType queryType,
                                     long queryTime) {
         candidateStatistics.printCandStatistics(loopCount, minimal, candidateNum, queryType, queryTime);
+        candidatesInAllLoops += candidateNum;
     }
 
     public void advanceTighterLoop(boolean repairFound) {
@@ -67,8 +71,10 @@ public class RepairStatistics {
         executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
 
         out.println("---------------------------SPEC STATS-------------------");
+        out.print("Spec,     ");
         out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
+        out.print("allCandidatesAttempted,     ");
         out.print("repairsFoundNum,     ");
         out.print("executionTime,     ");
         out.print("total Queries Time,     ");
@@ -77,26 +83,43 @@ public class RepairStatistics {
         out.print("avgExistsTime,     ");
         out.print("avgForallTime,     ");
         out.println();
+        out.print(Config.currFaultySpec + ",     ");
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
+        out.print(candidatesInAllLoops + ",     ");
         out.print(candidateStatistics.repairsFoundNum + ",     ");
         out.print(executionTime + ",     ");
         out.print(candidateStatistics.totalTime + ",     ");
         out.print(candidateStatistics.totalExistsTime + ",     ");
         out.print(candidateStatistics.totalForallTime + ",     ");
 
-        if (candidateStatistics.totalExistsNum != 0)
-            out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + ",     ");
-        else
+        long exitsAvg = 0;
+        long forallAvg = 0;
+        if (candidateStatistics.totalExistsNum != 0) {
+            exitsAvg = candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum;
+            out.print(exitsAvg + ",     ");
+        } else
             out.print("N/A,     ");
-        if (candidateStatistics.totalForallNum != 0)
-            out.print(candidateStatistics.totalForallTime / candidateStatistics.totalForallNum + ",     ");
-        else
+        if (candidateStatistics.totalForallNum != 0) {
+            forallAvg = candidateStatistics.totalForallTime / candidateStatistics.totalForallNum;
+            out.print(forallAvg + ",     ");
+        } else
             out.print("N/A,     ");
+
         out.println();
         out.close();
 
         printRepairProp();
+
+        String tightestProp;
+        Node tighterNode;
+        if(MinimalRepairDriver.repairs.size() > 0){
+            tighterNode = MinimalRepairDriver.repairs.get(MinimalRepairDriver.repairs.size() - 1);
+            tightestProp = tighterNode.equations.get(tighterNode.equations.size()-1).toString();
+        }
+        else tightestProp = "";
+
+        Config.allMutationStatistics.writeFinalResult(Config.currFaultySpec, Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
     }
 
     private void printRepairProp() throws IOException {
