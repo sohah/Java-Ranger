@@ -38,18 +38,19 @@ public class DynamicRepairNode {
         pathLabel.add('R'); //for root node
         int balancedTreeDepth;
 
-        if (Config.depthFixed){ outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
-        balancedTreeDepth = Config.repairNodeDepth;
-        }
-        else {
+        if (Config.depthFixed) {
+            outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+            balancedTreeDepth = Config.repairNodeDepth;
+        } else {
             double logDepth = (Math.log(exprSize) / Math.log(2));
             if (logDepth == 0) {
                 assert exprSize == 1;
                 balancedTreeDepth = exprSize;
             } else balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
+
             outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
         }
-        return new Pair<Integer, RepairNode>(balancedTreeDepth, new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null));
+        return new Pair<Integer, RepairNode>(balancedTreeDepth - 1, new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null));
     }
 
     private VarDecl defineTreeLevel(int balancedTreeDepth, List<Character> pathLabel) {
