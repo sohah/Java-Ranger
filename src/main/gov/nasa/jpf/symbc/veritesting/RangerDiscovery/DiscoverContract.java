@@ -66,6 +66,7 @@ public class DiscoverContract {
     public static String className;
     private static boolean repaired;
     private static String innerDirectory; // directory under ../src/DiscoveryExample
+    public static long executionTime = 0;
 
     /***** end of unused vars***/
 
@@ -74,7 +75,7 @@ public class DiscoverContract {
         fillUserSynNodes();
         try {
             while (!specAlreadyMatching && Config.canSetup()) {
-                long singleTermTime = System.currentTimeMillis();
+                executionTime = System.currentTimeMillis();
 
                 System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
                 resetState();
@@ -86,12 +87,13 @@ public class DiscoverContract {
                         System.out.println("jkind exception encountered aborting specification" + jkindExp);
                         repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;
                         repairStatistics.printSpecStatistics();
+                        assert false;
                     }
                 else
                     assert false; //removed definition repair for now.
                 //repairDef(dynRegion);
-                singleTermTime = (System.currentTimeMillis() - singleTermTime) / milliSecondSimplification;
-                System.out.println("The overall time for : " + currFaultySpec + "= " + singleTermTime + " milli-sec");
+                //executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
+                System.out.println("The overall time for : " + currFaultySpec + "= " + executionTime + " sec");
             }
         } catch (IOException e) {
             System.out.println("Unable to read specification file.! Aborting");
@@ -187,7 +189,7 @@ public class DiscoverContract {
             repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
                 case VALID: //valid match
-                    System.out.println("^-^Ranger Discovery Result ^-^");
+                    System.out.println("^-^Starting Minimal Loop ^-^");
                     repairStatistics.advanceTighterLoop(true);
                     if (loopCount > 0) {// we had at least a single repair/synthesis, at that point we want to find
                         // minimal repair.
@@ -280,10 +282,10 @@ public class DiscoverContract {
                         default:
                             System.out.println("unexpected property status for synthesis query " + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             DiscoverContract.repaired = false;
-                            if (singleQueryTime >= timeOut)
+                            /*if (singleQueryTime >= timeOut)
                                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
-                            else
-                                repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                            else*/
+                            repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
                             repairStatistics.printSpecStatistics();
                             //assert false;
                             return;
@@ -292,10 +294,10 @@ public class DiscoverContract {
                 default:
                     System.out.println("Outerloop unexpected property status for the counter example query: " + counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus().toString());
                     DiscoverContract.repaired = false;
-                    if (singleQueryTime >= timeOut)
+                    /*if (singleQueryTime >= timeOut)
                         repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
-                    else
-                        repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                    else*/
+                    repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
 
                     repairStatistics.printSpecStatistics();
                     return;

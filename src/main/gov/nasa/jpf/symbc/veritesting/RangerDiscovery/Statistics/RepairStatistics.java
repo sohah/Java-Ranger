@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.milliSecondSimplification;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.executionTime;
+
 
 /**
  * This class collects statistics among different repairs and different loops. There is a specific sequence of method
@@ -61,18 +64,22 @@ public class RepairStatistics {
     }
 
     public void printSpecStatistics() throws IOException {
+        executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
+
         out.println("---------------------------SPEC STATS-------------------");
         out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
+        out.print("executionTime,     ");
         out.print("totalExistsTime,     ");
         out.print("totalForallTime,     ");
         out.print("repairsFoundNum,     ");
-        out.print("totalTime,     ");
+        out.print("total Queries Time,     ");
         out.print("avgExistsTime,     ");
         out.print("avgForallTime,     ");
         out.println();
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
+        out.print(executionTime + ",     ");
         out.print(candidateStatistics.totalExistsTime + ",     ");
         out.print(candidateStatistics.totalForallTime + ",     ");
         out.print(candidateStatistics.repairsFoundNum + ",     ");
