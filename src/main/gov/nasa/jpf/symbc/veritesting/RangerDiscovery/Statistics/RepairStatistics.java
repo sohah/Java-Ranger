@@ -69,21 +69,22 @@ public class RepairStatistics {
         out.println("---------------------------SPEC STATS-------------------");
         out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
+        out.print("repairsFoundNum,     ");
         out.print("executionTime,     ");
+        out.print("total Queries Time,     ");
         out.print("totalExistsTime,     ");
         out.print("totalForallTime,     ");
-        out.print("repairsFoundNum,     ");
-        out.print("total Queries Time,     ");
         out.print("avgExistsTime,     ");
         out.print("avgForallTime,     ");
         out.println();
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
+        out.print(candidateStatistics.repairsFoundNum + ",     ");
         out.print(executionTime + ",     ");
+        out.print(candidateStatistics.totalTime + ",     ");
         out.print(candidateStatistics.totalExistsTime + ",     ");
         out.print(candidateStatistics.totalForallTime + ",     ");
-        out.print(candidateStatistics.repairsFoundNum + ",     ");
-        out.print(candidateStatistics.totalTime + ",     ");
+
         if (candidateStatistics.totalExistsNum != 0)
             out.print(candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum + ",     ");
         else
