@@ -136,7 +136,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
         return e;
     }
 
-    private Expr wrapRepairExpr(BinaryExpr e) {
+    private Expr wrapRepairExpr(Expr e) {
         if (shouldApplyMutation.shouldApplyRepairMutation()) {
             IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager, inputs, outputs);
             e.accept(idExprVisitor);
@@ -250,7 +250,10 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(UnaryExpr e) {
-        e.expr.accept(this);
-        return e;
+        Expr repairExpr = wrapRepairExpr(e);
+        if (repairExpr instanceof RepairExpr) {
+            return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
+        }
+        return e.expr.accept(this);
     }
 }
