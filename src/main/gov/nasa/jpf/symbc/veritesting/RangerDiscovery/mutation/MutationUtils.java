@@ -89,7 +89,8 @@ public class MutationUtils {
 
         MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
                 MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
-                MutationType.REPAIR_EXPR_MUT, MutationType.MISSING_COND_MUT, MutationType.OPERAND_REPLACEMENT_MUT} :
+                MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
+                MutationType.OPERAND_REPLACEMENT_MUT} :
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
