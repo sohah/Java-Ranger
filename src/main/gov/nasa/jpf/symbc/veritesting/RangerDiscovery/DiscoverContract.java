@@ -75,13 +75,13 @@ public class DiscoverContract {
         fillUserSynNodes();
         try {
             while (!specAlreadyMatching && Config.canSetup()) {
-                executionTime = System.currentTimeMillis();
 
                 System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
                 resetState();
                 assert (userSynNodes.size() > 0);
                 if (Config.specLevelRepair)
                     try {
+                        executionTime = System.currentTimeMillis();
                         repairSpec();
                     } catch (JKindException jkindExp) {
                         System.out.println("jkind exception encountered aborting specification" + jkindExp);
@@ -185,7 +185,7 @@ public class DiscoverContract {
             long singleQueryTime = System.currentTimeMillis();
 
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
-            singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / milliSecondSimplification;
+            singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
 
             repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
@@ -247,7 +247,7 @@ public class DiscoverContract {
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 1, false, false);
-                    singleQueryTime = (System.currentTimeMillis() - singleQueryTime) / milliSecondSimplification;
+                    singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
                     repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:

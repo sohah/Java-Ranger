@@ -9,6 +9,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.SketchVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.TerminationResult;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import jkind.api.results.JKindResult;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
@@ -64,8 +65,7 @@ public class MinimalRepairDriver {
      * @param flatExtendedPgm       This is the program we started with that has the sketch extendion, repair construct, arround places we want to repair.    @return
      */
 
-    public static Program execute(Program counterExamplePgm, Program repairedProgram, ARepairSynthesis
-            lastSynthizedContract, Program flatExtendedPgm) {
+    public static Program execute(Program counterExamplePgm, Program repairedProgram, ARepairSynthesis lastSynthizedContract, Program flatExtendedPgm) {
 
 
         repairs.add(repairedProgram.getMainNode());
@@ -101,28 +101,24 @@ public class MinimalRepairDriver {
                     String fileName;
                     if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
                         fileName = currFaultySpec + "_" + "rPrimeExists.lus";
-                    else
-                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
+                    else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
 
                     writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
                     System.out.println("ThereExists Query of : " + fileName);
 
                     singleQueryTime1 = System.currentTimeMillis();
-                    JKindResult synthesisResult = callJkind(fileName, false, (tPrimeExistsQ
-                            .getMaxTestCaseK() - 1), true, true);
+                    JKindResult synthesisResult = callJkind(fileName, false, (tPrimeExistsQ.getMaxTestCaseK() - 1), true, true);
 
-                    singleQueryTime1 = (System.currentTimeMillis() - singleQueryTime1) / Config.milliSecondSimplification;
+                    singleQueryTime1 = (System.currentTimeMillis() - singleQueryTime1);
 
                     //System.out.println("TIME of ThereExists Query of : " + fileName + "= " + singleQueryTime);
-                    System.out.println("TIME = " + singleQueryTime1);
-                    repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount,
-                            QueryType.THERE_EXISTS, singleQueryTime1);
+                    System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime1));
+                    repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount, QueryType.THERE_EXISTS, singleQueryTime1);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
                             System.out.println("^-^ Ranger Discovery Result ^-^");
-                            System.out.println("No more R' can be found, last known good repair was found at, outer loop # = " +
-                                    DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount);
+                            System.out.println("No more R' can be found, last known good repair was found at, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount);
                             canFindMoreTighterRepair = false;
                             repairStatistics.terminationResult = TerminationResult.TIGHTEST_REACHED;
                             break;
@@ -131,8 +127,7 @@ public class MinimalRepairDriver {
 
                             if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
                                 fileName = currFaultySpec + "_" + "rPrimeCandidate.lus";
-                            else
-                                fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
+                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
 
                             writeToFile(fileName, candTPrimePgm.toString(), true, false);
 
@@ -140,8 +135,7 @@ public class MinimalRepairDriver {
 
                             if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
                                 fileName = currFaultySpec + "_" + "forAllMinimal" + ".lus";
-                            else
-                                fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" + ".lus";
+                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" + ".lus";
 
                             writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 
@@ -155,9 +149,8 @@ public class MinimalRepairDriver {
                             singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2) / milliSecondSimplification;
 
                             //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
-                            System.out.println("TIME = " + singleQueryTime2);
-                            repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount,
-                                    QueryType.FORALL, singleQueryTime2);
+                            System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime2));
+                            repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount, QueryType.FORALL, singleQueryTime2);
 
                             switch (counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus()) {
                                 case VALID:
@@ -223,13 +216,11 @@ public class MinimalRepairDriver {
                 candidateLoopCount = 0;
             }
         }
-        if (!tighterRepairFound)
-            repairStatistics.advanceTighterLoop(false);
+        if (!tighterRepairFound) repairStatistics.advanceTighterLoop(false);
 
         //   repairStatistics.printSpecStatistics();
 
-        System.out.println("Minimal repair finished with the following result, outer loop # = " + DiscoverContract.outerLoopRepairNum +
-                " minimal repair loop # = " + lastKnownRepairLoopCount + " the LAST candidate repair loop # = " + successfulCandidateNum);
+        System.out.println("Minimal repair finished with the following result, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount + " the LAST candidate repair loop # = " + successfulCandidateNum);
         return laskKnwnGoodRepairPgm;
     }
 
@@ -237,8 +228,7 @@ public class MinimalRepairDriver {
     //unfortungely we will do string comparision since node does not implement isEqual method.
     private static boolean containsNode(ArrayList<Node> repairs, Node mainNode) {
         for (Node node : repairs) {
-            if (node.toString().equals(mainNode.toString()))
-                return true;
+            if (node.toString().equals(mainNode.toString())) return true;
         }
         return false;
     }

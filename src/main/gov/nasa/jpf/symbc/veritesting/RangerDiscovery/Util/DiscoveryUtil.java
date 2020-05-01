@@ -46,6 +46,9 @@ public class DiscoveryUtil {
     }
 
 
+    public static float convertTimeToSecond(float timInMilli){
+        return timInMilli/ milliSecondSimplification;
+    }
     public static BinaryOp rangerBinaryOptoLusterOp(String s) {
         BinaryOp op;
 

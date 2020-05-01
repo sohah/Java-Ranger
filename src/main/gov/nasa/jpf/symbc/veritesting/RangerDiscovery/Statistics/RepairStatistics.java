@@ -2,6 +2,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair.MinimalRepairDriver;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import jkind.lustre.Equation;
 import jkind.lustre.Node;
@@ -57,8 +58,7 @@ public class RepairStatistics {
         }
     }
 
-    public void printCandStatistics(String loopCount, boolean minimal, int candidateNum, QueryType queryType,
-                                    long queryTime) {
+    public void printCandStatistics(String loopCount, boolean minimal, int candidateNum, QueryType queryType, long queryTime) {
         candidateStatistics.printCandStatistics(loopCount, minimal, candidateNum, queryType, queryTime);
         candidatesInAllLoops += candidateNum;
     }
@@ -68,7 +68,7 @@ public class RepairStatistics {
     }
 
     public void printSpecStatistics() throws IOException {
-        executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
+        executionTime = (System.currentTimeMillis() - executionTime);
 
         out.println("---------------------------SPEC STATS-------------------");
         out.print("Spec,     ");
@@ -90,23 +90,21 @@ public class RepairStatistics {
         out.print(terminationResult.name() + ",     ");
         out.print(candidatesInAllLoops + ",     ");
         out.print(candidateStatistics.repairsFoundNum + ",     ");
-        out.print(executionTime + ",     ");
-        out.print(candidateStatistics.totalTime + ",     ");
-        out.print(candidateStatistics.totalExistsTime + ",     ");
-        out.print(candidateStatistics.totalForallTime + ",     ");
+        out.print(DiscoveryUtil.convertTimeToSecond(executionTime) + ",     ");
+        out.print(DiscoveryUtil.convertTimeToSecond(candidateStatistics.totalTime) + ",     ");
+        out.print(DiscoveryUtil.convertTimeToSecond(candidateStatistics.totalExistsTime) + ",     ");
+        out.print(DiscoveryUtil.convertTimeToSecond(candidateStatistics.totalForallTime) + ",     ");
 
         long exitsAvg = 0;
         long forallAvg = 0;
         if (candidateStatistics.totalExistsNum != 0) {
-            exitsAvg = candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum;
-            out.print(exitsAvg + ",     ");
-        } else
-            out.print("N/A,     ");
+            exitsAvg = (candidateStatistics.totalExistsTime / candidateStatistics.totalExistsNum);
+            out.print(DiscoveryUtil.convertTimeToSecond(exitsAvg) + ",     ");
+        } else out.print("N/A,     ");
         if (candidateStatistics.totalForallNum != 0) {
-            forallAvg = candidateStatistics.totalForallTime / candidateStatistics.totalForallNum;
-            out.print(forallAvg + ",     ");
-        } else
-            out.print("N/A,     ");
+            forallAvg = (candidateStatistics.totalForallTime / candidateStatistics.totalForallNum);
+            out.print(DiscoveryUtil.convertTimeToSecond(forallAvg) + ",     ");
+        } else out.print("N/A,     ");
 
         out.println();
         out.close();

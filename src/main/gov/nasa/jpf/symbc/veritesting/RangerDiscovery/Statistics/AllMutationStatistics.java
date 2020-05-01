@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import jkind.lustre.Equation;
 
@@ -49,14 +50,14 @@ public class AllMutationStatistics {
                 + (terminationResult + ",     ")
 //                + (candidatesInAllLoops + ",     ")
                 + (repairsFoundNum + ",     ")
-                + (executionTime + ",     ")
-                + (totalQueryTime + ",     ")
-                + (totalExistsTime + ",     ")
-                + (totalForallTime + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(executionTime) + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(totalQueryTime) + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(totalExistsTime) + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(totalForallTime) + ",     ")
                 + (totalExistsNum + ",     ")
                 + (totalForallNum + ",     ")
-                + (exitsAvg + ",     ")
-                + (forallAvg + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(exitsAvg) + ",     ")
+                + (DiscoveryUtil.convertTimeToSecond(forallAvg) + ",     ")
                 + (tightestProp + ",     ");
 
         tighestPropsFound.add(tightestProp);
