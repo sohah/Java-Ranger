@@ -171,8 +171,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(CastExpr e) {
-        e.expr.accept(this);
-        return e;
+        return new CastExpr(e.location, e.type, e.expr.accept(this));
     }
 
     @Override
@@ -196,10 +195,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(IfThenElseExpr e) {
-        e.cond.accept(this);
-        e.thenExpr.accept(this);
-        e.elseExpr.accept(this);
-        return e;
+        return new IfThenElseExpr(e.cond.accept(this), e.thenExpr.accept(this), e.elseExpr.accept(this));
     }
 
     @Override
@@ -254,6 +250,6 @@ public class MutateExpr implements ExprVisitor<Expr> {
         if (repairExpr instanceof RepairExpr) {
             return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
         }
-        return e.expr.accept(this);
+        return new UnaryExpr(e.op, e.expr.accept(this));
     }
 }
