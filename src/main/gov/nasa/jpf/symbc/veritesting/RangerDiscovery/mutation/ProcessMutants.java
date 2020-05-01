@@ -4,6 +4,7 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
@@ -11,21 +12,33 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 public class ProcessMutants {
 
     public static Pair<Pair<String[], int[]>, String> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec) {
+        HashSet<Integer> generatedMutantsHash = new HashSet();
         assert mutationResults.size() > 0; //there must be mutants to be processed to call this method.
         String[] mutatedSpecs = new String[mutationResults.size()];
         int[] repairDepths = new int[mutationResults.size()];
         String perfectMutant = null;
 
-        for (int i = 0; i < mutationResults.size(); i++) {
-            MutationResult mutationResult = mutationResults.get(i);
+        int mutationIndex = 0;
+        int resultIndex = 0;
+        while (mutationIndex < mutationResults.size()) {
+            MutationResult mutationResult = mutationResults.get(mutationIndex);
             Program newProgram = updateMainPropertyExpr(inputExtendedPgm, mutationResult);
-            String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
-            writeToFile(specFileName, newProgram.toString(), false, true);
-            mutatedSpecs[i] = specFileName;
-            repairDepths[i] = mutationResult.repairDepth;
-            if (mutationResult.isPerfect)
-                perfectMutant = specFileName;
+            int newPgmHash = newProgram.toString().hashCode();
+            if (!generatedMutantsHash.contains(newPgmHash)) {
+                generatedMutantsHash.add(newPgmHash);
+                String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
+                writeToFile(specFileName, newProgram.toString(), false, true);
+                mutatedSpecs[resultIndex] = specFileName;
+                repairDepths[resultIndex] = mutationResult.repairDepth;
+                if (mutationResult.isPerfect)
+                    perfectMutant = specFileName;
+                ++resultIndex;
+            } else {
+                System.out.println("find a repetative hashcode for:" + currFaultySpec + mutationResult.mutationIdentifier);
+            }
+            ++mutationIndex;
         }
+        System.out.println("number of mutants generated after checksum are: " + resultIndex);
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
 
         return new Pair(new Pair(mutatedSpecs, repairDepths), perfectMutant);
