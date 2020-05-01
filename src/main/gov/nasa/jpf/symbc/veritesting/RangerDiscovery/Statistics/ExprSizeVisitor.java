@@ -185,6 +185,6 @@ public class ExprSizeVisitor implements ExprVisitor<Integer> {
                     break;
             }
         }
-        return e.expr.accept(this) + 1;
+        return e.expr.accept(this);
     }
 }

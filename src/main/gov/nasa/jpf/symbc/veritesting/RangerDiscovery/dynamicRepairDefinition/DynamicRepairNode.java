@@ -37,19 +37,21 @@ public class DynamicRepairNode {
         List<Character> pathLabel = new ArrayList<>();
         pathLabel.add('R'); //for root node
         int balancedTreeDepth;
-
-        if (Config.depthFixed){ outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
-        balancedTreeDepth = Config.repairNodeDepth;
-        }
-        else {
-            double logDepth = (Math.log(exprSize) / Math.log(2));
+        Integer base2TreeDepth;
+        if (Config.depthFixed) {
+            outputs.add(defineTreeLevel(Config.repairNodeDepth, pathLabel));
+            balancedTreeDepth = Config.repairNodeDepth;
+            base2TreeDepth = balancedTreeDepth;
+        } else {
+            double logDepth = (Math.log(exprSize) / Math.log(2)); // adding +1 could be needed in case of MCO, since MCO is removing a constraint and we would like to add it back.
             if (logDepth == 0) {
                 assert exprSize == 1;
                 balancedTreeDepth = exprSize;
             } else balancedTreeDepth = (logDepth % 1) == 0 ? (int) logDepth : (int) logDepth + 1;
-            outputs.add(defineTreeLevel(balancedTreeDepth - 1, pathLabel));
+            base2TreeDepth = balancedTreeDepth - 1;
+            outputs.add(defineTreeLevel(base2TreeDepth, pathLabel));
         }
-        return new Pair<Integer, RepairNode>(balancedTreeDepth, new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null));
+        return new Pair<Integer, RepairNode>(base2TreeDepth, new RepairNode(id, actualParamVarDecls, holeInputs, outputs, locals, equations, null, null));
     }
 
     private VarDecl defineTreeLevel(int balancedTreeDepth, List<Character> pathLabel) {
@@ -101,10 +103,8 @@ public class DynamicRepairNode {
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
-                if (Config.spec.equals("gpca") || Config.spec.equals("infusion"))
-                    leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
-                else
-                    leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                if (Config.spec.equals("gpca") || Config.spec.equals("infusion")) leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                else leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
         }
         for (int i = 0; i < intInputs.size() - 1; i++) {
             for (int j = i + 1; j < intInputs.size(); j++) {
@@ -198,21 +198,13 @@ public class DynamicRepairNode {
         } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
             BinaryExpr hardCodedRangeConst;
             if (leftIntExpr.id.equals("Disable_Audio")) {
-                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
-                        BinaryOp.AND,
-                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(2)));
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)), BinaryOp.AND, new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(2)));
             } else if (leftIntExpr.id.equals("Flow_Rate_KVO")) {
-                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
-                        BinaryOp.AND,
-                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(5)));
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)), BinaryOp.AND, new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(5)));
             } else if (leftIntExpr.id.equals("Highest_Level_Alarm") && Config.spec.equals("infusion")) {
-                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(1)),
-                        BinaryOp.AND,
-                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(4)));
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(1)), BinaryOp.AND, new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(4)));
             } else {
-                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)),
-                        BinaryOp.AND,
-                        new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(255)));
+                hardCodedRangeConst = new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.GREATEREQUAL, new IntExpr(0)), BinaryOp.AND, new BinaryExpr(holeExpr, BinaryOp.LESSEQUAL, new IntExpr(255)));
             }
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, hardCodedRangeConst));
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, hardCodedRangeConst));
@@ -236,8 +228,7 @@ public class DynamicRepairNode {
         IfThenElseExpr expr;
         if (!getPathLabelStr(myPathLabel).equals("R")) {
             expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
-        } else
-            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
+        } else expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         return expr;
     }
 
