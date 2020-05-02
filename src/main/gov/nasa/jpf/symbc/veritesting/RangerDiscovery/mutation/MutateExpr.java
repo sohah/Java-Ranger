@@ -22,6 +22,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     private int mutationIndex;
     private int repairMutationIndex;
+    public boolean isPerfect;
 
     MutateExpr(MutationType mutationType, int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
         this.mutationType = mutationType;
@@ -33,6 +34,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
         this.shouldApplyMutation = new ShouldApplyMutation();
         this.inputs = inputs;
         this.outputs = outputs;
+        isPerfect = false;
     }
 
     boolean didMutation() {
@@ -92,7 +94,11 @@ public class MutateExpr implements ExprVisitor<Expr> {
         }
         Expr repairExpr = wrapRepairExpr(e);
         if (repairExpr instanceof RepairExpr) {
-            return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
+            boolean prevDidMutation = didMutation();
+            Expr newRepairOrigExpr = ((RepairExpr) repairExpr).origExpr.accept(this);
+            boolean nowDidMutation = didMutation();
+            isPerfect = !prevDidMutation && nowDidMutation;
+            return new RepairExpr(newRepairOrigExpr, ((RepairExpr) repairExpr).repairNode);
         }
         Expr applyMCO = mutateMCO((BinaryExpr) repairExpr);
         if (!didMutation()) {
@@ -248,7 +254,11 @@ public class MutateExpr implements ExprVisitor<Expr> {
     public Expr visit(UnaryExpr e) {
         Expr repairExpr = wrapRepairExpr(e);
         if (repairExpr instanceof RepairExpr) {
-            return new RepairExpr(((RepairExpr) repairExpr).origExpr.accept(this), ((RepairExpr) repairExpr).repairNode);
+            boolean prevDidMutation = didMutation();
+            Expr newRepairOrigExpr = ((RepairExpr) repairExpr).origExpr.accept(this);
+            boolean nowDidMutation = didMutation();
+            isPerfect = !prevDidMutation && nowDidMutation;
+            return new RepairExpr(newRepairOrigExpr, ((RepairExpr) repairExpr).repairNode);
         }
         return new UnaryExpr(e.op, e.expr.accept(this));
     }
