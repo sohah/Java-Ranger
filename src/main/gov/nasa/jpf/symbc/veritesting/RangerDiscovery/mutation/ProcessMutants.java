@@ -4,6 +4,7 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ProcessMutants {
         System.out.println("number of mutants generated after checksum are: " + resultIndex);
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
 
-        return new Pair(new Pair(mutatedSpecs, repairDepths), perfectMutant);
+        return new Pair(new Pair(Arrays.copyOf(mutatedSpecs, resultIndex), Arrays.copyOf(repairDepths, resultIndex)), perfectMutant);
     }
 
 
