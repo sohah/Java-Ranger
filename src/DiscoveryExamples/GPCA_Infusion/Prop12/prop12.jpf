@@ -31,6 +31,11 @@ SpecDirectory = GPCA_Infusion/Prop12
 faultySpec=Faulty_Prop12
 mutationEnabled = true
 repairMutantsOnly = false
+
+randomSampleMutants=true
+maxMutants=100
+prop=12
+
 depthFixed = false
 evaluationMode = true
 #repairScope=2

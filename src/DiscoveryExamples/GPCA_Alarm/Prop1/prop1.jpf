@@ -31,6 +31,11 @@ SpecDirectory = GPCA_Alarm/Prop1
 faultySpec=Faulty_GPCA_Prop1
 mutationEnabled=true
 repairMutantsOnly = false
+
+randomSampleMutants=true
+maxMutants=100
+prop=1
+
 depthFixed = false
 evaluationMode = true
 #repairScope=2
