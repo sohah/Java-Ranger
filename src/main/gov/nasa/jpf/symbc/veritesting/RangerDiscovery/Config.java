@@ -73,11 +73,11 @@ public class Config {
     public static boolean rangeValueAnalysis = true;
 
     public static boolean evaluationMode = false;
-    public static int timeOut = 3; //in seconds
-    public static boolean mac = true;
+    public static int timeOut = 300; //in seconds
+    public static boolean mac = false;
 
-    public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
-    public static final int MINIMALLOOP_MAXLOOPCOUNT = 4; //found 378 iteration, then we find a repair.
+    public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
+    public static final int MINIMALLOOP_MAXLOOPCOUNT = 30; //found 378 iteration, then we find a repair.
 
 
     public static int faultySpecIndex = 0;
