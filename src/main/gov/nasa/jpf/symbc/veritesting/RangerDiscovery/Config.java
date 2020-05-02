@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.processMutants;
@@ -23,6 +24,7 @@ public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
+
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -71,11 +73,11 @@ public class Config {
     public static boolean rangeValueAnalysis = true;
 
     public static boolean evaluationMode = false;
-    public static int timeOut = 300; //in seconds
-    public static boolean mac = false;
+    public static int timeOut = 3; //in seconds
+    public static boolean mac = true;
 
-    public static final int OUTERLOOP_MAXLOOPCOUNT = 20;
-    public static final int MINIMALLOOP_MAXLOOPCOUNT = 400; //found 378 iteration, then we find a repair.
+    public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
+    public static final int MINIMALLOOP_MAXLOOPCOUNT = 4; //found 378 iteration, then we find a repair.
 
 
     public static int faultySpecIndex = 0;
@@ -89,6 +91,14 @@ public class Config {
     public static int milliSecondSimplification = 1000; // must be in thousands, since it is usually used for simplification and to also check if we exceeded the timeout which is also in seconds.
 
     public static AllMutationStatistics allMutationStatistics;
+
+    public static boolean randomSampleMutants = false;
+    public static int maxMutants = -1;
+
+    public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
+    private static int maxRandForProp; // maximum number of mutants that we are going to sample
+    private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
+
 
     public static boolean canSetup() throws IOException {
 
@@ -105,16 +115,24 @@ public class Config {
                 repairDepth = triple.getFirst().getSecond();
                 perfectMutant = triple.getSecond();
             }
+            if (randomSampleMutants) {
+                computeBenchmarkMaxSample();
+                faultySpecIndex = new Random().nextInt(faultySpecs.length);
+                ++samplesSoFar;
+            }
         }
 
-        if ((faultySpecIndex) >= faultySpecs.length)
-            return false;
+        if (samplesSoFar > maxRandForProp) return false;
+        if ((faultySpecIndex) >= faultySpecs.length) return false;
 
         currFaultySpec = faultySpecs[faultySpecIndex];
         repairNodeDepth = repairDepth[faultySpecIndex];
 
-        ++faultySpecIndex;
-
+        if (!randomSampleMutants) ++faultySpecIndex;
+        else {
+            faultySpecIndex = new Random().nextInt(faultySpecs.length);
+            ++samplesSoFar;
+        }
 
         tFileName = folderName + currFaultySpec;
         if (!mutationEnabled) { //sanity check
@@ -131,6 +149,128 @@ public class Config {
 
         VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
+    }
+
+    /**
+     * used to divide the maxMutants used for the expirement among the benchmarks. The division is dependent on the number of mutants that can be generated for each property, and it is precomputed. Alarm = 22%, Infusion = 58%, TCAS = 9% and WBS = 10%. These percentages are also divided by properties for every benchmark where
+     * ALARM	Prop1	2
+     * Prop2	2
+     * Prop3	4
+     * Prop4	1
+     * Prop5	1
+     * Prop6	6
+     * Prop7	3
+     * Prop8	3
+     * Prop9	1
+     * Prop10	0
+     * 22
+     * INFUSION MGR	Prop1	26
+     * Prop2	1
+     * Prop3	1
+     * Prop5	1
+     * Prop6	13
+     * Prop7	1
+     * Prop8	3
+     * Prop9	5
+     * Prop10	2
+     * Prop11	2
+     * Prop12	2
+     * Prop13	1
+     * 58
+     * TCAS	Prop1	3
+     * Prop2	3
+     * Prop4	3
+     * 9
+     * WBS	Prop1	6
+     * Prop3	4
+     */
+    private static void computeBenchmarkMaxSample() {
+        if (spec.equals("gpca")) {
+            if (prop == 1) {
+                maxRandForProp = (int) (maxMutants * 0.02);
+            } else if (prop == 2) {
+                maxRandForProp = (int) (maxMutants * 0.02);
+            } else if (prop == 3) {
+                maxRandForProp = (int) (maxMutants * 0.04);
+            } else if (prop == 4) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 5) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 6) {
+                maxRandForProp = (int) (maxMutants * 0.06);
+            } else if (prop == 7) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 8) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 9) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 10) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else {
+                System.out.println("unknown property for spec. cannot sample. aborting");
+                assert false;
+            }
+        } else if (spec.equals("infusion")) {
+            if (prop == 1) {
+                maxRandForProp = (int) (maxMutants * 0.26);
+            } else if (prop == 2) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 3) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 5) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 6) {
+                maxRandForProp = (int) (maxMutants * 0.13);
+            } else if (prop == 7) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 8) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 9) {
+                maxRandForProp = (int) (maxMutants * 0.05);
+            } else if (prop == 10) {
+                maxRandForProp = (int) (maxMutants * 0.02);
+            } else if (prop == 11) {
+                maxRandForProp = (int) (maxMutants * 0.02);
+            } else if (prop == 12) {
+                maxRandForProp = (int) (maxMutants * 0.02);
+            } else if (prop == 13) {
+                maxRandForProp = (int) (maxMutants * 0.01);
+            } else if (prop == 4 || prop == 14) {
+                System.out.println("Invalid Props are not part of the sampling");
+                assert false;
+            } else {
+                System.out.println("unknown property for spec. cannot sample. aborting");
+                assert false;
+            }
+        } else if (spec.equals("tcas")) {
+            if (prop == 1) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 2) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 4) {
+                maxRandForProp = (int) (maxMutants * 0.03);
+            } else if (prop == 3) {
+                System.out.println("Invalid Props are not part of the sampling");
+                assert false;
+            } else {
+                System.out.println("unknown property for spec. cannot sample. aborting");
+                assert false;
+            }
+        } else if (spec.equals("wbs")) {
+            if (prop == 1) {
+                maxRandForProp = (int) (maxMutants * 0.06);
+            } else if (prop == 3) {
+                maxRandForProp = (int) (maxMutants * 0.04);
+            } else if (prop == 2 || prop == 4 || prop == 5) {
+                System.out.println("Invalid Props are not part of the sampling");
+                assert false;
+            } else {
+                System.out.println("unknown property for spec. cannot sample. aborting");
+                assert false;
+            }
+        } else {
+            System.out.println("cannot sample from unknown benchmark");
+        }
     }
 
     public static boolean isCurrMutantPerfect() {

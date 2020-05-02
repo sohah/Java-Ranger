@@ -126,38 +126,12 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     // reads in an array of Strings, each of which is the name of a method whose regions we wish to report metrics for
     public static String[] interestingClassNames;
 
-    public String[] regionKeys = {"replace.amatch([C[CI)I#160",
-            "replace.amatch([C[CI)I#77",
-            "replace.dodash(C[C[C)V#112",
-            "replace.dodash(C[C[C)V#8",
-            "replace.esc([C)C#7",
-            "replace.getccl([C[C)Z#15",
-            "replace.getccl([C[C)Z#84",
-            "replace.makepat([C[C)I#305",
-            "replace.makepat([C[C)I#458",
-            "replace.makepat([C[C)I#474",
-            "replace.makepat([C[C)I#491",
-            "replace.makepat([C[C)I#507",
-            "replace.makepat([C[C)I#521",
-            "replace.makesub([C[C)I#111",
-            "replace.makesub([C[C)I#124",
-            "replace.makesub([C[C)I#23",
-            "replace.makesub([C[C)I#34",
-            "replace.makesub([C[C)I#64",
-            "replace.makesub([C[C)I#7",
-            "replace.omatch([C[CI)Z#108",
-            "replace.omatch([C[CI)Z#132",
-            "replace.omatch([C[CI)Z#241",
-            "replace.omatch([C[CI)Z#64",
-            "replace.patsize([CI)I#32"};
+    public String[] regionKeys = {"replace.amatch([C[CI)I#160", "replace.amatch([C[CI)I#77", "replace.dodash(C[C[C)V#112", "replace.dodash(C[C[C)V#8", "replace.esc([C)C#7", "replace.getccl([C[C)Z#15", "replace.getccl([C[C)Z#84", "replace.makepat([C[C)I#305", "replace.makepat([C[C)I#458", "replace.makepat([C[C)I#474", "replace.makepat([C[C)I#491", "replace.makepat([C[C)I#507", "replace.makepat([C[C)I#521", "replace.makesub([C[C)I#111", "replace.makesub([C[C)I#124", "replace.makesub([C[C)I#23", "replace.makesub([C[C)I#34", "replace.makesub([C[C)I#64", "replace.makesub([C[C)I#7", "replace.omatch([C[CI)Z#108", "replace.omatch([C[CI)Z#132", "replace.omatch([C[CI)Z#241", "replace.omatch([C[CI)Z#64", "replace.patsize([CI)I#32"};
 
     public VeritestingListener(Config conf, JPF jpf) {
         if (conf.hasValue("veritestingMode")) {
             veritestingMode = conf.getInt("veritestingMode");
-            runMode = veritestingMode == 5 ? VeritestingMode.EARLYRETURNS :
-                    (veritestingMode == 4 ? VeritestingMode.SPFCASES :
-                            ((veritestingMode == 3 ? VeritestingMode.HIGHORDER :
-                                    (veritestingMode == 2 ? VeritestingMode.VERITESTING : VeritestingMode.VANILLASPF))));
+            runMode = veritestingMode == 5 ? VeritestingMode.EARLYRETURNS : (veritestingMode == 4 ? VeritestingMode.SPFCASES : ((veritestingMode == 3 ? VeritestingMode.HIGHORDER : (veritestingMode == 2 ? VeritestingMode.VERITESTING : VeritestingMode.VANILLASPF))));
 
             switch (runMode) {
                 case VANILLASPF:
@@ -180,8 +154,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                     break;
             }
 
-            if (conf.hasValue("performanceMode"))
-                performanceMode = conf.getBoolean("performanceMode");
+            if (conf.hasValue("performanceMode")) performanceMode = conf.getBoolean("performanceMode");
             if (conf.hasValue("jpf-symbc")) {
                 exclusionsFile = conf.getString("jpf-symbc") + "/MyJava60RegressionExclusions.txt";
             }
@@ -199,17 +172,13 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 interestingClassNames = conf.getStringArray("interestingClassNames", new char[]{','});
             }
 
-            if (conf.hasValue("veritestRegionExpectedCount"))
-                veritestRegionExpectedCount = conf.getInt("veritestRegionExpectedCount");
+            if (conf.hasValue("veritestRegionExpectedCount")) veritestRegionExpectedCount = conf.getInt("veritestRegionExpectedCount");
 
-            if (conf.hasValue("instantiationLimit"))
-                instantiationLimit = conf.getInt("instantiationLimit");
+            if (conf.hasValue("instantiationLimit")) instantiationLimit = conf.getInt("instantiationLimit");
 
-            if (conf.hasValue("simplify"))
-                simplify = conf.getBoolean("simplify");
+            if (conf.hasValue("simplify")) simplify = conf.getBoolean("simplify");
 
-            if (conf.hasValue("singlePathOptimization"))
-                singlePathOptimization = conf.getBoolean("singlePathOptimization");
+            if (conf.hasValue("singlePathOptimization")) singlePathOptimization = conf.getBoolean("singlePathOptimization");
 
             if (conf.hasValue("recursiveDepth")) {
                 recursiveDepth = conf.getInt("recursiveDepth");
@@ -217,57 +186,45 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                     recursiveDepth = 1;
             }
 
-            if (conf.hasValue("SPFCasesHeuristics") && (veritestingMode >= 4))
-                spfCasesHeuristicsOn = conf.getBoolean("SPFCasesHeuristics");
+            if (conf.hasValue("SPFCasesHeuristics") && (veritestingMode >= 4)) spfCasesHeuristicsOn = conf.getBoolean("SPFCasesHeuristics");
 
 
             if (conf.hasValue("printRegionDigest")) {
                 printRegionDigest = conf.getBoolean("printRegionDigest");
-                if (conf.hasValue("regionDigestPrintName"))
-                    regionDigestPrintName = conf.getString("regionDigestPrintName");
-                else
-                    regionDigestPrintName = "UnspecifiedDigestName";
+                if (conf.hasValue("regionDigestPrintName")) regionDigestPrintName = conf.getString("regionDigestPrintName");
+                else regionDigestPrintName = "UnspecifiedDigestName";
                 if (printRegionDigest) regionDigest.append("\n").append(regionDigestPrintName).append("\n");
             }
-            if (conf.hasValue("maxStaticExplorationDepth"))
-                maxStaticExplorationDepth = conf.getInt("maxStaticExplorationDepth");
+            if (conf.hasValue("maxStaticExplorationDepth")) maxStaticExplorationDepth = conf.getInt("maxStaticExplorationDepth");
 
             if (conf.hasValue("goToRewriteOn")) {
                 GoToTransformer.active = conf.getBoolean("goToRewriteOn");
-                if (GoToTransformer.active)
-                    GoToTransformer.statisticsOn = true;
+                if (GoToTransformer.active) GoToTransformer.statisticsOn = true;
             } else { //SH: right now setting defaults to true for testing.
                 GoToTransformer.active = false;
                 GoToTransformer.statisticsOn = false;
             }
 
-            if (conf.hasValue("contractDiscoveryOn"))
-                contractDiscoveryOn = conf.getBoolean("contractDiscoveryOn");
+            if (conf.hasValue("contractDiscoveryOn")) contractDiscoveryOn = conf.getBoolean("contractDiscoveryOn");
 
             if (contractDiscoveryOn) {
-                if (conf.hasValue("specRepair"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.specLevelRepair = conf.getBoolean("specRepair");
+                if (conf.hasValue("specRepair")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.specLevelRepair = conf.getBoolean("specRepair");
                 if (conf.hasValue("SpecDirectory")) {
-                    folderName = folderName +
-                            conf.getString("SpecDirectory");
-                    if (folderName.charAt(folderName.length() - 1) != '/')
-                        folderName += "/";
+                    folderName = folderName + conf.getString("SpecDirectory");
+                    if (folderName.charAt(folderName.length() - 1) != '/') folderName += "/";
                 }
-                if (conf.hasValue("spec"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.spec = conf.getString("spec");
+                if (conf.hasValue("spec")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.spec = conf.getString("spec");
 
 
                 if (conf.hasValue("repairScope")) {
-                    if (conf.getInt("repairScope") == 1)
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSED_TERMS;
+                    if (conf.getInt("repairScope") == 1) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSED_TERMS;
                     else if (conf.getInt("repairScope") == 2) {
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSE_IN_OUT_CATEGORY;
                     }
                 }
                 if (conf.hasValue("mutationEnabled")) {
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationEnabled = conf.getBoolean("mutationEnabled");
-                    if (conf.hasValue("repairMutantsOnly"))
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMutantsOnly = conf.getBoolean("repairMutantsOnly");
+                    if (conf.hasValue("repairMutantsOnly")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMutantsOnly = conf.getBoolean("repairMutantsOnly");
                     if (mutationEnabled)//only a single spec is expected
                         if (conf.hasValue("faultySpec")) {
                             gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.currFaultySpec = conf.getString("faultySpec");
@@ -282,32 +239,37 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                             System.out.println("A faulty spec must be supplied. Aborting");
                             assert false;
                         }
+                    if (conf.hasValue("randomSampleMutants")) {
+                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randomSampleMutants = conf.getBoolean("randomSampleMutants");
+                        if (conf.hasValue("maxMutants")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.maxMutants = conf.getInt("maxMutants");
+                        else {
+                            System.out.println("maxMutants needs to be supplied for the random sample");
+                        }
+                        if (conf.hasValue("prop")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.prop = conf.getInt("prop");
+                        else {
+                            System.out.println("maxMutants needs to be supplied for the random sample");
+                        }
+                    }
                 }
 
-                if (conf.hasValue("evaluationMode"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode = conf.getBoolean("evaluationMode");
+                if (conf.hasValue("evaluationMode")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode = conf.getBoolean("evaluationMode");
 
                 if (conf.hasValue("repairMode")) {
                     int repairMode = conf.getInt("repairMode");
-                    if (repairMode == 0)
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.CONSTANT;
-                    else if (repairMode == 1)
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.PRE;
-                    else if (repairMode == 2)
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.LIBRARY;
+                    if (repairMode == 0) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.CONSTANT;
+                    else if (repairMode == 1) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.PRE;
+                    else if (repairMode == 2) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMode = RepairMode.LIBRARY;
                     else {
                         System.out.println("No other mode is supported");
                         assert false;
                     }
                 }
-                if (conf.hasValue("limitedSteps"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps = conf.getBoolean("limitedSteps");
+                if (conf.hasValue("limitedSteps")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps = conf.getBoolean("limitedSteps");
 
-                if (conf.hasValue("randZ3Seed"))
-                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
-                if (conf.hasValue("rangeValueAnalysis")){
+                if (conf.hasValue("randZ3Seed")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
+                if (conf.hasValue("rangeValueAnalysis")) {
                     System.out.println("range value analysis is always true, but was configured in the .jpf file");
-                //    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.rangeValueAnalysis = conf.getBoolean("rangeValueAnalysis");
+                    //    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.rangeValueAnalysis = conf.getBoolean("rangeValueAnalysis");
                 }
             }
             StatisticManager.veritestingRunning = true;
@@ -350,22 +312,15 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
         boolean isIfInstruction = instructionToExecute instanceof IfInstruction;
         boolean isEmptyRegionHeuristic = HeuristicManager.getRegionHeuristicSize() == 0;
-        boolean isActiveLastRegion = (isEmptyRegionHeuristic) ? false :
-                HeuristicManager.getRegionHeuristic().getRegionStatus();
+        boolean isActiveLastRegion = (isEmptyRegionHeuristic) ? false : HeuristicManager.getRegionHeuristic().getRegionStatus();
 
         String lastRegionKey = (isEmptyRegionHeuristic) ? null : HeuristicManager.getLastRegionKey();
 
 //        runAdapterSynth(ti, curr);
-        if (runMode == VeritestingMode.VANILLASPF)
-            return;
-        else if (isEmptyRegionHeuristic && !isIfInstruction)
-            return;
-        else if (!isEmptyRegionHeuristic && !isActiveLastRegion && !isIfInstruction)
-            return;
-        else if (spfCasesHeuristicsOn
-                && StaticBranchChoiceGenerator.heuristicsCountingMode
-                && isIfInstruction
-                && !keyFromInstructionToExc(instructionToExecute).equals(lastRegionKey)) //if we are in another
+        if (runMode == VeritestingMode.VANILLASPF) return;
+        else if (isEmptyRegionHeuristic && !isIfInstruction) return;
+        else if (!isEmptyRegionHeuristic && !isActiveLastRegion && !isIfInstruction) return;
+        else if (spfCasesHeuristicsOn && StaticBranchChoiceGenerator.heuristicsCountingMode && isIfInstruction && !keyFromInstructionToExc(instructionToExecute).equals(lastRegionKey)) //if we are in another
             // if-statement inside the heuristic counting mode, then just return and let spf handle it.
             return;
         else if (spfCasesHeuristicsOn && StaticBranchChoiceGenerator.heuristicsCountingMode) { //if we are
@@ -388,8 +343,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             if (instantiationLimit > 0 && statisticManager.getSuccInstantiations() > instantiationLimit) return;
             boolean noVeritestingFlag = false;
             noVeritestingFlag = isNoVeritesting(curr, noVeritestingFlag);
-            if (noVeritestingFlag)
-                return;
+            if (noVeritestingFlag) return;
             // End equivalence checking code
         }
 
@@ -405,8 +359,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         thisHighOrdCount = 0;
                         staticRegion = JITAnalysis.discoverRegions(ti, instructionToExecute, key); // Just-In-Time static analysis to discover regions
                         if (staticRegion != null) {
-                            if (printRegionDigest)
-                                regionDigest.append("\n").append(staticRegion.staticStmt.toString());
+                            if (printRegionDigest) regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
                             return;
                         }
@@ -420,17 +373,14 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 } else {
                     HashMap<String, StaticRegion> regionsMap = VeritestingMain.veriRegions;
                     StaticRegion staticRegion = regionsMap.get(key);
-                    if ((staticRegion != null) && !(staticRegion.isMethodRegion) && !skipVeriRegions.contains(key) &&
-                            isAllowedRegion(key)) {
+                    if ((staticRegion != null) && !(staticRegion.isMethodRegion) && !skipVeriRegions.contains(key) && isAllowedRegion(key)) {
                         thisHighOrdCount = 0;
                         //if (SpfUtil.isSymCond(staticRegion.staticStmt)) {
                         if (SpfUtil.isSymCond(ti, staticRegion.staticStmt, (SlotParamTable) staticRegion.slotParamTable, instructionToExecute)) {
-                            if (printRegionDigest)
-                                regionDigest.append("\n").append(staticRegion.staticStmt.toString());
+                            if (printRegionDigest) regionDigest.append("\n").append(staticRegion.staticStmt.toString());
                             runVeritestingWrapper(ti, vm, staticRegion, instructionToExecute);
                             return;
-                        } else
-                            statisticManager.updateConcreteHitStatForRegion(key);
+                        } else statisticManager.updateConcreteHitStatForRegion(key);
                     }
                 }
             }
@@ -472,8 +422,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
 
-    private void runVeritestingWrapper(ThreadInfo ti, VM vm, StaticRegion staticRegion, Instruction
-            instructionToExecute) throws Exception {
+    private void runVeritestingWrapper(ThreadInfo ti, VM vm, StaticRegion staticRegion, Instruction instructionToExecute) throws Exception {
         if ((runMode != VeritestingMode.SPFCASES) && (runMode != VeritestingMode.EARLYRETURNS)) {
             isRegionEndOk(ti, staticRegion, instructionToExecute);
 
@@ -490,8 +439,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
 
-    private void isRegionEndOk(ThreadInfo ti, StaticRegion staticRegion, Instruction instructionToExecute) throws
-            StaticRegionException {
+    private void isRegionEndOk(ThreadInfo ti, StaticRegion staticRegion, Instruction instructionToExecute) throws StaticRegionException {
         boolean isEndingInsnStackConsuming = isStackConsumingRegionEnd(ti, staticRegion, instructionToExecute);
         // If region ends on a stack operand consuming instruction then the region should have a stack output
         if (isEndingInsnStackConsuming && staticRegion.stackOutput == null) {
@@ -565,34 +513,27 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
     private void updateSkipRegions(String message, String key) {
         for (String skipString : skipRegionStrings) {
-            if (message.toLowerCase().contains(skipString.toLowerCase()))
-                skipVeriRegions.add(key);
+            if (message.toLowerCase().contains(skipString.toLowerCase())) skipVeriRegions.add(key);
         }
     }
 
-    private void runVeritestingWithSPF(ThreadInfo ti, VM vm, Instruction instructionToExecute, StaticRegion
-            staticRegion,
-                                       String key) throws Exception {
+    private void runVeritestingWithSPF(ThreadInfo ti, VM vm, Instruction instructionToExecute, StaticRegion staticRegion, String key) throws Exception {
 
 
         if (!ti.isFirstStepInsn() && !StaticBranchChoiceGenerator.heuristicsCountingMode) { // first time around
             StaticPCChoiceGenerator newCG;
             DynamicRegion dynRegion = runVeritesting(ti, instructionToExecute, staticRegion, key);
             if (dynRegion.totalNumPaths > 0 && dynRegion.totalNumPaths <= (getNumSatChoices(dynRegion))) {
-                String ex = "region instantiation is not beneficial (" +
-                        dynRegion.totalNumPaths + "," + getNumSatChoices(dynRegion) + ")";
+                String ex = "region instantiation is not beneficial (" + dynRegion.totalNumPaths + "," + getNumSatChoices(dynRegion) + ")";
                 skipRegionStrings.add(ex);
                 throwException(new StaticRegionException(ex), INSTANTIATION);
             }
-            if (spfCasesHeuristicsOn)
-                newCG = new StaticBranchChoiceGenerator(dynRegion, instructionToExecute, true);
-            else
-                newCG = new StaticBranchChoiceGenerator(dynRegion, instructionToExecute);
+            if (spfCasesHeuristicsOn) newCG = new StaticBranchChoiceGenerator(dynRegion, instructionToExecute, true);
+            else newCG = new StaticBranchChoiceGenerator(dynRegion, instructionToExecute);
 
-            if (singlePathOptimization)
-                if (optimizedChoices(ti, instructionToExecute, (StaticBranchChoiceGenerator) newCG)) { //if we were able to
-                    return;
-                }
+            if (singlePathOptimization) if (optimizedChoices(ti, instructionToExecute, (StaticBranchChoiceGenerator) newCG)) { //if we were able to
+                return;
+            }
 
 
             newCG.makeVeritestingCG(ti, instructionToExecute, key);
@@ -635,8 +576,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     }
 
     @Override
-    public void choiceGeneratorRegistered(VM vm, ChoiceGenerator<?> nextCG, ThreadInfo currentThread, Instruction
-            executedInstruction) {
+    public void choiceGeneratorRegistered(VM vm, ChoiceGenerator<?> nextCG, ThreadInfo currentThread, Instruction executedInstruction) {
         System.out.println("choiceGeneratorRegistered(" + nextCG.getClass() + ") at " + executedInstruction.getMethodInfo() + "#" + executedInstruction.getPosition());
     }
 
@@ -657,14 +597,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         System.out.println("choiceGeneratorProcessed: at " + processedCG.getInsn().getMethodInfo() + "#" + processedCG.getInsn().getPosition());
     }
 
-    private DynamicRegion runVeritesting(ThreadInfo ti, Instruction instructionToExecute, StaticRegion
-            staticRegion,
-                                         String key) throws Exception {
+    private DynamicRegion runVeritesting(ThreadInfo ti, Instruction instructionToExecute, StaticRegion staticRegion, String key) throws Exception {
 
 
         Exception transformationException = null;
-        System.out.println("\n---------- STARTING Transformations for conditional region: " + key +
-                "\n" + PrettyPrintVisitor.print(staticRegion.staticStmt) + "\n");
+        System.out.println("\n---------- STARTING Transformations for conditional region: " + key + "\n" + PrettyPrintVisitor.print(staticRegion.staticStmt) + "\n");
         staticRegion.slotParamTable.print();
         staticRegion.inputTable.print();
         staticRegion.outputTable.print();
@@ -689,16 +626,14 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                 dynRegion = FixedPointWrapper.executeFixedPointTransformations(ti, dynRegion);
                 somethingChanged = FixedPointWrapper.isChangedFlag();
 
-                if (!performanceMode)
-                    assert (FixedPointWrapper.isChangedFlag() == !FixedPointWrapper.isEqualRegion());
+                if (!performanceMode) assert (FixedPointWrapper.isChangedFlag() == !FixedPointWrapper.isEqualRegion());
             }
             /*-------------- HIGH ORDER TRANSFORMATION ---------------*/
             dynRegion = FixedPointWrapper.executeFixedPointHighOrder(ti, dynRegion);
             somethingChanged = FixedPointWrapper.isChangedFlag();
             transformationException = FixedPointWrapper.getFirstException();
             assert (FixedPointWrapper.isChangedFlag() == !FixedPointWrapper.isEqualRegion());
-        }
-        while (somethingChanged);
+        } while (somethingChanged);
 
 
         if (transformationException != null) throw transformationException;
@@ -715,12 +650,9 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
          */
             while (itr.hasNext()) {
                 Map.Entry<Variable, Expression> entry = itr.next();
-                if (entry.getKey() instanceof FieldRefVarExpr)
-                    assert ((FieldRefVarExpr) entry.getKey()).uniqueNum != -1;
-                if (entry.getKey() instanceof WalaVarExpr)
-                    assert ((WalaVarExpr) entry.getKey()).getUniqueNum() != -1;
-                if (entry.getKey() instanceof ArrayRefVarExpr)
-                    assert ((ArrayRefVarExpr) entry.getKey()).uniqueNum != -1;
+                if (entry.getKey() instanceof FieldRefVarExpr) assert ((FieldRefVarExpr) entry.getKey()).uniqueNum != -1;
+                if (entry.getKey() instanceof WalaVarExpr) assert ((WalaVarExpr) entry.getKey()).getUniqueNum() != -1;
+                if (entry.getKey() instanceof ArrayRefVarExpr) assert ((ArrayRefVarExpr) entry.getKey()).uniqueNum != -1;
             }
         }
         RegionMetricsVisitor.execute(dynRegion);
@@ -728,9 +660,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         if ((runMode.ordinal()) >= (VeritestingMode.SPFCASES.ordinal())) {
 
             /*-------------- SPFCases TRANSFORMATION 1ST PASS ---------------*/
-            dynRegion = SpfCasesPass1Visitor.execute(ti, dynRegion,
-                    runMode.ordinal() < VeritestingMode.EARLYRETURNS.ordinal() ?
-                            new ArrayList(Arrays.asList(THROWINSTRUCTION, NEWINSTRUCTION, ARRAYINSTRUCTION, INVOKE)) : null);
+            dynRegion = SpfCasesPass1Visitor.execute(ti, dynRegion, runMode.ordinal() < VeritestingMode.EARLYRETURNS.ordinal() ? new ArrayList(Arrays.asList(THROWINSTRUCTION, NEWINSTRUCTION, ARRAYINSTRUCTION, INVOKE)) : null);
 
             /*-------------- SPFCases TRANSFORMATION 1ST PASS ---------------*/
             dynRegion = SpfCasesPass2Visitor.execute(dynRegion);
@@ -767,22 +697,19 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @throws StaticRegionException Exception to indicate a problem while setting SPF.
      */
 
-    public static Instruction setupSPF(ThreadInfo ti, Instruction ins, DynamicRegion dynRegion, Integer choice) throws
-            StaticRegionException {
+    public static Instruction setupSPF(ThreadInfo ti, Instruction ins, DynamicRegion dynRegion, Integer choice) throws StaticRegionException {
         if (canSetPC(ti, dynRegion, choice)) {
             populateFieldOutputs(ti, dynRegion);
             populateArrayOutputs(ti, dynRegion);
             populateSlots(ti, dynRegion);
             clearStack(ti.getTopFrame(), ins);
 
-            if ((choice != null && choice == RETURN_CHOICE && VeritestingListener.runMode == VeritestingMode
-                    .EARLYRETURNS) || optimizedReturnPath) {//we are setting up an early return choice.
+            if ((choice != null && choice == RETURN_CHOICE && VeritestingListener.runMode == VeritestingMode.EARLYRETURNS) || optimizedReturnPath) {//we are setting up an early return choice.
                 pushReturnOnStack(ti.getTopFrame(), dynRegion);
             }
             if (dynRegion.stackOutput != null) {
 //                dynRegion.stackOutput = (WalaVarExpr) (new ExprVisitorAdapter(new WalaVarToSPFVarVisitor(dynRegion.varTypeTable))).accept(dynRegion.stackOutput);
-                pushExpOnStack(dynRegion, ti.getTopFrame(), (String) dynRegion.varTypeTable.lookup(dynRegion.stackOutput),
-                        dynRegion.stackOutput);
+                pushExpOnStack(dynRegion, ti.getTopFrame(), (String) dynRegion.varTypeTable.lookup(dynRegion.stackOutput), dynRegion.stackOutput);
             }
             return advanceSpf(ins, dynRegion, (choice != null && choice == RETURN_CHOICE) || optimizedReturnPath);
 
@@ -794,19 +721,15 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
     private static void pushReturnOnStack(StackFrame sf, DynamicRegion dynRegion) throws StaticRegionException {
         String returnType = dynRegion.earlyReturnResult.retPosAndType.getSecond();
         Expression returnVar = dynRegion.earlyReturnResult.retVar;
-        if (!returnType.equals("void"))
-            pushExpOnStack(dynRegion, sf, returnType, returnVar);
+        if (!returnType.equals("void")) pushExpOnStack(dynRegion, sf, returnType, returnVar);
     }
 
-    private static void pushExpOnStack(DynamicRegion dynRegion, StackFrame sf, String returnType, Expression var)
-            throws StaticRegionException {
+    private static void pushExpOnStack(DynamicRegion dynRegion, StackFrame sf, String returnType, Expression var) throws StaticRegionException {
         if (simplify && dynRegion.constantsTable != null) { //only handling the case of ints
             Expression constOrVar = dynRegion.constantsTable.lookup((Variable) var);
             if (constOrVar instanceof CloneableVariable) {
-                if (returnType != null)
-                    constOrVar = createGreenVar(returnType, constOrVar.toString());
-                else
-                    throwException(new StaticRegionException("cannot create return variable with unknown return type"), INSTANTIATION);
+                if (returnType != null) constOrVar = createGreenVar(returnType, constOrVar.toString());
+                else throwException(new StaticRegionException("cannot create return variable with unknown return type"), INSTANTIATION);
             }
             if (isConstant(constOrVar) || isVariable(constOrVar)) {
                 var = constOrVar;
@@ -857,8 +780,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
      * @return PathCondition is still satisfiable or not.
      * @throws StaticRegionException Exception to indicate a problem while checking SAT of the updated PathCondition.
      */
-    private static boolean canSetPC(ThreadInfo ti, DynamicRegion dynRegion, Integer choice) throws
-            StaticRegionException {
+    private static boolean canSetPC(ThreadInfo ti, DynamicRegion dynRegion, Integer choice) throws StaticRegionException {
         PathCondition pc;
         PCChoiceGenerator currCG;
 
@@ -875,14 +797,11 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             // spfcases mode.
             pc._addDet(new GreenConstraint(dynRegion.regionSummary));
 
-        if (optimizedReturnPath)
-            pc._addDet(new GreenConstraint(earlyReturnPredicate));
+        if (optimizedReturnPath) pc._addDet(new GreenConstraint(earlyReturnPredicate));
 
         // if we're trying to run fast, then assume that the region summary is satisfiable in any non-SPFCASES mode or
         // if the static choice is the only feasible choice.
-        boolean cond1 = performanceMode && (runMode == VeritestingMode.VERITESTING ||
-                runMode == VeritestingMode.HIGHORDER || optimizedRegionPath || optimizedReturnPath ||
-                (choice != null && choice == STATIC_CHOICE && isOnlyStaticChoiceSat(dynRegion)));
+        boolean cond1 = performanceMode && (runMode == VeritestingMode.VERITESTING || runMode == VeritestingMode.HIGHORDER || optimizedRegionPath || optimizedReturnPath || (choice != null && choice == STATIC_CHOICE && isOnlyStaticChoiceSat(dynRegion)));
         if (cond1 || isPCSat(pc)) {
             currCG.setCurrentPC(pc);
             long t1 = System.nanoTime();
@@ -939,10 +858,8 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             Expression symVar;
             if (simplify && dynRegion.constantsTable.lookup(var) != null) {
                 symVar = dynRegion.constantsTable.lookup(var);
-                if (symVar instanceof CloneableVariable)
-                    symVar = createGreenVar((String) dynRegion.varTypeTable.lookup(var), symVar.toString()); // assumes toString() would return the same string as getSymName()
-            } else
-                symVar = createGreenVar((String) dynRegion.varTypeTable.lookup(var), ((WalaVarExpr) var).getSymName());
+                if (symVar instanceof CloneableVariable) symVar = createGreenVar((String) dynRegion.varTypeTable.lookup(var), symVar.toString()); // assumes toString() would return the same string as getSymName()
+            } else symVar = createGreenVar((String) dynRegion.varTypeTable.lookup(var), ((WalaVarExpr) var).getSymName());
             //TODO: Dont write a local output as a symbolic expression attribute if it is a constant
             sf.setSlotAttr(slot, greenToSPFExpression(symVar));
         }
@@ -956,8 +873,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             Expression symVar;
             if (dynRegion.constantsTable != null && dynRegion.constantsTable.lookup(expr) != null) {
                 symVar = dynRegion.constantsTable.lookup(expr);
-                if (symVar instanceof CloneableVariable)
-                    symVar = createGreenVar(type, symVar.toString()); // assumes toString() would return the same string as getSymName()
+                if (symVar instanceof CloneableVariable) symVar = createGreenVar(type, symVar.toString()); // assumes toString() would return the same string as getSymName()
             } else symVar = createGreenVar(type, expr.getSymName());
             new SubstituteGetOutput(ti, expr.fieldRef, false, greenToSPFExpression(symVar)).invoke();
         }
@@ -986,8 +902,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         else //going to a return instruction
             endIns = dynRegion.earlyReturnResult.retPosAndType.getFirst();
         while (ins.getPosition() != endIns) {
-            if (ins instanceof GOTO && (((GOTO) ins).getTarget().getPosition() <= endIns))
-                ins = ((GOTO) ins).getTarget();
+            if (ins instanceof GOTO && (((GOTO) ins).getTarget().getPosition() <= endIns)) ins = ((GOTO) ins).getTarget();
             else ins = ins.getNext();
         }
         // this hack used to go along with a corresponding hack in SpfUtil.isStackConsumingRegionEnd that would advance
@@ -1056,60 +971,34 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
         pw.println("Metrics Vector:");
         pw.println(getMetricsVector(dynRunTime));
 
-        if (spfCasesHeuristicsOn)
-            statisticManager.printHeuristicStatistics();
+        if (spfCasesHeuristicsOn) statisticManager.printHeuristicStatistics();
 
-        if (DiscoverContract.isRepaired())
-            pw.print("Contract is repaired in iteration number:" + loopCount);
-        else
-            pw.print("Contract is NOT repaired");
+        if (DiscoverContract.isRepaired()) pw.print("Contract is repaired in iteration number:" + loopCount);
+        else pw.print("Contract is NOT repaired");
     }
 
     private void writeRegionDigest() {
-        if (!performanceMode)
-            if (printRegionDigest) {
-                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream("../logs/regionDigest_" + regionDigestPrintName), "utf-8"))) {
-                    writer.write(regionDigest.toString());
-                } catch (Exception e) {
-                    System.out.println("problem writing regionDigest out.");
-                }
-                if (jitAnalysis) {
-                    System.out.println("printing methods attempted for jitAnalysis\n");
-                    System.out.println(JITAnalysis.getAttemptedMethods());
-                } else {
-                    System.out.println("printing methods attempted for Static Analysis\n");
-                    System.out.println(VeritestingMain.getAttemptedMethods());
-                }
+        if (!performanceMode) if (printRegionDigest) {
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("../logs/regionDigest_" + regionDigestPrintName), "utf-8"))) {
+                writer.write(regionDigest.toString());
+            } catch (Exception e) {
+                System.out.println("problem writing regionDigest out.");
             }
+            if (jitAnalysis) {
+                System.out.println("printing methods attempted for jitAnalysis\n");
+                System.out.println(JITAnalysis.getAttemptedMethods());
+            } else {
+                System.out.println("printing methods attempted for Static Analysis\n");
+                System.out.println(VeritestingMain.getAttemptedMethods());
+            }
+        }
     }
 
     private String getMetricsVector(long dynRunTime) {
-        return (TimeUnit.NANOSECONDS.toMillis((jitAnalysis ? JITAnalysis.staticAnalysisDur : staticAnalysisDur)) + TimeUnit.NANOSECONDS.toMillis(dynRunTime)) + "," +
-                TimeUnit.NANOSECONDS.toMillis(jitAnalysis ? JITAnalysis.staticAnalysisDur : staticAnalysisDur) + "," +
-                TimeUnit.NANOSECONDS.toMillis(dynRunTime) + "," +
-                npaths + "," +
-                solverCount + "," +
-                TimeUnit.NANOSECONDS.toMillis(totalSolverTime) + "," +
-                TimeUnit.NANOSECONDS.toMillis(parseTime) + "," +
-                TimeUnit.NANOSECONDS.toMillis(cleanupTime) + "," +
-                statisticManager.getDistinctVeriRegionNum() + "," +
-                statisticManager.getDistinctSpfRegionNum() + "," +
-                statisticManager.getConcreteRegionNum() + "," +
-                statisticManager.getFailNum(FailEntry.FailReason.FIELDREFERNCEINSTRUCTION) + "," +
-                statisticManager.getFailNum(FailEntry.FailReason.SPFCASEINSTRUCTION) + "," +
-                statisticManager.getFailNum(FailEntry.FailReason.MISSINGMETHODSUMMARY) + "," +
-                statisticManager.getFailNum(FailEntry.FailReason.OTHER) + "," +
-                hgOrdRegionInstance + "," +
-                statisticManager.regionCount() + "," +
+        return (TimeUnit.NANOSECONDS.toMillis((jitAnalysis ? JITAnalysis.staticAnalysisDur : staticAnalysisDur)) + TimeUnit.NANOSECONDS.toMillis(dynRunTime)) + "," + TimeUnit.NANOSECONDS.toMillis(jitAnalysis ? JITAnalysis.staticAnalysisDur : staticAnalysisDur) + "," + TimeUnit.NANOSECONDS.toMillis(dynRunTime) + "," + npaths + "," + solverCount + "," + TimeUnit.NANOSECONDS.toMillis(totalSolverTime) + "," + TimeUnit.NANOSECONDS.toMillis(parseTime) + "," + TimeUnit.NANOSECONDS.toMillis(cleanupTime) + "," + statisticManager.getDistinctVeriRegionNum() + "," + statisticManager.getDistinctSpfRegionNum() + "," + statisticManager.getConcreteRegionNum() + "," + statisticManager.getFailNum(FailEntry.FailReason.FIELDREFERNCEINSTRUCTION) + "," + statisticManager.getFailNum(FailEntry.FailReason.SPFCASEINSTRUCTION) + "," + statisticManager.getFailNum(FailEntry.FailReason.MISSINGMETHODSUMMARY) + "," + statisticManager.getFailNum(FailEntry.FailReason.OTHER) + "," + hgOrdRegionInstance + "," + statisticManager.regionCount() + "," +
 //                veritestRegionCount + "," + // this number also reports the total number of successful instantiations
                 // instantiation metrics
-                statisticManager.getSuccInstantiations() + "," + statisticManager.getFailedInstantiations() + "," +
-                statisticManager.getConcreteInstNum() + "," +
-                statisticManager.getInstFailNum(FailEntry.FailReason.FIELDREFERNCEINSTRUCTION) + "," +
-                statisticManager.getInstFailNum(FailEntry.FailReason.SPFCASEINSTRUCTION) + "," +
-                statisticManager.getInstFailNum(FailEntry.FailReason.MISSINGMETHODSUMMARY) + "," +
-                statisticManager.getInstFailNum(FailEntry.FailReason.OTHER) + "," +
+                statisticManager.getSuccInstantiations() + "," + statisticManager.getFailedInstantiations() + "," + statisticManager.getConcreteInstNum() + "," + statisticManager.getInstFailNum(FailEntry.FailReason.FIELDREFERNCEINSTRUCTION) + "," + statisticManager.getInstFailNum(FailEntry.FailReason.SPFCASEINSTRUCTION) + "," + statisticManager.getInstFailNum(FailEntry.FailReason.MISSINGMETHODSUMMARY) + "," + statisticManager.getInstFailNum(FailEntry.FailReason.OTHER) + "," +
                 // static analysis metrics
                 interestingRegionCount + "," + numMethodSummaries + "," + maxBranchDepth + "," + maxExecPathCount + "," + avgExecPathCount + "," +
                 // exception metrics
