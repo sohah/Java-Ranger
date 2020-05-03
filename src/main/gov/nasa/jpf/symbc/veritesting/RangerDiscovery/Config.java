@@ -93,7 +93,7 @@ public class Config {
     public static AllMutationStatistics allMutationStatistics;
 
     public static boolean randomSampleMutants = false;
-    public static int maxMutants = -1;
+    public static int maxMutants = 100;
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
