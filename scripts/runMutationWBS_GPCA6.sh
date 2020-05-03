@@ -10,3 +10,4 @@ DISCOVERYDIR=/home/soha/git/ranger-discovery
 
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/WBS/Prop1/prop1.jpf >& $DISCOVERYDIR/logs/mutation/WBS/WBS_Prop1.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/WBS/Prop3/prop3.jpf >& $DISCOVERYDIR/logs/mutation/WBS/WBS_Prop3.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop6/prop6.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop6.log
