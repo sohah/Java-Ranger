@@ -13,9 +13,10 @@ public class MutationResult {
     final List<GenericRepairNode> repairNodes;
     final int repairDepth;
     final boolean isPerfect;
+    final boolean isSmallestWrapper;
 
 
-    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect) {
+    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect, boolean isSmallestWrapper) {
         this.mutatedExpr = mutatedExpr;
         this.mutationIndex = mutationIndex;
         this.mutationType = mutationType;
@@ -25,5 +26,6 @@ public class MutationResult {
         assert repairNodes.size() == 1; // currently we are not expecting multiple repair nodes with a single mutant.
         this.repairDepth = repairDepth;
         this.isPerfect = isPerfect;
+        this.isSmallestWrapper = isSmallestWrapper;
     }
 }

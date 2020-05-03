@@ -4,6 +4,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import jkind.lustre.BinaryOp;
 import jkind.lustre.Expr;
+import jkind.lustre.IdExpr;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
 
@@ -33,7 +34,9 @@ public class MutationUtils {
             case AND:
             case OR:
             case XOR:
-            case IMPLIES: return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+            case IMPLIES:
+                BinaryOp newOp = mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+                return newOp;
             default:
                 return op;
         }
@@ -47,7 +50,9 @@ public class MutationUtils {
             case GREATER:
             case GREATEREQUAL:
             case EQUAL:
-            case NOTEQUAL: return mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+            case NOTEQUAL:
+                BinaryOp newOp = mutateExpr.applyBinaryOpMutation(op, getMutationOps(op, allOps));
+                return newOp;
             default:
                 return op;
         }
@@ -87,10 +92,10 @@ public class MutationUtils {
         writeUsingFileWriter(mainNode.equations.get(0).expr.toString(),
                 mutationDirectory + "/origSpec");
 
-        MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
+        MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{MutationType.OPERAND_REPLACEMENT_MUT,
                 MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
                 MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
-                MutationType.OPERAND_REPLACEMENT_MUT} :
+                } :
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
@@ -98,6 +103,26 @@ public class MutationUtils {
         }
         System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
+    }
+
+    private static Expr mutateORO(ShouldApplyMutation shouldApplyMutation, Expr e) {
+        IdExprVisitor idExprVisitor = new IdExprVisitor(e, shouldApplyMutation.tInOutManager,
+                shouldApplyMutation.inputs, shouldApplyMutation.outputs);
+        e.accept(idExprVisitor);
+        ArrayList<IdExpr> idExprs = idExprVisitor.getIdExprs();
+        ConstExprVisitor constExprVisitor = new ConstExprVisitor();
+        e.accept(constExprVisitor);
+        ArrayList<Expr> constExprs = constExprVisitor.getConstExprs();
+        OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs, idExprVisitor.getTypes());
+        Expr newExpr = e.accept(oroVisitor);
+        shouldApplyMutation.justDidMutation = oroVisitor.checkImmediateOROMutation( e, newExpr);
+        return newExpr;
+        /*if (newExpr instanceof BinaryExpr)
+            return new BinaryExpr(((BinaryExpr) newExpr).left.accept(this),
+                    ((BinaryExpr) newExpr).op, ((BinaryExpr) newExpr).right.accept(this));
+        else if (newExpr instanceof UnaryExpr)
+            return new UnaryExpr(((UnaryExpr) newExpr).op, ((UnaryExpr) newExpr).expr.accept(this));*/
+//        return e;
     }
 
     private static ArrayList<MutationResult> applyMutation(final Program originalProgram,
@@ -108,12 +133,18 @@ public class MutationUtils {
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
             Node mainNode = originalProgram.nodes.get(0);
-            MutateExpr mutateExpr = new MutateExpr(mutationType, mutationIndex, repairMutationIndex, tInOutManager, mainNode.inputs, mainNode.outputs);
-            Expr mutatedExpr = mainNode.equations.get(0).expr.accept(mutateExpr);
-            if (!mutateExpr.didMutation() && !repairMutantsOnly) {
+            Expr mutatedExpr;
+            ShouldApplyMutation shouldApplyMutation = new ShouldApplyMutation(mutationIndex, repairMutationIndex, tInOutManager, mainNode.inputs, mainNode.outputs);
+            if (mutationType != MutationType.OPERAND_REPLACEMENT_MUT) {
+                MutateExpr mutateExpr = new MutateExpr(mutationType, shouldApplyMutation);
+                mutatedExpr = mainNode.equations.get(0).expr.accept(mutateExpr);
+            } else {
+                mutatedExpr = mutateORO(shouldApplyMutation, mainNode.equations.get(0).expr);
+            }
+            if (!shouldApplyMutation.didMutation() && !repairMutantsOnly) {
                 break;
             } else {
-                if (!mutateExpr.addedRepairWrapper()) {
+                if (!shouldApplyMutation.addedRepairWrapper()) {
                     if (!repairMutantsOnly) {
                         mutationIndex++;
                         repairMutationIndex = -1;
@@ -126,7 +157,9 @@ public class MutationUtils {
                         writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory
                                 + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-"
                                 + repairMutationIndex + "-" + mutationIndex);
-                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType, mutateExpr.repairNodes, mutateExpr.repairDepth, mutateExpr.isPerfect));
+                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType,
+                            shouldApplyMutation.repairNodes, shouldApplyMutation.repairDepth,
+                            shouldApplyMutation.isPerfect, shouldApplyMutation.isSmallestWrapper));
                 }
             }
         }

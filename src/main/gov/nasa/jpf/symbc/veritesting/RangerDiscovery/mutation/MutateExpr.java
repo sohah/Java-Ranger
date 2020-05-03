@@ -7,60 +7,23 @@ import jkind.lustre.*;
 import jkind.lustre.visitors.ExprVisitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.mutate;
 
 public class MutateExpr implements ExprVisitor<Expr> {
-    private final int prevMutationIndex, prevRepairMutationIndex;
+
     private final MutationType mutationType;
-    private final SpecInOutManager tInOutManager;
     private final ShouldApplyMutation shouldApplyMutation;
-    public List<GenericRepairNode> repairNodes = new ArrayList<>();
-    public int repairDepth;
-    private final List<VarDecl> inputs, outputs;
 
-    private int mutationIndex;
-    private int repairMutationIndex;
-    public boolean isPerfect;
-
-    MutateExpr(MutationType mutationType, int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
+    MutateExpr(MutationType mutationType,
+               ShouldApplyMutation shouldApplyMutation) {
         this.mutationType = mutationType;
-        this.prevMutationIndex = prevMutationIndex;
-        this.prevRepairMutationIndex = prevRepairMutationIndex;
-        this.mutationIndex = -1;
-        this.repairMutationIndex = -1;
-        this.tInOutManager = tInOutManager;
-        this.shouldApplyMutation = new ShouldApplyMutation();
-        this.inputs = inputs;
-        this.outputs = outputs;
-        isPerfect = false;
-    }
 
-    boolean didMutation() {
-        return mutationIndex > prevMutationIndex;
-    }
+        this.shouldApplyMutation = shouldApplyMutation;
 
-    private int incAndGetMutationIndex() {
-        return ++mutationIndex;
     }
-
-    private int incAndGetRepairMutationIndex() {
-        return ++repairMutationIndex;
-    }
-
-    public boolean addedRepairWrapper() {
-        return repairMutationIndex > prevRepairMutationIndex;
-    }
-
-    public class ShouldApplyMutation {
-        public boolean shouldApplyMutation() {
-            return incAndGetMutationIndex() == prevMutationIndex + 1;
-        }
-        public boolean shouldApplyRepairMutation() {
-            return incAndGetRepairMutationIndex() == prevRepairMutationIndex + 1;
-        }
-    };
 
     BinaryOp applyBinaryOpMutation(BinaryOp origOp, BinaryOp[] mutatedOpArr) {
         for (BinaryOp mutatedOp: mutatedOpArr) {
@@ -73,17 +36,24 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(ArrayAccessExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false;
+        return new ArrayAccessExpr(e.array.accept(this), e.index.accept(this));
     }
 
     @Override
     public Expr visit(ArrayExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false;
+        List<Expr> newElems = new ArrayList<>();
+        for(Expr expr: e.elements) {
+            newElems.add(expr.accept(this));
+        }
+        return new ArrayExpr(newElems);
     }
 
     @Override
     public Expr visit(ArrayUpdateExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false;
+        return new ArrayUpdateExpr(e.array.accept(this), e.index.accept(this), e.value.accept(this));
     }
 
     @Override
@@ -92,37 +62,31 @@ public class MutateExpr implements ExprVisitor<Expr> {
             return new BinaryExpr(e.location,
                     e.left.accept(this), e.op, e.right.accept(this));
         }
-        Expr repairExpr = wrapRepairExpr(e);
+        Expr repairExpr = shouldApplyMutation.wrapRepairExpr(e);
         if (repairExpr instanceof RepairExpr) {
-            boolean prevDidMutation = didMutation();
+            boolean prevDidMutation = shouldApplyMutation.didMutation();
             Expr newRepairOrigExpr = ((RepairExpr) repairExpr).origExpr.accept(this);
-            boolean nowDidMutation = didMutation();
-            isPerfect = !prevDidMutation && nowDidMutation;
+            boolean nowDidMutation = shouldApplyMutation.didMutation();
+            shouldApplyMutation.isPerfect = !prevDidMutation && nowDidMutation;
+            shouldApplyMutation.isSmallestWrapper = shouldApplyMutation.isPerfect && shouldApplyMutation.justDidMutation;
             return new RepairExpr(newRepairOrigExpr, ((RepairExpr) repairExpr).repairNode);
         }
         Expr applyMCO = mutateMCO((BinaryExpr) repairExpr);
-        if (!didMutation()) {
-            Expr applyORO = mutateORO(e);
-            if (!didMutation()) {
-                return new BinaryExpr(e.location,
-                        e.left.accept(this), mutate(mutationType, e.op, this), e.right.accept(this));
-            } else return applyORO;
-        } else return applyMCO;
+        if (!shouldApplyMutation.didMutation()) {
+            Expr leftExpr = e.left.accept(this);
+            BinaryOp newOp = mutate(mutationType, e.op, this);
+            boolean mutatedOp = newOp != e.op;
+            Expr rightExpr = e.right.accept(this);
+            shouldApplyMutation.justDidMutation = mutatedOp;
+            return new BinaryExpr(e.location,
+                    leftExpr, newOp, rightExpr);
+        } else {
+            return applyMCO;
+        }
     }
 
-    private Expr mutateORO(BinaryExpr e) {
-        if (mutationType == MutationType.OPERAND_REPLACEMENT_MUT) {
-            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager, inputs, outputs);
-            e.accept(idExprVisitor);
-            ArrayList<IdExpr> idExprs = idExprVisitor.getIdExprs();
-            ConstExprVisitor constExprVisitor = new ConstExprVisitor();
-            e.accept(constExprVisitor);
-            ArrayList<Expr> constExprs = constExprVisitor.getConstExprs();
-            OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs, idExprVisitor.getTypes());
-            return e.accept(oroVisitor);
-        }
-        return e;
-    }
+
+
 
     private Expr mutateMCO(BinaryExpr e) {
         if (mutationType == MutationType.MISSING_COND_MUT) {
@@ -142,124 +106,121 @@ public class MutateExpr implements ExprVisitor<Expr> {
         return e;
     }
 
-    private Expr wrapRepairExpr(Expr e) {
-        if (shouldApplyMutation.shouldApplyRepairMutation()) {
-            IdExprVisitor idExprVisitor = new IdExprVisitor(e, tInOutManager, inputs, outputs);
-            e.accept(idExprVisitor);
-            List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
-            int exprSize = e.accept(new ExprSizeVisitor(varDecls, true));
-            GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls, exprSize);
-            repairNodes.add(genericRepairNode);
-            repairDepth = genericRepairNode.repairDepth;
-            NodeCallExpr callExpr = genericRepairNode.callExpr;
-            RepairExpr repairExpr = new RepairExpr(e, callExpr);
-            return repairExpr;
-        } else return e;
-    }
 
-    private ArrayList<IdExpr> getAllIdExpr(Expr e) {
-        ArrayList<IdExpr> ids = new ArrayList<>();
-        if (e instanceof IdExpr) {
-            ids.add((IdExpr) e);
-        } else if (e instanceof BinaryExpr) {
-            ids.addAll(getAllIdExpr(((BinaryExpr) e).left));
-            ids.addAll(getAllIdExpr(((BinaryExpr) e).right));
-        } else if (e instanceof UnaryExpr) {
-            ids.addAll(getAllIdExpr(((UnaryExpr) e).expr));
-        }
-        return ids;
-    }
 
     @Override
     public Expr visit(BoolExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false; return e;
     }
 
     @Override
     public Expr visit(CastExpr e) {
-        return new CastExpr(e.location, e.type, e.expr.accept(this));
+        Expr newExpr = new CastExpr(e.location, e.type, e.expr.accept(this));
+        shouldApplyMutation.justDidMutation = false;
+        return newExpr;
     }
 
     @Override
     public Expr visit(CondactExpr e) {
-        e.args.forEach(expr -> expr.accept(this));
-        e.call.accept(this);
-        e.clock.accept(this);
-        return e;
+        ArrayList<Expr> args = new ArrayList<>();
+        e.args.forEach(expr -> args.add(expr.accept(this)));
+        ArrayList<Expr> nodeCallArgs = new ArrayList<>();
+        e.call.args.forEach(expr -> nodeCallArgs.add(expr.accept(this)));
+        NodeCallExpr newCallExpr = new NodeCallExpr(e.call.node, nodeCallArgs);
+        shouldApplyMutation.justDidMutation = false;
+        return new CondactExpr(e.clock.accept(this), newCallExpr, args);
     }
 
     @Override
     public Expr visit(FunctionCallExpr e) {
-        e.args.forEach(expr -> expr.accept(this));
-        return e;
+        ArrayList<Expr> args = new ArrayList<>();
+        e.args.forEach(expr -> args.add(expr.accept(this)));
+        shouldApplyMutation.justDidMutation = false;
+        return new FunctionCallExpr(e.function, args);
     }
 
     @Override
     public Expr visit(IdExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false; return e;
     }
 
     @Override
     public Expr visit(IfThenElseExpr e) {
-        return new IfThenElseExpr(e.cond.accept(this), e.thenExpr.accept(this), e.elseExpr.accept(this));
+        Expr newExpr = new IfThenElseExpr(e.cond.accept(this), e.thenExpr.accept(this), e.elseExpr.accept(this));
+        shouldApplyMutation.justDidMutation = false;
+        return newExpr;
     }
 
     @Override
     public Expr visit(IntExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false; return e;
     }
 
     @Override
     public Expr visit(NodeCallExpr e) {
-        e.args.forEach(expr -> expr.accept(this));
-        return e;
+        ArrayList<Expr> args = new ArrayList<>();
+        e.args.forEach(expr -> args.add(expr.accept(this)));
+        shouldApplyMutation.justDidMutation = false;
+        return new NodeCallExpr(e.node, args);
     }
 
     @Override
     public Expr visit(RepairExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false; return e;
     }
 
     @Override
     public Expr visit(RealExpr e) {
-        return e;
+        shouldApplyMutation.justDidMutation = false; return e;
     }
 
     @Override
     public Expr visit(RecordAccessExpr e) {
-        e.record.accept(this);
-        return e;
+        Expr newExpr = new RecordAccessExpr(e.record.accept(this), e.field);
+        shouldApplyMutation.justDidMutation = false;
+        return newExpr;
     }
 
     @Override
     public Expr visit(RecordExpr e) {
-        e.fields.forEach((key, value) -> value.accept(this));
-        return e;
+        HashMap<String, Expr> fields = new HashMap<>();
+        e.fields.forEach((key, value) -> fields.put(key, value.accept(this)));
+        shouldApplyMutation.justDidMutation = false;
+        return new RecordExpr(e.id, fields);
     }
 
     @Override
     public Expr visit(RecordUpdateExpr e) {
-        e.record.accept(this);
-        e.value.accept(this);
-        return e;
+        RecordUpdateExpr newExpr = new RecordUpdateExpr(e.record.accept(this), e.field, e.value.accept(this));
+        shouldApplyMutation.justDidMutation = false;
+        return newExpr;
     }
 
     @Override
     public Expr visit(TupleExpr e) {
-        e.elements.forEach(elem -> elem.accept(this));
-        return e;
+        ArrayList<Expr> elems = new ArrayList<>();
+        e.elements.forEach(elem -> elems.add(elem.accept(this)));
+        shouldApplyMutation.justDidMutation = false;
+        return new TupleExpr(elems);
     }
 
     @Override
     public Expr visit(UnaryExpr e) {
-        Expr repairExpr = wrapRepairExpr(e);
+        Expr repairExpr = shouldApplyMutation.wrapRepairExpr(e);
         if (repairExpr instanceof RepairExpr) {
-            boolean prevDidMutation = didMutation();
+            boolean prevDidMutation = shouldApplyMutation.didMutation();
             Expr newRepairOrigExpr = ((RepairExpr) repairExpr).origExpr.accept(this);
-            boolean nowDidMutation = didMutation();
-            isPerfect = !prevDidMutation && nowDidMutation;
+            boolean nowDidMutation = shouldApplyMutation.didMutation();
+            shouldApplyMutation.isPerfect = !prevDidMutation && nowDidMutation;
+            shouldApplyMutation.isSmallestWrapper = shouldApplyMutation.isPerfect && shouldApplyMutation.justDidMutation;
             return new RepairExpr(newRepairOrigExpr, ((RepairExpr) repairExpr).repairNode);
         }
-        return new UnaryExpr(e.op, e.expr.accept(this));
+        if (!shouldApplyMutation.didMutation()) {
+            Expr expr = e.expr.accept(this);
+            shouldApplyMutation.justDidMutation = false;
+            return new UnaryExpr(e.op, expr);
+        } else {
+            return e;
+        }
     }
 }
