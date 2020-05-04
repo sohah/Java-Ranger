@@ -86,8 +86,8 @@ public class Config {
 
     public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
     public static final int MINIMALLOOP_MAXLOOPCOUNT = 3; //found 378 iteration, then we find a repair.
-*/
-
+//end testing
+ */
     public static int faultySpecIndex = 0;
 
     public static boolean repairInitialValues = true;
@@ -101,6 +101,7 @@ public class Config {
     public static AllMutationStatistics allMutationStatistics;
 
     public static OperationMode operationMode = OperationMode.SMALLEST_ONLY;
+    public static boolean randomSample = true;
     public static int maxMutants = 100;
 
 
@@ -125,7 +126,7 @@ public class Config {
                 perfectMutant = triple.getSecond();
                 System.out.println("OperationMode is " + operationMode.name());
             }
-            if (operationMode == OperationMode.RANDOM_SAMPLE) {
+            if (randomSample) {
                 computeBenchmarkMaxSample();
                 System.out.println("maxMutants for Random Sampling is =" + maxMutants + "benchmark Sample = " + maxRandForProp);
                 faultySpecIndex = new Random().nextInt(faultySpecs.length);
@@ -135,13 +136,13 @@ public class Config {
 
         assert faultySpecs.length != 0;
 
-        if (operationMode == OperationMode.RANDOM_SAMPLE && samplesSoFar > maxRandForProp) return false;
+        if (randomSample && samplesSoFar > maxRandForProp) return false;
         if ((faultySpecIndex) >= faultySpecs.length) return false;
 
         currFaultySpec = faultySpecs[faultySpecIndex];
         repairNodeDepth = repairDepth[faultySpecIndex];
 
-        if (operationMode != OperationMode.RANDOM_SAMPLE) ++faultySpecIndex;
+        if (!randomSample) ++faultySpecIndex;
         else {
             faultySpecIndex = new Random().nextInt(faultySpecs.length);
             ++samplesSoFar;

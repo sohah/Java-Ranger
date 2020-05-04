@@ -27,7 +27,7 @@ public class ProcessMutants {
             Program newProgram = updateMainPropertyExpr(inputExtendedPgm, mutationResult);
             int newPgmHash = newProgram.toString().hashCode();
             if (!generatedMutantsHash.contains(newPgmHash)) { // a new unique mutant
-                if (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) { //ensuring only relevant mutant type is processed.
+                if (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) { //filtering mutants based on what we want.
 
                     generatedMutantsHash.add(newPgmHash);
                     String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
