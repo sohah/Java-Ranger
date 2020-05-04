@@ -239,16 +239,9 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                             System.out.println("A faulty spec must be supplied. Aborting");
                             assert false;
                         }
-                    if (conf.hasValue("randomSampleMutants")) {
-                        gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randomSampleMutants = conf.getBoolean("randomSampleMutants");
-                        /*if (conf.hasValue("maxMutants")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.maxMutants = conf.getInt("maxMutants");
-                        else {
-                            System.out.println("maxMutants needs to be supplied for the random sample");
-                        }*/
-                        if (conf.hasValue("prop")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.prop = conf.getInt("prop");
-                        else {
-                            System.out.println("maxMutants needs to be supplied for the random sample");
-                        }
+                    if (conf.hasValue("prop")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.prop = conf.getInt("prop");
+                    else {
+                        System.out.println("maxMutants needs to be supplied for the random sample");
                     }
                 }
 

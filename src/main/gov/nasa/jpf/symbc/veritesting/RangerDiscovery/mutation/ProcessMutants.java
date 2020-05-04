@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.OperationMode;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 
@@ -12,7 +13,7 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 
 public class ProcessMutants {
 
-    public static Pair<Pair<String[], int[]>, String> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec) {
+    public static Pair<Pair<String[], int[]>, String> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
         HashSet<Integer> generatedMutantsHash = new HashSet();
         assert mutationResults.size() > 0; //there must be mutants to be processed to call this method.
         String[] mutatedSpecs = new String[mutationResults.size()];
@@ -25,15 +26,17 @@ public class ProcessMutants {
             MutationResult mutationResult = mutationResults.get(mutationIndex);
             Program newProgram = updateMainPropertyExpr(inputExtendedPgm, mutationResult);
             int newPgmHash = newProgram.toString().hashCode();
-            if (!generatedMutantsHash.contains(newPgmHash)) {
-                generatedMutantsHash.add(newPgmHash);
-                String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
-                writeToFile(specFileName, newProgram.toString(), false, true);
-                mutatedSpecs[resultIndex] = specFileName;
-                repairDepths[resultIndex] = mutationResult.repairDepth;
-                if (mutationResult.isPerfect)
-                    perfectMutant = specFileName;
-                ++resultIndex;
+            if (!generatedMutantsHash.contains(newPgmHash)) { // a new unique mutant
+                if (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) { //ensuring only relevant mutant type is processed.
+
+                    generatedMutantsHash.add(newPgmHash);
+                    String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
+                    writeToFile(specFileName, newProgram.toString(), false, true);
+                    mutatedSpecs[resultIndex] = specFileName;
+                    repairDepths[resultIndex] = mutationResult.repairDepth;
+                    if (mutationResult.isPerfect) perfectMutant = specFileName;
+                    ++resultIndex;
+                }
             } else {
                 System.out.println("find a repetative hashcode for:" + currFaultySpec + mutationResult.mutationIdentifier);
             }
@@ -56,10 +59,8 @@ public class ProcessMutants {
         List<Node> newNodes = new ArrayList<>();
         String mainNodeStr = pgm.main;
         for (Node node : pgm.nodes) {
-            if (node.id.equals(mainNodeStr))
-                newNodes.add(updateEqExpr(node, mutationResult.mutatedExpr));
-            else
-                newNodes.add(node);
+            if (node.id.equals(mainNodeStr)) newNodes.add(updateEqExpr(node, mutationResult.mutatedExpr));
+            else newNodes.add(node);
         }
 
         List<RepairNode> repairNodes = new ArrayList<>();

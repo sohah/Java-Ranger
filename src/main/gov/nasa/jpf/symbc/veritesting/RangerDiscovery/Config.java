@@ -79,6 +79,14 @@ public class Config {
     public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
     public static final int MINIMALLOOP_MAXLOOPCOUNT = 30; //found 378 iteration, then we find a repair.
 
+/*
+//testing
+    public static int timeOut = 3; //in seconds
+    public static boolean mac = true;
+
+    public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
+    public static final int MINIMALLOOP_MAXLOOPCOUNT = 3; //found 378 iteration, then we find a repair.
+*/
 
     public static int faultySpecIndex = 0;
 
@@ -92,8 +100,9 @@ public class Config {
 
     public static AllMutationStatistics allMutationStatistics;
 
-    public static boolean randomSampleMutants = false;
+    public static OperationMode operationMode = OperationMode.SMALLEST_ONLY;
     public static int maxMutants = 100;
+
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
@@ -110,25 +119,29 @@ public class Config {
                 tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-                Pair<Pair<String[], int[]>, String> triple = processMutants(mutationResults, origSpec, currFaultySpec);
+                Pair<Pair<String[], int[]>, String> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
                 faultySpecs = triple.getFirst().getFirst();
                 repairDepth = triple.getFirst().getSecond();
                 perfectMutant = triple.getSecond();
+                System.out.println("OperationMode is " + operationMode.name());
             }
-            if (randomSampleMutants) {
+            if (operationMode == OperationMode.RANDOM_SAMPLE) {
                 computeBenchmarkMaxSample();
+                System.out.println("maxMutants for Random Sampling is =" + maxMutants + "benchmark Sample = " + maxRandForProp);
                 faultySpecIndex = new Random().nextInt(faultySpecs.length);
                 ++samplesSoFar;
             }
         }
 
-        if (samplesSoFar > maxRandForProp) return false;
+        assert faultySpecs.length != 0;
+
+        if (operationMode == OperationMode.RANDOM_SAMPLE && samplesSoFar > maxRandForProp) return false;
         if ((faultySpecIndex) >= faultySpecs.length) return false;
 
         currFaultySpec = faultySpecs[faultySpecIndex];
         repairNodeDepth = repairDepth[faultySpecIndex];
 
-        if (!randomSampleMutants) ++faultySpecIndex;
+        if (operationMode == OperationMode.NORMAL) ++faultySpecIndex;
         else {
             faultySpecIndex = new Random().nextInt(faultySpecs.length);
             ++samplesSoFar;
