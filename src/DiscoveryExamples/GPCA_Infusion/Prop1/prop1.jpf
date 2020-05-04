@@ -30,7 +30,6 @@ mutationEnabled = true
 repairMutantsOnly = false
 
 randomSampleMutants=true
-maxMutants=100
 prop=1
 
 depthFixed = false
