@@ -141,7 +141,7 @@ public class Config {
         currFaultySpec = faultySpecs[faultySpecIndex];
         repairNodeDepth = repairDepth[faultySpecIndex];
 
-        if (operationMode == OperationMode.NORMAL) ++faultySpecIndex;
+        if (operationMode != OperationMode.RANDOM_SAMPLE) ++faultySpecIndex;
         else {
             faultySpecIndex = new Random().nextInt(faultySpecs.length);
             ++samplesSoFar;
