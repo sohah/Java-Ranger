@@ -21,7 +21,7 @@ public class AllMutationStatistics {
 
 
     public AllMutationStatistics() {
-        String out = ("currFaultySpec,     ") +  ("perfect,     ") + ("repairNodeDepth,     ") + ("terminationResult,     ") +
+        String out = ("currFaultySpec,     ") + ("perfect,     ") + ("repairNodeDepth,     ") + ("terminationResult,     ") +
 //                ("allCandidatesAttempted,     ") +
                 ("repairsFoundNum,     ") + ("executionTime,     ") + ("totalQueriesTime,     ") +
                 ("totalExistsTime,     ") + ("totalForallTime,     ") + ("totalExistsNum,     ") +
@@ -60,7 +60,8 @@ public class AllMutationStatistics {
                 + (DiscoveryUtil.convertTimeToSecond(forallAvg) + ",     ")
                 + (tightestProp + ",     ");
 
-        tighestPropsFound.add(tightestProp);
+        if (tightestProp != null)
+            tighestPropsFound.add(tightestProp);
 
         List<String> lines = Arrays.asList(out);
 
@@ -74,7 +75,7 @@ public class AllMutationStatistics {
 
     }
 
-    public void doneAllMutants(){
+    public void doneAllMutants() {
 
         Path file = Paths.get(Config.folderName + Config.spec + "_all_tightProps" + ".txt");
         try {

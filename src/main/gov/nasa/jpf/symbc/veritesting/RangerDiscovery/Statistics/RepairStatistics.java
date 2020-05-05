@@ -116,7 +116,7 @@ public class RepairStatistics {
         if (MinimalRepairDriver.repairs.size() > 0) {
             tighterNode = MinimalRepairDriver.repairs.get(MinimalRepairDriver.repairs.size() - 1);
             tightestProp = tighterNode.equations.get(tighterNode.equations.size() - 1).toString();
-        } else tightestProp = "";
+        } else tightestProp = null;
 
         Config.allMutationStatistics.writeFinalResult(Config.currFaultySpec, Config.isCurrMutantPerfect(), Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
     }
