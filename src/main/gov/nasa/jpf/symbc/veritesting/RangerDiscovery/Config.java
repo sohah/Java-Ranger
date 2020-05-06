@@ -66,28 +66,29 @@ public class Config {
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static String[] faultySpecs;
     public static int[] repairDepth;
-    public static String perfectMutant;
+    public static boolean[] perfectMutantFlags;
     public static boolean z3Solver = true;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static boolean depthFixed = false;
     public static boolean rangeValueAnalysis = true;
 
     public static boolean evaluationMode = false;
-    public static int timeOut = 300; //in seconds
+    public static int timeOut = 600; //in seconds - time out of every jkind query
+    public static int mutantTimeOut = 2700;  // in seconds time out for a mutant repair
     public static boolean mac = false;
 
     public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
     public static final int MINIMALLOOP_MAXLOOPCOUNT = 30; //found 378 iteration, then we find a repair.
 
-/*
-//testing
-    public static int timeOut = 3; //in seconds
-    public static boolean mac = true;
+    /*
+    //testing
+        public static int timeOut = 3; //in seconds
+        public static boolean mac = true;
 
-    public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
-    public static final int MINIMALLOOP_MAXLOOPCOUNT = 3; //found 378 iteration, then we find a repair.
-//end testing
- */
+        public static final int OUTERLOOP_MAXLOOPCOUNT = 2;
+        public static final int MINIMALLOOP_MAXLOOPCOUNT = 3; //found 378 iteration, then we find a repair.
+    //end testing
+     */
     public static int faultySpecIndex = 0;
 
     public static boolean repairInitialValues = true;
@@ -100,9 +101,9 @@ public class Config {
 
     public static AllMutationStatistics allMutationStatistics;
 
-    public static OperationMode operationMode = OperationMode.SMALLEST_ONLY;
+    public static OperationMode operationMode = OperationMode.NORMAL;
     public static boolean randomSample = true;
-    public static int maxMutants = 100;
+    public static int goalMutantNum = 2500;
 
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
@@ -120,15 +121,15 @@ public class Config {
                 tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-                Pair<Pair<String[], int[]>, String> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
                 faultySpecs = triple.getFirst().getFirst();
                 repairDepth = triple.getFirst().getSecond();
-                perfectMutant = triple.getSecond();
+                perfectMutantFlags = triple.getSecond();
                 System.out.println("OperationMode is " + operationMode.name());
             }
             if (randomSample) {
-                computeBenchmarkMaxSample();
-                System.out.println("maxMutants for Random Sampling is =" + maxMutants + "benchmark Sample = " + maxRandForProp);
+                computeUniformPropDistribution();
+                System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
                 faultySpecIndex = new Random().nextInt(faultySpecs.length);
                 ++samplesSoFar;
             }
@@ -201,54 +202,54 @@ public class Config {
     private static void computeBenchmarkMaxSample() {
         if (spec.equals("gpca")) {
             if (prop == 1) {
-                maxRandForProp = (int) (maxMutants * 0.02);
+                maxRandForProp = (int) (goalMutantNum * 0.02);
             } else if (prop == 2) {
-                maxRandForProp = (int) (maxMutants * 0.02);
+                maxRandForProp = (int) (goalMutantNum * 0.02);
             } else if (prop == 3) {
-                maxRandForProp = (int) (maxMutants * 0.04);
+                maxRandForProp = (int) (goalMutantNum * 0.04);
             } else if (prop == 4) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 5) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 6) {
-                maxRandForProp = (int) (maxMutants * 0.06);
+                maxRandForProp = (int) (goalMutantNum * 0.06);
             } else if (prop == 7) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 8) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 9) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 10) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else {
                 System.out.println("unknown property for spec. cannot sample. aborting");
                 assert false;
             }
         } else if (spec.equals("infusion")) {
             if (prop == 1) {
-                maxRandForProp = (int) (maxMutants * 0.26);
+                maxRandForProp = (int) (goalMutantNum * 0.26);
             } else if (prop == 2) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 3) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 5) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 6) {
-                maxRandForProp = (int) (maxMutants * 0.13);
+                maxRandForProp = (int) (goalMutantNum * 0.13);
             } else if (prop == 7) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 8) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 9) {
-                maxRandForProp = (int) (maxMutants * 0.05);
+                maxRandForProp = (int) (goalMutantNum * 0.05);
             } else if (prop == 10) {
-                maxRandForProp = (int) (maxMutants * 0.02);
+                maxRandForProp = (int) (goalMutantNum * 0.02);
             } else if (prop == 11) {
-                maxRandForProp = (int) (maxMutants * 0.02);
+                maxRandForProp = (int) (goalMutantNum * 0.02);
             } else if (prop == 12) {
-                maxRandForProp = (int) (maxMutants * 0.02);
+                maxRandForProp = (int) (goalMutantNum * 0.02);
             } else if (prop == 13) {
-                maxRandForProp = (int) (maxMutants * 0.01);
+                maxRandForProp = (int) (goalMutantNum * 0.01);
             } else if (prop == 4 || prop == 14) {
                 System.out.println("Invalid Props are not part of the sampling");
                 assert false;
@@ -258,11 +259,11 @@ public class Config {
             }
         } else if (spec.equals("tcas")) {
             if (prop == 1) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 2) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 4) {
-                maxRandForProp = (int) (maxMutants * 0.03);
+                maxRandForProp = (int) (goalMutantNum * 0.03);
             } else if (prop == 3) {
                 System.out.println("Invalid Props are not part of the sampling");
                 assert false;
@@ -272,9 +273,9 @@ public class Config {
             }
         } else if (spec.equals("wbs")) {
             if (prop == 1) {
-                maxRandForProp = (int) (maxMutants * 0.06);
+                maxRandForProp = (int) (goalMutantNum * 0.06);
             } else if (prop == 3) {
-                maxRandForProp = (int) (maxMutants * 0.04);
+                maxRandForProp = (int) (goalMutantNum * 0.04);
             } else if (prop == 2 || prop == 4 || prop == 5) {
                 System.out.println("Invalid Props are not part of the sampling");
                 assert false;
@@ -287,8 +288,18 @@ public class Config {
         }
     }
 
+    private static void computeUniformPropDistribution() {
+        maxRandForProp = (int) (goalMutantNum * 1 / 27);
+    }
+
     public static boolean isCurrMutantPerfect() {
-        if (currFaultySpec.equals(perfectMutant)) return true;
-        else return false;
+        /*if (randomSample)
+            if (perfectMutantFlags[faultySpecIndex])
+                return true;
+            else return false;
+        else if (perfectMutantFlags[faultySpecIndex - 1])
+            return true;
+        else return false;*/
+        return false;
     }
 }

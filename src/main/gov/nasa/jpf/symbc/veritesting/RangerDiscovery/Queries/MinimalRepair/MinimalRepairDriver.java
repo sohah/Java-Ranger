@@ -17,6 +17,7 @@ import jkind.lustre.Program;
 import java.util.ArrayList;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.executionTime;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.repairStatistics;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.callJkind;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
@@ -95,7 +96,9 @@ public class MinimalRepairDriver {
                     canFindMoreTighterRepair = false;
                     repairStatistics.terminationResult = TerminationResult.MINIMAL_MAX_LOOP_REACHED;
                     System.out.println("Minimum Loop Max Count Reached. Aborting");
-
+                } else if (DiscoveryUtil.convertTimeToSecond(System.currentTimeMillis() - executionTime) >= mutantTimeOut) { // aborting if we ever hit the overall mutant timeout.
+                    canFindMoreTighterRepair = false;
+                    repairStatistics.terminationResult = TerminationResult.MUTANT_TIME_OUT;
                 } else {
                     System.out.println("Trying candidate #: " + candidateLoopCount);
                     String fileName;

@@ -89,13 +89,19 @@ public class CandidateStatistics {
             // we will be calling this method with repairFound=true, the second case will call this method with
             // repairFound=false.
             RepairStatistics.out.print("N/A,     ");
-        } else RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(forallTimeTillRepair / forallQueryNumTillRepair) + ",     ");
+        } else
+            RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(forallTimeTillRepair / forallQueryNumTillRepair) + ",     ");
 
-        if (thereExistsQueryNumTillRepair == 0) { // this condition is not expected to occur since at least one
+        /*if (thereExistsQueryNumTillRepair == 0) { // this condition is not expected to occur since at least one
             // thereExists query must happen in either the outer or the inner loop.
             assert false;
-        } else RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(thereExistTimeTillRepair / thereExistsQueryNumTillRepair) + "     ");
-        RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(totalTime / (thereExistsQueryNumTillRepair + forallQueryNumTillRepair)) + "     ");
+        } else*/
+
+        RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(thereExistTimeTillRepair / thereExistsQueryNumTillRepair) + "     ");
+        if ((thereExistsQueryNumTillRepair + forallQueryNumTillRepair) != 0)
+            RepairStatistics.out.print(DiscoveryUtil.convertTimeToSecond(totalTime / (thereExistsQueryNumTillRepair + forallQueryNumTillRepair)) + "     ");
+        else
+            RepairStatistics.out.print("N/A");
         RepairStatistics.out.println();
         RepairStatistics.out.println();
 

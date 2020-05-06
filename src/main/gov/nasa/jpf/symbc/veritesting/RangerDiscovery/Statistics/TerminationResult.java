@@ -11,5 +11,6 @@ public enum TerminationResult {
     MINIMAL_UNKNOWN, //can be because of timeout as well from jkind.
     MINIMAL_MAX_LOOP_REACHED,
     UNEXPECTED_MINIMAL_RESULT,
-    OTHER_JKIND_EXCEPTION
+    OTHER_JKIND_EXCEPTION,
+    MUTANT_TIME_OUT
 }

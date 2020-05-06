@@ -13,12 +13,12 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 
 public class ProcessMutants {
 
-    public static Pair<Pair<String[], int[]>, String> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
+    public static Pair<Pair<String[], int[]>, boolean[]> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
         HashSet<Integer> generatedMutantsHash = new HashSet();
         assert mutationResults.size() > 0; //there must be mutants to be processed to call this method.
         String[] mutatedSpecs = new String[mutationResults.size()];
         int[] repairDepths = new int[mutationResults.size()];
-        String perfectMutant = null;
+        boolean[] perfectMutantFlags = new boolean[mutationResults.size()];
 
         int mutationIndex = 0;
         int resultIndex = 0;
@@ -34,7 +34,7 @@ public class ProcessMutants {
                     writeToFile(specFileName, newProgram.toString(), false, true);
                     mutatedSpecs[resultIndex] = specFileName;
                     repairDepths[resultIndex] = mutationResult.repairDepth;
-                    if (mutationResult.isPerfect) perfectMutant = specFileName;
+                    perfectMutantFlags[resultIndex] = mutationResult.isPerfect;
                     ++resultIndex;
                 }
             } else {
@@ -45,7 +45,7 @@ public class ProcessMutants {
         System.out.println("number of mutants generated after checksum are: " + resultIndex);
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
 
-        return new Pair(new Pair(Arrays.copyOf(mutatedSpecs, resultIndex), Arrays.copyOf(repairDepths, resultIndex)), perfectMutant);
+        return new Pair(new Pair(Arrays.copyOf(mutatedSpecs, resultIndex), Arrays.copyOf(repairDepths, resultIndex)), Arrays.copyOf(perfectMutantFlags, resultIndex));
     }
 
 

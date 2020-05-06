@@ -118,7 +118,7 @@ public class RepairStatistics {
             tightestProp = tighterNode.equations.get(tighterNode.equations.size() - 1).toString();
         } else tightestProp = null;
 
-        Config.allMutationStatistics.writeFinalResult(Config.currFaultySpec, Config.isCurrMutantPerfect(), Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
+        Config.allMutationStatistics.writeFinalResult(Config.spec, Config.prop, Config.currFaultySpec, Config.isCurrMutantPerfect(), Config.repairNodeDepth, terminationResult.name(), candidatesInAllLoops, candidateStatistics.repairsFoundNum, executionTime, candidateStatistics.totalTime, candidateStatistics.totalExistsTime, candidateStatistics.totalForallTime, candidateStatistics.totalExistsNum, candidateStatistics.totalForallNum, exitsAvg, forallAvg, tightestProp);
     }
 
     private void printRepairProp() throws IOException {
