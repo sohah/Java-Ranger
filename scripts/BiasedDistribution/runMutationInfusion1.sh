@@ -11,6 +11,3 @@ shopt -s expand_aliases
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop1/prop1.jpf >& $DISCOVERYDIR/logs/mutation/Infusion/Infusion_Prop1.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop2/prop2.jpf >& $DISCOVERYDIR/logs/mutation/Infusion/Infusion_Prop2.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop3/prop3.jpf >& $DISCOVERYDIR/logs/mutation/Infusion/Infusion_Prop3.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Infusion/Prop5/prop5.jpf >& $DISCOVERYDIR/logs/mutation/Infusion/Infusion_Prop5.log

@@ -13,3 +13,8 @@ runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop2/prop2.jpf >& $
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop3/prop3.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop3.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop4/prop4.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop4.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop5/prop5.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop5.log
+#runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop6/prop6.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop6.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop7/prop7.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop7.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop8/prop8.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop8.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop9/prop9.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop9.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop10/prop10.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop10.log
