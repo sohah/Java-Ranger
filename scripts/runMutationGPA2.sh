@@ -11,5 +11,4 @@ DISCOVERYDIR=/home/soha/git/ranger-discovery
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop6/prop6.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop6.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop7/prop7.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop7.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop8/prop8.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop8.log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop9/prop9.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop9.log
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop10/prop10.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop10.log

@@ -9,3 +9,5 @@ shopt -s expand_aliases
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 
 runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop2/prop2.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop2.log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/GPCA_Alarm/Prop9/prop9.jpf >& $DISCOVERYDIR/logs/mutation/GPCA/GPCA_Prop9.log
+
