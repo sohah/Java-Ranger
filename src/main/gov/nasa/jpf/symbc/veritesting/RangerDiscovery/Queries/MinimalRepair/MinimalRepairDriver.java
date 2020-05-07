@@ -111,7 +111,7 @@ public class MinimalRepairDriver {
                     System.out.println("ThereExists Query of : " + fileName);
 
                     singleQueryTime1 = System.currentTimeMillis();
-                    JKindResult synthesisResult = callJkind(fileName, false, (tPrimeExistsQ.getMaxTestCaseK() - 1), true, true);
+                    JKindResult synthesisResult = callJkind(fileName, false, (tPrimeExistsQ.getMaxTestCaseK() - 1), true, false);
 
                     singleQueryTime1 = (System.currentTimeMillis() - singleQueryTime1);
 

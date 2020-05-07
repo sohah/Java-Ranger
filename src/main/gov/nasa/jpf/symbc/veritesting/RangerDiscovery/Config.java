@@ -103,7 +103,7 @@ public class Config {
 
     public static OperationMode operationMode = OperationMode.NORMAL;
     public static boolean randomSample = true;
-    public static int goalMutantNum = 2500;
+    public static int goalMutantNum = 2000;
 
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
@@ -141,7 +141,9 @@ public class Config {
         if ((faultySpecIndex) >= faultySpecs.length) return false;
 
         currFaultySpec = faultySpecs[faultySpecIndex];
-        repairNodeDepth = repairDepth[faultySpecIndex];
+
+        if (mutationEnabled)
+            repairNodeDepth = repairDepth[faultySpecIndex];
 
         if (!randomSample) ++faultySpecIndex;
         else {
