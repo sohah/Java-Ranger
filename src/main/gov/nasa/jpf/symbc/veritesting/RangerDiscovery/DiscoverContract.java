@@ -204,6 +204,7 @@ public class DiscoverContract {
                     } else {
                         System.out.println("Contract Matching! Printing repair and aborting!");
                         repairStatistics.terminationResult = TerminationResult.ALREADY_MATCHING;
+                        repairStatistics.advanceTighterLoop(false);
                         repairStatistics.printSpecStatistics();
                     }
                     //System.out.println(getTnodeFromStr(fileName));
@@ -256,6 +257,7 @@ public class DiscoverContract {
                             DiscoverContract.repaired = false;
                             repairStatistics.advanceTighterLoop(false);
                             repairStatistics.terminationResult = TerminationResult.NO_VALID_SYNTHESIS_FOR_GRAMMAR;
+                            repairStatistics.advanceTighterLoop(false);
                             repairStatistics.printSpecStatistics();
                             return;
                         case INVALID:
@@ -287,6 +289,7 @@ public class DiscoverContract {
                                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                             else*/
                             repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                            repairStatistics.advanceTighterLoop(false);
                             repairStatistics.printSpecStatistics();
                             //assert false;
                             return;
@@ -299,13 +302,14 @@ public class DiscoverContract {
                         repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                     else*/
                     repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
-
+                    repairStatistics.advanceTighterLoop(false);
                     repairStatistics.printSpecStatistics();
                     return;
             }
             ++loopCount;
             if (loopCount == OUTERLOOP_MAXLOOPCOUNT + 3) {
                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_MAX_LOOP_REACHED;
+                repairStatistics.advanceTighterLoop(false);
                 repairStatistics.printSpecStatistics();
                 return;
             }
