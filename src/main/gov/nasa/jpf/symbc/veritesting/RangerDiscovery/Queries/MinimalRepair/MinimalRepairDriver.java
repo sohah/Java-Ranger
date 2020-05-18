@@ -149,7 +149,7 @@ public class MinimalRepairDriver {
 
                             JKindResult counterExampleResult = callJkind(fileName, true, -1, true, false);
 
-                            singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2) / milliSecondSimplification;
+                            singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2);
 
                             //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
                             System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime2));
