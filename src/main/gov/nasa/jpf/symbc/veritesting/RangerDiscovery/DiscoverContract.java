@@ -86,6 +86,7 @@ public class DiscoverContract {
                     } catch (JKindException jkindExp) {
                         System.out.println("jkind exception encountered aborting specification" + jkindExp);
                         repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;
+                        repairStatistics.lastQueryType = QueryType.UNKONWN;
                         repairStatistics.printSpecStatistics();
                         assert false;
                     }
@@ -187,7 +188,7 @@ public class DiscoverContract {
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
             singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
 
-            repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
+            repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
                 case VALID: //valid match
                     System.out.println("^-^Starting Minimal Loop ^-^");
@@ -204,6 +205,7 @@ public class DiscoverContract {
                     } else {
                         System.out.println("Contract Matching! Printing repair and aborting!");
                         repairStatistics.terminationResult = TerminationResult.ALREADY_MATCHING;
+                        repairStatistics.lastQueryType = QueryType.FORALL;
                         repairStatistics.advanceTighterLoop(false);
                         repairStatistics.printSpecStatistics();
                     }
@@ -249,7 +251,7 @@ public class DiscoverContract {
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 1, false, false);
                     singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
-                    repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
+                    repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
                             System.out.println("^-^ Ranger Discovery Result ^-^");
@@ -257,6 +259,7 @@ public class DiscoverContract {
                             DiscoverContract.repaired = false;
                             repairStatistics.advanceTighterLoop(false);
                             repairStatistics.terminationResult = TerminationResult.NO_VALID_SYNTHESIS_FOR_GRAMMAR;
+                            repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             repairStatistics.advanceTighterLoop(false);
                             repairStatistics.printSpecStatistics();
                             return;
@@ -289,6 +292,7 @@ public class DiscoverContract {
                                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                             else*/
                             repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                            repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             repairStatistics.advanceTighterLoop(false);
                             repairStatistics.printSpecStatistics();
                             //assert false;
@@ -302,6 +306,7 @@ public class DiscoverContract {
                         repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                     else*/
                     repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                    repairStatistics.lastQueryType = QueryType.FORALL;
                     repairStatistics.advanceTighterLoop(false);
                     repairStatistics.printSpecStatistics();
                     return;
@@ -309,6 +314,7 @@ public class DiscoverContract {
             ++loopCount;
             if (loopCount == OUTERLOOP_MAXLOOPCOUNT + 3) {
                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_MAX_LOOP_REACHED;
+                repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                 repairStatistics.advanceTighterLoop(false);
                 repairStatistics.printSpecStatistics();
                 return;

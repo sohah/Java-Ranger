@@ -33,6 +33,7 @@ public class RepairStatistics {
     public static BufferedWriter bw;
     public static PrintWriter out;
     public TerminationResult terminationResult;
+    public QueryType lastQueryType;
     CandidateStatistics candidateStatistics;
     int candidatesInAllLoops = 0; //accumulative number of all candidates attempted in both the inner and the outer loop.
     String repairPropFileName;
@@ -75,6 +76,7 @@ public class RepairStatistics {
         out.print("Perfect,     ");
         out.print("libraryDepth,     ");
         out.print("terminationResult,     ");
+        out.print("lastQuery,     ");
         out.print("allCandidatesAttempted,     ");
         out.print("repairsFoundNum,     ");
         out.print("executionTime,     ");
@@ -88,6 +90,7 @@ public class RepairStatistics {
         out.print(Config.isCurrMutantPerfect() + ",     ");
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
+        out.print(lastQueryType.name() + ",     ");
         out.print(candidatesInAllLoops + ",     ");
         out.print(candidateStatistics.repairsFoundNum + ",     ");
         out.print(DiscoveryUtil.convertTimeToSecond(executionTime) + ",     ");
