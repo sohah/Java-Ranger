@@ -7,7 +7,8 @@ sourcepath=${jpf-symbc}/src/examples
 vm.storage.class=nil
 symbolic.lazy = true
 #symbolic.optimizechoices=false
-
+symbolic.minint=0
+symbolic.maxint=255
 
 symbolic.method=DiscoveryExamples.gpca_InfusionMgr.INFUSION_MGR_FunctionalRecovered.INFUSION_MGR_FunctionalSymWrapper(sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym#sym)
 

@@ -14,8 +14,8 @@ import java.util.*;
 public class AllMutationStatistics {
     List<String> uniqueTighestPropsFound = new ArrayList<>();
 
-    String uniquePropFileName = Config.folderName + Config.spec + "_UniqueProp" + Config.prop + ".txt";
-    String allPropFileName = Config.folderName + Config.spec + "_AllProp" + Config.prop + ".txt";
+    String uniquePropFileName = Config.folderName + Config.spec + "_unique_prop" + Config.prop + ".txt";
+    String allPropFileName = Config.folderName + Config.spec + "_all_prop" + Config.prop + ".txt";
     String statFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_stats.txt";
 
 

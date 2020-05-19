@@ -1,7 +1,5 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair;
 
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Contract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation.ToLutre;
@@ -188,7 +186,7 @@ public class MinimalRepairDriver {
 //                                        repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
 //                                        System.out.println("Property unexpected output (forall Query MINIMAL_TIMED_OUT):");
 //                                    } else {
-                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
+                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_FORALL_UNKNOWN;
                                     repairStatistics.lastQueryType = QueryType.FORALL;
                                     System.out.println(" Property unexpected output (for all Query):" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
 //                                    }
@@ -204,7 +202,7 @@ public class MinimalRepairDriver {
 //                                repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
 //                                System.out.println("Property unexpected output (synthesis Query MINIMAL_TIMED_OUT):");
 //                            } else {
-                            repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
+                            repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
                             repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             System.out.println("Property unexpected output (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
 //                            }

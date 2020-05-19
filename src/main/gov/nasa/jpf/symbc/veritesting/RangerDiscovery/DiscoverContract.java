@@ -291,7 +291,7 @@ public class DiscoverContract {
                             /*if (singleQueryTime >= timeOut)
                                 repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                             else*/
-                            repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                            repairStatistics.terminationResult = TerminationResult.OUTERLOOP_EXISTS_UNKNOWN;
                             repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             repairStatistics.advanceTighterLoop(false);
                             repairStatistics.printSpecStatistics();
@@ -305,7 +305,7 @@ public class DiscoverContract {
                     /*if (singleQueryTime >= timeOut)
                         repairStatistics.terminationResult = TerminationResult.OUTERLOOP_TIMED_OUT;
                     else*/
-                    repairStatistics.terminationResult = TerminationResult.OUTERLOOP_UNKNOWN;
+                    repairStatistics.terminationResult = TerminationResult.OUTERLOOP_FORALL_UKNOWN;
                     repairStatistics.lastQueryType = QueryType.FORALL;
                     repairStatistics.advanceTighterLoop(false);
                     repairStatistics.printSpecStatistics();
