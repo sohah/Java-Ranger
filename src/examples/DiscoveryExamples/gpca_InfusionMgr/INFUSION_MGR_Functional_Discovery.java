@@ -1249,13 +1249,127 @@ public class INFUSION_MGR_Functional_Discovery {
 
         Infusion_Manager_Outputs rty_IM_OUT = new Infusion_Manager_Outputs();
 
+
         if (symVar) {
-            //INFUSION_MGR_Functional_Init(localB, localDW);
-            INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
-                    rtu_OP_CMD_IN, rtu_PATIENT_IN,
-                    rtu_CONFIG_IN, rtu_ALARM_IN,
-                    rtu_SYS_STAT_IN, rty_IM_OUT,
-                    localB, localDW);
+            if ((0 <= Infusion_Total_Duration) &&
+                    (0 <= VTBI_Total) &&
+                    (0 <= Flow_Rate_Basal) &&
+                    (0 <= Flow_Rate_Intermittent_Bolus) &&
+                    (0 <= Duration_Intermittent_Bolus) &&
+                    (0 <= Interval_Intermittent_Bolus) &&
+                    (0 <= Flow_Rate_Patient_Bolus) &&
+                    (0 <= Duration_Patient_Bolus) &&
+                    (0 <= Lockout_Period_Patient_Bolus) &&
+                    (0 <= Max_Number_of_Patient_Bolus) &&
+                    (0 <= Flow_Rate_KVO) &&
+                    (0 <= Entered_Reservoir_Volume) &&
+                    (0 <= Configured) &&
+                    (0 <= Highest_Level_Alarm) &&
+                    (0 <= Volume_Infused) &&
+                    (0 <= Highest_Level_Alarm2) &&
+                    (0 <= Infusion_Total_Duration2) &&
+                    (0 <= VTBI_Total2) &&
+                    (0 <= Flow_Rate_Basal2) &&
+                    (0 <= Flow_Rate_Intermittent_Bolus2) &&
+                    (0 <= Duration_Intermittent_Bolus2) &&
+                    (0 <= Interval_Intermittent_Bolus2) &&
+                    (0 <= Flow_Rate_Patient_Bolus2) &&
+                    (0 <= Duration_Patient_Bolus2) &&
+                    (0 <= Lockout_Period_Patient_Bolus2) &&
+                    (0 <= Max_Number_of_Patient_Bolus2) &&
+                    (0 <= Flow_Rate_KVO2) &&
+                    (0 <= Configured2) &&
+                    (0 <= Volume_Infused2) &&
+                    (0 <= IM_OUT_Flow_Rate_Commanded2) &&
+                    (0 <= IM_OUT_Current_System_Mode2) &&
+                    (0 <= IM_OUT_Log_Message_ID2) &&
+                    (0 <= IM_OUT_Actual_Infusion_Duration2) &&
+                    (0 <= is_active_c2_INFUSION_MGR_Functional) &&
+                    (0 <= is_c2_INFUSION_MGR_Functional) &&
+                    (0 <= is_Infusion_Manager) &&
+                    (0 <= is_THERAPY) &&
+                    (0 <= is_Arbiter) &&
+                    (0 <= is_active_Arbiter) &&
+                    (0 <= is_Alarm_Paused) &&
+                    (0 <= is_active_Alarm_Paused) &&
+                    (0 <= is_Manual_Paused) &&
+                    (0 <= is_active_Manual_Paused) &&
+                    (0 <= is_BASAL) &&
+                    (0 <= is_active_BASAL) &&
+                    (0 <= is_Arbiter_d) &&
+                    (0 <= is_active_Arbiter_c) &&
+                    (0 <= is_PATIENT) &&
+                    (0 <= is_active_PATIENT) &&
+                    (0 <= is_INTERMITTENT) &&
+                    (0 <= is_active_INTERMITTENT) &&
+                    (0 <= sbolus_timer) &&
+                    (0 <= pbolus_timer) &&
+                    (0 <= lock_timer) &&
+                    (0 <= number_pbolus) &&
+                    (0 <= sbolusInter_timer) &&
+                    (Infusion_Total_Duration <= 255) &&
+                    (VTBI_Total <= 255) &&
+                    (Flow_Rate_Basal <= 255) &&
+                    (Flow_Rate_Intermittent_Bolus <= 255) &&
+                    (Duration_Intermittent_Bolus <= 255) &&
+                    (Interval_Intermittent_Bolus <= 255) &&
+                    (Flow_Rate_Patient_Bolus <= 255) &&
+                    (Duration_Patient_Bolus <= 255) &&
+                    (Lockout_Period_Patient_Bolus <= 255) &&
+                    (Max_Number_of_Patient_Bolus <= 255) &&
+                    (Flow_Rate_KVO <= 255) &&
+                    (Entered_Reservoir_Volume <= 255) &&
+                    (Configured <= 255) &&
+                    (Highest_Level_Alarm <= 255) &&
+                    (Volume_Infused <= 255) &&
+                    (Highest_Level_Alarm2 <= 255) &&
+                    (Infusion_Total_Duration2 <= 255) &&
+                    (VTBI_Total2 <= 255) &&
+                    (Flow_Rate_Basal2 <= 255) &&
+                    (Flow_Rate_Intermittent_Bolus2 <= 255) &&
+                    (Duration_Intermittent_Bolus2 <= 255) &&
+                    (Interval_Intermittent_Bolus2 <= 255) &&
+                    (Flow_Rate_Patient_Bolus2 <= 255) &&
+                    (Duration_Patient_Bolus2 <= 255) &&
+                    (Lockout_Period_Patient_Bolus2 <= 255) &&
+                    (Max_Number_of_Patient_Bolus2 <= 255) &&
+                    (Flow_Rate_KVO2 <= 255) &&
+                    (Configured2 <= 255) &&
+                    (Volume_Infused2 <= 255) &&
+                    (IM_OUT_Flow_Rate_Commanded2 <= 255) &&
+                    (IM_OUT_Current_System_Mode2 <= 255) &&
+                    (IM_OUT_Log_Message_ID2 <= 255) &&
+                    (IM_OUT_Actual_Infusion_Duration2 <= 255) &&
+                    (is_active_c2_INFUSION_MGR_Functional <= 255) &&
+                    (is_c2_INFUSION_MGR_Functional <= 255) &&
+                    (is_Infusion_Manager <= 255) &&
+                    (is_THERAPY <= 255) &&
+                    (is_Arbiter <= 255) &&
+                    (is_active_Arbiter <= 255) &&
+                    (is_Alarm_Paused <= 255) &&
+                    (is_active_Alarm_Paused <= 255) &&
+                    (is_Manual_Paused <= 255) &&
+                    (is_active_Manual_Paused <= 255) &&
+                    (is_BASAL <= 255) &&
+                    (is_active_BASAL <= 255) &&
+                    (is_Arbiter_d <= 255) &&
+                    (is_active_Arbiter_c <= 255) &&
+                    (is_PATIENT <= 255) &&
+                    (is_active_PATIENT <= 255) &&
+                    (is_INTERMITTENT <= 255) &&
+                    (is_active_INTERMITTENT <= 255) &&
+                    (sbolus_timer <= 255) &&
+                    (pbolus_timer <= 255) &&
+                    (lock_timer <= 255) &&
+                    (number_pbolus <= 255) &&
+                    (sbolusInter_timer <= 255)) {
+                //INFUSION_MGR_Functional_Init(localB, localDW);
+                INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                        rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                        rtu_CONFIG_IN, rtu_ALARM_IN,
+                        rtu_SYS_STAT_IN, rty_IM_OUT,
+                        localB, localDW);
+            }
         }
 
     }
@@ -1264,7 +1378,7 @@ public class INFUSION_MGR_Functional_Discovery {
     public static void main(String[] args) {
         INFUSION_MGR_FunctionalSymWrapper(false, false, 1, false, false, false, false, false, false, false, false,
                 false, false, 1, false, 1, false, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, false, false, false, false
-                , 1, 1, 1, 1, 1, 1, 1, 1, false, 1, 1, 1, false,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                , 1, 1, 1, 1, 1, 1, 1, 1, false, 1, 1, 1, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, false, false, false, false, false, false, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, false, false,
                 false);
 

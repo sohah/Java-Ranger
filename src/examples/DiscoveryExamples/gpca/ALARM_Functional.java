@@ -2076,30 +2076,144 @@ public class ALARM_Functional {
 
         B_ALARM_Functional_c_T localB = new B_ALARM_Functional_c_T();
         DW_ALARM_Functional_f_T localDW = new DW_ALARM_Functional_f_T();
+        if (( 0 <= Commanded_Flow_Rate) &&
+                ( 0 <= Current_System_Mode) &&
+                ( 0 <= Log_Message_ID_1) &&
+                ( 0 <= Actual_Infusion_Duration) &&
+                ( 0 <= Log_Message_ID_2) &&
+                ( 0 <= Log) &&
+                ( 0 <= Disable_Audio) &&
+                ( 0 <= Configuration_Type) &&
+                ( 0 <= Drug_Name1) &&
+                ( 0 <= Drug_Concentration_High) &&
+                ( 0 <= Drug_Concentration_Low) &&
+                ( 0 <= VTBI_High) &&
+                ( 0 <= VTBI_Low) &&
+                ( 0 <= Interval_Patient_Bolus) &&
+                ( 0 <= Number_Max_Patient_Bolus) &&
+                ( 0 <= Flow_Rate_KVO1) &&
+                ( 0 <= Flow_Rate_High) &&
+                ( 0 <= Flow_Rate_Low) &&
+                ( 0 <= Flow_Rate) &&
+                ( 0 <= Audio_Enable_Duration) &&
+                ( 0 <= Audio_Level) &&
+                ( 0 <= Config_Warning_Duration) &&
+                ( 0 <= Empty_Reservoir) &&
+                ( 0 <= Low_Reservoir) &&
+                ( 0 <= Max_Config_Duration) &&
+                ( 0 <= Max_Duration_Over_Infusion) &&
+                ( 0 <= Max_Duration_Under_Infusion) &&
+                ( 0 <= Max_Paused_Duration) &&
+                ( 0 <= Max_Idle_Duration) &&
+                ( 0 <= Tolerance_Max) &&
+                ( 0 <= Tolerance_Min) &&
+                ( 0 <= Log_Interval) &&
+                ( 0 <= System_Test_Interval) &&
+                ( 0 <= Max_Display_Duration) &&
+                ( 0 <= Max_Confirm_Stop_Duration) &&
+                ( 0 <= Reservoir_Volume1) &&
+                ( 0 <= Volume_Infused) &&
+                ( 0 <= Log_Message_ID3) &&
+                ( 0 <= Patient_ID) &&
+                ( 0 <= Drug_Name2) &&
+                ( 0 <= Drug_Concentration) &&
+                ( 0 <= Infusion_Total_Duration) &&
+                ( 0 <= VTBI_Total) &&
+                ( 0 <= Flow_Rate_Basal) &&
+                ( 0 <= Flow_Rate_Intermittent_Bolus) &&
+                ( 0 <= Duration_Intermittent_Bolus) &&
+                ( 0 <= Interval_Intermittent_Bolus) &&
+                ( 0 <= Flow_Rate_Patient_Bolus) &&
+                ( 0 <= Duration_Patient_Bolus) &&
+                ( 0 <= Lockout_Period_Patient_Bolus) &&
+                ( 0 <= Max_Number_of_Patient_Bolus) &&
+                ( 0 <= Flow_Rate_KVO2) &&
+                ( 0 <= Entered_Reservoir_Volume) &&
+                ( 0 <= Reservoir_Volume2) &&
+                ( 0 <= Configured) &&
+                ( 0 <= Error_Message_ID) &&
+                ( 0 <= Log_Message_ID4) &&
+                ( 0 <= Config_Timer) &&
+                ( 0 <= Config_Mode) &&
+                ( 0 <= Is_Audio_Disabled) &&
+                ( 0 <= Notification_Message) &&
+                ( 0 <= Audio_Notification_Command) &&
+                ( 0 <= Highest_Level_Alarm) &&
+                ( 0 <= Log_Message_ID5) &&
+                (Commanded_Flow_Rate<= 255 ) &&
+                (Current_System_Mode<= 255 ) &&
+                (Log_Message_ID_1<= 255 ) &&
+                (Actual_Infusion_Duration<= 255 ) &&
+                (Log_Message_ID_2<= 255 ) &&
+                (Log<= 255 ) &&
+                (Disable_Audio<= 255 ) &&
+                (Configuration_Type<= 255 ) &&
+                (Drug_Name1<= 255 ) &&
+                (Drug_Concentration_High<= 255 ) &&
+                (Drug_Concentration_Low<= 255 ) &&
+                (VTBI_High<= 255 ) &&
+                (VTBI_Low<= 255 ) &&
+                (Interval_Patient_Bolus<= 255 ) &&
+                (Number_Max_Patient_Bolus<= 255 ) &&
+                (Flow_Rate_KVO1<= 255 ) &&
+                (Flow_Rate_High<= 255 ) &&
+                (Flow_Rate_Low<= 255 ) &&
+                (Flow_Rate<= 255 ) &&
+                (Audio_Enable_Duration<= 255 ) &&
+                (Audio_Level<= 255 ) &&
+                (Config_Warning_Duration<= 255 ) &&
+                (Empty_Reservoir<= 255 ) &&
+                (Low_Reservoir<= 255 ) &&
+                (Max_Config_Duration<= 255 ) &&
+                (Max_Duration_Over_Infusion<= 255 ) &&
+                (Max_Duration_Under_Infusion<= 255 ) &&
+                (Max_Paused_Duration<= 255 ) &&
+                (Max_Idle_Duration<= 255 ) &&
+                (Tolerance_Max<= 255 ) &&
+                (Tolerance_Min<= 255 ) &&
+                (Log_Interval<= 255 ) &&
+                (System_Test_Interval<= 255 ) &&
+                (Max_Display_Duration<= 255 ) &&
+                (Max_Confirm_Stop_Duration<= 255 ) &&
+                (Reservoir_Volume1<= 255 ) &&
+                (Volume_Infused<= 255 ) &&
+                (Log_Message_ID3<= 255 ) &&
+                (Patient_ID<= 255 ) &&
+                (Drug_Name2<= 255 ) &&
+                (Drug_Concentration<= 255 ) &&
+                (Infusion_Total_Duration<= 255 ) &&
+                (VTBI_Total<= 255 ) &&
+                (Flow_Rate_Basal<= 255 ) &&
+                (Flow_Rate_Intermittent_Bolus<= 255 ) &&
+                (Duration_Intermittent_Bolus<= 255 ) &&
+                (Interval_Intermittent_Bolus<= 255 ) &&
+                (Flow_Rate_Patient_Bolus<= 255 ) &&
+                (Duration_Patient_Bolus<= 255 ) &&
+                (Lockout_Period_Patient_Bolus<= 255 ) &&
+                (Max_Number_of_Patient_Bolus<= 255 ) &&
+                (Flow_Rate_KVO2<= 255 ) &&
+                (Entered_Reservoir_Volume<= 255 ) &&
+                (Reservoir_Volume2<= 255 ) &&
+                (Configured<= 255 ) &&
+                (Error_Message_ID<= 255 ) &&
+                (Log_Message_ID4<= 255 ) &&
+                (Config_Timer<= 255 ) &&
+                (Config_Mode<= 255 ) &&
+                (Is_Audio_Disabled<= 255 ) &&
+                (Notification_Message<= 255 ) &&
+                (Audio_Notification_Command<= 255 ) &&
+                (Highest_Level_Alarm<= 255 ) &&
+                (Log_Message_ID5 <=255)
 
-        ALARM_Functional_Init(localB, localDW);
+        ) {
+            ALARM_Functional_Init(localB, localDW);
 
-        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
-                rtu_sensor_in,
-                rtu_const_in,
-                rtu_sys_stat_in,
-                rtu_config_in, rty_alarm_out, localB,
-                localDW);
-        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
-                rtu_sensor_in,
-                rtu_const_in,
-                rtu_sys_stat_in,
-                rtu_config_in, rty_alarm_out, localB,
-                localDW);
-        ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
-                rtu_sensor_in,
-                rtu_const_in,
-                rtu_sys_stat_in,
-                rtu_config_in, rty_alarm_out, localB,
-                localDW);
+            ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in, rtu_sensor_in, rtu_const_in, rtu_sys_stat_in, rtu_config_in, rty_alarm_out, localB, localDW);
+            ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in, rtu_sensor_in, rtu_const_in, rtu_sys_stat_in, rtu_config_in, rty_alarm_out, localB, localDW);
+            ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in, rtu_sensor_in, rtu_const_in, rtu_sys_stat_in, rtu_config_in, rty_alarm_out, localB, localDW);
 
 
+        }
     }
-
 
 }

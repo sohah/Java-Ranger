@@ -1182,50 +1182,122 @@ public class INFUSION_MGR_FunctionalRecovered {
         rty_IM_OUT.Log_Message_ID = Log_Message_ID4;
         rty_IM_OUT.Actual_Infusion_Duration = Actual_Infusion_Duration;
 
-        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
-                rtu_OP_CMD_IN, rtu_PATIENT_IN,
-                rtu_CONFIG_IN, rtu_ALARM_IN,
-                rtu_SYS_STAT_IN, rty_IM_OUT,
-                localB, localDW);
+        if(     (0<=  Log_Message_ID1)&&
+                (0<=  Disable_Audio)&&
+                (0<=  Configuration_Type)&&
+                (0<=  Patient_ID)&&
+                (0<=  Drug_Name)&&
+                (0<=  Drug_Concentration)&&
+                (0<=  Infusion_Total_Duration)&&
+                (0<=  VTBI_Total)&&
+                (0<=  Flow_Rate_Basal)&&
+                (0<=  Flow_Rate_Intermittent_Bolus)&&
+                (0<=  Duration_Intermittent_Bolus)&&
+                (0<=  Interval_Intermittent_Bolus)&&
+                (0<=  Flow_Rate_Patient_Bolus)&&
+                (0<=  Duration_Patient_Bolus)&&
+                (0<=  Lockout_Period_Patient_Bolus)&&
+                (0<=  Max_Number_of_Patient_Bolus)&&
+                (0<=  Flow_Rate_KVO)&&
+                (0<=  Entered_Reservoir_Volume)&&
+                (0<=  Reservoir_Volume)&&
+                (0<=  Configured)&&
+                (0<=  Error_Message_ID)&&
+                (0<=  Log_Message_ID)&&
+                (0<=  Config_Timer)&&
+                (0<=  Config_Mode)&&
+                (0<=  Is_Audio_Disabled)&&
+                (0<=  Notification_Message)&&
+                (0<=  Audio_Notification_Command)&&
+                (0<=  Highest_Level_Alarm)&&
+                (0<=  Log_Message_ID3)&&
+                (0<=  Reservoir_Volume2)&&
+                (0<=  Volume_Infused)&&
+                (0<=  Log_Message_ID2)&&
+                (0<=  Commanded_Flow_Rate)&&
+                (0<=  Current_System_Mode)&&
+                (0<=  Log_Message_ID4)&&
+                (0<=  Actual_Infusion_Duration) &&
+                ( Log_Message_ID1<=255)&&
+                ( Disable_Audio<=255)&&
+                ( Configuration_Type<=255)&&
+                ( Patient_ID<=255)&&
+                ( Drug_Name<=255)&&
+                ( Drug_Concentration<=255)&&
+                ( Infusion_Total_Duration<=255)&&
+                ( VTBI_Total<=255)&&
+                ( Flow_Rate_Basal<=255)&&
+                ( Flow_Rate_Intermittent_Bolus<=255)&&
+                ( Duration_Intermittent_Bolus<=255)&&
+                ( Interval_Intermittent_Bolus<=255)&&
+                ( Flow_Rate_Patient_Bolus<=255)&&
+                ( Duration_Patient_Bolus<=255)&&
+                ( Lockout_Period_Patient_Bolus<=255)&&
+                ( Max_Number_of_Patient_Bolus<=255)&&
+                ( Flow_Rate_KVO<=255)&&
+                ( Entered_Reservoir_Volume<=255)&&
+                ( Reservoir_Volume<=255)&&
+                ( Configured<=255)&&
+                ( Error_Message_ID<=255)&&
+                ( Log_Message_ID<=255)&&
+                ( Config_Timer<=255)&&
+                ( Config_Mode<=255)&&
+                ( Is_Audio_Disabled<=255)&&
+                ( Notification_Message<=255)&&
+                ( Audio_Notification_Command<=255)&&
+                ( Highest_Level_Alarm<=255)&&
+                ( Log_Message_ID3<=255)&&
+                ( Reservoir_Volume2<=255)&&
+                ( Volume_Infused<=255)&&
+                ( Log_Message_ID2<=255)&&
+                ( Commanded_Flow_Rate<=255)&&
+                ( Current_System_Mode<=255)&&
+                ( Log_Message_ID4<=255)&&
+                ( Actual_Infusion_Duration<=255)) {
+            INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                    rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                    rtu_CONFIG_IN, rtu_ALARM_IN,
+                    rtu_SYS_STAT_IN, rty_IM_OUT,
+                    localB, localDW);
 
-        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
-                rtu_OP_CMD_IN, rtu_PATIENT_IN,
-                rtu_CONFIG_IN, rtu_ALARM_IN,
-                rtu_SYS_STAT_IN, rty_IM_OUT,
-                localB, localDW);
+            INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                    rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                    rtu_CONFIG_IN, rtu_ALARM_IN,
+                    rtu_SYS_STAT_IN, rty_IM_OUT,
+                    localB, localDW);
 
-        INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
-                rtu_OP_CMD_IN, rtu_PATIENT_IN,
-                rtu_CONFIG_IN, rtu_ALARM_IN,
-                rtu_SYS_STAT_IN, rty_IM_OUT,
-                localB, localDW);
+            INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
+                    rtu_OP_CMD_IN, rtu_PATIENT_IN,
+                    rtu_CONFIG_IN, rtu_ALARM_IN,
+                    rtu_SYS_STAT_IN, rty_IM_OUT,
+                    localB, localDW);
 
 
-        boolean checkCondition;
-        boolean checkOutput;
+            boolean checkCondition;
+            boolean checkOutput;
 
-        //Prop1: mode_range
+            //Prop1: mode_range
         /*checkCondition =
                 ((rty_IM_OUT.Current_System_Mode == 0) || (rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 2) || (rty_IM_OUT.Current_System_Mode == 3) || (rty_IM_OUT.Current_System_Mode == 4) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7) || (rty_IM_OUT.Current_System_Mode == 8));
         assert checkCondition;*/
 
-        //prop2: system_on_implies_idle -------- couldn't be mapped to source
+            //prop2: system_on_implies_idle -------- couldn't be mapped to source
 //        checkCondition = ((!(prev_On_Start)) && curr_On_Start);
 //        checkOutput = (rty_IM_OUT.Current_System_Mode == 1);
 //        assert(!checkCondition || checkOutput);
 
-        //prop2 not_system_on_implies_mode_0
+            //prop2 not_system_on_implies_mode_0
         /*checkCondition = (!(rtu_TLM_MODE_IN.System_On));
         checkOutput = (rty_IM_OUT.Current_System_Mode == 0);
         assert (!checkCondition || checkOutput);
 */
 
-        //prop3 alarm_L4_implies_flow_rate_zero
+            //prop3 alarm_L4_implies_flow_rate_zero
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
 */
-        //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
+            //Prop4: alarm_L3_implies_flow_kvo -- Not Valid on the implementation
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 3));
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
         if (checkCondition && !checkOutput) {
@@ -1258,19 +1330,19 @@ public class INFUSION_MGR_FunctionalRecovered {
         assert (!checkCondition || checkOutput);*/
 
 
-        //Prop9: alarm_GTE_3_implies_in_paused_or_idle
+            //Prop9: alarm_GTE_3_implies_in_paused_or_idle
   /*      checkCondition = (rtu_TLM_MODE_IN.System_On && (rtu_ALARM_IN.Highest_Level_Alarm == 4));
         checkOutput =
                 ((rty_IM_OUT.Current_System_Mode == 1) || (rty_IM_OUT.Current_System_Mode == 6) || (rty_IM_OUT.Current_System_Mode == 7));
         assert (!checkCondition || checkOutput);*/
 
-        //Prop10: mode_basal_implies_infusion_rate_basal
+            //Prop10: mode_basal_implies_infusion_rate_basal
         /*checkCondition = (rtu_TLM_MODE_IN.System_On && rty_IM_OUT.Current_System_Mode == 2);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Basal);
         assert (!checkCondition || checkOutput);*/
 
 
-        //Prop11: mode_intermittent_implies_infusion_rate_intermittent_bolus
+            //Prop11: mode_intermittent_implies_infusion_rate_intermittent_bolus
   /*      checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 3);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == rtu_CONFIG_IN.Flow_Rate_Intermittent_Bolus);
         assert (!checkCondition || checkOutput);
@@ -1287,44 +1359,44 @@ public class INFUSION_MGR_FunctionalRecovered {
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);*/
 
-        //Prop13: mode_idle_implies_infusion_rate_zero(
+            //Prop13: mode_idle_implies_infusion_rate_zero(
 /*
         checkCondition = rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 1);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate == 0);
         assert (!checkCondition || checkOutput);
 */
 
-        //Prop14: mode_paused_implies_infusion_rate_kvo
-        /*checkCondition =
+            //Prop14: mode_paused_implies_infusion_rate_kvo
+        checkCondition =
                 rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
         checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);*/
+        assert (!checkCondition || checkOutput);
 
 
-        /************Discovery properties**********/
+            /************Discovery properties**********/
 
-        /****************** fixing invalid properties *****************/
-         //prop 4
-        //assert (!((!rtu_TLM_MODE_IN.System_On) || (rtu_ALARM_IN.Highest_Level_Alarm == 4)) || ((rty_IM_OUT.Commanded_Flow_Rate == 0)));
+            /****************** fixing invalid properties *****************/
+            //prop 4
+            //assert (!((!rtu_TLM_MODE_IN.System_On) || (rtu_ALARM_IN.Highest_Level_Alarm == 4)) || ((rty_IM_OUT.Commanded_Flow_Rate == 0)));
 
-        //prop14
-        //p1
-        //assert ((((rty_IM_OUT.Current_System_Mode >= 2) || (rty_IM_OUT.Commanded_Flow_Rate == 0)) ^ ((rty_IM_OUT.Current_System_Mode > 8) ^ (rty_IM_OUT.Current_System_Mode == 5))) && (((rty_IM_OUT.Current_System_Mode < 0) || (rty_IM_OUT.Current_System_Mode >= 1)) ^ (!(rty_IM_OUT.Current_System_Mode >= 0) || (! rtu_TLM_MODE_IN.System_On))));
+            //prop14
+            //p1
+            //assert ((((rty_IM_OUT.Current_System_Mode >= 2) || (rty_IM_OUT.Commanded_Flow_Rate == 0)) ^ ((rty_IM_OUT.Current_System_Mode > 8) ^ (rty_IM_OUT.Current_System_Mode == 5))) && (((rty_IM_OUT.Current_System_Mode < 0) || (rty_IM_OUT.Current_System_Mode >= 1)) ^ (!(rty_IM_OUT.Current_System_Mode >= 0) || (! rtu_TLM_MODE_IN.System_On))));
 
-        //p2
-        //assert (!(!((rty_IM_OUT.Current_System_Mode >= 0) ^ (rty_IM_OUT.Current_System_Mode > 6)) || ((rty_IM_OUT.Current_System_Mode < 1) ^ (! rtu_TLM_MODE_IN.System_On))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+            //p2
+            //assert (!(!((rty_IM_OUT.Current_System_Mode >= 0) ^ (rty_IM_OUT.Current_System_Mode > 6)) || ((rty_IM_OUT.Current_System_Mode < 1) ^ (! rtu_TLM_MODE_IN.System_On))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
 
-        //p3
-       //assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode == 6) ^ (rty_IM_OUT.Current_System_Mode < 1)) ^ ((rty_IM_OUT.Current_System_Mode >= 5) && (rty_IM_OUT.Current_System_Mode >= 2)))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+            //p3
+            //assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode == 6) ^ (rty_IM_OUT.Current_System_Mode < 1)) ^ ((rty_IM_OUT.Current_System_Mode >= 5) && (rty_IM_OUT.Current_System_Mode >= 2)))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
 
-        //p4
-  //      assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode <= 0) ^ (rty_IM_OUT.Current_System_Mode >= 7)) || (rty_IM_OUT.Current_System_Mode == 8))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
+            //p4
+            //      assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode <= 0) ^ (rty_IM_OUT.Current_System_Mode >= 7)) || (rty_IM_OUT.Current_System_Mode == 8))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
 
 
-        //p5
+            //p5
 //        assert (!(rtu_TLM_MODE_IN.System_On && (((rty_IM_OUT.Current_System_Mode > 6) || (rty_IM_OUT.Current_System_Mode == 7)) || (rty_IM_OUT.Current_System_Mode == 8))) || (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO));
 
-
+        }
     }
 
     public static void main(String[] args) {
