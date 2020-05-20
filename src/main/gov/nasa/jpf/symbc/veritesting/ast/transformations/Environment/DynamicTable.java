@@ -99,4 +99,11 @@ public class DynamicTable<V> extends Table<Variable, V> {
 
         return null;
     }
+
+    public V lookupByNameHash(WalaVarExpr expr) {
+        if(getKeys().contains(expr))
+            return lookup((Variable) expr);
+        else
+        return null;
+    }
 }

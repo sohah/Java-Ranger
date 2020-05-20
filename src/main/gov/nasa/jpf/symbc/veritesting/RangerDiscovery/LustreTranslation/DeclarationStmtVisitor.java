@@ -13,6 +13,7 @@ public class DeclarationStmtVisitor extends AstMapVisitor{
 
     @Override
     public Stmt visit(AssignmentStmt a) {
-        return new AssignmentStmt(eva.accept(a.lhs), a.rhs);
+        eva.accept(a.lhs);
+        return a;
     }
 }

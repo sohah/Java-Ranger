@@ -176,6 +176,7 @@ public class DiscoverContract {
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
         do {
+            System.out.println("Forall outer matching query.");
             if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.
                 fileName = currFaultySpec + ".lus";
             else
@@ -186,6 +187,7 @@ public class DiscoverContract {
 
             JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
             singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
+            System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime));
 
             repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.THERE_EXISTS, singleQueryTime);
             switch (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus()) {
@@ -244,10 +246,15 @@ public class DiscoverContract {
                         fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
 
                     writeToFile(fileName, synthesisContractStr, false, false);
+                    System.out.println("repairing holes for iteration#:" + loopCount);
+
                     singleQueryTime = System.currentTimeMillis();
                     JKindResult synthesisResult = callJkind(fileName, false, aRepairSynthesis
                             .getMaxTestCaseK() - 1, false, false);
                     singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
+
+                    System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime));
+
                     repairStatistics.printCandStatistics(String.valueOf(loopCount), false, -1, QueryType.FORALL, singleQueryTime);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
@@ -259,7 +266,6 @@ public class DiscoverContract {
                             repairStatistics.printSpecStatistics();
                             return;
                         case INVALID:
-                            System.out.println("repairing holes for iteration#:" + loopCount);
                             if (Config.repairMode != RepairMode.LIBRARY) {
                                 holeRepairState.plugInHoles(synthesisResult);
                                 holePlugger.plugInHoles(synthesisResult, counterExampleQuery

@@ -1525,73 +1525,7 @@ public class ALARM_Functional_Discovery {
     /* Initial conditions for referenced model: 'ALARM_Functional' */
     static void ALARM_Functional_Init(B_ALARM_Functional_c_T localB,
                                       DW_ALARM_Functional_f_T localDW) {
-        /* InitializeConditions for Chart: '<Root>/Alarm  Sub-System' */
-        /*localDW.is_active_CheckAlarm = 0;
-        localDW.is_active_CancelAlarm = 0;
-        localDW.is_CancelAlarm = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_Level1 = 0;
-        localDW.is_active_InfusionNotStartedWarning = 0;
-        localDW.is_InfusionNotStartedWarning = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsBatteryError = 0;
-        localDW.is_IsBatteryError = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsConfigTimeWarning = 0;
-        localDW.is_IsConfigTimeWarning = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsFlowRateNotStable = 0;
-        localDW.is_IsFlowRateNotStable = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsIdleTimeExceeded = 0;
-        localDW.is_IsIdleTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsLoggingFailed = 0;
-        localDW.is_IsLoggingFailed = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsPausedTimeExceeded = 0;
-        localDW.is_IsPausedTimeExceeded = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsPumpHot = 0;
-        localDW.is_IsPumpHot = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsSystemMonitorFailed = 0;
-        localDW.is_IsSystemMonitorFailed = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsUnderInfusion = 0;
-        localDW.is_IsUnderInfusion = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_Level2 = 0;
-        localDW.is_active_IsLowReservoir = 0;
-        localDW.is_IsLowReservoir = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_Level3 = 0;
-        localDW.is_active_IsAirInLine = 0;
-        localDW.is_IsAirInLine = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsDoorOpen = 0;
-        localDW.is_IsDoorOpen = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsOcclusion = 0;
-        localDW.is_IsOcclusion = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsOverInfusionFlowRate = 0;
-        localDW.is_IsOverInfusionFlowRate = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsOverInfusionVTBI = 0;
-        localDW.is_IsOverInfusionVTBI = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_Level4 = 0;
-        localDW.is_active_IsEmptyReservoir = 0;
-        localDW.is_IsEmptyReservoir = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsEnviromentalError = 0;
-        localDW.is_IsEnviromentalError = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_IsHardwareError = 0;
-        localDW.is_IsHardwareError = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_SetAlarmStatus = 0;
-        localDW.is_active_Notification = 0;
-        localDW.is_active_Audio = 0;
-        localDW.is_Audio = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_Visual = 0;
-        localDW.is_Visual = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.is_active_c2_ALARM_Functional = 0;
-        localDW.is_c2_ALARM_Functional = ALARM_Functional_IN_NO_ACTIVE_CHILD;
-        localDW.overInfusionTimer = 0;
-        localDW.underInfusionTimer = 0;
-        localDW.currentAlarm = 0;
-        localDW.audioTimer = 0;
-        localDW.cancelAlarm = 0;
-        localDW.Max_Alarm_Level = 0;
-        localDW.idletimer = 0;
-        localDW.pausedtimer = 0;*/
-        /*localB.ALARM_OUT_Display_Audio_Disabled_Indicator = 0;
-        localB.ALARM_OUT_Display_Notification_Command = 0;
-        localB.ALARM_OUT_Audio_Notification_Command = 0;
-        localB.ALARM_OUT_Highest_Level_Alarm = 0;
-        localB.ALARM_OUT_Log_Message_ID = 0;*/
+
     }
 
     /* Output and update for referenced model: 'ALARM_Functional' */
@@ -1791,7 +1725,7 @@ public class ALARM_Functional_Discovery {
                 1, 1, false, 1, 1, 1, false, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, true, false, false, false, 1,
-                1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, true, true, true, true, true, true
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, true, true, true, true, true, true
                 , true, true
                 , true, true
                 , true, true
@@ -2294,13 +2228,224 @@ public class ALARM_Functional_Discovery {
 
         if (symVar) {
             //ALARM_Functional_Init(localB, localDW);
-
-            ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
-                    rtu_sensor_in,
-                    rtu_const_in,
-                    rtu_sys_stat_in,
-                    rtu_config_in, rty_alarm_out, localB,
-                    localDW);
+            if ((0 <= Commanded_Flow_Rate) &&
+                    (0 <= Current_System_Mode) &&
+                    (0 <= Disable_Audio) &&
+                    (0 <= VTBI_High) &&
+                    (0 <= Flow_Rate_High) &&
+                    (0 <= Flow_Rate_Low) &&
+                    (0 <= Flow_Rate) &&
+                    (0 <= Audio_Enable_Duration) &&
+                    (0 <= Audio_Level) &&
+                    (0 <= Config_Warning_Duration) &&
+                    (0 <= Low_Reservoir) &&
+                    (0 <= Max_Duration_Over_Infusion) &&
+                    (0 <= Max_Duration_Under_Infusion) &&
+                    (0 <= Max_Paused_Duration) &&
+                    (0 <= Max_Idle_Duration) &&
+                    (0 <= Tolerance_Max) &&
+                    (0 <= Tolerance_Min) &&
+                    (0 <= Reservoir_Volume1) &&
+                    (0 <= Volume_Infused) &&
+                    (0 <= Config_Timer) &&
+                    (0 <= localB_Commanded_Flow_Rate) &&
+                    (0 <= localB_Current_System_Mode) &&
+                    (0 <= localB_Disable_Audio) &&
+                    (0 <= localB_VTBI_High) &&
+                    (0 <= localB_Flow_Rate_High) &&
+                    (0 <= localB_Flow_Rate_Low) &&
+                    (0 <= localB_Flow_Rate) &&
+                    (0 <= localB_Audio_Enable_Duration) &&
+                    (0 <= localB_Audio_Level) &&
+                    (0 <= localB_Config_Warning_Duration) &&
+                    (0 <= localB_Low_Reservoir) &&
+                    (0 <= localB_Max_Duration_Over_Infusion) &&
+                    (0 <= localB_Max_Duration_Under_Infusion) &&
+                    (0 <= localB_Max_Paused_Duration) &&
+                    (0 <= localB_Max_Idle_Duration) &&
+                    (0 <= localB_Tolerance_Max) &&
+                    (0 <= localB_Tolerance_Min) &&
+                    (0 <= localB_Reservoir_Volume) &&
+                    (0 <= localB_Volume_Infused) &&
+                    (0 <= localB_Config_Timer) &&
+                    (0 <= localB_ALARM_OUT_Display_Audio_Disabled_Indicator) &&
+                    (0 <= localB_ALARM_OUT_Display_Notification_Command) &&
+                    (0 <= localB_ALARM_OUT_Audio_Notification_Command) &&
+                    (0 <= localB_ALARM_OUT_Highest_Level_Alarm) &&
+                    (0 <= localB_ALARM_OUT_Log_Message_ID) &&
+                    (0 <= is_active_c2_ALARM_Functional) &&
+                    (0 <= is_c2_ALARM_Functional) &&
+                    (0 <= is_active_Notification) &&
+                    (0 <= is_Visual) &&
+                    (0 <= is_active_Visual) &&
+                    (0 <= is_Audio) &&
+                    (0 <= is_active_Audio) &&
+                    (0 <= is_active_CheckAlarm) &&
+                    (0 <= is_CancelAlarm) &&
+                    (0 <= is_active_CancelAlarm) &&
+                    (0 <= is_active_SetAlarmStatus) &&
+                    (0 <= is_active_Level4) &&
+                    (0 <= is_IsEmptyReservoir) &&
+                    (0 <= is_active_IsEmptyReservoir) &&
+                    (0 <= is_IsSystemMonitorFailed) &&
+                    (0 <= is_active_IsSystemMonitorFailed) &&
+                    (0 <= is_IsEnviromentalError) &&
+                    (0 <= is_active_IsEnviromentalError) &&
+                    (0 <= is_active_Level3) &&
+                    (0 <= is_IsOverInfusionFlowRate) &&
+                    (0 <= is_active_IsOverInfusionFlowRate) &&
+                    (0 <= is_InfusionNotStartedWarning) &&
+                    (0 <= is_active_InfusionNotStartedWarning) &&
+                    (0 <= is_IsOverInfusionVTBI) &&
+                    (0 <= is_active_IsOverInfusionVTBI) &&
+                    (0 <= is_IsAirInLine) &&
+                    (0 <= is_active_IsAirInLine) &&
+                    (0 <= is_IsOcclusion) &&
+                    (0 <= is_active_IsOcclusion) &&
+                    (0 <= is_IsDoorOpen) &&
+                    (0 <= is_active_IsDoorOpen) &&
+                    (0 <= is_active_Level2) &&
+                    (0 <= is_IsLowReservoir) &&
+                    (0 <= is_active_IsLowReservoir) &&
+                    (0 <= is_active_Level1) &&
+                    (0 <= is_IsUnderInfusion) &&
+                    (0 <= is_active_IsUnderInfusion) &&
+                    (0 <= is_IsFlowRateNotStable) &&
+                    (0 <= is_active_IsFlowRateNotStable) &&
+                    (0 <= is_IsIdleTimeExceeded) &&
+                    (0 <= is_active_IsIdleTimeExceeded) &&
+                    (0 <= is_IsPausedTimeExceeded) &&
+                    (0 <= is_active_IsPausedTimeExceeded) &&
+                    (0 <= is_IsConfigTimeWarning) &&
+                    (0 <= is_active_IsConfigTimeWarning) &&
+                    (0 <= is_IsBatteryError) &&
+                    (0 <= is_active_IsBatteryError) &&
+                    (0 <= is_IsPumpHot) &&
+                    (0 <= is_active_IsPumpHot) &&
+                    (0 <= is_IsLoggingFailed) &&
+                    (0 <= is_active_IsLoggingFailed) &&
+                    (0 <= is_IsHardwareError) &&
+                    (0 <= is_active_IsHardwareError) &&
+                    (0 <= overInfusionTimer) &&
+                    (0 <= underInfusionTimer) &&
+                    (0 <= currentAlarm) &&
+                    (0 <= audioTimer) &&
+                    (0 <= cancelAlarm) &&
+                    (0 <= idletimer) &&
+                    (0 <= pausedtimer) &&
+                    (Commanded_Flow_Rate <= 255) &&
+                    (Current_System_Mode <= 255) &&
+                    (Disable_Audio <= 255) &&
+                    (VTBI_High <= 255) &&
+                    (Flow_Rate_High <= 255) &&
+                    (Flow_Rate_Low <= 255) &&
+                    (Flow_Rate <= 255) &&
+                    (Audio_Enable_Duration <= 255) &&
+                    (Audio_Level <= 255) &&
+                    (Config_Warning_Duration <= 255) &&
+                    (Low_Reservoir <= 255) &&
+                    (Max_Duration_Over_Infusion <= 255) &&
+                    (Max_Duration_Under_Infusion <= 255) &&
+                    (Max_Paused_Duration <= 255) &&
+                    (Max_Idle_Duration <= 255) &&
+                    (Tolerance_Max <= 255) &&
+                    (Tolerance_Min <= 255) &&
+                    (Reservoir_Volume1 <= 255) &&
+                    (Volume_Infused <= 255) &&
+                    (Config_Timer <= 255) &&
+                    (localB_Commanded_Flow_Rate <= 255) &&
+                    (localB_Current_System_Mode <= 255) &&
+                    (localB_Disable_Audio <= 255) &&
+                    (localB_VTBI_High <= 255) &&
+                    (localB_Flow_Rate_High <= 255) &&
+                    (localB_Flow_Rate_Low <= 255) &&
+                    (localB_Flow_Rate <= 255) &&
+                    (localB_Audio_Enable_Duration <= 255) &&
+                    (localB_Audio_Level <= 255) &&
+                    (localB_Config_Warning_Duration <= 255) &&
+                    (localB_Low_Reservoir <= 255) &&
+                    (localB_Max_Duration_Over_Infusion <= 255) &&
+                    (localB_Max_Duration_Under_Infusion <= 255) &&
+                    (localB_Max_Paused_Duration <= 255) &&
+                    (localB_Max_Idle_Duration <= 255) &&
+                    (localB_Tolerance_Max <= 255) &&
+                    (localB_Tolerance_Min <= 255) &&
+                    (localB_Reservoir_Volume <= 255) &&
+                    (localB_Volume_Infused <= 255) &&
+                    (localB_Config_Timer <= 255) &&
+                    (localB_ALARM_OUT_Display_Audio_Disabled_Indicator <= 255) &&
+                    (localB_ALARM_OUT_Display_Notification_Command <= 255) &&
+                    (localB_ALARM_OUT_Audio_Notification_Command <= 255) &&
+                    (localB_ALARM_OUT_Highest_Level_Alarm <= 255) &&
+                    (localB_ALARM_OUT_Log_Message_ID <= 255) &&
+                    (is_active_c2_ALARM_Functional <= 255) &&
+                    (is_c2_ALARM_Functional <= 255) &&
+                    (is_active_Notification <= 255) &&
+                    (is_Visual <= 255) &&
+                    (is_active_Visual <= 255) &&
+                    (is_Audio <= 255) &&
+                    (is_active_Audio <= 255) &&
+                    (is_active_CheckAlarm <= 255) &&
+                    (is_CancelAlarm <= 255) &&
+                    (is_active_CancelAlarm <= 255) &&
+                    (is_active_SetAlarmStatus <= 255) &&
+                    (is_active_Level4 <= 255) &&
+                    (is_IsEmptyReservoir <= 255) &&
+                    (is_active_IsEmptyReservoir <= 255) &&
+                    (is_IsSystemMonitorFailed <= 255) &&
+                    (is_active_IsSystemMonitorFailed <= 255) &&
+                    (is_IsEnviromentalError <= 255) &&
+                    (is_active_IsEnviromentalError <= 255) &&
+                    (is_active_Level3 <= 255) &&
+                    (is_IsOverInfusionFlowRate <= 255) &&
+                    (is_active_IsOverInfusionFlowRate <= 255) &&
+                    (is_InfusionNotStartedWarning <= 255) &&
+                    (is_active_InfusionNotStartedWarning <= 255) &&
+                    (is_IsOverInfusionVTBI <= 255) &&
+                    (is_active_IsOverInfusionVTBI <= 255) &&
+                    (is_IsAirInLine <= 255) &&
+                    (is_active_IsAirInLine <= 255) &&
+                    (is_IsOcclusion <= 255) &&
+                    (is_active_IsOcclusion <= 255) &&
+                    (is_IsDoorOpen <= 255) &&
+                    (is_active_IsDoorOpen <= 255) &&
+                    (is_active_Level2 <= 255) &&
+                    (is_IsLowReservoir <= 255) &&
+                    (is_active_IsLowReservoir <= 255) &&
+                    (is_active_Level1 <= 255) &&
+                    (is_IsUnderInfusion <= 255) &&
+                    (is_active_IsUnderInfusion <= 255) &&
+                    (is_IsFlowRateNotStable <= 255) &&
+                    (is_active_IsFlowRateNotStable <= 255) &&
+                    (is_IsIdleTimeExceeded <= 255) &&
+                    (is_active_IsIdleTimeExceeded <= 255) &&
+                    (is_IsPausedTimeExceeded <= 255) &&
+                    (is_active_IsPausedTimeExceeded <= 255) &&
+                    (is_IsConfigTimeWarning <= 255) &&
+                    (is_active_IsConfigTimeWarning <= 255) &&
+                    (is_IsBatteryError <= 255) &&
+                    (is_active_IsBatteryError <= 255) &&
+                    (is_IsPumpHot <= 255) &&
+                    (is_active_IsPumpHot <= 255) &&
+                    (is_IsLoggingFailed <= 255) &&
+                    (is_active_IsLoggingFailed <= 255) &&
+                    (is_IsHardwareError <= 255) &&
+                    (is_active_IsHardwareError <= 255) &&
+                    (overInfusionTimer <= 255) &&
+                    (underInfusionTimer <= 255) &&
+                    (currentAlarm <= 255) &&
+                    (audioTimer <= 255) &&
+                    (cancelAlarm <= 255) &&
+                    (idletimer <= 255) &&
+                    (pausedtimer <= 255)
+            ) {
+                ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
+                        rtu_sensor_in,
+                        rtu_const_in,
+                        rtu_sys_stat_in,
+                        rtu_config_in, rty_alarm_out, localB,
+                        localDW);
+            }
         }
     }
 

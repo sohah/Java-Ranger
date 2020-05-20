@@ -59,5 +59,10 @@ public class FieldRefTypeTable extends CloneableVarTable<String> {
 
         return null;
     }
+
+    public String lookupByNameHash(FieldRefVarExpr f) {
+        if (table.containsKey(f)) return table.get(f);
+        else return null;
+    }
 }
 

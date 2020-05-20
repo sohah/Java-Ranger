@@ -110,7 +110,8 @@ public class EquationExprVisitor implements ExprVisitor<jkind.lustre.Ast> {
 
     @Override
     public Ast visit(WalaVarExpr expr) {
-        String type = (String) dynRegion.varTypeTable.lookupByName(expr.toString());
+//        String type = (String) dynRegion.varTypeTable.lookupByName(expr.toString());
+        String type = (String) dynRegion.varTypeTable.lookupByNameHash(expr);
         assert (type != null);
         return new IdExpr(expr.toString());
     }
