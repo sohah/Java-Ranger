@@ -191,7 +191,8 @@ public class DiscoveryUtil {
     }*/
 
     public static Node renameNode(String synthesis_spec, Node node) {
-        return new Node(synthesis_spec, node.inputs, node.outputs, node.locals, node.equations, new ArrayList<>(), node.assertions, node.realizabilityInputs, node.contract, node.ivc);
+        //removing the asserts from the inner node, and later populating it to the main node.
+        return new Node(synthesis_spec, node.inputs, node.outputs, node.locals, node.equations, new ArrayList<>(), new ArrayList<>(), node.realizabilityInputs, node.contract, node.ivc);
 
     }
 

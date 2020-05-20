@@ -111,7 +111,8 @@ public class CounterExampleQuery extends ForAllQuery {
 
         ArrayList<VarDecl> locals = collectDeclarations(wrapperArgsAndRemovedPair.getSecond(), tNode, program);
 
-        return new Node("main", mainInList, mainOutList, locals, mainEquations, null, null, null, null,
+        //populating assertions from previous main to new main.
+        return new Node("main", mainInList, mainOutList, locals, mainEquations, null, program.getMainNode().assertions, null, null,
                 null);
 
     }
@@ -169,8 +170,8 @@ public class CounterExampleQuery extends ForAllQuery {
     }
 
     private static Node generateTnode(Node node) {
-        return new Node(TNODE, node.inputs, node.outputs, node.locals, node.equations, node.properties, node
-                .assertions, node.realizabilityInputs, node.contract, node.ivc);
+        //remove any assertions from TNode, these are latter propagated to the main node, since jkind does not treat assertions in inner nodes as invariants.
+        return new Node(TNODE, node.inputs, node.outputs, node.locals, node.equations, node.properties, new ArrayList<>(), node.realizabilityInputs, node.contract, node.ivc);
     }
 
     @Override
