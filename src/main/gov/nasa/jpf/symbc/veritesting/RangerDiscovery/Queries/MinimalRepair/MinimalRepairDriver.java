@@ -1,7 +1,5 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair;
 
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Contract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation.ToLutre;
@@ -95,10 +93,12 @@ public class MinimalRepairDriver {
                 if (candidateLoopCount == (MINIMALLOOP_MAXLOOPCOUNT + 3)) {//exit if we tried max candidates number.
                     canFindMoreTighterRepair = false;
                     repairStatistics.terminationResult = TerminationResult.MINIMAL_MAX_LOOP_REACHED;
+                    repairStatistics.lastQueryType = QueryType.FORALL;
                     System.out.println("Minimum Loop Max Count Reached. Aborting");
                 } else if (DiscoveryUtil.convertTimeToSecond(System.currentTimeMillis() - executionTime) >= mutantTimeOut) { // aborting if we ever hit the overall mutant timeout.
                     canFindMoreTighterRepair = false;
                     repairStatistics.terminationResult = TerminationResult.MUTANT_TIME_OUT;
+                    repairStatistics.lastQueryType = QueryType.FORALL;
                 } else {
                     System.out.println("Trying candidate #: " + candidateLoopCount);
                     String fileName;
@@ -124,6 +124,7 @@ public class MinimalRepairDriver {
                             System.out.println("No more R' can be found, last known good repair was found at, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount);
                             canFindMoreTighterRepair = false;
                             repairStatistics.terminationResult = TerminationResult.TIGHTEST_REACHED;
+                            repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             break;
                         case INVALID:
                             Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
@@ -149,7 +150,7 @@ public class MinimalRepairDriver {
 
                             JKindResult counterExampleResult = callJkind(fileName, true, -1, true, false);
 
-                            singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2) / milliSecondSimplification;
+                            singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2);
 
                             //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
                             System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime2));
@@ -185,7 +186,8 @@ public class MinimalRepairDriver {
 //                                        repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
 //                                        System.out.println("Property unexpected output (forall Query MINIMAL_TIMED_OUT):");
 //                                    } else {
-                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
+                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_FORALL_UNKNOWN;
+                                    repairStatistics.lastQueryType = QueryType.FORALL;
                                     System.out.println(" Property unexpected output (for all Query):" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
 //                                    }
 
@@ -200,7 +202,8 @@ public class MinimalRepairDriver {
 //                                repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
 //                                System.out.println("Property unexpected output (synthesis Query MINIMAL_TIMED_OUT):");
 //                            } else {
-                            repairStatistics.terminationResult = TerminationResult.MINIMAL_UNKNOWN;
+                            repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
+                            repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             System.out.println("Property unexpected output (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
 //                            }
                             System.out.println(" No more R' can be found, returning last known good repair.");

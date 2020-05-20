@@ -2,13 +2,8 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
-import jkind.lustre.Equation;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,9 +12,10 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class AllMutationStatistics {
-    Set<String> tighestPropsFound = new HashSet<String>();
+    List<String> uniqueTighestPropsFound = new ArrayList<>();
 
-    String propFileName = Config.folderName + Config.spec + "_prop" + Config.prop + ".txt";
+    String uniquePropFileName = Config.folderName + Config.spec + "_unique_prop" + Config.prop + ".txt";
+    String allPropFileName = Config.folderName + Config.spec + "_all_prop" + Config.prop + ".txt";
     String statFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_stats.txt";
 
 
@@ -66,8 +62,20 @@ public class AllMutationStatistics {
                 + (DiscoveryUtil.convertTimeToSecond(forallAvg) + ",     ")
                 + (tightestProp + ",     ");
 
-        if (tightestProp != null)
-            tighestPropsFound.add(tightestProp);
+        if (tightestProp != null) {
+            uniqueTighestPropsFound.add(tightestProp);
+            Path file = Paths.get(allPropFileName);
+            try {
+                if (Files.exists(file)){
+                    tightestProp += "\n";
+                    Files.write(file, tightestProp.getBytes(), StandardOpenOption.APPEND);}
+                else
+                    Files.write(file, tightestProp.getBytes());
+            } catch (IOException e) {
+                System.out.println("problem writing to all tight props file");
+                assert false;
+            }
+        }
 
         List<String> lines = Arrays.asList(out);
 
@@ -83,11 +91,11 @@ public class AllMutationStatistics {
 
     public void doneAllMutants() {
 
-        Path file = Paths.get(propFileName);
+        Path file = Paths.get(uniquePropFileName);
         try {
-            Files.write(file, tighestPropsFound, StandardCharsets.UTF_8);
+            Files.write(file, uniqueTighestPropsFound, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            System.out.println("problem writing to all tight props file");
+            System.out.println("problem writing to unique tight props file");
             assert false;
         }
     }
