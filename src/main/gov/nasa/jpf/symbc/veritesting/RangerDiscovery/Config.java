@@ -75,7 +75,7 @@ public class Config {
     public static boolean evaluationMode = false;
     public static int timeOut = 60; //in seconds - time out of every jkind query
     public static int mutantTimeOut = 2700;  // in seconds time out for a mutant repair
-    public static boolean mac = true;
+    public static boolean mac = false;
 
     public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
     public static final int MINIMALLOOP_MAXLOOPCOUNT = 30; //found 378 iteration, then we find a repair.
@@ -103,7 +103,7 @@ public class Config {
 
     public static OperationMode operationMode = OperationMode.NORMAL;
     public static boolean randomSample = true;
-    public static int goalMutantNum = 2000;
+    public static int goalMutantNum;
 
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
@@ -292,7 +292,8 @@ public class Config {
     }
 
     private static void computeUniformPropDistribution() {
-        maxRandForProp = (int) (goalMutantNum * 1 / 27);
+        maxRandForProp = 69;
+        goalMutantNum = 69 * 29;
     }
 
     public static boolean isCurrMutantPerfect() {
