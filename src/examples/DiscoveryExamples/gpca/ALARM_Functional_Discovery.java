@@ -2228,7 +2228,7 @@ public class ALARM_Functional_Discovery {
 
         if (symVar) {
             //ALARM_Functional_Init(localB, localDW);
-            if ((0 <= Commanded_Flow_Rate) &&
+        /*    if ((0 <= Commanded_Flow_Rate) &&
                     (0 <= Current_System_Mode) &&
                     (0 <= Disable_Audio) &&
                     (0 <= VTBI_High) &&
@@ -2438,7 +2438,7 @@ public class ALARM_Functional_Discovery {
                     (cancelAlarm <= 255) &&
                     (idletimer <= 255) &&
                     (pausedtimer <= 255)
-            ) {
+            )*/ {
                 ALARM_Functional(rtu_IM_IN, rtu_tlm_mode_in, rtu_sys_mon_in, rtu_logging_in, rtu_op_cmd_in, rtu_db_in,
                         rtu_sensor_in,
                         rtu_const_in,

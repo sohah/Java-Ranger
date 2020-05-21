@@ -37,3 +37,4 @@ depthFixed = false
 rangeValueAnalysis = true
 evaluationMode = true
 
+regressionTestOn=true

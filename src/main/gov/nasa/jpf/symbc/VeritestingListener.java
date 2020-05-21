@@ -243,6 +243,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                     else {
                         System.out.println("maxMutants needs to be supplied for the random sample");
                     }
+                    if (conf.hasValue("regressionTestOn")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.regressionTestOn = conf.getBoolean("regressionTestOn");
                 }
 
                 if (conf.hasValue("evaluationMode")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode = conf.getBoolean("evaluationMode");
