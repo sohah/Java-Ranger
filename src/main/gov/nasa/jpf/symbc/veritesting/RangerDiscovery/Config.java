@@ -74,7 +74,7 @@ public class Config {
 
     public static boolean evaluationMode = false;
     public static int timeOut = 60; //in seconds - time out of every jkind query
-    public static int mutantTimeOut = 2700;  // in seconds time out for a mutant repair
+    public static int mutantTimeOut = 3600;  // in seconds time out for a mutant repair
     public static boolean mac = false;
 
     public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
