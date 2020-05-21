@@ -93,7 +93,7 @@ public class MutationUtils {
                 mutationDirectory + "/origSpec");
 
         MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
-//                MutationType.OPERAND_REPLACEMENT_MUT, //Soha turning this one off for now
+                MutationType.OPERAND_REPLACEMENT_MUT, //Soha turning this one off for now
                 MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
                 MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
                 } :

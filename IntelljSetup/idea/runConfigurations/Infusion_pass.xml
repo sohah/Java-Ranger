@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Infusion_pass" type="CompoundRunConfigurationType">
+    <toRun name="Infusion Prop1_pass" type="JarApplication" />
+    <toRun name="Infusion Prop2_pass" type="JarApplication" />
+    <toRun name="Infusion Prop3_pass" type="JarApplication" />
+    <toRun name="Infusion Prop4_pass" type="JarApplication" />
+    <toRun name="Infusion Prop5_pass" type="JarApplication" />
+    <toRun name="Infusion Prop6_pass" type="JarApplication" />
+    <toRun name="Infusion Prop7_pass" type="JarApplication" />
+    <toRun name="Infusion Prop8_pass" type="JarApplication" />
+    <toRun name="Infusion Prop9_pass" type="JarApplication" />
+    <toRun name="Infusion Prop10_pass" type="JarApplication" />
+    <toRun name="Infusion Prop12_pass" type="JarApplication" />
+    <toRun name="Infusion Prop13_pass" type="JarApplication" />
+    <toRun name="Infusion Prop14_pass" type="JarApplication" />
+    <method v="2" />
+  </configuration>
+</component>

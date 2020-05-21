@@ -1,13 +1,15 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="GPCA" type="CompoundRunConfigurationType">
-    <toRun name="GPCA_prop2" type="JarApplication" />
-    <toRun name="GPCA_prop4" type="JarApplication" />
-    <toRun name="GPCA_prop6" type="JarApplication" />
-    <toRun name="GPCA_prop1" type="JarApplication" />
-    <toRun name="GPCA_prop3" type="JarApplication" />
     <toRun name="GPCA_prop9" type="JarApplication" />
+    <toRun name="GPCA_prop2" type="JarApplication" />
+    <toRun name="GPCA_prop5" type="JarApplication" />
+    <toRun name="GPCA_prop3" type="JarApplication" />
     <toRun name="GPCA_prop8" type="JarApplication" />
     <toRun name="GPCA_prop7" type="JarApplication" />
+    <toRun name="GPCA_prop10" type="JarApplication" />
+    <toRun name="GPCA_prop6" type="JarApplication" />
+    <toRun name="GPCA_prop1" type="JarApplication" />
+    <toRun name="GPCA_prop4" type="JarApplication" />
     <method v="2" />
   </configuration>
 </component>

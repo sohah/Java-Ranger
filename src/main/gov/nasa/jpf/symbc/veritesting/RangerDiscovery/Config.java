@@ -73,9 +73,9 @@ public class Config {
     public static boolean rangeValueAnalysis = true;
 
     public static boolean evaluationMode = false;
-    public static int timeOut = 600; //in seconds - time out of every jkind query
+    public static int timeOut = 60; //in seconds - time out of every jkind query
     public static int mutantTimeOut = 2700;  // in seconds time out for a mutant repair
-    public static boolean mac = false;
+    public static boolean mac = true;
 
     public static final int OUTERLOOP_MAXLOOPCOUNT = 5;
     public static final int MINIMALLOOP_MAXLOOPCOUNT = 30; //found 378 iteration, then we find a repair.
@@ -109,6 +109,7 @@ public class Config {
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
+    public static boolean regressionTestOn = false;
 
 
     public static boolean canSetup() throws IOException {
@@ -154,7 +155,7 @@ public class Config {
         tFileName = folderName + currFaultySpec;
         if (!mutationEnabled) { //sanity check
             Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-            if (origSpec.repairNodes.size() == 0) {
+            if (!regressionTestOn && origSpec.repairNodes.size() == 0) {
                 System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
                 assert false;
             }
