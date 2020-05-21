@@ -142,7 +142,7 @@ public class VariableRangeVisitor extends AstMapVisitor {
 
     public static BinaryExpr getRangeExpr(IdExpr expr, IdExpr holeExpr) {
         int specOutIndex = DiscoverContract.contract.tInOutManager.indexOfOutputVar(expr.toString());
-        if(specOutIndex == -1){ //if we can't find it in the output, then we can't do a range analysis for that variable, since that would mean that it is either a free input or a state variable, in both cases we can't analyze its range of values.
+        if (specOutIndex == -1) { //if we can't find it in the output, then we can't do a range analysis for that variable, since that would mean that it is either a free input or a state variable, in both cases we can't analyze its range of values.
             return null;
         }
         String varName = DiscoverContract.contract.rInOutManager.varOutNameByIndex(specOutIndex);
@@ -159,4 +159,37 @@ public class VariableRangeVisitor extends AstMapVisitor {
         }
         return null;
     }
+
+    public static BinaryExpr getInputCondRangeExpr(String varName, IdExpr holeExpr) {
+
+        //attempting range condition variable range for inputs
+        RangeCondExprVisitor rangeCondExprVisitor = new RangeCondExprVisitor(varName);
+        RangeCondVisitor rangeCondVisitor = new RangeCondVisitor(rangeCondExprVisitor, varName);
+        DiscoverContract.dynRegion.dynStmt.accept(rangeCondVisitor);
+
+        List<Integer> condRangeValues = RangeCondExprVisitor.rangeValues;
+        if (condRangeValues.size() != 0) {//some range of value was found for the variable
+            return createRangeCondExpr(holeExpr, condRangeValues, condRangeValues);
+        }
+        return null;
+    }
+
+    private static BinaryExpr createRangeCondExpr(IdExpr holeExpr, List<Integer> modifiedCondRangeValues, List<Integer> origCondRangeValues) {
+        if (modifiedCondRangeValues.size() == 0) { //base case
+            return createRangeCondElseExpr(holeExpr, origCondRangeValues);
+        }
+        return new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.EQUAL, new IntExpr(modifiedCondRangeValues.get(0))), BinaryOp.OR, createRangeCondExpr(holeExpr, modifiedCondRangeValues.subList(1, modifiedCondRangeValues.size()), origCondRangeValues));
+    }
+
+    private static BinaryExpr createRangeCondElseExpr(IdExpr holeExpr, List<Integer> condRangeValues) { //choosing another variable for the else range
+
+        BinaryExpr elseVarValue = new BinaryExpr(holeExpr, BinaryOp.EQUAL, new IntExpr(Collections.max(condRangeValues) + 1));
+        return elseVarValue;
+        /*if (condRangeValues.size() == 1) { //base case
+            return new BinaryExpr(holeExpr, BinaryOp.NOTEQUAL, new IntExpr(condRangeValues.get(0)));
+        }
+        return new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.NOTEQUAL, new IntExpr(condRangeValues.get(0))), BinaryOp.AND, createRangeCondElseExpr(holeExpr, condRangeValues.subList(1, condRangeValues.size())));*/
+    }
+
+
 }

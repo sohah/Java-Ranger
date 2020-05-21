@@ -278,4 +278,8 @@ public class SpecInOutManager {
     public int indexOfOutputVar(String varName) {
         return inOutputVars.indexOf(varName);
     }
+
+    public int indexOfInputVar(String varName) {
+        return freeInput.indexOf(varName);
+    }
 }

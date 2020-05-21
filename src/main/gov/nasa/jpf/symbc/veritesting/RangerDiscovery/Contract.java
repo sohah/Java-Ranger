@@ -2,6 +2,7 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.InOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
+import jkind.lustre.NamedType;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract.contractDiscoveryOn;
 
@@ -24,6 +25,13 @@ public class Contract {
             System.out.println("collectInput is valid only when contractDiscovery is turned on");
             assert false;
         }
+    }
+
+    public String specToImplementationVar(String varName){
+        int varIndexInSpec  = tInOutManager.indexOfInputVar(varName);
+        String varNameInImpl = rInOutManager.varInputNameByIndex(varIndexInSpec);
+
+        return varNameInImpl;
     }
 
 }

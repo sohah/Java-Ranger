@@ -1,6 +1,9 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.InOutManager;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
@@ -103,8 +106,10 @@ public class DynamicRepairNode {
         if (intInputs.size() > 0) {
             VarDecl constantHoleVarDecl = createNewHole(false); // creating a constantHoleVar
             for (VarDecl intVar : intInputs)
-                if (Config.spec.equals("gpca") || Config.spec.equals("infusion")) leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
-                else leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                if (Config.spec.equals("gpca") || Config.spec.equals("infusion"))
+                    leafSelectionExprs.addAll(constructLeafIntSelectionAllGPCA(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
+                else
+                    leafSelectionExprs.addAll(constructLeafIntSelection(DiscoveryUtil.varDeclToIdExpr(intVar), DiscoveryUtil.varDeclToIdExpr(constantHoleVarDecl), intInputs));
         }
         for (int i = 0; i < intInputs.size() - 1; i++) {
             for (int j = i + 1; j < intInputs.size(); j++) {
@@ -153,14 +158,28 @@ public class DynamicRepairNode {
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeRangeExpr));
             selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeRangeExpr));
-        } else { //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
-            selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
-            selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
-            selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
-            selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
-            selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
+        } else {
+            BinaryExpr holeCondRangeExpr = null;
+            SpecInOutManager tInOutManager = DiscoverContract.contract.tInOutManager;
+            if (tInOutManager.isFreeInVar(leftIntExpr.toString(), NamedType.INT)) {
+                String implementationVarName = DiscoverContract.contract.specToImplementationVar(leftIntExpr.toString());
+                holeCondRangeExpr = VariableRangeVisitor.getInputCondRangeExpr(implementationVarName, holeExpr);
+            }
+            if (holeCondRangeExpr != null) {
+                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeCondRangeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
+            } else {
+                //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
+            }
         }
-
         for (VarDecl rhs : intInputs) {
             if (!leftIntExpr.id.equals(rhs.id)) {
                 selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, DiscoveryUtil.varDeclToIdExpr(rhs)));
@@ -184,7 +203,8 @@ public class DynamicRepairNode {
      * @param intInputs
      * @return
      */
-    private List<BinaryExpr> constructLeafIntSelectionAllGPCA(IdExpr leftIntExpr, IdExpr holeExpr, List<VarDecl> intInputs) {
+    private List<BinaryExpr> constructLeafIntSelectionAllGPCA(IdExpr leftIntExpr, IdExpr
+            holeExpr, List<VarDecl> intInputs) {
 
         List<BinaryExpr> selectionBinaryExpr = new ArrayList<>();
 
@@ -228,7 +248,8 @@ public class DynamicRepairNode {
         IfThenElseExpr expr;
         if (!getPathLabelStr(myPathLabel).equals("R")) {
             expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
-        } else expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
+        } else
+            expr = new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(1)), new BinaryExpr(leftOperand, BinaryOp.AND, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(2)), new BinaryExpr(leftOperand, BinaryOp.OR, rightOperand), new IfThenElseExpr(new BinaryExpr(sectionHoleExpr, BinaryOp.EQUAL, new IntExpr(3)), new BinaryExpr(leftOperand, BinaryOp.IMPLIES, rightOperand), new BinaryExpr(leftOperand, BinaryOp.XOR, rightOperand))));
         return expr;
     }
 

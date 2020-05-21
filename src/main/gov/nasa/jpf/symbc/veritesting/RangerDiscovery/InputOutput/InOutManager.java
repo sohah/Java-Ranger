@@ -1448,4 +1448,8 @@ public class InOutManager {
     public String varOutNameByIndex(int index) {
         return contractOutput.varNameForIndex(index);
     }
+
+    public String varInputNameByIndex(int index) {
+        return freeInput.varNameForIndex(index);
+    }
 }
