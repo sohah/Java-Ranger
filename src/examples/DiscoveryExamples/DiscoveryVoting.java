@@ -39,10 +39,7 @@ public class DiscoveryVoting {
             //vote5(a, b, c);
             //vote2(a, b, c, threshold);
             //this.counter = counter;
-            if ((this.counter == 0)) vote3(a, a, a);
-            else if (this.counter == 1) vote3(a, a, a);
-            else vote3(c, c, c);
-            ++this.counter;
+            if ((0 <= threshold) && (threshold <= 255)) vote2(a, b, c, threshold);
         }
     }
 }

@@ -1,12 +1,54 @@
 
 
-node main(a: bool; b:bool; c:bool; out: bool) returns (p1: bool);
+node main(a: bool; b:bool; c:bool; thresh:int; out: bool) returns (p1: bool);
 
 let
 
-p1 = out = (a or b and c) or false;
+--%MAIN;
+assert 0<=thresh;
+assert 255 >= thresh;
+
+  p1 = (((a and b) or (b and c) or repair((a and c), repairNode(a,b,c)))) => out;
 
   --%PROPERTY p1;
 
 tel;
+
+repair node repairNode(
+  a : bool;
+  b : bool;
+  c : bool) [  inner_hole_0 : inthole;
+  inner_hole_1 : inthole;
+  inner_hole_2 : inthole;
+  inner_hole_3 : inthole;
+  inner_hole_4 : inthole;
+  inner_hole_5 : inthole;
+  inner_hole_6 : inthole]
+returns (
+  R : bool
+);
+var
+  R_l_l : bool;
+  R_l_r : bool;
+  R_l : bool;
+  R_r_l : bool;
+  R_r_r : bool;
+  R_r : bool;
+let
+  R_l_l = (if (inner_hole_0 = 6) then a else (if (inner_hole_0 = 5) then b else (if (inner_hole_0 = 4) then c else (if (inner_hole_0 = 3) then (not a) else (if (inner_hole_0 = 2) then (not b) else (not c))))));
+
+  R_l_r = (if (inner_hole_1 = 6) then a else (if (inner_hole_1 = 5) then b else (if (inner_hole_1 = 4) then c else (if (inner_hole_1 = 3) then (not a) else (if (inner_hole_1 = 2) then (not b) else (not c))))));
+
+  R_l = (if (inner_hole_2 = 1) then (R_l_l and R_l_r) else (if (inner_hole_2 = 2) then (R_l_l or R_l_r) else (if (inner_hole_2 = 3) then (R_l_l => R_l_r) else (R_l_l xor R_l_r))));
+
+  R_r_l = (if (inner_hole_3 = 6) then a else (if (inner_hole_3 = 5) then b else (if (inner_hole_3 = 4) then c else (if (inner_hole_3 = 3) then (not a) else (if (inner_hole_3 = 2) then (not b) else (not c))))));
+
+  R_r_r = (if (inner_hole_4 = 6) then a else (if (inner_hole_4 = 5) then b else (if (inner_hole_4 = 4) then c else (if (inner_hole_4 = 3) then (not a) else (if (inner_hole_4 = 2) then (not b) else (not c))))));
+
+  R_r = (if (inner_hole_5 = 1) then (R_r_l and R_r_r) else (if (inner_hole_5 = 2) then (R_r_l or R_r_r) else (if (inner_hole_5 = 3) then (R_r_l => R_r_r) else (R_r_l xor R_r_r))));
+
+  R = (if (inner_hole_6 = 1) then (R_l and R_r) else (if (inner_hole_6 = 2) then (R_l or R_r) else (if (inner_hole_6 = 3) then (R_l => R_r) else (R_l xor R_r))));
+
+tel;
+
 

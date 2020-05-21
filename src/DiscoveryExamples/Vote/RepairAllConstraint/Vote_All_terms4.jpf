@@ -30,18 +30,19 @@ showLocalNames = true
 
 
 ################## contract Discovery configurations ###############
+contractDiscoveryOn = true
 spec = vote
 specRepair = true
 repairMode = 2
 
-contractDiscoveryOn = true
-
 SpecDirectory=Vote/RepairAllConstraint
 faultySpec=Vote_All_terms4
-repairInitialValues = true
-z3Solver=true
-mutationEnabled = true
+mutationEnabled=false
 repairMutantsOnly = false
+
+randomSampleMutants=false
+prop=1
+
 depthFixed = false
-rangeValueAnalysis = true
 evaluationMode = false
+#repairScope=2
