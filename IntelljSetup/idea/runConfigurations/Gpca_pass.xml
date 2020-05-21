@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="gpca_pass" type="CompoundRunConfigurationType">
+    <toRun name="GPCA_prop1_pass" type="JarApplication" />
+    <toRun name="GPCA_prop2_pass" type="JarApplication" />
+    <toRun name="GPCA_prop3_pass" type="JarApplication" />
+    <toRun name="GPCA_prop4_pass" type="JarApplication" />
+    <toRun name="GPCA_prop5_pass" type="JarApplication" />
+    <toRun name="GPCA_prop6_pass" type="JarApplication" />
+    <toRun name="GPCA_prop7_pass" type="JarApplication" />
+    <toRun name="GPCA_prop8_pass" type="JarApplication" />
+    <toRun name="GPCA_prop9_pass" type="JarApplication" />
+    <toRun name="GPCA_prop10_pass" type="JarApplication" />
+    <method v="2" />
+  </configuration>
+</component>

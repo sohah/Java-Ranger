@@ -33,4 +33,5 @@ repairMutantsOnly = false
 depthFixed = false
 rangeValueAnalysis = true
 evaluationMode = true
+prop=1
 regressionTestOn=true

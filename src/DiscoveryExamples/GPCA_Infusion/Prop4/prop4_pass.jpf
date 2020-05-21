@@ -34,4 +34,6 @@ repairMutantsOnly = false
 depthFixed = false
 evaluationMode = false
 #repairScope=2
+
+prop=4
 regressionTestOn=true
