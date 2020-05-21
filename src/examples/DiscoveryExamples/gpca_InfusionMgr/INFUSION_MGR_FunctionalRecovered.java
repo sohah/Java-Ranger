@@ -1367,10 +1367,10 @@ public class INFUSION_MGR_FunctionalRecovered {
 */
 
             //Prop14: mode_paused_implies_infusion_rate_kvo
-        checkCondition =
+        /*checkCondition =
                 rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
-        checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
-        assert (!checkCondition || checkOutput);
+        checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);*/
+
 
 
             /************Discovery properties**********/

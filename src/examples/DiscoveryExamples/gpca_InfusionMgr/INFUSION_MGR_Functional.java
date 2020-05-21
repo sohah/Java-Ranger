@@ -1356,6 +1356,11 @@ public class INFUSION_MGR_Functional {
                     rtu_TLM_MODE_IN.System_On && (rty_IM_OUT.Current_System_Mode == 6 || rty_IM_OUT.Current_System_Mode == 7 || rty_IM_OUT.Current_System_Mode == 8);
             checkOutput = (rty_IM_OUT.Commanded_Flow_Rate <= rtu_CONFIG_IN.Flow_Rate_KVO);
             assert (!checkCondition || checkOutput);*/
+
+            checkCondition = ((! System_On));
+            checkOutput = (Current_System_Mode == 0);
+
+            assert (!checkCondition || checkOutput);
         }
     }
 

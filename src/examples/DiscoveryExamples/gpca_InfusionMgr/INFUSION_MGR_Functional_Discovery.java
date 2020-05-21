@@ -1251,7 +1251,7 @@ public class INFUSION_MGR_Functional_Discovery {
 
 
         if (symVar) {
-            if ((0 <= Infusion_Total_Duration) &&
+            /*if ((0 <= Infusion_Total_Duration) &&
                     (0 <= VTBI_Total) &&
                     (0 <= Flow_Rate_Basal) &&
                     (0 <= Flow_Rate_Intermittent_Bolus) &&
@@ -1362,7 +1362,7 @@ public class INFUSION_MGR_Functional_Discovery {
                     (pbolus_timer <= 255) &&
                     (lock_timer <= 255) &&
                     (number_pbolus <= 255) &&
-                    (sbolusInter_timer <= 255)) {
+                    (sbolusInter_timer <= 255))*/ {
                 //INFUSION_MGR_Functional_Init(localB, localDW);
                 INFUSION_MGR_Functional(rtu_TLM_MODE_IN,
                         rtu_OP_CMD_IN, rtu_PATIENT_IN,

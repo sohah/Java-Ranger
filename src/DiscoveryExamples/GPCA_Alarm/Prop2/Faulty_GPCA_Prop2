@@ -135,6 +135,56 @@ out_Log_Message_ID5:int
 let
  -- Prop: air_in_line_implies_grt_L3_alarm
 
+assert( 0<= Commanded_Flow_Rate);
+assert( 0<= Current_System_Mode);
+assert( 0<= VTBI_High);
+assert( 0<= Flow_Rate_High);
+assert( 0<= Flow_Rate_Low);
+assert( 0<= Flow_Rate);
+assert( 0<= Audio_Enable_Duration);
+assert( 0<= Audio_Level);
+assert( 0<= Config_Warning_Duration);
+assert( 0<= Low_Reservoir);
+assert( 0<= Max_Duration_Over_Infusion);
+assert( 0<= Max_Duration_Under_Infusion);
+assert( 0<= Max_Paused_Duration);
+assert( 0<= Max_Idle_Duration);
+assert( 0<= Tolerance_Max);
+assert( 0<= Tolerance_Min);
+assert( 0<= Reservoir_Volume);
+assert( 0<= Volume_Infused);
+assert( 0<= Config_Timer);
+assert( 0<= out_Is_Audio_Disabled);
+assert( 0<= out_Notification_Message);
+assert( 0<= out_Audio_Notification_Command);
+assert( 0<= out_Highest_Level_Alarm);
+assert( 0<= out_Log_Message_ID5);
+
+assert( 255>=  Commanded_Flow_Rate);
+assert( 255>=  Current_System_Mode);
+assert( 255>=  VTBI_High);
+assert( 255>=  Flow_Rate_High);
+assert( 255>=  Flow_Rate_Low);
+assert( 255>=  Flow_Rate);
+assert( 255>=  Audio_Enable_Duration);
+assert( 255>=  Audio_Level);
+assert( 255>=  Config_Warning_Duration);
+assert( 255>=  Low_Reservoir);
+assert( 255>=  Max_Duration_Over_Infusion);
+assert( 255>=  Max_Duration_Under_Infusion);
+assert( 255>=  Max_Paused_Duration);
+assert( 255>=  Max_Idle_Duration);
+assert( 255>=  Tolerance_Max);
+assert( 255>=  Tolerance_Min);
+assert( 255>=  Reservoir_Volume);
+assert( 255>=  Volume_Infused);
+assert( 255>=  Config_Timer);
+assert( 255>=  out_Is_Audio_Disabled);
+assert( 255>=  out_Notification_Message);
+assert( 255>=  out_Audio_Notification_Command);
+assert( 255>=  out_Highest_Level_Alarm);
+assert( 255>=  out_Log_Message_ID5);
+
  p1 = ((System_On and In_Therapy and Air_In_Line) => (out_Highest_Level_Alarm >= 3));
 
 (* repair( , discover_binary_Bool_0_Int_4_Terms2(out_Is_Audio_Disabled,

@@ -6,6 +6,8 @@ vm.storage.class=nil
 symbolic.lazy = true
 symbolic.debug=false
 symbolic.optimizechoices=false
+symbolic.minint=0
+symbolic.maxint=255
 
 
 ######## miscellaneous  ######

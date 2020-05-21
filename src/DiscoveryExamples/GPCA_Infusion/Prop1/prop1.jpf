@@ -25,13 +25,13 @@ specRepair = true
 repairMode = 2
 
 SpecDirectory = GPCA_Infusion/Prop1
-faultySpec=Faulty_Prop1-LOR-0-0
-mutationEnabled = false
+faultySpec=Faulty_Prop1
+mutationEnabled = true
 repairMutantsOnly = false
 
-randomSampleMutants=false
+randomSampleMutants=true
 prop=1
 
 depthFixed = false
-evaluationMode = false
+evaluationMode = true
 #repairScope=2

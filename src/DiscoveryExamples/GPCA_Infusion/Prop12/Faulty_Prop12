@@ -31,6 +31,46 @@ node main(
 
 let  -- Prop12: mode_patient_implies_infusion_rate_patient_bolus
 
+assert( 0 <=  Infusion_Total_Duration);
+assert( 0 <=  VTBI_Total);
+assert( 0 <=  Flow_Rate_Basal);
+assert( 0 <=  Flow_Rate_Intermittent_Bolus);
+assert( 0 <=  Duration_Intermittent_Bolus);
+assert( 0 <=  Interval_Intermittent_Bolus);
+assert( 0 <=  Flow_Rate_Patient_Bolus);
+assert( 0 <=  Duration_Patient_Bolus);
+assert( 0 <=  Lockout_Period_Patient_Bolus);
+assert( 0 <=  Max_Number_of_Patient_Bolus);
+assert( 0 <=  Flow_Rate_KVO);
+assert( 0 <=  Entered_Reservoir_Volume);
+assert( 0 <=  Configured);
+assert( 0 <=  Highest_Level_Alarm);
+assert( 0 <=  Volume_Infused);
+assert( 0 <=  Commanded_Flow_Rate);
+assert( 0 <=  Current_System_Mode);
+assert( 0 <=  Log_Message_ID);
+assert( 0 <=  Actual_Infusion_Duration);
+
+assert( 255>=  Infusion_Total_Duration);
+assert( 255>=  VTBI_Total);
+assert( 255>=  Flow_Rate_Basal);
+assert( 255>=  Flow_Rate_Intermittent_Bolus);
+assert( 255>=  Duration_Intermittent_Bolus);
+assert( 255>=  Interval_Intermittent_Bolus);
+assert( 255>=  Flow_Rate_Patient_Bolus);
+assert( 255>=  Duration_Patient_Bolus);
+assert( 255>=  Lockout_Period_Patient_Bolus);
+assert( 255>=  Max_Number_of_Patient_Bolus);
+assert( 255>=  Flow_Rate_KVO);
+assert( 255>=  Entered_Reservoir_Volume);
+assert( 255>=  Configured);
+assert( 255>=  Highest_Level_Alarm);
+assert( 255>=  Volume_Infused);
+assert( 255>=  Commanded_Flow_Rate);
+assert( 255>=  Current_System_Mode);
+assert( 255>=  Log_Message_ID);
+assert( 255>=  Actual_Infusion_Duration);
+
     p1 = (System_On and (Current_System_Mode = 4 ))  => (Commanded_Flow_Rate = Flow_Rate_Patient_Bolus);
       --%PROPERTY p1;
 

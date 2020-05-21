@@ -30,7 +30,11 @@ repairMode = 2
 SpecDirectory = GPCA_Infusion/Prop4
 faultySpec=Faulty_Prop4
 mutationEnabled = true
-repairMutantsOnly = true
+repairMutantsOnly = false
+
+randomSampleMutants=true
+prop=4
+
 depthFixed = false
 evaluationMode = true
 #repairScope=2
