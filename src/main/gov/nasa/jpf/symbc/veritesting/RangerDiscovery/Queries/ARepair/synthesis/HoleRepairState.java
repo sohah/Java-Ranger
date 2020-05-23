@@ -70,9 +70,9 @@ public class HoleRepairState {
                     fillHolesWithRepairs(counterExample);
                     String fileName;
                     if (Config.specLevelRepair)
-                        fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
+                        fileName = currFaultySpec + "_" + loopCount + "_" + "existsCEX.txt";
                     else
-                        fileName = "def_" + currFaultySpec + "_" + permutationCount + "_" + loopCount + "_" + "holeCEX.txt";
+                        fileName = "def_" + currFaultySpec + "_" + permutationCount + "_" + loopCount + "_" + "existsCEX.txt";
                     if ((!Config.evaluationMode) || (loopCount >= OUTERLOOP_MAXLOOPCOUNT)) //dump the counter example if we are not in the evaluation mode or if we have exceeded the number of iterations predefined.
                         DiscoveryUtil.writeToFile(fileName, counterExample.toString(), false, false);
                 }

@@ -181,7 +181,7 @@ public class DiscoverContract {
             if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.
                 fileName = currFaultySpec + ".lus";
             else
-                fileName = currFaultySpec + "_" + loopCount + ".lus";
+                fileName = currFaultySpec + "_" + loopCount + "_forall.lus";
 
             writeToFile(fileName, counterExampleQueryStrStr, false, false);
             long singleQueryTime = System.currentTimeMillis();
@@ -246,7 +246,7 @@ public class DiscoverContract {
                     if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //only a single file is used if the loop bound has not been exceeded.
                         fileName = currFaultySpec + "_" + "hole.lus";
                     else
-                        fileName = currFaultySpec + "_" + loopCount + "_" + "hole.lus";
+                        fileName = currFaultySpec + "_" + loopCount + "_" + "exists.lus";
 
                     writeToFile(fileName, synthesisContractStr, false, false);
                     System.out.println("repairing holes for iteration#:" + loopCount);

@@ -39,7 +39,7 @@ public class MinimalRepairSynthesis extends ThereExistsQuery {
         synNodeKey = aRepairSynthesis.getSynNodeKey();
 
         Program oldSynthesisPgm = aRepairSynthesis.getSynthesizedProgram();
-        Node newMain = createVariableNodePart(oldSynthesisPgm);
+        Node newMain = createVariableNodePart(oldSynthesisPgm, lastRepairNode);
 
         newNodes.add(newMain);
 
@@ -48,9 +48,9 @@ public class MinimalRepairSynthesis extends ThereExistsQuery {
                 .functions, newNodes, null, "main");
     }
 
-    private Node createVariableNodePart(Program synthesizedProgram) {
+    private Node createVariableNodePart(Program synthesizedProgram, Node lastRepairNode) {
         Node existingMain = synthesizedProgram.getMainNode();
-        Node updatedMain = createSynthesisMain(existingMain);
+        Node updatedMain = createSynthesisMain(existingMain, lastRepairNode);
         return updatedMain;
     }
 
@@ -102,7 +102,7 @@ public class MinimalRepairSynthesis extends ThereExistsQuery {
      * @return
      */
     @Override
-    protected Node createSynthesisMain(Node exisingMain) {
+    protected Node createSynthesisMain(Node exisingMain, Node lastRepairNode) {
         List<VarDecl> freeInputOutputDecl = this.lastRepairNode.inputs;
 
 
@@ -147,9 +147,13 @@ public class MinimalRepairSynthesis extends ThereExistsQuery {
         //creating the equation of the property we want to check.
         equations = makeNewFailPropEqs(outputOfRCallExp, outputOfRPrimeCallExp, equations);
 
+        List<Expr> allAssertions = new ArrayList<Expr>(exisingMain.assertions);
+        if (lastRepairNode != null) { // we are in a minimization loop, then we need to add the assertions of the range of variables
+            if (lastRepairNode.assertions != null)
+                allAssertions.addAll(lastRepairNode.assertions);
+        }
 
-        return new Node("main", allInputs, exisingMain.outputs, locals, equations, exisingMain.properties, exisingMain
-                .assertions, exisingMain
+        return new Node("main", allInputs, exisingMain.outputs, locals, equations, exisingMain.properties, allAssertions, exisingMain
                 .realizabilityInputs, exisingMain.contract, exisingMain.ivc);
     }
 

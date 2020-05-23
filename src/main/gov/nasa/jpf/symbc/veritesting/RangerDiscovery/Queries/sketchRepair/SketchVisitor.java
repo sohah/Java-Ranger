@@ -142,9 +142,9 @@ public class SketchVisitor extends AstMapVisitor {
         //logging
         String fileName;
         if (isMinimal)
-            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "holeCEX.txt";
+            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "existsCEX.txt";
         else
-            fileName = currFaultySpec + "_" + loopCount + "_" + "holeCEX.txt";
+            fileName = currFaultySpec + "_" + loopCount + "_" + "existsCEX.txt";
 
         //if we are not in evaluation mode, or if we are in the evaluation mode but the number of loops in either the outer or the inner loop has exceeded the predefined value, then dump the file.
         if ((!Config.evaluationMode) ||

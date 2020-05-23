@@ -81,9 +81,10 @@ public class TestCaseManager {
                 Counterexample counterExample = ip.getCounterexample();
                 String fileName;
                 if (Config.specLevelRepair)
-                    fileName = currFaultySpec + "_" + loopCount + "_" + "CEX.lus";
+                    fileName = currFaultySpec + "_" + loopCount + "_" + "forallCEX.txt";
                 else
-                    fileName = "def_" + currFaultySpec + "_" + DiscoverContract.permutationCount + "_" + loopCount + "_" + "CEX" + ".lus";
+                    fileName = "def_" + currFaultySpec + "_" + DiscoverContract.permutationCount + "_" + loopCount + "_" + "" +
+                            "forallCEX" + ".txt";
                 if ((!evaluationMode) || (loopCount >= OUTERLOOP_MAXLOOPCOUNT)) //dump the counter example if we are not in the evaluation mode or if we have exceeded the number of iterations predefined.
                     DiscoveryUtil.writeToFile(fileName, counterExample.toString(), false, false);
                 translateTestCase(counterExample);
@@ -102,7 +103,7 @@ public class TestCaseManager {
                 Counterexample counterExample = ip.getCounterexample();
                 String fileName;
 
-                fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "existsCEX.lus";
+                fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forallCEX.txt";
                 if ((!evaluationMode) || (candidateLoopCount >= MINIMALLOOP_MAXLOOPCOUNT)) //dump the counter example if we are not in the evaluation mode or if we have exceeded the number of iterations predefined.
                     DiscoveryUtil.writeToFile(fileName, counterExample.toString(), true, false);
                 translateTestCaseMinimal(counterExample, lastSynMainNode);

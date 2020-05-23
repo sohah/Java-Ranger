@@ -56,7 +56,7 @@ public abstract class ThereExistsQuery {
 
 
     //this creates the new main node for the syntheized program.
-    protected abstract Node createSynthesisMain(Node synthesisSpecNode);
+    protected abstract Node createSynthesisMain(Node synthesisSpecNode, Node lastRepairNode);
 
 
     public final static String FAIL = "fail";

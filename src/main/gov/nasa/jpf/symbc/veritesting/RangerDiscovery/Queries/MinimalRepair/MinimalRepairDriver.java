@@ -103,8 +103,8 @@ public class MinimalRepairDriver {
                     System.out.println("Trying candidate #: " + candidateLoopCount);
                     String fileName;
                     if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
-                        fileName = currFaultySpec + "_" + "rPrimeExists.lus";
-                    else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeExists.lus";
+                        fileName = currFaultySpec + "_" + "exists.lus";
+                    else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "exists.lus";
 
                     writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
@@ -138,8 +138,8 @@ public class MinimalRepairDriver {
                             forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
 
                             if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
-                                fileName = currFaultySpec + "_" + "forAllMinimal" + ".lus";
-                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forAllMinimal" + ".lus";
+                                fileName = currFaultySpec + "_" + "forall" + ".lus";
+                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forall" + ".lus";
 
                             writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
 

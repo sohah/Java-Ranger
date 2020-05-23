@@ -74,7 +74,7 @@ public class ARepairSynthesis extends ThereExistsQuery {
 
     protected Node createVariableNodePart(JKindResult counterExResult) {
         testCaseManager = new TestCaseManager(contract, holes, counterExResult);
-        Node holeMainNode = createSynthesisMain(synthesisSpecNode);
+        Node holeMainNode = createSynthesisMain(synthesisSpecNode, null);
         return holeMainNode;
     }
 
@@ -129,7 +129,7 @@ public class ARepairSynthesis extends ThereExistsQuery {
         return new Pair(locals, equations);
     }
 
-    protected Node createSynthesisMain(Node synthesisSpecNode) {
+    protected Node createSynthesisMain(Node synthesisSpecNode, Node lastRepairNode) {
         List<Expr> myAssertions = freezeHolesAssertion();
 
         List<VarDecl> myInputs = extractHoleEnteries(synthesisSpecNode.inputs);
