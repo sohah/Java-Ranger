@@ -167,10 +167,10 @@ public class DynamicRepairNode {
             }
             if (holeCondRangeExpr != null) {
                 selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr), BinaryOp.AND, holeCondRangeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr));
-                selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESS, holeExpr), BinaryOp.AND, holeCondRangeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.LESSEQUAL, holeExpr), BinaryOp.AND, holeCondRangeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATER, holeExpr), BinaryOp.AND, holeCondRangeExpr));
+                selectionBinaryExpr.add(new BinaryExpr(new BinaryExpr(leftIntExpr, BinaryOp.GREATEREQUAL, holeExpr), BinaryOp.AND, holeCondRangeExpr));
             } else {
                 //I need to constraint the hole here, to either the range of uint8_T for GPCA benchmarks or manually
                 selectionBinaryExpr.add(new BinaryExpr(leftIntExpr, BinaryOp.EQUAL, holeExpr));

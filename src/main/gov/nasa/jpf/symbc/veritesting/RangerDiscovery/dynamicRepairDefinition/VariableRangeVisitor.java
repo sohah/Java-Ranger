@@ -169,14 +169,17 @@ public class VariableRangeVisitor extends AstMapVisitor {
 
         List<Integer> condRangeValues = RangeCondExprVisitor.rangeValues;
         if (condRangeValues.size() != 0) {//some range of value was found for the variable
+            condRangeValues.add(new Integer(Collections.min(condRangeValues) - 1));
+            condRangeValues.add(new Integer(Collections.max(condRangeValues) + 1));
             return createRangeCondExpr(holeExpr, condRangeValues, condRangeValues);
         }
         return null;
     }
 
     private static BinaryExpr createRangeCondExpr(IdExpr holeExpr, List<Integer> modifiedCondRangeValues, List<Integer> origCondRangeValues) {
-        if (modifiedCondRangeValues.size() == 0) { //base case
-            return createRangeCondElseExpr(holeExpr, origCondRangeValues);
+        if (modifiedCondRangeValues.size() == 1) { //base case
+//            return createRangeCondElseExpr(holeExpr, origCondRangeValues);
+            return new BinaryExpr(holeExpr, BinaryOp.EQUAL, new IntExpr(modifiedCondRangeValues.get(0)));
         }
         return new BinaryExpr(new BinaryExpr(holeExpr, BinaryOp.EQUAL, new IntExpr(modifiedCondRangeValues.get(0))), BinaryOp.OR, createRangeCondExpr(holeExpr, modifiedCondRangeValues.subList(1, modifiedCondRangeValues.size()), origCondRangeValues));
     }
