@@ -30,12 +30,9 @@ public class DiscoveryUtil {
     private static boolean firstTime = true;
 
     public static NamedType stringToLusterType(String typeName) {
-        if (typeName.equals("int"))
-            return NamedType.INT;
-        else if (typeName.equals("float"))
-            return NamedType.REAL;
-        else if (typeName.equals("boolean"))
-            return NamedType.BOOL;
+        if (typeName.equals("int")) return NamedType.INT;
+        else if (typeName.equals("float")) return NamedType.REAL;
+        else if (typeName.equals("boolean")) return NamedType.BOOL;
         /*else if (typeName.equals("string"))
             return lusterStringType;*/
         else {
@@ -46,26 +43,21 @@ public class DiscoveryUtil {
     }
 
 
-    public static float convertTimeToSecond(float timInMilli){
-        return timInMilli/ milliSecondSimplification;
+    public static float convertTimeToSecond(float timInMilli) {
+        return timInMilli / milliSecondSimplification;
     }
+
     public static BinaryOp rangerBinaryOptoLusterOp(String s) {
         BinaryOp op;
 
-        if (s.equals("!="))
-            op = BinaryOp.fromString("<>");
-        else if (s.equals("=="))
-            op = BinaryOp.fromString("=");
-        else if (s.equals("&&"))
-            op = BinaryOp.fromString("and");
-        else if (s.equals("||"))
-            op = BinaryOp.fromString("or");
-        else if (s.equals("%"))
-            op = BinaryOp.fromString("mod");
+        if (s.equals("!=")) op = BinaryOp.fromString("<>");
+        else if (s.equals("==")) op = BinaryOp.fromString("=");
+        else if (s.equals("&&")) op = BinaryOp.fromString("and");
+        else if (s.equals("||")) op = BinaryOp.fromString("or");
+        else if (s.equals("%")) op = BinaryOp.fromString("mod");
         else if (s.equals("/")) //supporting only integer division.
             op = BinaryOp.fromString("div");
-        else
-            op = BinaryOp.fromString(s);
+        else op = BinaryOp.fromString(s);
 
         return op;
     }
@@ -74,10 +66,8 @@ public class DiscoveryUtil {
     public static UnaryOp rangerUnaryyOptoLusterOp(String s) {
         UnaryOp op = null;
 
-        if (s.equals("!"))
-            op = UnaryOp.fromString("not");
-        else
-            op = UnaryOp.fromString(s);
+        if (s.equals("!")) op = UnaryOp.fromString("not");
+        else op = UnaryOp.fromString(s);
 
 
         return op;
@@ -85,10 +75,8 @@ public class DiscoveryUtil {
 
 
     public static UnaryOp toLustreUnaryOp(Operation.Operator operator) {
-        if (operator.toString().equals("-"))
-            return NEGATIVE;
-        else if (operator.toString().equals("!"))
-            return NOT;
+        if (operator.toString().equals("-")) return NEGATIVE;
+        else if (operator.toString().equals("!")) return NOT;
         else {
             System.out.println("unknown type!");
             assert false;
@@ -97,32 +85,19 @@ public class DiscoveryUtil {
     }
 
     public static BinaryOp toLustreBinaryOp(Operation.Operator operator) {
-        if (operator == Operation.Operator.ADD)
-            return BinaryOp.PLUS;
-        else if (operator == Operation.Operator.SUB)
-            return BinaryOp.MINUS;
-        if (operator == Operation.Operator.MUL)
-            return BinaryOp.MULTIPLY;
-        else if (operator == Operation.Operator.DIV)
-            return BinaryOp.DIVIDE;
-        else if (operator == Operation.Operator.EQ)
-            return BinaryOp.EQUAL;
-        else if (operator == Operation.Operator.DIV)
-            return BinaryOp.INT_DIVIDE;
-        else if (operator == Operation.Operator.NE)
-            return BinaryOp.NOTEQUAL;
-        else if (operator == Operation.Operator.GT)
-            return BinaryOp.GREATER;
-        else if (operator == Operation.Operator.LT)
-            return BinaryOp.LESS;
-        else if (operator == Operation.Operator.GE)
-            return BinaryOp.GREATEREQUAL;
-        else if (operator == Operation.Operator.LE)
-            return BinaryOp.LESSEQUAL;
-        else if (operator == Operation.Operator.OR)
-            return BinaryOp.OR;
-        else if (operator == Operation.Operator.AND)
-            return BinaryOp.AND;
+        if (operator == Operation.Operator.ADD) return BinaryOp.PLUS;
+        else if (operator == Operation.Operator.SUB) return BinaryOp.MINUS;
+        if (operator == Operation.Operator.MUL) return BinaryOp.MULTIPLY;
+        else if (operator == Operation.Operator.DIV) return BinaryOp.DIVIDE;
+        else if (operator == Operation.Operator.EQ) return BinaryOp.EQUAL;
+        else if (operator == Operation.Operator.DIV) return BinaryOp.INT_DIVIDE;
+        else if (operator == Operation.Operator.NE) return BinaryOp.NOTEQUAL;
+        else if (operator == Operation.Operator.GT) return BinaryOp.GREATER;
+        else if (operator == Operation.Operator.LT) return BinaryOp.LESS;
+        else if (operator == Operation.Operator.GE) return BinaryOp.GREATEREQUAL;
+        else if (operator == Operation.Operator.LE) return BinaryOp.LESSEQUAL;
+        else if (operator == Operation.Operator.OR) return BinaryOp.OR;
+        else if (operator == Operation.Operator.AND) return BinaryOp.AND;
         else {
             System.out.println("unknown type!");
             assert false;
@@ -157,16 +132,14 @@ public class DiscoveryUtil {
             assert !minimal;
         } else if (minimal) {
             directory = folderName + "output/" + Config.currFaultySpec + "/minimal/";
-        } else
-            directory = folderName + "output/" + Config.currFaultySpec + "/";
+        } else directory = folderName + "output/" + Config.currFaultySpec + "/";
 
 
         fileName = directory + fileName;
 
         try {
 
-            if (!Files.exists(Paths.get(directory)))
-                Files.createDirectories(Paths.get(directory));
+            if (!Files.exists(Paths.get(directory))) Files.createDirectories(Paths.get(directory));
 
             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "utf-8"));
             writer.write(content);
@@ -213,8 +186,7 @@ public class DiscoveryUtil {
         List<Node> newNodes = new ArrayList<>();
         List<Node> oldNodes = pgm.nodes;
         for (int i = 0; i < oldNodes.size(); i++) { //filtering away unwanted nodes.
-            if (!oldNodes.get(i).id.equals(node.id))
-                newNodes.add(oldNodes.get(i));
+            if (!oldNodes.get(i).id.equals(node.id)) newNodes.add(oldNodes.get(i));
         }
         return newNodes;
     }
@@ -223,16 +195,14 @@ public class DiscoveryUtil {
     public static List<Node> removeNodeStr(List<Node> oldNodes, String nodeName) {
         List<Node> newNodes = new ArrayList<>();
         for (int i = 0; i < oldNodes.size(); i++) { //filtering away unwanted nodes.
-            if (!oldNodes.get(i).id.equals(nodeName))
-                newNodes.add(oldNodes.get(i));
+            if (!oldNodes.get(i).id.equals(nodeName)) newNodes.add(oldNodes.get(i));
         }
         return newNodes;
     }
 
     public static Node findNodeStr(List<Node> nodes, String nodeName) {
         for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).id.equals(nodeName))
-                return nodes.get(i);
+            if (nodes.get(i).id.equals(nodeName)) return nodes.get(i);
         }
         return null;
     }
@@ -240,8 +210,7 @@ public class DiscoveryUtil {
 
     public static Node findNode(List<Node> nodes, Node node) {
         for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).id.equals(node.id))
-                return nodes.get(i);
+            if (nodes.get(i).id.equals(node.id)) return nodes.get(i);
         }
         System.out.println("problem finding the node to repair!");
         return null;
@@ -250,8 +219,7 @@ public class DiscoveryUtil {
 
     public static RepairNode findRepairNodeDef(List<RepairNode> nodes, String node) {
         for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).id.equals(node))
-                return nodes.get(i);
+            if (nodes.get(i).id.equals(node)) return nodes.get(i);
         }
         System.out.println("problem finding the node to repair!");
         return null;
@@ -260,8 +228,7 @@ public class DiscoveryUtil {
 
     public static Equation findEqWithLhs(List<Equation> equations, String lhs) {
         for (int i = 0; i < equations.size(); i++) {
-            if (equations.get(i).lhs.get(0).toString().equals(lhs))
-                return equations.get(i);
+            if (equations.get(i).lhs.get(0).toString().equals(lhs)) return equations.get(i);
         }
         return null;
     }
@@ -271,8 +238,7 @@ public class DiscoveryUtil {
         List<Equation> newEquation = new ArrayList<>();
 
         for (int i = 0; i < equations.size(); i++) {
-            if (!equations.get(i).lhs.get(0).toString().equals(lhs))
-                newEquation.add(equations.get(i));
+            if (!equations.get(i).lhs.get(0).toString().equals(lhs)) newEquation.add(equations.get(i));
         }
         return newEquation;
     }
@@ -284,9 +250,7 @@ public class DiscoveryUtil {
             firstTime = false;
         } else append = true;
 
-        try (FileWriter fw = new FileWriter(fileName, append);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) {
+        try (FileWriter fw = new FileWriter(fileName, append); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
             out.println(content);
         } catch (IOException e) {
             System.out.println("Problem writing hole repairs to file! aborting!");
@@ -295,16 +259,12 @@ public class DiscoveryUtil {
     }
 
     public static Expr valueToExpr(Value value, Type type) {
-        if (value instanceof BooleanValue)
-            return new BoolExpr(((BooleanValue) value).value);
-        else if (value instanceof IntegerValue)
-            return new IntExpr(((IntegerValue) value).value);
+        if (value instanceof BooleanValue) return new BoolExpr(((BooleanValue) value).value);
+        else if (value instanceof IntegerValue) return new IntExpr(((IntegerValue) value).value);
         else if (value == null) {
             System.out.println("assuming default value");
-            if (type == NamedType.BOOL)
-                return new BoolExpr(false);
-            else if (type == NamedType.INT)
-                return new IntExpr(0);
+            if (type == NamedType.BOOL) return new BoolExpr(false);
+            else if (type == NamedType.INT) return new IntExpr(0);
             else {
                 System.out.println("unsupported values type");
                 assert false;
@@ -321,8 +281,7 @@ public class DiscoveryUtil {
         List<Ast> value = map.get(o);
         if (value.size() != 0) // there has been a repair for the hole.
             return value.get(value.size() - 1);
-        else
-            return null;
+        else return null;
     }
 
     /**
@@ -334,12 +293,9 @@ public class DiscoveryUtil {
 
     //tries to find the type of an expr inside a node.
     public static Type findExprType(Expr def, Node node, Program pgm) {
-        if (def instanceof IntExpr)
-            return NamedType.INT;
-        else if (def instanceof BoolExpr)
-            return NamedType.BOOL;
-        else if (def instanceof IdExpr)
-            return lookupExprType(def, node, pgm);
+        if (def instanceof IntExpr) return NamedType.INT;
+        else if (def instanceof BoolExpr) return NamedType.BOOL;
+        else if (def instanceof IdExpr) return lookupExprType(def, node, pgm);
         else {
             System.out.println("unknown type for expr. Aborting!");
             assert false;
@@ -352,10 +308,8 @@ public class DiscoveryUtil {
         VarDecl exprVarDecl = findInList(node.inputs, def);
         if (exprVarDecl == null) {
             exprVarDecl = findInList(node.locals, def);
-            if (exprVarDecl == null)
-                exprVarDecl = findConstInList(pgm.constants, def);
-            if (exprVarDecl == null)
-                exprVarDecl = findInList(node.outputs, def);
+            if (exprVarDecl == null) exprVarDecl = findConstInList(pgm.constants, def);
+            if (exprVarDecl == null) exprVarDecl = findInList(node.outputs, def);
             if (exprVarDecl == null) {
                 System.out.println("unable to find the right type for expr. Aborting!");
                 assert false;
@@ -368,8 +322,7 @@ public class DiscoveryUtil {
 
     public static VarDecl findInList(List<VarDecl> inputs, Expr def) {
         for (int i = 0; i < inputs.size(); i++) {
-            if (inputs.get(i).id.equals(def.toString()))
-                return inputs.get(i);
+            if (inputs.get(i).id.equals(def.toString())) return inputs.get(i);
         }
         return null;
     }
@@ -377,8 +330,7 @@ public class DiscoveryUtil {
 
     public static Equation findEqInList(List<Equation> eqs, String lhs) {
         for (int i = 0; i < eqs.size(); i++) {
-            if (eqs.get(i).lhs.get(0).toString().equals(lhs))
-                return eqs.get(i);
+            if (eqs.get(i).lhs.get(0).toString().equals(lhs)) return eqs.get(i);
         }
         return null;
     }
@@ -387,12 +339,9 @@ public class DiscoveryUtil {
     private static VarDecl findConstInList(List<Constant> inputs, Expr def) {
         for (int i = 0; i < inputs.size(); i++) {
             if (inputs.get(i).id.equals(def.toString())) {
-                if (inputs.get(i).type != null)
-                    return new VarDecl(inputs.get(i).id, inputs.get(i).type);
-                else if (inputs.get(i).expr instanceof IntExpr)
-                    return new VarDecl(inputs.get(i).id, NamedType.INT);
-                else if (inputs.get(i).expr instanceof BoolExpr)
-                    return new VarDecl(inputs.get(i).id, NamedType.BOOL);
+                if (inputs.get(i).type != null) return new VarDecl(inputs.get(i).id, inputs.get(i).type);
+                else if (inputs.get(i).expr instanceof IntExpr) return new VarDecl(inputs.get(i).id, NamedType.INT);
+                else if (inputs.get(i).expr instanceof BoolExpr) return new VarDecl(inputs.get(i).id, NamedType.BOOL);
             }
         }
         return null;
@@ -423,13 +372,10 @@ public class DiscoveryUtil {
     public static JKindResult callJkind(String fileName, boolean kInductionOn, int maxK, boolean minimal, boolean existsQuery) {
         File file1;
 
-        if (!minimal)
-            file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/" + fileName);
-        else
-            file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/minimal/" + fileName);
+        if (!minimal) file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/" + fileName);
+        else file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/minimal/" + fileName);
 
-        if (minimal)
-            return runJKind(file1, kInductionOn, maxK, existsQuery);
+        if (minimal) return runJKind(file1, kInductionOn, maxK, existsQuery);
         else // ensuring that you can't have a exists query true, without having a minimal query
             return runJKind(file1, kInductionOn, maxK, false);
     }
@@ -452,20 +398,16 @@ public class DiscoveryUtil {
         JKindResult result = new JKindResult("");
         if (!kInductionOn) { // I have not yet noticed considerable benefit from stopping kInduction on the there
             // exists query. I'm turning it off for now.
-               api.disableKInduction();
+            api.disableKInduction();
         }
 
 
         if (mac) {
-            if (randZ3Seed)
-                api.setJKindJar("../../../jkind/jkind.jar");
-            else
-                api.setJKindJar("../../../jkindNoRand/jkind.jar");
+            if (randZ3Seed) api.setJKindJar("../../../jkind/jkind.jar");
+            else api.setJKindJar("../../../jkindNoRand/jkind.jar");
         } else {//assuming linux
-            if (randZ3Seed)
-                api.setJKindJar("/home/soha/jkind/jkind.jar");
-            else
-                api.setJKindJar("/home/soha/jkindNoRand/jkind.jar");
+            if (randZ3Seed) api.setJKindJar("/home/soha/jkind/jkind.jar");
+            else api.setJKindJar("/home/soha/jkindNoRand/jkind.jar");
         }
         api.disableSlicing();
 
@@ -477,9 +419,10 @@ public class DiscoveryUtil {
         // generation of pdr while checking the needed steps in BMC.
 
         if (existsQuery) {
-            if (limitedSteps) //limiting the steps if the flag is on to multiple of 3
-                maxK = maxK == 0 ? 5 : maxK * 3;
-           // api.setPdrMax(0);
+            maxK = maxK == 0 ? 5 : maxK * 3;
+            api.setPdrMax(0);
+            api.disableInvariantGeneration();
+            Config.lastMaxSteps = maxK;
         }
 
 
@@ -487,8 +430,7 @@ public class DiscoveryUtil {
             api.setN(maxK);
 
 
-        if (Config.z3Solver)
-            api.setSolver(SolverOption.Z3);
+        if (Config.z3Solver) api.setSolver(SolverOption.Z3);
 
         api.setTimeout(timeOut);
         // The monitor is only currently used to detect cancellation NullProgressMonitor

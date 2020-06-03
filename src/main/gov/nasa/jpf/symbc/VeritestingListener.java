@@ -258,7 +258,6 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         assert false;
                     }
                 }
-                if (conf.hasValue("limitedSteps")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.limitedSteps = conf.getBoolean("limitedSteps");
 
                 if (conf.hasValue("randZ3Seed")) gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");
                 if (conf.hasValue("rangeValueAnalysis")) {

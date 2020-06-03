@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.MinimalRepair;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreExtension.RemoveRepairConstructVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.LustreTranslation.ToLutre;
@@ -9,8 +10,10 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.TerminationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
 import jkind.api.results.JKindResult;
+import jkind.api.results.PropertyResult;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
+import jkind.results.UnknownProperty;
 
 import java.util.ArrayList;
 
@@ -118,6 +121,8 @@ public class MinimalRepairDriver {
                     //System.out.println("TIME of ThereExists Query of : " + fileName + "= " + singleQueryTime);
                     System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime1));
                     repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount, QueryType.THERE_EXISTS, singleQueryTime1);
+
+                    PropertyResult propResult = synthesisResult.getPropertyResult(counterExPropertyName);
                     switch (synthesisResult.getPropertyResult(counterExPropertyName).getStatus()) {
                         case VALID:
                             System.out.println("^-^ Ranger Discovery Result ^-^");
@@ -202,9 +207,15 @@ public class MinimalRepairDriver {
 //                                repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
 //                                System.out.println("Property unexpected output (synthesis Query MINIMAL_TIMED_OUT):");
 //                            } else {
-                            repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
-                            repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
-                            System.out.println("Property unexpected output (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                            if ((propResult.getProperty() instanceof UnknownProperty) && (((UnknownProperty) propResult.getProperty()).getTrueFor() == lastMaxSteps)) {
+                                repairStatistics.terminationResult = TerminationResult.TRUE_FOR_MAX_STEPS;
+                                repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
+                                System.out.println("Property uknown but TRUE_FOR_Max_STEPS (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                            } else {
+                                repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
+                                repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
+                                System.out.println("Property unexpected output (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                            }
 //                            }
                             System.out.println(" No more R' can be found, returning last known good repair.");
                             break;

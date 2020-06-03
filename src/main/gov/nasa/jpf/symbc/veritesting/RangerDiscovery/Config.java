@@ -24,6 +24,7 @@ public class Config {
     public static String counterExPropertyName = "fail";
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
+    public static int lastMaxSteps; //this is the last maximum steps used in the last BMC
 
     // atom synthesized
     static String tFileName;
@@ -37,7 +38,6 @@ public class Config {
     public static String CAND_T_PRIME = "Candidate_T_Prime";
     public static String specPropertyName = "ok";
     public static String wrapperOutpuName = "out";
-    public static boolean limitedSteps = true; //this controls the number of steps we allow for there exists query
     // of finding a different R.
 
     public static String tnodeSpecPropertyName;
@@ -73,7 +73,7 @@ public class Config {
     public static boolean rangeValueAnalysis = true;
 
     public static boolean evaluationMode = false;
-    public static int timeOut = 60; //in seconds - time out of every jkind query
+    public static int timeOut = 600; //in seconds - time out of every jkind query
     public static int mutantTimeOut = 3600;  // in seconds time out for a mutant repair
     public static boolean mac = false;
 
