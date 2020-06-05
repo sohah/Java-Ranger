@@ -9,6 +9,7 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.sketchRepair.Sketc
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.QueryType;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.TerminationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil;
+import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.api.results.JKindResult;
 import jkind.api.results.PropertyResult;
 import jkind.lustre.Node;
@@ -78,13 +79,13 @@ public class MinimalRepairDriver {
         /*//removing the repair expression keeping only the repair value included
         laskKnwnGoodRepairPgm = RemoveRepairConstructVisitor.execute(repairedProgram);
 */
-        Program forAllQ;
+
 
         boolean canFindMoreTighterRepair = true;
         boolean tighterRepairFound = false;
 
         long singleQueryTime1;
-        long singleQueryTime2;
+
 
         MinimalRepairSynthesis tPrimeExistsQ = new MinimalRepairSynthesis(lastSynthizedContract, laskKnwnGoodRepairPgm.getMainNode());
 
@@ -107,7 +108,8 @@ public class MinimalRepairDriver {
                     String fileName;
                     if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
                         fileName = currFaultySpec + "_" + "exists.lus";
-                    else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "exists.lus";
+                    else
+                        fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "exists.lus";
 
                     writeToFile(fileName, tPrimeExistsQ.toString(), true, false);
 
@@ -132,73 +134,9 @@ public class MinimalRepairDriver {
                             repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
                             break;
                         case INVALID:
-                            Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
-
-                            if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
-                                fileName = currFaultySpec + "_" + "rPrimeCandidate.lus";
-                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
-
-                            writeToFile(fileName, candTPrimePgm.toString(), true, false);
-
-                            forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
-
-                            if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
-                                fileName = currFaultySpec + "_" + "forall" + ".lus";
-                            else fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forall" + ".lus";
-
-                            writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
-
-
-                            singleQueryTime2 = System.currentTimeMillis();
-
-                            System.out.println("ForAll Query of : " + fileName);
-
-                            JKindResult counterExampleResult = callJkind(fileName, true, -1, true, false);
-
-                            singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2);
-
-                            //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
-                            System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime2));
-                            repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount, QueryType.FORALL, singleQueryTime2);
-
-                            switch (counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus()) {
-                                case VALID:
-                                    laskKnwnGoodRepairPgm = candTPrimePgm;
-                                    successfulCandidateNum = candidateLoopCount; //storing the current loop count where a
-                                    lastKnownRepairLoopCount = knownRepairLoopCount; // storing the loop number at which
-                                    if (!containsNode(repairs, candTPrimePgm.getMainNode())) {
-                                        repairs.add(candTPrimePgm.getMainNode());
-                                        // the last good tight repair was found.
-                                        System.out.println("Great! a tighter repair was found at, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount + " successful candidate # = " + successfulCandidateNum);
-
-                                        // minimal repair was found.
-                                        tighterRepairFound = true;
-                                        break;
-                                    } else {
-                                        System.out.println("encountering the same repair, aborting.");
-                                        canFindMoreTighterRepair = false;
-                                        assert false;
-                                        break;
-                                    }
-                                case INVALID:
-                                    tPrimeExistsQ.collectCounterExample(counterExampleResult, tPrimeExistsQ.getSynthesizedProgram().getMainNode());
-                                    ++candidateLoopCount;
-                                    break;
-                                default:
-                                    System.out.println("^-^ Ranger Discovery Result ^-^");
-                                    canFindMoreTighterRepair = false;
-//                                    if (singleQueryTime2 >= timeOut) {
-//                                        repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
-//                                        System.out.println("Property unexpected output (forall Query MINIMAL_TIMED_OUT):");
-//                                    } else {
-                                    repairStatistics.terminationResult = TerminationResult.MINIMAL_FORALL_UNKNOWN;
-                                    repairStatistics.lastQueryType = QueryType.FORALL;
-                                    System.out.println(" Property unexpected output (for all Query):" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
-//                                    }
-
-                                    System.out.println(" No more R' can be found, returning last known good repair.");
-                                    break;
-                            }
+                            Pair<Boolean, Boolean> loopCond = runForallQuery(flatExtendedPgm, synthesisResult, counterExamplePgm, tPrimeExistsQ);
+                            tighterRepairFound = loopCond.getFirst();
+                            canFindMoreTighterRepair = loopCond.getSecond();
                             break;
                         default:
                             System.out.println("^-^ Ranger Discovery Result ^-^");
@@ -208,9 +146,9 @@ public class MinimalRepairDriver {
 //                                System.out.println("Property unexpected output (synthesis Query MINIMAL_TIMED_OUT):");
 //                            } else {
                             if ((propResult.getProperty() instanceof UnknownProperty) && (((UnknownProperty) propResult.getProperty()).getTrueFor() == lastMaxSteps)) {
-                                repairStatistics.terminationResult = TerminationResult.TRUE_FOR_MAX_STEPS;
-                                repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
-                                System.out.println("Property uknown but TRUE_FOR_Max_STEPS (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                                Pair<Boolean, Boolean> loopCond2 = runForallQuery(flatExtendedPgm, synthesisResult, counterExamplePgm, tPrimeExistsQ);
+                                tighterRepairFound = loopCond2.getFirst();
+                                canFindMoreTighterRepair = loopCond2.getSecond();
                             } else {
                                 repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
                                 repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
@@ -239,6 +177,86 @@ public class MinimalRepairDriver {
 
         System.out.println("Minimal repair finished with the following result, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount + " the LAST candidate repair loop # = " + successfulCandidateNum);
         return laskKnwnGoodRepairPgm;
+    }
+
+
+    private static Pair<Boolean, Boolean> runForallQuery(Program flatExtendedPgm, JKindResult synthesisResult, Program counterExamplePgm, MinimalRepairSynthesis tPrimeExistsQ) {
+        boolean tighterRepairFound = false;
+        boolean canFindMoreTighterRepair = false;
+        Program forAllQ;
+        long singleQueryTime2;
+        String fileName;
+
+        Program candTPrimePgm = RemoveRepairConstructVisitor.execute(SketchVisitor.execute(flatExtendedPgm, synthesisResult, true));
+
+        if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
+            fileName = currFaultySpec + "_" + "rPrimeCandidate.lus";
+        else
+            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "rPrimeCandidate.lus";
+
+        writeToFile(fileName, candTPrimePgm.toString(), true, false);
+
+        forAllQ = MinimalRepairCheck.execute(DiscoverContract.contract, counterExamplePgm, laskKnwnGoodRepairPgm.getMainNode(), candTPrimePgm.getMainNode());
+
+        if ((evaluationMode) && (candidateLoopCount < MINIMALLOOP_MAXLOOPCOUNT)) //use the same name if we are in the evaluation mode and we have not exceeded the number of loops
+            fileName = currFaultySpec + "_" + "forall" + ".lus";
+        else
+            fileName = currFaultySpec + "_" + knownRepairLoopCount + "_" + candidateLoopCount + "_" + "forall" + ".lus";
+
+        writeToFile(fileName, ToLutre.lustreFriendlyString(forAllQ.toString()), true, false);
+
+
+        singleQueryTime2 = System.currentTimeMillis();
+
+        System.out.println("ForAll Query of : " + fileName);
+
+        JKindResult counterExampleResult = callJkind(fileName, true, -1, true, false);
+
+        singleQueryTime2 = (System.currentTimeMillis() - singleQueryTime2);
+
+        //System.out.println("TIME of forAll Query of : " + fileName + "= " + singleQueryTime);
+        System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime2));
+        repairStatistics.printCandStatistics(String.valueOf(knownRepairLoopCount), true, candidateLoopCount, QueryType.FORALL, singleQueryTime2);
+
+        switch (counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus()) {
+            case VALID:
+                laskKnwnGoodRepairPgm = candTPrimePgm;
+                successfulCandidateNum = candidateLoopCount; //storing the current loop count where a
+                lastKnownRepairLoopCount = knownRepairLoopCount; // storing the loop number at which
+                if (!containsNode(repairs, candTPrimePgm.getMainNode())) {
+                    repairs.add(candTPrimePgm.getMainNode());
+                    // the last good tight repair was found.
+                    System.out.println("Great! a tighter repair was found at, outer loop # = " + DiscoverContract.outerLoopRepairNum + " minimal repair loop # = " + lastKnownRepairLoopCount + " successful candidate # = " + successfulCandidateNum);
+
+                    // minimal repair was found.
+                    tighterRepairFound = true;
+                    break;
+                } else {
+                    System.out.println("encountering the same repair, aborting.");
+                    canFindMoreTighterRepair = false;
+                    assert false;
+                    break;
+                }
+            case INVALID:
+                tPrimeExistsQ.collectCounterExample(counterExampleResult, tPrimeExistsQ.getSynthesizedProgram().getMainNode());
+                ++candidateLoopCount;
+                break;
+            default:
+                System.out.println("^-^ Ranger Discovery Result ^-^");
+                canFindMoreTighterRepair = false;
+//                                    if (singleQueryTime2 >= timeOut) {
+//                                        repairStatistics.terminationResult = TerminationResult.MINIMAL_TIMED_OUT;
+//                                        System.out.println("Property unexpected output (forall Query MINIMAL_TIMED_OUT):");
+//                                    } else {
+                repairStatistics.terminationResult = TerminationResult.MINIMAL_FORALL_UNKNOWN;
+                repairStatistics.lastQueryType = QueryType.FORALL;
+                System.out.println(" Property unexpected output (for all Query):" + counterExampleResult.getPropertyResult(candidateSpecPropertyName).getStatus().toString());
+//                                    }
+
+                System.out.println(" No more R' can be found, returning last known good repair.");
+                break;
+        }
+        return new Pair<Boolean, Boolean>(tighterRepairFound, canFindMoreTighterRepair);
     }
 
 
