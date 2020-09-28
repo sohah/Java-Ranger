@@ -16,8 +16,10 @@ import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Queries.ARepair.synthesis.
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationType;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import gov.nasa.jpf.symbc.veritesting.ast.transformations.Environment.DynamicRegion;
+import gov.nasa.jpf.vm.ThreadInfo;
 import jkind.JKindException;
 import jkind.api.results.JKindResult;
+import jkind.api.results.Status;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 
@@ -27,6 +29,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.appendToFile;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.callJkind;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
 
@@ -70,7 +73,8 @@ public class DiscoverContract {
 
     /***** end of unused vars***/
 
-    public static final void discoverLusterContract(DynamicRegion dynRegion) {
+    public static final void discoverLusterContract(ThreadInfo ti, DynamicRegion dynRegion) {
+        Config.ti = ti;
         DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
         try {
@@ -176,6 +180,26 @@ public class DiscoverContract {
         CounterExampleQuery counterExampleQuery = new CounterExampleQuery(originalProgram);
         String counterExampleQueryStrStr = counterExampleQuery.toString();
 
+        if (verificationOnly) {//then check and return the answer
+            fileName = currFaultySpec + ".lus";
+            writeToFile(fileName, counterExampleQueryStrStr, false, false);
+            long singleQueryTime = System.currentTimeMillis();
+
+            JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
+            singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
+            System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime));
+
+            repairStatistics.printCandStatistics("verification", false, -1, QueryType.FORALL, singleQueryTime);
+
+            if (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus() == Status.VALID) {
+                assert originalProgram.nodes != null && originalProgram.nodes.size() == 1 && originalProgram.nodes.get(0).equations.size() == 1 : "unexpected form for the verification property. Failing.";
+                appendToFile("verifiedProps", originalProgram.nodes.get(0).equations.toString());
+            }
+
+            return;
+        }
+
+        //if not doing verification then we can check and try to repair
         do {
             System.out.println("Forall outer matching query.");
             if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.

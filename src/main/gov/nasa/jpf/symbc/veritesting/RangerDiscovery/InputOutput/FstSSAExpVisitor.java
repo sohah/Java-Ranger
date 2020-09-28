@@ -7,11 +7,11 @@ import za.ac.sun.cs.green.expr.*;
 
 import java.util.HashSet;
 
-public class DefExpVisitor implements ExprVisitor {
+public class FstSSAExpVisitor implements ExprVisitor {
 
     private final HashSet<String> defVarsSet;
 
-    public DefExpVisitor(HashSet<String> defVarsSet) {
+    public FstSSAExpVisitor(HashSet<String> defVarsSet) {
         this.defVarsSet = defVarsSet;
     }
 

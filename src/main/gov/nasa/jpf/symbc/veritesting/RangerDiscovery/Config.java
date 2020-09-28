@@ -4,6 +4,8 @@ import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
+import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
 import jkind.lustre.IntExpr;
@@ -25,6 +27,8 @@ public class Config {
     public static String folderName = "../src/DiscoveryExamples/";
     public static String symVarName;
     public static int lastMaxSteps; //this is the last maximum steps used in the last BMC
+    public static ThreadInfo ti;
+    public static ArrayList<ElementInfo> objrefs = new ArrayList<>();
 
     // atom synthesized
     static String tFileName;
@@ -53,6 +57,7 @@ public class Config {
     //this contains specific equations we would like to repair, instead of repairing the whole thing. This is now used for testing only.
     public static Integer[] equationNumToRepair = {1};
     public static boolean allEqRepair = true;
+    public static boolean verificationOnly = false;
 
 
     /***** configurations needs consideration for each run in .jpf file *********/
@@ -114,6 +119,12 @@ public class Config {
 
     public static boolean canSetup() throws IOException {
 
+        if(verificationOnly){
+            mutationEnabled = false;
+            randomSample = false;
+            System.out.println("running verification only mode.");
+        }
+
         if (firstTime) {
             DiscoverContract.contract = new Contract();
             allMutationStatistics = new AllMutationStatistics();
@@ -155,7 +166,7 @@ public class Config {
         tFileName = folderName + currFaultySpec;
         if (!mutationEnabled) { //sanity check
             Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-            if (!regressionTestOn && origSpec.repairNodes.size() == 0) {
+            if (!verificationOnly && !regressionTestOn && origSpec.repairNodes.size() == 0) {
                 System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
                 assert false;
             }
