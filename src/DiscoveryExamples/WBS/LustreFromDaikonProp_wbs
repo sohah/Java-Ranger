@@ -1,0 +1,8 @@
+AltPressure_r =Sys_Mode
+NormalPressure_r >= 0
+AltPressure_r =0
+NormalPressure_r >= AltPressure_r
+pedal_r >= -1
+AltPressure_r =(0 -> pre AltPressure_r)
+AltPressure_r =(0 -> pre Sys_Mode)
+AltPressure_r <= (0 -> pre NormalPressure_r)

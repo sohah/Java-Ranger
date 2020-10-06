@@ -1,0 +1,9 @@
+AltPressure_r =Sys_Mode
+NormalPressure_r >= 0
+AltPressure_r =0
+NormalPressure_r >= AltPressure_r
+AltPressure_r =(0 -> pre AltPressure_r)
+AltPressure_r =(0 -> pre Sys_Mode)
+AltPressure_r <= (0 -> pre NormalPressure_r)
+total Invariants,ignored invariants,considered invariants,valid invariants
+8,0,8,7

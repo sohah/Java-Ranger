@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import jkind.lustre.IdExpr;
 import jkind.lustre.NamedType;
 
 import java.util.List;
@@ -271,6 +272,10 @@ public class SpecInOutManager {
         return freeInput.getInputNames();
     }
 
+    public List<String> getInOutputNames() {
+        return inOutputVars.getInputNames();
+    }
+
     public SpecInputOutput getInOutput() {
         return inOutputVars;
     }
@@ -281,5 +286,13 @@ public class SpecInOutManager {
 
     public int indexOfInputVar(String varName) {
         return freeInput.indexOf(varName);
+    }
+
+    public boolean isInputOrOutputByName(IdExpr id) {
+        List<String> inputNames = getFreeInputNames();
+        if (inputNames.contains(id.toString())) return true;
+
+        inputNames = getInOutputNames();
+        return inputNames.contains(id.toString());
     }
 }

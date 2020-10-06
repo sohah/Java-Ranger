@@ -24,7 +24,9 @@ import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -178,29 +180,27 @@ public class DiscoverContract {
         }
 
         CounterExampleQuery counterExampleQuery = new CounterExampleQuery(originalProgram);
-        String counterExampleQueryStrStr = counterExampleQuery.toString();
+        Path path = Paths.get(toVerifyPropFileName);
+        if (!Files.exists(path)) { // prop was not executed in the run.
+            System.out.println("prop file not found, unexpected. aborting");
+            assert false;
+        }
+
+
+        String content = DiscoveryUtil.readFile(path, StandardCharsets.US_ASCII);
+
+        ArrayList<String> invariants = new ArrayList<String>(Arrays.asList(content.split("\n")));
 
         if (verificationOnly) {//then check and return the answer
-            fileName = currFaultySpec + ".lus";
-            writeToFile(fileName, counterExampleQueryStrStr, false, false);
-            long singleQueryTime = System.currentTimeMillis();
-
-            JKindResult counterExResult = callJkind(fileName, true, -1, false, false);
-            singleQueryTime = (System.currentTimeMillis() - singleQueryTime);
-            System.out.println("TIME = " + DiscoveryUtil.convertTimeToSecond(singleQueryTime));
-
-            repairStatistics.printCandStatistics("verification", false, -1, QueryType.FORALL, singleQueryTime);
-
-            if (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus() == Status.VALID) {
-                assert originalProgram.nodes != null && originalProgram.nodes.size() == 1 && originalProgram.nodes.get(0).equations.size() == 1 : "unexpected form for the verification property. Failing.";
-                appendToFile("verifiedProps", originalProgram.nodes.get(0).equations.toString());
-            }
+            VerificationOnly.computeVerification(invariants, repairStatistics, counterExampleQuery, originalProgram);
 
             return;
         }
 
         //if not doing verification then we can check and try to repair
         do {
+            String counterExampleQueryStrStr = counterExampleQuery.toString();
+
             System.out.println("Forall outer matching query.");
             if ((evaluationMode) && (loopCount < OUTERLOOP_MAXLOOPCOUNT)) //use only a single file in the evaluation mode and when we have not reached the limit of the loop count.
                 fileName = currFaultySpec + ".lus";

@@ -115,6 +115,7 @@ public class Config {
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
     public static boolean regressionTestOn = false;
+    public static String toVerifyPropFileName;
 
 
     public static boolean canSetup() throws IOException {

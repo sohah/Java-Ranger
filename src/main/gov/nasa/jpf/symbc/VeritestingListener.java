@@ -224,15 +224,17 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
 
                 if (conf.hasValue("mac"))
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mac = conf.getBoolean("mac");
-                else{
+                else {
                     System.out.println("must set the machine to identify object references. Configuration Violation. Failing");
                     assert false;
                 }
 
 
-                if (conf.hasValue("verificationOnly"))
+                if (conf.hasValue("verificationOnly")) {
                     gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.verificationOnly = conf.getBoolean("verificationOnly");
-
+                    assert (conf.hasValue("toVerifyPropFileName")) : "toVerifyProps file must be defined to do the verification";
+                    gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.toVerifyPropFileName = gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.folderName + "../" + conf.getString("toVerifyPropFileName");
+                }
                 if (conf.hasValue("repairScope")) {
                     if (conf.getInt("repairScope") == 1)
                         gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairScope = RepairScopeType.ENCLOSED_TERMS;

@@ -15,7 +15,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import za.ac.sun.cs.green.expr.Operation;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -216,6 +218,13 @@ public class DiscoveryUtil {
         return null;
     }
 
+    public static Node findNode(List<Node> nodes, String node) {
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).id.equals(node)) return nodes.get(i);
+        }
+        System.out.println("problem finding the node to repair!");
+        return null;
+    }
 
     public static RepairNode findRepairNodeDef(List<RepairNode> nodes, String node) {
         for (int i = 0; i < nodes.size(); i++) {
@@ -438,6 +447,12 @@ public class DiscoveryUtil {
         api.execute(file, result, new NullProgressMonitor());
 
         return result;
+    }
+
+    public static String readFile(Path path, Charset encoding)
+            throws IOException {
+        byte[] encoded = Files.readAllBytes(path);
+        return new String(encoded, encoding);
     }
 
 
