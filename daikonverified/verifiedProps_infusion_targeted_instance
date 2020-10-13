@@ -1,0 +1,6 @@
+p1 = (New_Infusion =false) or not(Current_System_Mode =0);
+p1 = (Commanded_Flow_Rate < Current_System_Mode) or not(Current_System_Mode =1);
+p1 = (New_Infusion =false) or not(Current_System_Mode =1);
+total Invariants,ignored invariants,considered invariants,valid invariants,entry invariants#
+76,0,76,3,22
+valid inv position = [44, 52, 57]

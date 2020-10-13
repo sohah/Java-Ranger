@@ -33,8 +33,11 @@ public class VerificationOnly {
                                            Program originalProgram) throws IOException {
         int ignoredInvariants = 0;
         int validINv = 0;
+        int invariantNumber = 0;
+        ArrayList<Integer> validInvPositions = new ArrayList<>();
         for (int i = 0; i < invariants.size(); i++) {
             String inv = invariants.get(i);
+            invariantNumber++;
 
 //            Program invCounterExample = replaceProp(counterExampleQuery.getCounterExamplePgm(), inv);
             String invCounterExampleStr = counterExampleQuery.toString().replaceAll("(?m)^  p1 =.*", "  p1 = " + inv + ";");
@@ -52,8 +55,9 @@ public class VerificationOnly {
 
                     if (counterExResult.getPropertyResult(tnodeSpecPropertyName).getStatus() == Status.VALID) {
                         assert originalProgram.nodes != null && originalProgram.nodes.size() == 1 && originalProgram.nodes.get(0).equations.size() == 1 : "unexpected form for the verification property. Failing.";
-                        appendToFile("../daikonverified/verifiedProps_" + Config.spec, inv);
+                        appendToFile("../daikonverified/verifiedProps_" + Config.spec, "p1 = " + inv + ";");
                         ++validINv;
+                        validInvPositions.add(invariantNumber);
                     }
                 } catch (JKindException e) {
                     System.out.println("invairant: " + inv + " has raised JKIND exception. ignoring invariant.");
@@ -67,6 +71,7 @@ public class VerificationOnly {
         invariantsStats += "\n" + invariants.size() + "," + ignoredInvariants + "," + (invariants.size() - ignoredInvariants) + "," + validINv;
 
         appendToFile("../daikonverified/verifiedProps_" + Config.spec, (invariantsStats));
+        appendToFile("../daikonverified/verifiedProps_" + Config.spec, "valid inv position = " + validInvPositions.toString());
     }
 
     /**

@@ -1,0 +1,127 @@
+Commanded_Flow_Rate =Actual_Infusion_Duration
+Commanded_Flow_Rate =0
+Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6
+Log_Message_ID =0 or Log_Message_ID =1
+Commanded_Flow_Rate <= Current_System_Mode
+Commanded_Flow_Rate <= Log_Message_ID
+Commanded_Flow_Rate =Infusion_Total_Duration
+Commanded_Flow_Rate =VTBI_Total
+Commanded_Flow_Rate =Flow_Rate_Basal
+Commanded_Flow_Rate =Flow_Rate_Intermittent_Bolus
+Commanded_Flow_Rate =Duration_Intermittent_Bolus
+Commanded_Flow_Rate =Interval_Intermittent_Bolus
+Commanded_Flow_Rate =Flow_Rate_Patient_Bolus
+Commanded_Flow_Rate =Duration_Patient_Bolus
+Commanded_Flow_Rate =Lockout_Period_Patient_Bolus
+Commanded_Flow_Rate =Max_Number_of_Patient_Bolus
+Commanded_Flow_Rate =Flow_Rate_KVO
+Commanded_Flow_Rate =Entered_Reservoir_Volume
+Commanded_Flow_Rate =Volume_Infused
+Infusion_Initiate =Patient_Bolus_Request
+Infusion_Inhibit =Reservoir_Empty
+Infusion_Initiate =true
+Configured =0 or Configured =1
+Highest_Level_Alarm =0 or Highest_Level_Alarm =4
+Commanded_Flow_Rate <= Configured
+Commanded_Flow_Rate <= Highest_Level_Alarm
+Current_System_Mode >= Configured
+Log_Message_ID >= Configured
+Log_Message_ID <>Highest_Level_Alarm
+Configured <= Highest_Level_Alarm
+Commanded_Flow_Rate =(0 -> pre Commanded_Flow_Rate)
+Commanded_Flow_Rate =(0 -> pre Actual_Infusion_Duration)
+Commanded_Flow_Rate =(0 -> pre Infusion_Total_Duration)
+Commanded_Flow_Rate =(0 -> pre VTBI_Total)
+Commanded_Flow_Rate =(0 -> pre Flow_Rate_Basal)
+Commanded_Flow_Rate =(0 -> pre Flow_Rate_Intermittent_Bolus)
+Commanded_Flow_Rate =(0 -> pre Duration_Intermittent_Bolus)
+Commanded_Flow_Rate =(0 -> pre Interval_Intermittent_Bolus)
+Commanded_Flow_Rate =(0 -> pre Flow_Rate_Patient_Bolus)
+Commanded_Flow_Rate =(0 -> pre Duration_Patient_Bolus)
+Commanded_Flow_Rate =(0 -> pre Lockout_Period_Patient_Bolus)
+Commanded_Flow_Rate =(0 -> pre Max_Number_of_Patient_Bolus)
+Commanded_Flow_Rate =(0 -> pre Flow_Rate_KVO)
+Commanded_Flow_Rate =(0 -> pre Entered_Reservoir_Volume)
+Commanded_Flow_Rate =(0 -> pre Volume_Infused)
+(Commanded_Flow_Rate =Current_System_Mode) =(Current_System_Mode =0)
+((false -> pre System_On) =false) =(Current_System_Mode =0)
+(Commanded_Flow_Rate =(0 -> pre Configured)) or not(Current_System_Mode =0)
+(Log_Message_ID =(0 -> pre Log_Message_ID)) or not(Current_System_Mode =0)
+(New_Infusion =false) or not(Current_System_Mode =0)
+(New_Infusion =(false -> pre System_On)) or not(Current_System_Mode =0)
+(New_Infusion =(false -> pre New_Infusion)) or not(Current_System_Mode =0)
+((0 -> pre Configured) =0) or not(Current_System_Mode =0)
+((false -> pre Infusion_Cancel) =true) or not(Current_System_Mode =0)
+((false -> pre Infusion_Inhibit) =true) or not(Current_System_Mode =0)
+((false -> pre Infusion_Initiate) =(false -> pre Infusion_Cancel)) or not(Current_System_Mode =0)
+((false -> pre Infusion_Initiate) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =0)
+((0 -> pre Current_System_Mode) =0 or (0 -> pre Current_System_Mode) =1) or not(Current_System_Mode =0)
+((0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =0)
+((false -> pre New_Infusion) =false) or not(Current_System_Mode =0)
+(Current_System_Mode =Log_Message_ID) =(Current_System_Mode =1)
+(Commanded_Flow_Rate < Current_System_Mode) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =(0 -> pre Configured)) or not(Current_System_Mode =1)
+(Current_System_Mode <>(0 -> pre Highest_Level_Alarm)) or not(Current_System_Mode =1)
+(Current_System_Mode > (0 -> pre Configured)) or not(Current_System_Mode =1)
+(Current_System_Mode >= (0 -> pre Log_Message_ID)) or not(Current_System_Mode =1)
+(Log_Message_ID > (0 -> pre Configured)) or not(Current_System_Mode =1)
+(New_Infusion =false) or not(Current_System_Mode =1)
+((0 -> pre Configured) =0) or not(Current_System_Mode =1)
+((false -> pre Infusion_Inhibit) =true) or not(Current_System_Mode =1)
+((false -> pre System_On) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =1)
+((false -> pre System_On) =(false -> pre Infusion_Initiate)) or not(Current_System_Mode =1)
+((false -> pre System_On) =true) or not(Current_System_Mode =1)
+((0 -> pre Current_System_Mode) =0 or (0 -> pre Current_System_Mode) =1 or (0 -> pre Current_System_Mode) =6) or not(Current_System_Mode =1)
+((0 -> pre Log_Message_ID) =0 or (0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =1)
+(Log_Message_ID =(0 -> pre Configured)) =(Current_System_Mode =6)
+(New_Infusion =true) =(Current_System_Mode =6)
+((0 -> pre Configured) =1) =(Current_System_Mode =6)
+((false -> pre Infusion_Inhibit) =false) =(Current_System_Mode =6)
+(Log_Message_ID =(0 -> pre Current_System_Mode)) or not(Current_System_Mode =6)
+(Log_Message_ID =(0 -> pre Log_Message_ID)) or not(Current_System_Mode =6)
+(New_Infusion =(false -> pre Infusion_Initiate)) or not(Current_System_Mode =6)
+(New_Infusion =(false -> pre System_On)) or not(Current_System_Mode =6)
+((0 -> pre Highest_Level_Alarm) =4) or not(Current_System_Mode =6)
+((false -> pre Infusion_Cancel) =false) or not(Current_System_Mode =6)
+((false -> pre System_On) =true) or not(Current_System_Mode =6)
+((0 -> pre Current_System_Mode) =1) or not(Current_System_Mode =6)
+((0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =6)
+((false -> pre New_Infusion) =false) or not(Current_System_Mode =6)
+((false -> pre New_Infusion) =(false -> pre Infusion_Cancel)) or not(Current_System_Mode =6)
+((false -> pre New_Infusion) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =6)
+(Commanded_Flow_Rate =(0 -> pre Configured)) =(Current_System_Mode =0 or Current_System_Mode =1)
+(Current_System_Mode <= Log_Message_ID) =(Current_System_Mode =0 or Current_System_Mode =1)
+(Log_Message_ID > (0 -> pre Configured)) =(Current_System_Mode =0 or Current_System_Mode =1)
+(New_Infusion =false) =(Current_System_Mode =0 or Current_System_Mode =1)
+((0 -> pre Configured) =0) =(Current_System_Mode =0 or Current_System_Mode =1)
+((false -> pre Infusion_Inhibit) =true) =(Current_System_Mode =0 or Current_System_Mode =1)
+((0 -> pre Highest_Level_Alarm) =0 or (0 -> pre Highest_Level_Alarm) =4) or not(Current_System_Mode =0 or Current_System_Mode =1)
+((false -> pre Infusion_Initiate) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =0 or Current_System_Mode =1)
+((0 -> pre Current_System_Mode) =0 or (0 -> pre Current_System_Mode) =1 or (0 -> pre Current_System_Mode) =6) or not(Current_System_Mode =0 or Current_System_Mode =1)
+((0 -> pre Log_Message_ID) =0 or (0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =0 or Current_System_Mode =1)
+(Log_Message_ID =(0 -> pre Log_Message_ID)) or not(Current_System_Mode =0 or Current_System_Mode =6)
+(New_Infusion =(false -> pre System_On)) or not(Current_System_Mode =0 or Current_System_Mode =6)
+((0 -> pre Configured) =0 or (0 -> pre Configured) =1) or not(Current_System_Mode =0 or Current_System_Mode =6)
+((false -> pre Infusion_Inhibit) =(false -> pre Infusion_Cancel)) or not(Current_System_Mode =0 or Current_System_Mode =6)
+((0 -> pre Current_System_Mode) =0 or (0 -> pre Current_System_Mode) =1) or not(Current_System_Mode =0 or Current_System_Mode =6)
+((0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =0 or Current_System_Mode =6)
+((false -> pre New_Infusion) =false) or not(Current_System_Mode =0 or Current_System_Mode =6)
+(Commanded_Flow_Rate < Current_System_Mode) =(Current_System_Mode =1 or Current_System_Mode =6)
+(Current_System_Mode > (0 -> pre Configured)) =(Current_System_Mode =1 or Current_System_Mode =6)
+(Current_System_Mode >= Log_Message_ID) =(Current_System_Mode =1 or Current_System_Mode =6)
+(Current_System_Mode >= (0 -> pre Log_Message_ID)) =(Current_System_Mode =1 or Current_System_Mode =6)
+((false -> pre System_On) =true) =(Current_System_Mode =1 or Current_System_Mode =6)
+(Current_System_Mode <>(0 -> pre Highest_Level_Alarm)) or not(Current_System_Mode =1 or Current_System_Mode =6)
+((0 -> pre Configured) =0 or (0 -> pre Configured) =1) or not(Current_System_Mode =1 or Current_System_Mode =6)
+((false -> pre System_On) =(false -> pre Infusion_Initiate)) or not(Current_System_Mode =1 or Current_System_Mode =6)
+((0 -> pre Current_System_Mode) =0 or (0 -> pre Current_System_Mode) =1 or (0 -> pre Current_System_Mode) =6) or not(Current_System_Mode =1 or Current_System_Mode =6)
+((0 -> pre Log_Message_ID) =0 or (0 -> pre Log_Message_ID) =1) or not(Current_System_Mode =1 or Current_System_Mode =6)
+Log_Message_ID =1
+Commanded_Flow_Rate <= (0 -> pre Current_System_Mode)
+Commanded_Flow_Rate <= (0 -> pre Log_Message_ID)
+Commanded_Flow_Rate <= (0 -> pre Configured)
+Commanded_Flow_Rate <= (0 -> pre Highest_Level_Alarm)
+Current_System_Mode >= (0 -> pre Configured)
+Log_Message_ID >= (0 -> pre Log_Message_ID)
+Log_Message_ID >= (0 -> pre Configured)
+Log_Message_ID <>(0 -> pre Highest_Level_Alarm)

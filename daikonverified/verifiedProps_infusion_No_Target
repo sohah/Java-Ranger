@@ -1,0 +1,5 @@
+p1 = Current_System_Mode >= 0;
+p1 = Log_Message_ID =0 or Log_Message_ID =1;
+total Invariants,ignored invariants,considered invariants,valid invariants
+62,0,62,2
+valid inv position = [40, 41]

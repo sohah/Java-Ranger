@@ -1,6 +1,5 @@
-result_alt_sep_test_s =0 or result_alt_sep_test_s =1 or result_alt_sep_test_s =2
-result_alt_sep_test_s <= alim_res_s
-result_alt_sep_test_s < alim_res_s
-alim_res_s > (0 -> pre result_alt_sep_test_s)
-total Invariants,ignored invariants,considered invariants,valid invariants
-53,0,53,4
+p1 = result_alt_sep_test_s =0 or result_alt_sep_test_s =1 or result_alt_sep_test_s =2;
+p1 = result_alt_sep_test_s < alim_res_s;
+total Invariants,ignored invariants,considered invariants,valid invariants,entry invariants#
+40,0,40,2, 26
+valid inv position = [27, 28]
