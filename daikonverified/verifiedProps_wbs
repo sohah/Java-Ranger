@@ -1,12 +1,17 @@
 p1 = AltPressure_r =Sys_Mode;
-p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not((0 -> pre pedal_r) <= 4);
-p1 = (AltPressure_r < (0 -> pre pedal_r)) or not((0 -> pre pedal_r) =5);
-p1 = (NormalPressure_r >= (0 -> pre pedal_r)) or not((0 -> pre pedal_r) =-1 or (0 -> pre pedal_r) =0);
-p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not((0 -> pre pedal_r) =1 or (0 -> pre pedal_r) =2 or (0 -> pre pedal_r) =3 or (0 -> pre pedal_r) =4 or (0 -> pre pedal_r) =5);
-p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not((false -> pre skid_r) =false);
+p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(pedal_r <= 4);
+p1 = (AltPressure_r < pedal_r) or not(pedal_r =5);
+p1 = (NormalPressure_r < pedal_r) or not(pedal_r =5);
+p1 = (NormalPressure_r =0 or NormalPressure_r =1) or not(pedal_r =5);
+p1 = (NormalPressure_r >= pedal_r) or not(pedal_r =-1 or pedal_r =0);
+p1 = (NormalPressure_r =0 or NormalPressure_r =1) or not(pedal_r =-1 or pedal_r =0);
+p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(pedal_r =1 or pedal_r =2 or pedal_r =3 or pedal_r =4 or pedal_r =5);
+p1 = (NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(skid_r =false);
+p1 = (NormalPressure_r =0) or not(skid_r =true);
+p1 = (NormalPressure_r =AltPressure_r) or not(skid_r =true);
 p1 = NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5;
 p1 = AltPressure_r =0;
 p1 = NormalPressure_r >= AltPressure_r;
-total Invariants,ignored invariants,considered invariants,valid invariants,entry invariants#
-18,0,18,9,1
-valid inv position = [2, 4, 5, 9, 12, 13, 16, 17, 18]
+total Invariants,ignored invariants,considered invariants,valid invariants
+18,0,18,14
+valid inv position = [2, 4, 5, 6, 7, 9, 10, 12, 13, 14, 15, 16, 17, 18]

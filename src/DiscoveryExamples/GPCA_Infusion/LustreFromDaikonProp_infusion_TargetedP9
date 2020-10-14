@@ -1,76 +1,259 @@
 Infusion_Initiate =Patient_Bolus_Request
 Infusion_Inhibit =Reservoir_Empty
-Infusion_Total_Duration =VTBI_Total
-Infusion_Total_Duration =Flow_Rate_Basal
-Infusion_Total_Duration =Flow_Rate_Intermittent_Bolus
-Infusion_Total_Duration =Duration_Intermittent_Bolus
-Infusion_Total_Duration =Interval_Intermittent_Bolus
-Infusion_Total_Duration =Flow_Rate_Patient_Bolus
-Infusion_Total_Duration =Duration_Patient_Bolus
-Infusion_Total_Duration =Lockout_Period_Patient_Bolus
-Infusion_Total_Duration =Max_Number_of_Patient_Bolus
-Infusion_Total_Duration =Flow_Rate_KVO
-Infusion_Total_Duration =Entered_Reservoir_Volume
-Infusion_Total_Duration =Volume_Infused
+Flow_Rate_Basal =Flow_Rate_Intermittent_Bolus
+Flow_Rate_Basal =Duration_Intermittent_Bolus
+Flow_Rate_Basal =Flow_Rate_Patient_Bolus
+Flow_Rate_Basal =Duration_Patient_Bolus
+Flow_Rate_Basal =Lockout_Period_Patient_Bolus
+Flow_Rate_Basal =Entered_Reservoir_Volume
+Flow_Rate_Basal =Volume_Infused
 Infusion_Initiate =true
-Infusion_Total_Duration =0
+Infusion_Total_Duration =0 or Infusion_Total_Duration =2
+VTBI_Total =0 or VTBI_Total =1
+Flow_Rate_Basal =0
+Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1
+Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1
+Flow_Rate_KVO =0 or Flow_Rate_KVO =7
 Configured =0 or Configured =1
-Highest_Level_Alarm =0 or Highest_Level_Alarm =4
-Infusion_Total_Duration <= Configured
-Infusion_Total_Duration <= Highest_Level_Alarm
-Configured <= Highest_Level_Alarm
-Commanded_Flow_Rate =Actual_Infusion_Duration
-Commanded_Flow_Rate =(0 -> pre Infusion_Total_Duration)
-Commanded_Flow_Rate =(0 -> pre VTBI_Total)
-Commanded_Flow_Rate =(0 -> pre Flow_Rate_Basal)
-Commanded_Flow_Rate =(0 -> pre Flow_Rate_Intermittent_Bolus)
-Commanded_Flow_Rate =(0 -> pre Duration_Intermittent_Bolus)
-Commanded_Flow_Rate =(0 -> pre Interval_Intermittent_Bolus)
-Commanded_Flow_Rate =(0 -> pre Flow_Rate_Patient_Bolus)
-Commanded_Flow_Rate =(0 -> pre Duration_Patient_Bolus)
-Commanded_Flow_Rate =(0 -> pre Lockout_Period_Patient_Bolus)
-Commanded_Flow_Rate =(0 -> pre Max_Number_of_Patient_Bolus)
-Commanded_Flow_Rate =(0 -> pre Flow_Rate_KVO)
-Commanded_Flow_Rate =(0 -> pre Entered_Reservoir_Volume)
-Commanded_Flow_Rate =(0 -> pre Volume_Infused)
-((false -> pre System_On) =false) =(Current_System_Mode =0)
-(Commanded_Flow_Rate =Current_System_Mode) =(Current_System_Mode =0)
-((0 -> pre Configured) =0) or not(Current_System_Mode =0)
-((false -> pre Infusion_Cancel) =true) or not(Current_System_Mode =0)
-((false -> pre Infusion_Inhibit) =true) or not(Current_System_Mode =0)
-((false -> pre Infusion_Initiate) =(false -> pre Infusion_Cancel)) or not(Current_System_Mode =0)
-((false -> pre Infusion_Initiate) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =0)
-(Commanded_Flow_Rate =(0 -> pre Configured)) or not(Current_System_Mode =0)
+Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5
+Infusion_Total_Duration >= VTBI_Total
+Infusion_Total_Duration >= Flow_Rate_Basal
+Infusion_Total_Duration >= Max_Number_of_Patient_Bolus
+VTBI_Total >= Flow_Rate_Basal
+VTBI_Total >= Max_Number_of_Patient_Bolus
+VTBI_Total <= Configured
+Flow_Rate_Basal <= Interval_Intermittent_Bolus
+Flow_Rate_Basal <= Max_Number_of_Patient_Bolus
+Flow_Rate_Basal <= Flow_Rate_KVO
+Flow_Rate_Basal <= Configured
+Flow_Rate_Basal <= Highest_Level_Alarm
+Interval_Intermittent_Bolus <= Configured
+Max_Number_of_Patient_Bolus <= Configured
+Commanded_Flow_Rate =Flow_Rate_KVO
+Actual_Infusion_Duration =VTBI_Total
+(Configured >= Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Infusion_Total_Duration >= Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Interval_Intermittent_Bolus >= Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Max_Number_of_Patient_Bolus >= Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Actual_Infusion_Duration >= Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate =Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Log_Message_ID > Highest_Level_Alarm) =(Highest_Level_Alarm =0)
+(Infusion_Total_Duration =0 or Infusion_Total_Duration =2) or not(Highest_Level_Alarm =0)
+(Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1) or not(Highest_Level_Alarm =0)
+(Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1) or not(Highest_Level_Alarm =0)
+(Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate < Log_Message_ID) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate <= Configured) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate <= Infusion_Total_Duration) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate <= Interval_Intermittent_Bolus) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate <= Max_Number_of_Patient_Bolus) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate <= Actual_Infusion_Duration) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate =0) or not(Highest_Level_Alarm =0)
+(Commanded_Flow_Rate =Flow_Rate_Basal) or not(Highest_Level_Alarm =0)
+(Current_System_Mode >= Highest_Level_Alarm) or not(Highest_Level_Alarm =0)
+(Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4) or not(Highest_Level_Alarm =0)
+(Infusion_Total_Duration =0) or not(Highest_Level_Alarm =4)
+(Interval_Intermittent_Bolus =0) or not(Highest_Level_Alarm =4)
+(Max_Number_of_Patient_Bolus =0) or not(Highest_Level_Alarm =4)
+(Actual_Infusion_Duration =0) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =0) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =Flow_Rate_Basal) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =Infusion_Total_Duration) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =Interval_Intermittent_Bolus) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =Max_Number_of_Patient_Bolus) or not(Highest_Level_Alarm =4)
+(Commanded_Flow_Rate =Actual_Infusion_Duration) or not(Highest_Level_Alarm =4)
+(Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6) or not(Highest_Level_Alarm =4)
+(Infusion_Total_Duration =0 or Infusion_Total_Duration =2) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate =0 or Commanded_Flow_Rate =7) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Current_System_Mode >= Highest_Level_Alarm) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =7 or Current_System_Mode =8) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5)
+(Configured < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Flow_Rate_Basal < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Infusion_Total_Duration < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Interval_Intermittent_Bolus < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Max_Number_of_Patient_Bolus < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate <>Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Log_Message_ID < Highest_Level_Alarm) =(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Infusion_Total_Duration <= Configured) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Infusion_Total_Duration =0) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Interval_Intermittent_Bolus =0) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Max_Number_of_Patient_Bolus =0) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =0) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =Flow_Rate_Basal) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =Infusion_Total_Duration) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =Interval_Intermittent_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Actual_Infusion_Duration =Max_Number_of_Patient_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate >= Infusion_Total_Duration) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate >= Interval_Intermittent_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate >= Max_Number_of_Patient_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate >= Actual_Infusion_Duration) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Commanded_Flow_Rate =0 or Commanded_Flow_Rate =7) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Current_System_Mode <>Highest_Level_Alarm) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Log_Message_ID > Infusion_Total_Duration) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Log_Message_ID > Interval_Intermittent_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Log_Message_ID > Max_Number_of_Patient_Bolus) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Log_Message_ID > Actual_Infusion_Duration) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5)
+(Highest_Level_Alarm =0 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate < Log_Message_ID) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Configured) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Highest_Level_Alarm) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Infusion_Total_Duration) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Interval_Intermittent_Bolus) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Max_Number_of_Patient_Bolus) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate <= Actual_Infusion_Duration) =(Commanded_Flow_Rate =0)
+(Commanded_Flow_Rate =Flow_Rate_Basal) =(Commanded_Flow_Rate =0)
+(Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =8) =(Commanded_Flow_Rate =0)
+(Configured =0 or Configured =1) or not(Commanded_Flow_Rate =0)
+(Infusion_Total_Duration =0 or Infusion_Total_Duration =2) or not(Commanded_Flow_Rate =0)
+(Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1) or not(Commanded_Flow_Rate =0)
+(Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1) or not(Commanded_Flow_Rate =0)
+(Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1) or not(Commanded_Flow_Rate =0)
+(Highest_Level_Alarm =3) =(Commanded_Flow_Rate =7)
+(Current_System_Mode =7) =(Commanded_Flow_Rate =7)
+(Configured =1) or not(Commanded_Flow_Rate =7)
+(Infusion_Cancel =false) or not(Commanded_Flow_Rate =7)
+(Infusion_Inhibit =false) or not(Commanded_Flow_Rate =7)
+(Infusion_Inhibit =Infusion_Cancel) or not(Commanded_Flow_Rate =7)
+(Infusion_Total_Duration =0) or not(Commanded_Flow_Rate =7)
+(Interval_Intermittent_Bolus =0) or not(Commanded_Flow_Rate =7)
+(Max_Number_of_Patient_Bolus =0) or not(Commanded_Flow_Rate =7)
+(System_On =true) or not(Commanded_Flow_Rate =7)
+(Actual_Infusion_Duration =0) or not(Commanded_Flow_Rate =7)
+(Actual_Infusion_Duration =Flow_Rate_Basal) or not(Commanded_Flow_Rate =7)
+(Actual_Infusion_Duration =Infusion_Total_Duration) or not(Commanded_Flow_Rate =7)
+(Actual_Infusion_Duration =Interval_Intermittent_Bolus) or not(Commanded_Flow_Rate =7)
+(Actual_Infusion_Duration =Max_Number_of_Patient_Bolus) or not(Commanded_Flow_Rate =7)
+(Commanded_Flow_Rate =Current_System_Mode) or not(Commanded_Flow_Rate =7)
+(Log_Message_ID =Configured) or not(Commanded_Flow_Rate =7)
+(New_Infusion =Infusion_Initiate) or not(Commanded_Flow_Rate =7)
+(New_Infusion =System_On) or not(Commanded_Flow_Rate =7)
+(New_Infusion =true) or not(Commanded_Flow_Rate =7)
+(System_On =false) =(Current_System_Mode =0)
+(Current_System_Mode < Log_Message_ID) =(Current_System_Mode =0)
+(Configured <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Configured =0) or not(Current_System_Mode =0)
+(Highest_Level_Alarm =0 or Highest_Level_Alarm =4) or not(Current_System_Mode =0)
+(Infusion_Cancel =true) or not(Current_System_Mode =0)
+(Infusion_Inhibit =true) or not(Current_System_Mode =0)
+(Infusion_Initiate =Infusion_Cancel) or not(Current_System_Mode =0)
+(Infusion_Initiate =Infusion_Inhibit) or not(Current_System_Mode =0)
+(Infusion_Total_Duration <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Infusion_Total_Duration =0) or not(Current_System_Mode =0)
+(Interval_Intermittent_Bolus <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Interval_Intermittent_Bolus =0) or not(Current_System_Mode =0)
+(Max_Number_of_Patient_Bolus <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Max_Number_of_Patient_Bolus =0) or not(Current_System_Mode =0)
+(Actual_Infusion_Duration <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Actual_Infusion_Duration =0) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate < Log_Message_ID) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =0) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Configured) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Flow_Rate_Basal) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Infusion_Total_Duration) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Interval_Intermittent_Bolus) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Max_Number_of_Patient_Bolus) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Actual_Infusion_Duration) or not(Current_System_Mode =0)
+(Commanded_Flow_Rate =Current_System_Mode) or not(Current_System_Mode =0)
+(Current_System_Mode <= Highest_Level_Alarm) or not(Current_System_Mode =0)
+(Log_Message_ID > Configured) or not(Current_System_Mode =0)
+(Log_Message_ID > Infusion_Total_Duration) or not(Current_System_Mode =0)
+(Log_Message_ID > Interval_Intermittent_Bolus) or not(Current_System_Mode =0)
+(Log_Message_ID > Max_Number_of_Patient_Bolus) or not(Current_System_Mode =0)
+(Log_Message_ID > Actual_Infusion_Duration) or not(Current_System_Mode =0)
 (New_Infusion =false) or not(Current_System_Mode =0)
-(New_Infusion =(false -> pre System_On)) or not(Current_System_Mode =0)
+(New_Infusion =System_On) or not(Current_System_Mode =0)
 (Current_System_Mode =Log_Message_ID) =(Current_System_Mode =1)
-((0 -> pre Configured) =0) or not(Current_System_Mode =1)
-((false -> pre Infusion_Inhibit) =true) or not(Current_System_Mode =1)
-((false -> pre System_On) =(false -> pre Infusion_Inhibit)) or not(Current_System_Mode =1)
-((false -> pre System_On) =(false -> pre Infusion_Initiate)) or not(Current_System_Mode =1)
-((false -> pre System_On) =true) or not(Current_System_Mode =1)
+(Configured <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Configured =0) or not(Current_System_Mode =1)
+(Highest_Level_Alarm =0 or Highest_Level_Alarm =4) or not(Current_System_Mode =1)
+(Infusion_Inhibit =true) or not(Current_System_Mode =1)
+(Infusion_Total_Duration <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Infusion_Total_Duration =0) or not(Current_System_Mode =1)
+(Interval_Intermittent_Bolus <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Interval_Intermittent_Bolus =0) or not(Current_System_Mode =1)
+(Max_Number_of_Patient_Bolus <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Max_Number_of_Patient_Bolus =0) or not(Current_System_Mode =1)
+(System_On =Infusion_Inhibit) or not(Current_System_Mode =1)
+(System_On =Infusion_Initiate) or not(Current_System_Mode =1)
+(System_On =true) or not(Current_System_Mode =1)
+(Actual_Infusion_Duration <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Actual_Infusion_Duration =0) or not(Current_System_Mode =1)
 (Commanded_Flow_Rate < Current_System_Mode) or not(Current_System_Mode =1)
-(Commanded_Flow_Rate =(0 -> pre Configured)) or not(Current_System_Mode =1)
-(Current_System_Mode <>(0 -> pre Highest_Level_Alarm)) or not(Current_System_Mode =1)
-(Current_System_Mode > (0 -> pre Configured)) or not(Current_System_Mode =1)
-(Log_Message_ID > (0 -> pre Configured)) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate < Log_Message_ID) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate <= Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =0) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Configured) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Flow_Rate_Basal) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Infusion_Total_Duration) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Interval_Intermittent_Bolus) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Max_Number_of_Patient_Bolus) or not(Current_System_Mode =1)
+(Commanded_Flow_Rate =Actual_Infusion_Duration) or not(Current_System_Mode =1)
+(Current_System_Mode <>Highest_Level_Alarm) or not(Current_System_Mode =1)
+(Current_System_Mode > Configured) or not(Current_System_Mode =1)
+(Current_System_Mode > Flow_Rate_Basal) or not(Current_System_Mode =1)
+(Current_System_Mode > Infusion_Total_Duration) or not(Current_System_Mode =1)
+(Current_System_Mode > Interval_Intermittent_Bolus) or not(Current_System_Mode =1)
+(Current_System_Mode > Max_Number_of_Patient_Bolus) or not(Current_System_Mode =1)
+(Current_System_Mode > Actual_Infusion_Duration) or not(Current_System_Mode =1)
+(Log_Message_ID > Configured) or not(Current_System_Mode =1)
+(Log_Message_ID > Infusion_Total_Duration) or not(Current_System_Mode =1)
+(Log_Message_ID > Interval_Intermittent_Bolus) or not(Current_System_Mode =1)
+(Log_Message_ID > Max_Number_of_Patient_Bolus) or not(Current_System_Mode =1)
+(Log_Message_ID > Actual_Infusion_Duration) or not(Current_System_Mode =1)
 (New_Infusion =false) or not(Current_System_Mode =1)
-((0 -> pre Configured) =0 or (0 -> pre Configured) =1) or not(Current_System_Mode =0 or Current_System_Mode =6)
-((false -> pre Infusion_Inhibit) =(false -> pre Infusion_Cancel)) or not(Current_System_Mode =0 or Current_System_Mode =6)
-(New_Infusion =(false -> pre System_On)) or not(Current_System_Mode =0 or Current_System_Mode =6)
-((false -> pre System_On) =true) =(Current_System_Mode =1 or Current_System_Mode =6)
-(Commanded_Flow_Rate < Current_System_Mode) =(Current_System_Mode =1 or Current_System_Mode =6)
-(Current_System_Mode > (0 -> pre Configured)) =(Current_System_Mode =1 or Current_System_Mode =6)
-(Current_System_Mode >= Log_Message_ID) =(Current_System_Mode =1 or Current_System_Mode =6)
-((0 -> pre Configured) =0 or (0 -> pre Configured) =1) or not(Current_System_Mode =1 or Current_System_Mode =6)
-((false -> pre System_On) =(false -> pre Infusion_Initiate)) or not(Current_System_Mode =1 or Current_System_Mode =6)
-(Current_System_Mode <>(0 -> pre Highest_Level_Alarm)) or not(Current_System_Mode =1 or Current_System_Mode =6)
-Commanded_Flow_Rate =0
-Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6
+(Current_System_Mode <>Log_Message_ID) =(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Configured =0 or Configured =1) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Infusion_Inhibit =Infusion_Cancel) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Infusion_Total_Duration =0 or Infusion_Total_Duration =2) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Commanded_Flow_Rate =0 or Commanded_Flow_Rate =7) or not(Current_System_Mode =0 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(System_On =true) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Configured) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Flow_Rate_Basal) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Infusion_Total_Duration) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Interval_Intermittent_Bolus) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Max_Number_of_Patient_Bolus) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode > Actual_Infusion_Duration) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode >= Log_Message_ID) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Configured =0 or Configured =1) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Infusion_Total_Duration =0 or Infusion_Total_Duration =2) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Interval_Intermittent_Bolus =0 or Interval_Intermittent_Bolus =1) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Max_Number_of_Patient_Bolus =0 or Max_Number_of_Patient_Bolus =1) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(System_On =Infusion_Initiate) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Commanded_Flow_Rate mod Current_System_Mode =0) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Commanded_Flow_Rate =0 or Commanded_Flow_Rate =7) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+(Current_System_Mode <>Highest_Level_Alarm) or not(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8)
+Commanded_Flow_Rate =0 or Commanded_Flow_Rate =7
+Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8
 Log_Message_ID =1
+Actual_Infusion_Duration =0 or Actual_Infusion_Duration =1
 Commanded_Flow_Rate <= Current_System_Mode
-Commanded_Flow_Rate <= (0 -> pre Configured)
-Commanded_Flow_Rate <= (0 -> pre Highest_Level_Alarm)
-Current_System_Mode >= (0 -> pre Configured)
-Log_Message_ID >= (0 -> pre Configured)
-Log_Message_ID <>(0 -> pre Highest_Level_Alarm)
+Commanded_Flow_Rate <>Log_Message_ID
+Commanded_Flow_Rate >= Flow_Rate_Basal
+Current_System_Mode >= Actual_Infusion_Duration
+Current_System_Mode >= Infusion_Total_Duration
+Current_System_Mode >= Flow_Rate_Basal
+Current_System_Mode >= Interval_Intermittent_Bolus
+Current_System_Mode >= Max_Number_of_Patient_Bolus
+Current_System_Mode >= Configured
+Log_Message_ID >= Actual_Infusion_Duration
+Log_Message_ID <>Infusion_Total_Duration
+Log_Message_ID >= Interval_Intermittent_Bolus
+Log_Message_ID >= Max_Number_of_Patient_Bolus
+Log_Message_ID >= Configured
+Log_Message_ID <>Highest_Level_Alarm
+Actual_Infusion_Duration <= Infusion_Total_Duration
+Actual_Infusion_Duration >= Flow_Rate_Basal
+Actual_Infusion_Duration >= Max_Number_of_Patient_Bolus
+Actual_Infusion_Duration <= Configured

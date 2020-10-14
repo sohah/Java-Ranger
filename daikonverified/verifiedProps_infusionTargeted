@@ -1,0 +1,31 @@
+p1 = (Current_System_Mode >= Highest_Level_Alarm) or not(Highest_Level_Alarm =0);
+p1 = (Commanded_Flow_Rate =0) or not(Highest_Level_Alarm =4);
+p1 = (Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6) or not(Highest_Level_Alarm =4);
+p1 = (Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =7 or Current_System_Mode =8) or not(Highest_Level_Alarm =0 or Highest_Level_Alarm =3 or Highest_Level_Alarm =5);
+p1 = (Current_System_Mode <>Highest_Level_Alarm) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5);
+p1 = (Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8) or not(Highest_Level_Alarm =3 or Highest_Level_Alarm =4 or Highest_Level_Alarm =5);
+p1 = (Infusion_Cancel =false) or not(Commanded_Flow_Rate =7);
+p1 = (System_On =true) or not(Commanded_Flow_Rate =7);
+p1 = (System_On =false) =(Current_System_Mode =0);
+p1 = (Commanded_Flow_Rate <= Highest_Level_Alarm) or not(Current_System_Mode =0);
+p1 = (Commanded_Flow_Rate =0) or not(Current_System_Mode =0);
+p1 = (Commanded_Flow_Rate =Current_System_Mode) or not(Current_System_Mode =0);
+p1 = (Current_System_Mode <= Highest_Level_Alarm) or not(Current_System_Mode =0);
+p1 = (New_Infusion =false) or not(Current_System_Mode =0);
+p1 = (New_Infusion =System_On) or not(Current_System_Mode =0);
+p1 = (System_On =true) or not(Current_System_Mode =1);
+p1 = (Actual_Infusion_Duration <= Highest_Level_Alarm) or not(Current_System_Mode =1);
+p1 = (Actual_Infusion_Duration =0) or not(Current_System_Mode =1);
+p1 = (Commanded_Flow_Rate < Current_System_Mode) or not(Current_System_Mode =1);
+p1 = (Commanded_Flow_Rate < Log_Message_ID) or not(Current_System_Mode =1);
+p1 = (Commanded_Flow_Rate <= Highest_Level_Alarm) or not(Current_System_Mode =1);
+p1 = (Commanded_Flow_Rate =0) or not(Current_System_Mode =1);
+p1 = (Commanded_Flow_Rate =Actual_Infusion_Duration) or not(Current_System_Mode =1);
+p1 = (Current_System_Mode > Actual_Infusion_Duration) or not(Current_System_Mode =1);
+p1 = (Log_Message_ID > Actual_Infusion_Duration) or not(Current_System_Mode =1);
+p1 = (New_Infusion =false) or not(Current_System_Mode =1);
+p1 = (System_On =true) =(Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8);
+p1 = Current_System_Mode =0 or Current_System_Mode =1 or Current_System_Mode =2 or Current_System_Mode =3 or Current_System_Mode =4 or Current_System_Mode =6 or Current_System_Mode =7 or Current_System_Mode =8;
+total Invariants,ignored invariants,considered invariants,valid invariants
+259,0,259,28
+valid inv position = [53, 59, 65, 72, 95, 96, 119, 125, 136, 154, 155, 162, 163, 169, 170, 184, 185, 186, 187, 188, 189, 190, 196, 203, 208, 209, 219, 238]

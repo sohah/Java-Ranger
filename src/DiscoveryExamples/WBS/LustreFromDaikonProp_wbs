@@ -1,8 +1,18 @@
+pedal_r >= -1
 AltPressure_r =Sys_Mode
-NormalPressure_r >= 0
+(pedal_r >= -1) or not(pedal_r <= 4)
+(NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(pedal_r <= 4)
+(AltPressure_r < pedal_r) or not(pedal_r =5)
+(NormalPressure_r < pedal_r) or not(pedal_r =5)
+(NormalPressure_r =0 or NormalPressure_r =1) or not(pedal_r =5)
+(AltPressure_r >= pedal_r) =(pedal_r =-1 or pedal_r =0)
+(NormalPressure_r >= pedal_r) or not(pedal_r =-1 or pedal_r =0)
+(NormalPressure_r =0 or NormalPressure_r =1) or not(pedal_r =-1 or pedal_r =0)
+(AltPressure_r < pedal_r) =(pedal_r =1 or pedal_r =2 or pedal_r =3 or pedal_r =4 or pedal_r =5)
+(NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(pedal_r =1 or pedal_r =2 or pedal_r =3 or pedal_r =4 or pedal_r =5)
+(NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5) or not(skid_r =false)
+(NormalPressure_r =0) or not(skid_r =true)
+(NormalPressure_r =AltPressure_r) or not(skid_r =true)
+NormalPressure_r =0 or NormalPressure_r =1 or NormalPressure_r =2 or NormalPressure_r =3 or NormalPressure_r =5
 AltPressure_r =0
 NormalPressure_r >= AltPressure_r
-pedal_r >= -1
-AltPressure_r =(0 -> pre AltPressure_r)
-AltPressure_r =(0 -> pre Sys_Mode)
-AltPressure_r <= (0 -> pre NormalPressure_r)

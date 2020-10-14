@@ -26,15 +26,15 @@ Other_RAC_s < Other_Capability_s
 Other_RAC_s <= Climb_Inhibit_s
 result_alt_sep_test_s =0 or result_alt_sep_test_s =1 or result_alt_sep_test_s =2
 result_alt_sep_test_s < alim_res_s
-result_alt_sep_test_s <= (0 -> pre Cur_Vertical_Sep_s)
-result_alt_sep_test_s >= (0 -> pre Other_RAC_s)
-alim_res_s <>(0 -> pre Cur_Vertical_Sep_s)
-alim_res_s > (0 -> pre High_Confidence_flag_s)
-alim_res_s > (0 -> pre Two_of_Three_Reports_Valid_flag_s)
-alim_res_s > (0 -> pre Own_Tracked_Alt_s)
-alim_res_s <>(0 -> pre Own_Tracked_Alt_Rate_s)
-alim_res_s > (0 -> pre Other_Tracked_Alt_s)
-alim_res_s > (0 -> pre Alt_Layer_Value_s)
-alim_res_s > (0 -> pre Other_RAC_s)
-alim_res_s > (0 -> pre Other_Capability_s)
-alim_res_s > (0 -> pre Climb_Inhibit_s)
+result_alt_sep_test_s <= Cur_Vertical_Sep_s
+result_alt_sep_test_s >= Other_RAC_s
+alim_res_s <>Cur_Vertical_Sep_s
+alim_res_s > High_Confidence_flag_s
+alim_res_s > Two_of_Three_Reports_Valid_flag_s
+alim_res_s > Own_Tracked_Alt_s
+alim_res_s <>Own_Tracked_Alt_Rate_s
+alim_res_s > Other_Tracked_Alt_s
+alim_res_s > Alt_Layer_Value_s
+alim_res_s > Other_RAC_s
+alim_res_s > Other_Capability_s
+alim_res_s > Climb_Inhibit_s

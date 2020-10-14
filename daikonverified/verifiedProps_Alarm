@@ -1,9 +1,0 @@
-p1 = Current_System_Mode >= 0;
-p1 = (out_Is_Audio_Disabled <= (0 -> pre Config_Timer)) or not(out_Is_Audio_Disabled =0);
-p1 = (out_Is_Audio_Disabled <= (0 -> pre Current_System_Mode)) or not(out_Is_Audio_Disabled =0);
-p1 = (out_Is_Audio_Disabled <= (0 -> pre Max_Idle_Duration)) or not(out_Is_Audio_Disabled =0);
-p1 = (out_Is_Audio_Disabled <= (0 -> pre Max_Paused_Duration)) or not(out_Is_Audio_Disabled =0);
-p1 = (out_Is_Audio_Disabled <= out_Notification_Message) or not(out_Is_Audio_Disabled =0);
-total Invariants,ignored invariants,considered invariants,valid invariants,entry invariants#
-215,0,215,6, 30
-valid inv position = [17, 98, 99, 100, 101, 102]
