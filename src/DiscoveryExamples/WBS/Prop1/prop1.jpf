@@ -33,6 +33,8 @@ repairMutantsOnly = false
 randomSampleMutants=true
 prop=1
 
+mac=false
+
 depthFixed = false
 evaluationMode = true
 #repairScope=2
