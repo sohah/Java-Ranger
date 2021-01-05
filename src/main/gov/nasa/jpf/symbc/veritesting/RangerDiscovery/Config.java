@@ -4,6 +4,8 @@ import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
+import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 import jkind.lustre.Ast;
 import jkind.lustre.BoolExpr;
 import jkind.lustre.IntExpr;
@@ -19,6 +21,7 @@ import java.util.Random;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.processMutants;
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.runMultipleMutations;
 
 public class Config {
     public static String counterExPropertyName = "fail";
@@ -62,11 +65,12 @@ public class Config {
     public static String currFaultySpec;
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
+    public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static String[] faultySpecs;
-    public static int[] repairDepth;
-    public static boolean[] perfectMutantFlags;
+    public static Integer[] repairDepth;
+    public static Boolean[] perfectMutantFlags;
     public static boolean z3Solver = true;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static boolean depthFixed = false;
@@ -110,6 +114,7 @@ public class Config {
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
     public static boolean regressionTestOn = false;
+    public static String toVerifyPropFileName;
 
 
     public static boolean canSetup() throws IOException {
@@ -119,10 +124,13 @@ public class Config {
             allMutationStatistics = new AllMutationStatistics();
             firstTime = false;
             if (mutationEnabled) {
-                tFileName = folderName + currFaultySpec;
-                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+//                tFileName = folderName + currFaultySpec;
+//                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+//                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
+//                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+
+                Pair<Pair<String[], Integer[]>, Boolean[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
+
                 faultySpecs = triple.getFirst().getFirst();
                 repairDepth = triple.getFirst().getSecond();
                 perfectMutantFlags = triple.getSecond();
@@ -168,6 +176,8 @@ public class Config {
         VeritestingListener.simplify = false; //forcing simplification to be false for now
         return true;
     }
+
+
 
     /**
      * used to divide the maxMutants used for the expirement among the benchmarks. The division is dependent on the number of mutants that can be generated for each property, and it is precomputed. Alarm = 22%, Infusion = 58%, TCAS = 9% and WBS = 10%. These percentages are also divided by properties for every benchmark where

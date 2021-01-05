@@ -166,7 +166,10 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(RepairExpr e) {
-        shouldApplyMutation.justDidMutation = false; return e;
+        shouldApplyMutation.justDidMutation = false;
+       /* Expr innerMutation = e.origExpr.accept(this);
+        return nestedRepairs(innerMutation)? new RealExpr(unwrapRepair(innerMutation), e.repairNode) : new RepairExpr(innerMutation, e.repairNode);*/
+        return e;
     }
 
     @Override
