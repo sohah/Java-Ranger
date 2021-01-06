@@ -102,8 +102,8 @@ public class ProcessMutants {
         }
 
         List<RepairNode> repairNodes = new ArrayList<>();
-        assert pgm.repairNodes.size() == 0; //no repair nodes should exist at that point
-        assert mutationResult.repairNodes != null && mutationResult.repairNodes.size() == 1; // repair nodes definitions cannot be null and must exist
+//        assert pgm.repairNodes.size() == 0; //no repair nodes should exist at that point
+        assert mutationResult.repairNodes != null;// && mutationResult.repairNodes.size() == 1; // repair nodes definitions cannot be null and must exist
         repairNodes.add(mutationResult.repairNodes.get(0).nodeDefinition);
         return new Program(pgm.location, pgm.types, pgm.constants, pgm.functions, newNodes, repairNodes, pgm.main);
     }

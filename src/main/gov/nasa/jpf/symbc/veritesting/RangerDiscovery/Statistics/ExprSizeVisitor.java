@@ -134,10 +134,15 @@ public class ExprSizeVisitor implements ExprVisitor<Integer> {
         return null;
     }
 
+    /**
+     * This visit allows us to visit repair expression but not count it as a size instead we count whatever is inside
+     * @param e
+     * @return
+     */
     @Override
     public Integer visit(RepairExpr e) {
-        assert false;
-        return null;
+//        assert false;
+        return e.origExpr.accept(this);
     }
 
     @Override

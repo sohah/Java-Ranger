@@ -12,11 +12,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.repairMutantsOnly;
 import static jkind.lustre.BinaryOp.*;
 
 public class MutationUtils {
+
+    //enforces uniqueness in the generated mutants.
+    public static HashSet<Integer> uniqueMutationSet = new HashSet<>();
 
     private static BinaryOp[] getMutationOps(final BinaryOp origOp, final BinaryOp[] allOps) {
         BinaryOp[] retOps = new BinaryOp[allOps.length - 1];
@@ -100,7 +104,12 @@ public class MutationUtils {
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for(MutationType mutationType: mutationTypes) {
-            mutationResults.addAll(applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager));
+            ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager);
+            for(MutationResult result: mutationsForTypes)
+                if(!uniqueMutationSet.contains(result.mutatedExpr.toString().hashCode())){
+                    uniqueMutationSet.add(result.mutatedExpr.toString().hashCode());
+                    mutationResults.add(result);
+            }
         }
         System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
@@ -158,9 +167,13 @@ public class MutationUtils {
                         writeUsingFileWriter(mutatedExpr.toString(), mutationDirectory
                                 + "/mutatedSpec-" + mutationTypeToString(mutationType) + "-"
                                 + repairMutationIndex + "-" + mutationIndex);
-                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType,
+                    // only add the mutation if it is unique/different from previously generated ones
+//                    if(!uniqueMutationSet.contains(mutatedExpr.toString().hashCode())){
+//                        uniqueMutationSet.add(mutatedExpr.toString().hashCode());
+                        ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType,
                             shouldApplyMutation.repairNodes, shouldApplyMutation.repairDepth,
                             shouldApplyMutation.isPerfect, shouldApplyMutation.isSmallestWrapper));
+//                    }
                 }
             }
         }

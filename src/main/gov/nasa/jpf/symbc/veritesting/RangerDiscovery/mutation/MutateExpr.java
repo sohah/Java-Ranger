@@ -1,8 +1,5 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import jkind.lustre.*;
 import jkind.lustre.visitors.ExprVisitor;
 
@@ -16,6 +13,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     private final MutationType mutationType;
     private final ShouldApplyMutation shouldApplyMutation;
+    static boolean inRepairContext = false;
 
     MutateExpr(MutationType mutationType,
                ShouldApplyMutation shouldApplyMutation) {
@@ -164,12 +162,34 @@ public class MutateExpr implements ExprVisitor<Expr> {
         return new NodeCallExpr(e.node, args);
     }
 
+    /**
+     * This is used to handle the case where we have multiple repair expressions that we are about to visit to mutation.
+     * Since mutation does not make sense on a repair expression, we just want to do the mutation on the repair experession
+     * and we are only interested in keeping the top level repair expression. We therefore keep a inRepairContext to know if
+     * we are somewhere in the subtree of a repair expression and also to run the mutation over the expression without
+     * any repair sub-expression. We unwrap the expression from any internal repair expression using the NestedRepairsVisitor.
+     * @param e
+     * @return
+     */
+
     @Override
     public Expr visit(RepairExpr e) {
+        boolean oldRepairContext = inRepairContext;
+        inRepairContext = true;
         shouldApplyMutation.justDidMutation = false;
-       /* Expr innerMutation = e.origExpr.accept(this);
-        return nestedRepairs(innerMutation)? new RealExpr(unwrapRepair(innerMutation), e.repairNode) : new RepairExpr(innerMutation, e.repairNode);*/
-        return e;
+        Expr innerMutation = e.origExpr.accept(this);
+        inRepairContext = oldRepairContext;
+
+        //this is to handle the repair wrapping that resulted from the wrapping in ShouldApplyMutation
+        NestedRepairsVisitor nestedRepairsVisitor = new NestedRepairsVisitor();
+        Expr unwrapRepair = innerMutation.accept(nestedRepairsVisitor);
+
+        if(inRepairContext)
+            return innerMutation;
+        else if(nestedRepairsVisitor.hasNestedRepairs)
+            return new RepairExpr(unwrapRepair, e.repairNode);
+        else return  new RepairExpr(innerMutation, e.repairNode);
+//      return e;
     }
 
     @Override
