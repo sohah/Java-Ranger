@@ -9,6 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShouldApplyMutation {
+
+    public List<GenericRepairNode> repairNodes = new ArrayList<>();
+    public int repairDepth;
+    boolean justDidMutation = false;
+    public boolean isPerfect = false;
+    public boolean isSmallestWrapper = false;
+    private int mutationIndex;
+    private int repairMutationIndex;
+    private final int prevMutationIndex, prevRepairMutationIndex;
+    final SpecInOutManager tInOutManager;
+    final List<VarDecl> inputs;
+    final List<VarDecl> outputs;
+
+
     public ShouldApplyMutation(int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
         this.prevMutationIndex = prevMutationIndex;
         this.prevRepairMutationIndex = prevRepairMutationIndex;
@@ -27,17 +41,6 @@ public class ShouldApplyMutation {
         return incAndGetRepairMutationIndex() == prevRepairMutationIndex + 1;
     }
 
-    public List<GenericRepairNode> repairNodes = new ArrayList<>();
-    public int repairDepth;
-    boolean justDidMutation = false;
-    public boolean isPerfect = false;
-    public boolean isSmallestWrapper = false;
-    private int mutationIndex;
-    private int repairMutationIndex;
-    private final int prevMutationIndex, prevRepairMutationIndex;
-    final SpecInOutManager tInOutManager;
-    final List<VarDecl> inputs;
-    final List<VarDecl> outputs;
 
     /**
      * This method is used to wrap the repair expression, then we later do a mutation of its internal/original expression.

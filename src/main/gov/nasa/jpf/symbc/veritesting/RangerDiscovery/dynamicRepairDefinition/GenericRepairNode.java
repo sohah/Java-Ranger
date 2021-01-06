@@ -13,7 +13,8 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.
 
 public class GenericRepairNode {
 
-    final String name = Config.genericRepairNodeName;
+    private static int uniqueId = 0;
+    final String name = Config.genericRepairNodeName + "_" + uniqueId++;
     final List<VarDecl> actualParamVarDecls;
     public final RepairNode nodeDefinition;
     public final NodeCallExpr callExpr;

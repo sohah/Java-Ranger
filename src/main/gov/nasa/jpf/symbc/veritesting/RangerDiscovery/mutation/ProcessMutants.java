@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.OperationMode;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
@@ -34,7 +35,7 @@ public class ProcessMutants {
                 String currFaultySpec = queueOfSpecs.poll();
                 String tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations+1);
                 Pair<Pair<List<String>, List<Integer>>, List<Boolean>> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
 
                 if (numOfFinishedMutations < numOfMutations) // if we have not finished all mutations yet, then put it back for further processing
@@ -47,6 +48,7 @@ public class ProcessMutants {
             }
         }
         assert (mutatedSpecs.size() == repairDepths.size() && repairDepths.size() == perfectMutantFlags.size()) : "unexpected non match for sizes for mutations. Failing";
+        System.out.println("total number of mutants = " + mutatedSpecs.size());
         return new Pair<Pair<String[], Integer[]>, Boolean[]>(new Pair<String[], Integer[]>(mutatedSpecs.toArray(new String[0]), repairDepths.toArray(new Integer[0])), perfectMutantFlags.toArray(new Boolean[0]));
     }
 
@@ -56,7 +58,7 @@ public class ProcessMutants {
         List<Integer> repairDepths = new ArrayList<>();
         List<Boolean> perfectMutantFlags = new ArrayList<>();
         HashSet<Integer> generatedMutantsHash = new HashSet();
-        assert mutationResults.size() > 0; //there must be mutants to be processed to call this method.
+        assert mutationResults.size() > 0 || Config.numOfMutations > 1; //there must be mutants to be processed to call this method.
         /*String[] mutatedSpecs = new String[mutationResults.size()];
         int[] repairDepths = new int[mutationResults.size()];
         boolean[] perfectMutantFlags = new boolean[mutationResults.size()];
@@ -67,7 +69,11 @@ public class ProcessMutants {
             MutationResult mutationResult = mutationResults.get(mutationIndex);
             Program newProgram = updateMainPropertyExpr(inputExtendedPgm, mutationResult);
             int newPgmHash = newProgram.toString().hashCode();
-            if (!generatedMutantsHash.contains(newPgmHash)) { // a new unique mutant
+            /* we are only writing mutations that are unique, and also has gone through the number of mutations that we
+            desire except in the none-evaluation phase, that is if we are in the evaluation phase we want to be processing oly
+                    the mutants who has the same number of mutations configured for the run.*/
+            if (!generatedMutantsHash.contains(newPgmHash) && (!Config.evaluationMode ||
+                    mutationResult.mutationsOccured == Config.numOfMutations)) { // a new unique mutant
                 assert (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) : "wrong setup for configuration";
                 generatedMutantsHash.add(newPgmHash);
                 String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
@@ -81,7 +87,7 @@ public class ProcessMutants {
             ++mutationIndex;
         }
 
-        System.out.println("number of mutants generated after checksum are: " + mutatedSpecs.size());
+//        System.out.println("number of mutants generated after checksum are: " + mutatedSpecs.size());
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
         return new Pair<Pair<List<String>, List<Integer>>, List<Boolean>>(new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths), perfectMutantFlags);
     }
@@ -105,6 +111,7 @@ public class ProcessMutants {
 //        assert pgm.repairNodes.size() == 0; //no repair nodes should exist at that point
         assert mutationResult.repairNodes != null;// && mutationResult.repairNodes.size() == 1; // repair nodes definitions cannot be null and must exist
         repairNodes.add(mutationResult.repairNodes.get(0).nodeDefinition);
+        repairNodes.addAll(pgm.repairNodes);
         return new Program(pgm.location, pgm.types, pgm.constants, pgm.functions, newNodes, repairNodes, pgm.main);
     }
 

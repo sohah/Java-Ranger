@@ -19,6 +19,7 @@ import java.util.List;
 public class DynamicRepairNode {
 
     private final String id;
+    private static int uniqueCount = 0;
     private final List<VarDecl> boolInputs = new ArrayList<>();
     private final List<VarDecl> intInputs = new ArrayList<>();
     private int holesCounter;

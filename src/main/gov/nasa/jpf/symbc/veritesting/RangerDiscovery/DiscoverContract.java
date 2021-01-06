@@ -73,8 +73,13 @@ public class DiscoverContract {
     public static final void discoverLusterContract(DynamicRegion dynRegion) {
         DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
+        int mutantsNum = 0;
         try {
             while (!specAlreadyMatching && Config.canSetup()) {
+                if(mutantsNum == 1 && !Config.mutationEnabled){
+                    System.out.println("finished repairing attempts.");
+                    return;
+                }
 
                 System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
                 resetState();
@@ -83,6 +88,7 @@ public class DiscoverContract {
                     try {
                         executionTime = System.currentTimeMillis();
                         repairSpec();
+                        ++mutantsNum;
                     } catch (JKindException jkindExp) {
                         System.out.println("jkind exception encountered aborting specification" + jkindExp);
                         repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;

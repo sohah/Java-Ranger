@@ -12,11 +12,13 @@ public class MutationResult {
     final MutationType mutationType;
     final List<GenericRepairNode> repairNodes;
     final int repairDepth;
-    final boolean isPerfect;
-    final boolean isSmallestWrapper;
+    boolean isPerfect;
+    boolean isSmallestWrapper;
+    // is the number of mutations that that mutant had gone through.
+    int mutationsOccured;
 
 
-    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect, boolean isSmallestWrapper) {
+    public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect, boolean isSmallestWrapper, int mutationOccured) {
         this.mutatedExpr = mutatedExpr;
         this.mutationIndex = mutationIndex;
         this.mutationType = mutationType;
@@ -27,5 +29,6 @@ public class MutationResult {
         this.repairDepth = repairDepth;
         this.isPerfect = isPerfect;
         this.isSmallestWrapper = isSmallestWrapper;
+        this.mutationsOccured = mutationOccured;
     }
 }

@@ -24,7 +24,7 @@ public class MutationUtils {
 
     private static BinaryOp[] getMutationOps(final BinaryOp origOp, final BinaryOp[] allOps) {
         BinaryOp[] retOps = new BinaryOp[allOps.length - 1];
-        for(int i = 0, j = 0; i < allOps.length; i++) {
+        for (int i = 0, j = 0; i < allOps.length; i++) {
             if (allOps[i] != origOp) {
                 retOps[j++] = allOps[i];
             }
@@ -74,9 +74,9 @@ public class MutationUtils {
 
     public static ArrayList<MutationResult> createSpecMutants(final Program originalProgram,
                                                               final String mutationDirectory,
-                                                              SpecInOutManager tInOutManager) {
+                                                              SpecInOutManager tInOutManager, int mutationOccured) {
         Node mainNode = null;
-        for (Node n: originalProgram.nodes) {
+        for (Node n : originalProgram.nodes) {
             if (n.id.equals("main")) {
                 mainNode = n;
             }
@@ -86,7 +86,7 @@ public class MutationUtils {
             return null;
         }
         File directory = new File(mutationDirectory);
-        if (! directory.exists()){
+        if (!directory.exists()) {
             if (!directory.mkdir()) {
                 throw new UnsupportedOperationException("Failed to create the mutants directory");
             }
@@ -98,21 +98,35 @@ public class MutationUtils {
 
         MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
 //                MutationType.OPERAND_REPLACEMENT_MUT, //Soha turning this one off for now
-                MutationType.LOGICAL_OP_REPLACEMENT, MutationType.RELATIONAL_OP_REPLACEMENT,
+                MutationType.LOGICAL_OP_REPLACEMENT,
+//                MutationType.RELATIONAL_OP_REPLACEMENT,
                 MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
-                } :
+        } :
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
-        for(MutationType mutationType: mutationTypes) {
-            ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager);
-            for(MutationResult result: mutationsForTypes)
-                if(!uniqueMutationSet.contains(result.mutatedExpr.toString().hashCode())){
-                    uniqueMutationSet.add(result.mutatedExpr.toString().hashCode());
+        for (MutationType mutationType : mutationTypes) {
+            ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager, mutationOccured);
+            for (MutationResult result : mutationsForTypes) {
+                String sanitizedExpr = sanitizeExpr(result.mutatedExpr.toString());
+                if (!uniqueMutationSet.contains(sanitizedExpr.hashCode())) {
+                    uniqueMutationSet.add(sanitizedExpr.hashCode());
                     mutationResults.add(result);
+                }
             }
         }
-        System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
+//        System.out.println("wrote " + mutationResults.size() + " mutants into the " + mutationDirectory + " folder");
         return mutationResults;
+    }
+
+    /**
+     * This method removes the id number for each repair node from a string, so that we can check uniqueness among
+     * different mutations that are effectively repairing the same thing, but their nodes have been generated with a different
+     * number during mutation generation, semantically they are the same and they should be ignored.
+     * @param s
+     * @return
+     */
+    private static String sanitizeExpr(String s) {
+        return s.replaceAll("repairNode_\\d+", "repairNode");
     }
 
     private static Expr mutateORO(ShouldApplyMutation shouldApplyMutation, Expr e) {
@@ -125,7 +139,7 @@ public class MutationUtils {
         ArrayList<Expr> constExprs = constExprVisitor.getConstExprs();
         OROMutationVisitor oroVisitor = new OROMutationVisitor(shouldApplyMutation, idExprs, constExprs, idExprVisitor.getTypes());
         Expr newExpr = e.accept(oroVisitor);
-        shouldApplyMutation.justDidMutation = oroVisitor.checkImmediateOROMutation( e, newExpr);
+        shouldApplyMutation.justDidMutation = oroVisitor.checkImmediateOROMutation(e, newExpr);
         return newExpr;
         /*if (newExpr instanceof BinaryExpr)
             return new BinaryExpr(((BinaryExpr) newExpr).left.accept(this),
@@ -138,7 +152,7 @@ public class MutationUtils {
     private static ArrayList<MutationResult> applyMutation(final Program originalProgram,
                                                            final MutationType mutationType,
                                                            String mutationDirectory,
-                                                           SpecInOutManager tInOutManager) {
+                                                           SpecInOutManager tInOutManager, int mutationOccured) {
         int mutationIndex = -1, repairMutationIndex = -1;
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
@@ -170,9 +184,9 @@ public class MutationUtils {
                     // only add the mutation if it is unique/different from previously generated ones
 //                    if(!uniqueMutationSet.contains(mutatedExpr.toString().hashCode())){
 //                        uniqueMutationSet.add(mutatedExpr.toString().hashCode());
-                        ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType,
+                    ret.add(new MutationResult(mutatedExpr, repairMutationIndex, mutationIndex, mutationType,
                             shouldApplyMutation.repairNodes, shouldApplyMutation.repairDepth,
-                            shouldApplyMutation.isPerfect, shouldApplyMutation.isSmallestWrapper));
+                            shouldApplyMutation.isPerfect, shouldApplyMutation.isSmallestWrapper, mutationOccured));
 //                    }
                 }
             }
@@ -204,6 +218,7 @@ public class MutationUtils {
 
     /**
      * Use FileWriter when number of write operations are less
+     *
      * @param data
      */
     private static void writeUsingFileWriter(final String data, final String fileName) {
@@ -214,7 +229,7 @@ public class MutationUtils {
             fr.write(data);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             //close resources
             try {
                 fr.close();
@@ -223,7 +238,6 @@ public class MutationUtils {
             }
         }
     }
-
 
 
 }

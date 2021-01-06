@@ -230,6 +230,7 @@ public class MinimalRepairDriver {
 
                     // minimal repair was found.
                     tighterRepairFound = true;
+                    canFindMoreTighterRepair = true;
                     break;
                 } else {
                     System.out.println("encountering the same repair, aborting.");
@@ -240,6 +241,7 @@ public class MinimalRepairDriver {
             case INVALID:
                 tPrimeExistsQ.collectCounterExample(counterExampleResult, tPrimeExistsQ.getSynthesizedProgram().getMainNode());
                 ++candidateLoopCount;
+                canFindMoreTighterRepair=true;
                 break;
             default:
                 System.out.println("^-^ Ranger Discovery Result ^-^");
