@@ -13,7 +13,7 @@ public class MutateExpr implements ExprVisitor<Expr> {
 
     private final MutationType mutationType;
     private final ShouldApplyMutation shouldApplyMutation;
-    static boolean inRepairContext = false;
+    private static boolean inRepairContext = false;
 
     MutateExpr(MutationType mutationType,
                ShouldApplyMutation shouldApplyMutation) {

@@ -99,12 +99,13 @@ public class MutationUtils {
         MutationType[] mutationTypes = !repairMutantsOnly ? new MutationType[]{
 //                MutationType.OPERAND_REPLACEMENT_MUT, //Soha turning this one off for now
                 MutationType.LOGICAL_OP_REPLACEMENT,
-//                MutationType.RELATIONAL_OP_REPLACEMENT,
+                MutationType.RELATIONAL_OP_REPLACEMENT,
                 MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
         } :
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for (MutationType mutationType : mutationTypes) {
+            //main place where muation is going to happen
             ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager, mutationOccured);
             for (MutationResult result : mutationsForTypes) {
                 String sanitizedExpr = sanitizeExpr(result.mutatedExpr.toString());

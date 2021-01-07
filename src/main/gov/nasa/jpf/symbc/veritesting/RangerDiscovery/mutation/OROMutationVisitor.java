@@ -39,6 +39,9 @@ public class OROMutationVisitor implements ExprVisitor<Expr> {
     private final ArrayList<Expr> constExprs;
     private final HashMap<String, NamedType> types;
     private final ShouldApplyMutation shouldApplyMutation;
+
+    private static boolean inRepairContext = false;
+
     public OROMutationVisitor(ShouldApplyMutation shouldApplyMutation, ArrayList<IdExpr> idExprs,
                               ArrayList<Expr> constExprs, HashMap<String, NamedType> types) {
         this.idExprs = idExprs;
@@ -177,8 +180,21 @@ public class OROMutationVisitor implements ExprVisitor<Expr> {
 
     @Override
     public Expr visit(RepairExpr e) {
+        boolean oldRepairContext = inRepairContext;
+        inRepairContext = true;
         shouldApplyMutation.justDidMutation = false;
-        return e;
+        Expr innerMutation = e.origExpr.accept(this);
+        inRepairContext = oldRepairContext;
+
+        //this is to handle the repair wrapping that resulted from the wrapping in ShouldApplyMutation
+        NestedRepairsVisitor nestedRepairsVisitor = new NestedRepairsVisitor();
+        Expr unwrapRepair = innerMutation.accept(nestedRepairsVisitor);
+
+        if(inRepairContext)
+            return innerMutation;
+        else if(nestedRepairsVisitor.hasNestedRepairs)
+            return new RepairExpr(unwrapRepair, e.repairNode);
+        else return  new RepairExpr(innerMutation, e.repairNode);
     }
 
     @Override
