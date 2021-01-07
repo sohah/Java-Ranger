@@ -153,8 +153,7 @@ public class IsPerfectRepairVisitor implements ExprVisitor<Boolean> {
 
     public static boolean execute(Expr origProp, Expr mutatedProp){
         IsPerfectRepairVisitor isPerfectRepairVisitor = new IsPerfectRepairVisitor(origProp);
-        mutatedProp.accept(isPerfectRepairVisitor);
-        return isPerfectRepairVisitor.result;
+        return mutatedProp.accept(isPerfectRepairVisitor);
     }
 
 }
