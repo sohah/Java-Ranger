@@ -159,6 +159,9 @@ public class DiscoverContract {
             inputExtendedPgm = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
                     "UTF-8"));
 
+            //getting the property - for the expirement it is the mutated property, later we'll be comparing this prop with the Config.origProp, to identify if the repair wrapping was placed
+            // around the mutated part or not, in the former case there is a guarantee of finding a repair.
+            Config.mutatedProp = inputExtendedPgm.getMainNode().equations.get(0).expr;
 
             originalNodeKey = defineNodeKeys(inputExtendedPgm);
 
@@ -174,6 +177,8 @@ public class DiscoverContract {
         } else {
             originalProgram = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)),
                     "UTF-8"));
+
+            Config.mutatedProp = inputExtendedPgm.getMainNode().equations.get(0).expr;
 
             originalNodeKey = defineNodeKeys(originalProgram);
 

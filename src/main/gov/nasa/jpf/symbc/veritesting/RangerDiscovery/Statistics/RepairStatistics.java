@@ -87,7 +87,7 @@ public class RepairStatistics {
         out.print("avgForallTime,     ");
         out.println();
         out.print(Config.currFaultySpec + ",     ");
-        out.print(Config.isCurrMutantPerfect() + ",     ");
+        out.print(Config.mutationEnabled? Config.isCurrMutantPerfect() + ",     " : "N/A");
         out.print(Config.repairNodeDepth + ",     ");
         out.print(terminationResult.name() + ",     ");
         out.print(lastQueryType.name() + ",     ");

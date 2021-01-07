@@ -2,25 +2,17 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.IsPerfectRepairVisitor;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
-import jkind.lustre.Ast;
-import jkind.lustre.BoolExpr;
-import jkind.lustre.IntExpr;
-import jkind.lustre.Program;
+import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Random;
 
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
-import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.processMutants;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.runMultipleMutations;
 
 public class Config {
@@ -115,6 +107,9 @@ public class Config {
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
     public static boolean regressionTestOn = false;
     public static String toVerifyPropFileName;
+    public static Expr origProp; // the original property before mutation.
+    public static Expr mutatedProp; // the mutated property that we are going to try to repair, this changes with every run of repair
+
 
 
     public static boolean canSetup() throws IOException {
@@ -122,8 +117,12 @@ public class Config {
         if (firstTime) {
             DiscoverContract.contract = new Contract();
             allMutationStatistics = new AllMutationStatistics();
-            firstTime = false;
+
             if (mutationEnabled) {
+                firstTime = false;
+                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName + currFaultySpec)), "UTF-8"));
+                Config.origProp = origSpec.getMainNode().equations.get(0).expr;
+
 //                tFileName = folderName + currFaultySpec;
 //                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
 //                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
@@ -307,13 +306,7 @@ public class Config {
     }
 
     public static boolean isCurrMutantPerfect() {
-        /*if (randomSample)
-            if (perfectMutantFlags[faultySpecIndex])
-                return true;
-            else return false;
-        else if (perfectMutantFlags[faultySpecIndex - 1])
-            return true;
-        else return false;*/
-        return false;
+
+        return IsPerfectRepairVisitor.execute(origProp, mutatedProp);
     }
 }
