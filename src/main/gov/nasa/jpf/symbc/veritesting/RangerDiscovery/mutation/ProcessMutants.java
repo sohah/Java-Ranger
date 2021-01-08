@@ -34,8 +34,8 @@ public class ProcessMutants {
                 String currFaultySpec = queueOfSpecs.poll();
                 String tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations+1);
-                Pair<List<String>, List<Integer>> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations + 1);
+                Pair<List<String>, List<Integer>> triple = processMutants(numOfFinishedMutations, numOfMutations, mutationResults, origSpec, currFaultySpec, operationMode);
 
                 if (numOfFinishedMutations < numOfMutations) // if we have not finished all mutations yet, then put it back for further processing
                     queueOfSpecs.addAll(triple.getFirst());
@@ -51,7 +51,7 @@ public class ProcessMutants {
     }
 
 
-    public static Pair<List<String>, List<Integer>> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
+    public static Pair<List<String>, List<Integer>> processMutants(int numOfFinishedMutations, int numOfMutations, ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
         List<String> mutatedSpecs = new ArrayList<>();
         List<Integer> repairDepths = new ArrayList<>();
         List<Boolean> perfectMutantFlags = new ArrayList<>();
@@ -80,9 +80,11 @@ public class ProcessMutants {
                 mutatedSpecs.add(specFileName);
                 repairDepths.add(mutationResult.repairDepth);
 //                perfectMutantFlags.add(mutationResult.isPerfect); //obsolute now, computed now with the later statement
-                if(IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
-                    Config.perfectMutants.add(specFileName);
-                else Config.nonPerfectMutants.add(specFileName);
+
+                if (numOfFinishedMutations >= numOfMutations)
+                    if (IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
+                        Config.perfectMutants.add(specFileName);
+                    else Config.nonPerfectMutants.add(specFileName);
 
             } else {
                 System.out.println("find a repetative hashcode for:" + currFaultySpec + mutationResult.mutationIdentifier);

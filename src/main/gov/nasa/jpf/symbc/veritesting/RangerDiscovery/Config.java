@@ -162,12 +162,16 @@ public class Config {
 
         if (!randomSample) ++faultySpecIndex;
         else {
+            int randValue = 0;
+            String randSpec;
             if(samplesSoFar < maxRandForProp/2){
-                String randSpec = perfectMutants.get(new Random().nextInt(perfectMutants.size()));
+                randValue = new Random().nextInt(perfectMutants.size());
+                randSpec = perfectMutants.get(randValue);
 
                 faultySpecIndex = faultySpecs.indexOf(randSpec);
             } else {
-                String randSpec = nonPerfectMutants.get(new Random().nextInt(nonPerfectMutants.size()));
+                randValue = new Random().nextInt(nonPerfectMutants.size());
+                randSpec = nonPerfectMutants.get(randValue);
 
                 faultySpecIndex = faultySpecs.indexOf(randSpec);
             }
