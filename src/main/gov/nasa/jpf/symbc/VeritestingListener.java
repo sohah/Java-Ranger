@@ -234,7 +234,7 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
                         } //
                     else // a bunch of already mutated specs are expected.
                         if (conf.hasValue("faultySpec")) {
-                            gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.faultySpecs = conf.getStringArray("faultySpec");
+                            gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.faultySpecs = (Arrays.asList(conf.getStringArray("faultySpec")));
                         } else {
                             System.out.println("A faulty spec must be supplied. Aborting");
                             assert false;

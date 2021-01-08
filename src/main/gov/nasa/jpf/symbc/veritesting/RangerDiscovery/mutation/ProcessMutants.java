@@ -18,11 +18,10 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUt
 public class ProcessMutants {
 
 
-    public static Pair<Pair<String[], Integer[]>, Boolean[]> runMultipleMutations(int numOfMutations, String folderName, String initialSpec, OperationMode operationMode, String mutationDir) throws IOException {
+    public static Pair<List<String>, Integer[]> runMultipleMutations(int numOfMutations, String folderName, String initialSpec, OperationMode operationMode, String mutationDir) throws IOException {
         assert numOfMutations >= 1 : "number of multiple mutations must be set.";
         List<String> mutatedSpecs = new ArrayList<>();
         List<Integer> repairDepths = new ArrayList<>();
-        List<Boolean> perfectMutantFlags = new ArrayList<>();
         Queue<String> queueOfSpecs = new LinkedList<>(); // holds the specs we want to mutate, the mutation of this spec must be >=0 && < numOfMutations.
         queueOfSpecs.offer(initialSpec);
 
@@ -36,24 +35,23 @@ public class ProcessMutants {
                 String tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations+1);
-                Pair<Pair<List<String>, List<Integer>>, List<Boolean>> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+                Pair<List<String>, List<Integer>> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
 
                 if (numOfFinishedMutations < numOfMutations) // if we have not finished all mutations yet, then put it back for further processing
-                    queueOfSpecs.addAll(triple.getFirst().getFirst());
+                    queueOfSpecs.addAll(triple.getFirst());
                 else {
-                    mutatedSpecs.addAll(triple.getFirst().getFirst());
-                    repairDepths.addAll(triple.getFirst().getSecond());
-                    perfectMutantFlags.addAll(triple.getSecond());
+                    mutatedSpecs.addAll(triple.getFirst());
+                    repairDepths.addAll(triple.getSecond());
                 }
             }
         }
-        assert (mutatedSpecs.size() == repairDepths.size() && repairDepths.size() == perfectMutantFlags.size()) : "unexpected non match for sizes for mutations. Failing";
+        assert (mutatedSpecs.size() == repairDepths.size()) : "unexpected non match for sizes for mutations. Failing";
         System.out.println("total number of mutants = " + mutatedSpecs.size());
-        return new Pair<Pair<String[], Integer[]>, Boolean[]>(new Pair<String[], Integer[]>(mutatedSpecs.toArray(new String[0]), repairDepths.toArray(new Integer[0])), perfectMutantFlags.toArray(new Boolean[0]));
+        return new Pair<List<String>, Integer[]>(mutatedSpecs, repairDepths.toArray(new Integer[0]));
     }
 
 
-    public static Pair<Pair<List<String>, List<Integer>>, List<Boolean>> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
+    public static Pair<List<String>, List<Integer>> processMutants(ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
         List<String> mutatedSpecs = new ArrayList<>();
         List<Integer> repairDepths = new ArrayList<>();
         List<Boolean> perfectMutantFlags = new ArrayList<>();
@@ -76,11 +74,16 @@ public class ProcessMutants {
                     mutationResult.mutationsOccured == Config.numOfMutations)) { // a new unique mutant
                 assert (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) : "wrong setup for configuration";
                 generatedMutantsHash.add(newPgmHash);
+
                 String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
                 writeToFile(specFileName, newProgram.toString(), false, true);
                 mutatedSpecs.add(specFileName);
                 repairDepths.add(mutationResult.repairDepth);
-                perfectMutantFlags.add(mutationResult.isPerfect);
+//                perfectMutantFlags.add(mutationResult.isPerfect); //obsolute now, computed now with the later statement
+                if(IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
+                    Config.perfectMutants.add(specFileName);
+                else Config.nonPerfectMutants.add(specFileName);
+
             } else {
                 System.out.println("find a repetative hashcode for:" + currFaultySpec + mutationResult.mutationIdentifier);
             }
@@ -89,7 +92,7 @@ public class ProcessMutants {
 
 //        System.out.println("number of mutants generated after checksum are: " + mutatedSpecs.size());
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
-        return new Pair<Pair<List<String>, List<Integer>>, List<Boolean>>(new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths), perfectMutantFlags);
+        return new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths);
     }
 
 

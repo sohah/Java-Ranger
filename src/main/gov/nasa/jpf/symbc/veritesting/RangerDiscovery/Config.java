@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.runMultipleMutations;
@@ -60,9 +62,8 @@ public class Config {
     public static int numOfMutations = 2; // number of mutations we want to do on a spec, set by hand not through a configuration file
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
-    public static String[] faultySpecs;
+    public static List<String> faultySpecs;
     public static Integer[] repairDepth;
-    public static Boolean[] perfectMutantFlags;
     public static boolean z3Solver = true;
     public static int repairNodeDepth = 1; //defines the depth of the repair node. A depth 0 means a single boolean
     public static boolean depthFixed = false;
@@ -109,6 +110,8 @@ public class Config {
     public static String toVerifyPropFileName;
     public static Expr origProp; // the original property before mutation.
     public static Expr mutatedProp; // the mutated property that we are going to try to repair, this changes with every run of repair
+    public static ArrayList<String> perfectMutants = new ArrayList<>();
+    public static ArrayList<String> nonPerfectMutants = new ArrayList<>();
 
 
 
@@ -128,34 +131,49 @@ public class Config {
 //                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
 //                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
 
-                Pair<Pair<String[], Integer[]>, Boolean[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
+                Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
 
-                faultySpecs = triple.getFirst().getFirst();
-                repairDepth = triple.getFirst().getSecond();
-                perfectMutantFlags = triple.getSecond();
+                faultySpecs = triple.getFirst();
+                repairDepth = triple.getSecond();
                 System.out.println("OperationMode is " + operationMode.name());
             }
             if (randomSample) {
                 computeUniformPropDistribution();
                 System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
-                faultySpecIndex = new Random().nextInt(faultySpecs.length);
+
+                //selection based on half perfect and half non-perfect -- first time pick from the perfect set
+                String randPerfectSpec = perfectMutants.get(new Random().nextInt(perfectMutants.size()));
+
+                faultySpecIndex = faultySpecs.indexOf(randPerfectSpec);
+//                faultySpecIndex = new Random().nextInt(faultySpecs.length);
                 ++samplesSoFar;
             }
         }
 
-        assert faultySpecs.length != 0;
+        assert faultySpecs.size() != 0;
 
         if (randomSample && samplesSoFar > maxRandForProp) return false;
-        if ((faultySpecIndex) >= faultySpecs.length) return false;
+        if ((faultySpecIndex) >= faultySpecs.size()) return false;
 
-        currFaultySpec = faultySpecs[faultySpecIndex];
+        currFaultySpec = faultySpecs.get(faultySpecIndex);
 
         if (mutationEnabled)
             repairNodeDepth = repairDepth[faultySpecIndex];
 
         if (!randomSample) ++faultySpecIndex;
         else {
-            faultySpecIndex = new Random().nextInt(faultySpecs.length);
+            if(samplesSoFar < maxRandForProp/2){
+                String randSpec = perfectMutants.get(new Random().nextInt(perfectMutants.size()));
+
+                faultySpecIndex = faultySpecs.indexOf(randSpec);
+            } else {
+                String randSpec = nonPerfectMutants.get(new Random().nextInt(nonPerfectMutants.size()));
+
+                faultySpecIndex = faultySpecs.indexOf(randSpec);
+            }
+            //selection based on half perfect and half non-perfect
+
+//            faultySpecIndex = new Random().nextInt(faultySpecs.length);
             ++samplesSoFar;
         }
 
@@ -301,8 +319,8 @@ public class Config {
     }
 
     private static void computeUniformPropDistribution() {
-        maxRandForProp = 69;
-        goalMutantNum = 69 * 29;
+        maxRandForProp = 70;
+        goalMutantNum = 70 * 29;
     }
 
     public static boolean isCurrMutantPerfect() {
