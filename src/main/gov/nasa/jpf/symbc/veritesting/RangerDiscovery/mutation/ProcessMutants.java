@@ -34,7 +34,7 @@ public class ProcessMutants {
                 String currFaultySpec = queueOfSpecs.poll();
                 String tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations + 1);
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations);
                 Pair<List<String>, List<Integer>> triple = processMutants(numOfFinishedMutations, numOfMutations, mutationResults, origSpec, currFaultySpec, operationMode);
 
                 if (numOfFinishedMutations < numOfMutations) // if we have not finished all mutations yet, then put it back for further processing
@@ -62,16 +62,17 @@ public class ProcessMutants {
         boolean[] perfectMutantFlags = new boolean[mutationResults.size()];
 */
 
-        int mutationIndex = 0;
-        while (mutationIndex < mutationResults.size()) {
-            MutationResult mutationResult = mutationResults.get(mutationIndex);
+        int mutantIndex = 0;
+        while (mutantIndex < mutationResults.size()) {
+            MutationResult mutationResult = mutationResults.get(mutantIndex);
             Program newProgram = updateMainPropertyExpr(inputExtendedPgm, mutationResult);
             int newPgmHash = newProgram.toString().hashCode();
             /* we are only writing mutations that are unique, and also has gone through the number of mutations that we
             desire except in the none-evaluation phase, that is if we are in the evaluation phase we want to be processing oly
                     the mutants who has the same number of mutations configured for the run.*/
-            if (!generatedMutantsHash.contains(newPgmHash) && (!Config.evaluationMode ||
-                    mutationResult.mutationsOccured == Config.numOfMutations)) { // a new unique mutant
+            if (!generatedMutantsHash.contains(newPgmHash)) {
+               /* if (!Config.evaluationMode ||
+                        mutationResult.mutationsOccured == Config.numOfMutations) { // a new unique mutant*/
                 assert (!((operationMode == OperationMode.PERFECT_ONLY && !mutationResult.isPerfect) || (operationMode == OperationMode.SMALLEST_ONLY && !mutationResult.isSmallestWrapper))) : "wrong setup for configuration";
                 generatedMutantsHash.add(newPgmHash);
 
@@ -86,12 +87,11 @@ public class ProcessMutants {
                         Config.perfectMutants.add(specFileName);
                     else Config.nonPerfectMutants.add(specFileName);
 
-            } else {
-                System.out.println("find a repetative hashcode for:" + currFaultySpec + mutationResult.mutationIdentifier);
             }
-            ++mutationIndex;
+            ++mutantIndex;
         }
 
+//        }
 //        System.out.println("number of mutants generated after checksum are: " + mutatedSpecs.size());
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
         return new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths);
