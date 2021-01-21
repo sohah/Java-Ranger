@@ -146,9 +146,9 @@ public class MinimalRepairDriver {
 //                                System.out.println("Property unexpected output (synthesis Query MINIMAL_TIMED_OUT):");
 //                            } else {
                             if ((propResult.getProperty() instanceof UnknownProperty) && (((UnknownProperty) propResult.getProperty()).getTrueFor() == lastMaxSteps)) {
-                                repairStatistics.terminationResult = TerminationResult.TRUE_FOR_MAX_STEPS;
+                                repairStatistics.terminationResult = TerminationResult.CANT_TIGHTEN_IT;
                                 repairStatistics.lastQueryType = QueryType.THERE_EXISTS;
-                                System.out.println("Property uknown but TRUE_FOR_Max_STEPS (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
+                                System.out.println("Property unknown but TRUE_FOR_Max_STEPS (synthesis Query):" + synthesisResult.getPropertyResult(counterExPropertyName).getStatus().toString());
                             } else {
                                 repairStatistics.terminationResult = TerminationResult.MINIMAL_EXISTS_UKNOWN;
                                 repairStatistics.lastQueryType = QueryType.THERE_EXISTS;

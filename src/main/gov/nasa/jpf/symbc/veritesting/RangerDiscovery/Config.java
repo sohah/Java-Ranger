@@ -59,7 +59,7 @@ public class Config {
     public static String currFaultySpec;
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
-    public static int numOfMutations = 2; // number of mutations we want to do on a spec, set by hand not through a configuration file
+    public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static List<String> faultySpecs;
@@ -328,7 +328,8 @@ public class Config {
     }
 
     public static boolean isCurrMutantPerfect() {
-
-        return IsPerfectRepairVisitor.execute(origProp, mutatedProp);
+        if(Config.mutationEnabled)
+            return IsPerfectRepairVisitor.execute(origProp, mutatedProp);
+        else return false;
     }
 }

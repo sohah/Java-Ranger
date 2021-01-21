@@ -15,5 +15,5 @@ public enum TerminationResult {
     UNEXPECTED_MINIMAL_RESULT,
     OTHER_JKIND_EXCEPTION,
     MUTANT_TIME_OUT,
-    TRUE_FOR_MAX_STEPS
+    CANT_TIGHTEN_IT     //indicates that an invalid there exists is unknown but was run as many test cases as we gave it, and therefore we can interpert this result as no more tightening can exist. Used to be "TRUE_FOR_MAX_STEPS"
 }
