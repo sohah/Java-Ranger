@@ -1,5 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
@@ -48,6 +49,7 @@ public class ShouldApplyMutation {
      * a repair expression somewhere in the AST. In this case we want to keep the upper wrapping that we are about to create now.
      * Therefore, we use the NestRepairsVisitor to get rid of any repair sub-expressions and propagate the mutation to inner parts
      * of the expression.
+     *
      * @param e
      * @return
      */
@@ -56,9 +58,17 @@ public class ShouldApplyMutation {
         Expr exprToWrap = e.accept(nestedRepairsVisitor);
 
         if (this.shouldApplyRepairMutation()) {
-            IdExprVisitor idExprVisitor = new IdExprVisitor(exprToWrap, tInOutManager, inputs, outputs);
-            exprToWrap.accept(idExprVisitor);
-            List<VarDecl> varDecls = idExprVisitor.getVarDeclList();
+            List<VarDecl> varDecls = null;
+
+            if (!Config.repairWithAllInputOutput) {
+                IdExprVisitor idExprVisitor = new IdExprVisitor(exprToWrap, tInOutManager, inputs, outputs);
+                exprToWrap.accept(idExprVisitor);
+                varDecls = idExprVisitor.getVarDeclList();
+            } else {
+                varDecls = tInOutManager.getFreeInputs().generateVarDecl();
+                varDecls.addAll(tInOutManager.getInOutput().generateVarDecl());
+            }
+
             int exprSize = exprToWrap.accept(new ExprSizeVisitor(varDecls, true));
             GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls, exprSize);
             repairNodes.add(genericRepairNode);

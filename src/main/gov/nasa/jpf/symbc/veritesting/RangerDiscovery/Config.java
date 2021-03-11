@@ -60,6 +60,9 @@ public class Config {
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
     public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
+
+    // indicates if we are repairing by emulating the faulty expression, or if we are repairing using all input and outputs of the spec
+    public static boolean repairWithAllInputOutput = true;
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static List<String> faultySpecs;
@@ -112,7 +115,7 @@ public class Config {
     public static Expr mutatedProp; // the mutated property that we are going to try to repair, this changes with every run of repair
     public static ArrayList<String> perfectMutants = new ArrayList<>();
     public static ArrayList<String> nonPerfectMutants = new ArrayList<>();
-
+    private static Random randomGenerator = new Random(2030);
 
 
     public static boolean canSetup() throws IOException {
@@ -142,7 +145,7 @@ public class Config {
                 System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
 
                 //selection based on half perfect and half non-perfect -- first time pick from the perfect set
-                String randPerfectSpec = perfectMutants.get(new Random().nextInt(perfectMutants.size()));
+                String randPerfectSpec = perfectMutants.get(randomGenerator.nextInt(perfectMutants.size()));
 
                 faultySpecIndex = faultySpecs.indexOf(randPerfectSpec);
 //                faultySpecIndex = new Random().nextInt(faultySpecs.length);
