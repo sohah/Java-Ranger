@@ -16,6 +16,7 @@ public class MutationResult {
     boolean isSmallestWrapper;
     // is the number of mutations that that mutant had gone through.
     int mutationsOccured;
+    public String fileName;
 
 
     public MutationResult(Expr mutatedExpr, int repairMutationIndex, int mutationIndex, MutationType mutationType, List<GenericRepairNode> repairNodes, int repairDepth, boolean isPerfect, boolean isSmallestWrapper, int mutationOccured) {
@@ -30,5 +31,9 @@ public class MutationResult {
         this.isPerfect = isPerfect;
         this.isSmallestWrapper = isSmallestWrapper;
         this.mutationsOccured = mutationOccured;
+    }
+
+    public String getUniqueMutationName(String currFaultySpec) {
+        return currFaultySpec + ("-" + MutationUtils.mutationTypeToString(mutationType) + "-" + mutationIndex);
     }
 }

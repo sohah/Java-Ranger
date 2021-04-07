@@ -2,7 +2,9 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.IsPerfectRepairVisitor;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
@@ -11,9 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants.runMultipleMutations;
 
@@ -59,10 +59,12 @@ public class Config {
     public static String currFaultySpec;
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
-    public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
+    public static int numOfMutations = 2; // number of mutations we want to do on a spec, set by hand not through a configuration file
 
     // indicates if we are repairing by emulating the faulty expression, or if we are repairing using all input and outputs of the spec
-    public static boolean repairWithAllInputOutput = true;
+    public static boolean repairWithAllInputOutput = false;
+    public static boolean useOrigPropSize = false; //turn that on if you want to use the size of the original property and therefore the sketch contains all possible inputs and outputs pair
+
     public static boolean repairMutantsOnly = false;
     public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
     public static List<String> faultySpecs;
@@ -108,6 +110,7 @@ public class Config {
 
     public static int prop; //name of the property, which is used in conjunction with the spec and rundomSampleMutants on to populate the right number of mutants to operate on for this property provided the maximum sample we would have is in maxSampleMutants.
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
+
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
     public static boolean regressionTestOn = false;
     public static String toVerifyPropFileName;
@@ -116,18 +119,24 @@ public class Config {
     public static ArrayList<String> perfectMutants = new ArrayList<>();
     public static ArrayList<String> nonPerfectMutants = new ArrayList<>();
     private static Random randomGenerator = new Random(2030);
+    public static HashMap<String, Integer> genericNodeSizeMap = new HashMap<>();
 
+    public static ArrayList<String> randomSampleOrder = new ArrayList<>(); //contains an ordered selection by the random sampling, where the execution should processed by accessing in order mutations in that order. it defines a mutation without a repair location
+    private static int currentRandIndex = 0; //defines the index of the first mutant inside the randomSampleOrder, so we can continue the experiment from where we left off.
 
     public static boolean canSetup() throws IOException {
 
         if (firstTime) {
             DiscoverContract.contract = new Contract();
             allMutationStatistics = new AllMutationStatistics();
-
+            setupGenericNodeSize();
             if (mutationEnabled) {
                 firstTime = false;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName + currFaultySpec)), "UTF-8"));
                 Config.origProp = origSpec.getMainNode().equations.get(0).expr;
+/*                int exprSize = origSpec.getMainNode().equations.get(0).expr.accept(new ExprSizeVisitor(origSpec.getMainNode().inputs, true));
+
+                System.out.println(spec + "," + currFaultySpec + " " + exprSize);*/
 
 //                tFileName = folderName + currFaultySpec;
 //                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
@@ -135,14 +144,16 @@ public class Config {
 //                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
 
                 Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
-
                 faultySpecs = triple.getFirst();
                 repairDepth = triple.getSecond();
                 System.out.println("OperationMode is " + operationMode.name());
+
+                populateRandomSampleOrder();
             }
             if (randomSample) {
                 computeUniformPropDistribution();
-                System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
+//                System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
+                System.out.println("maximum mutants for Random Sampling is =" + maxRandForProp);
 
                 //selection based on half perfect and half non-perfect -- first time pick from the perfect set
                 String randPerfectSpec = perfectMutants.get(randomGenerator.nextInt(perfectMutants.size()));
@@ -167,7 +178,7 @@ public class Config {
         else {
             int randValue = 0;
             String randSpec;
-            if(samplesSoFar < maxRandForProp/2){
+            if (samplesSoFar < maxRandForProp / 2) {
                 randValue = new Random().nextInt(perfectMutants.size());
                 randSpec = perfectMutants.get(randValue);
 
@@ -201,6 +212,55 @@ public class Config {
         return true;
     }
 
+    private static void populateRandomSampleOrder() {
+        System.out.println("random sampling for 50 mutants");
+        ArrayList<String> mutations = new ArrayList(ProcessMutants.mutationSpecPool.keySet());
+
+        for (int i = 0; i < 50; i++) {
+            int index = randomGenerator.nextInt(mutations.size());
+            randomSampleOrder.add(mutations.get(index));
+        }
+    }
+
+    private static void setupGenericNodeSize() {
+        genericNodeSizeMap.put("wbs" + "," + "Prop1", 9);
+        genericNodeSizeMap.put("wbs" + "," + "Prop3", 7);
+
+        genericNodeSizeMap.put("tcas" + "," + "Prop1", 5);
+        genericNodeSizeMap.put("tcas" + "," + "Prop2", 5);
+        genericNodeSizeMap.put("tcas" + "," + "Prop4", 5);
+
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop1", 15);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop2", 3);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop3", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop4", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop5", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop6", 13);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop7", 3);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop8", 7);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop9", 9);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop10", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop11", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop12", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop13", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_Prop14", 9);
+
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop1", 7);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop2", 7);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop3", 9);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop4", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop5", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop6", 9);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop7", 7);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop8", 7);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop9", 5);
+        genericNodeSizeMap.put("infusion" + "," + "Faulty_GPCA_Prop10", 3);
+
+    }
+
+    public static String getGenericNodeSizeKey() {
+        return spec + "," + currFaultySpec;
+    }
 
 
     /**
@@ -326,12 +386,13 @@ public class Config {
     }
 
     private static void computeUniformPropDistribution() {
-        maxRandForProp = 70;
-        goalMutantNum = 70 * 29;
+       /* maxRandForProp = 70;
+        goalMutantNum = 70 * 29;*/
+        maxRandForProp = 10; // currently we are only running the experiment for 10 properties at a time.
     }
 
     public static boolean isCurrMutantPerfect() {
-        if(Config.mutationEnabled)
+        if (Config.mutationEnabled)
             return IsPerfectRepairVisitor.execute(origProp, mutatedProp);
         else return false;
     }

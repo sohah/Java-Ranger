@@ -74,7 +74,7 @@ public class MutationUtils {
 
     public static ArrayList<MutationResult> createSpecMutants(final Program originalProgram,
                                                               final String mutationDirectory,
-                                                              SpecInOutManager tInOutManager, int mutationOccured) {
+                                                              int mutationOccured) {
         Node mainNode = null;
         for (Node n : originalProgram.nodes) {
             if (n.id.equals("main")) {
@@ -100,13 +100,13 @@ public class MutationUtils {
 //                MutationType.OPERAND_REPLACEMENT_MUT, //Soha turning this one off for now
                 MutationType.LOGICAL_OP_REPLACEMENT,
                 MutationType.RELATIONAL_OP_REPLACEMENT,
-                MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
+//                MutationType.REPAIR_EXPR_MUT, //MutationType.MISSING_COND_MUT, //Soha turning this one off for now
         } :
                 new MutationType[]{MutationType.REPAIR_EXPR_MUT};
         ArrayList<MutationResult> mutationResults = new ArrayList<>();
         for (MutationType mutationType : mutationTypes) {
             //main place where muation is going to happen
-            ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, tInOutManager, mutationOccured);
+            ArrayList<MutationResult> mutationsForTypes = applyMutation(originalProgram, mutationType, mutationDirectory, mutationOccured);
             for (MutationResult result : mutationsForTypes) {
                 String sanitizedExpr = sanitizeExpr(result.mutatedExpr.toString());
                 if (!uniqueMutationSet.contains(sanitizedExpr.hashCode())) {
@@ -153,13 +153,13 @@ public class MutationUtils {
     private static ArrayList<MutationResult> applyMutation(final Program originalProgram,
                                                            final MutationType mutationType,
                                                            String mutationDirectory,
-                                                           SpecInOutManager tInOutManager, int mutationOccured) {
+                                                          int mutationOccured) {
         int mutationIndex = -1, repairMutationIndex = -1;
         ArrayList<MutationResult> ret = new ArrayList<>();
         while (true) {
             Node mainNode = originalProgram.nodes.get(0);
             Expr mutatedExpr;
-            ShouldApplyMutation shouldApplyMutation = new ShouldApplyMutation(mutationIndex, repairMutationIndex, tInOutManager, mainNode.inputs, mainNode.outputs);
+            ShouldApplyMutation shouldApplyMutation = new ShouldApplyMutation(mutationIndex, repairMutationIndex, mainNode.inputs, mainNode.outputs);
             if (mutationType != MutationType.OPERAND_REPLACEMENT_MUT) {
                 MutateExpr mutateExpr = new MutateExpr(mutationType, shouldApplyMutation);
                 mutatedExpr = mainNode.equations.get(0).expr.accept(mutateExpr);

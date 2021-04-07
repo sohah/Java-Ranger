@@ -1,8 +1,8 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.OperationMode;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
@@ -17,6 +17,8 @@ import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUt
 
 public class ProcessMutants {
 
+    //a hashmap that contains a mapping from a type of a mutation, and its location to all possible repairs.
+    public static HashMap<String, Queue<MutationResult>> mutationSpecPool = new HashMap<>();
 
     public static Pair<List<String>, Integer[]> runMultipleMutations(int numOfMutations, String folderName, String initialSpec, OperationMode operationMode, String mutationDir) throws IOException {
         assert numOfMutations >= 1 : "number of multiple mutations must be set.";
@@ -34,12 +36,13 @@ public class ProcessMutants {
                 String currFaultySpec = queueOfSpecs.poll();
                 String tFileName = folderName + currFaultySpec;
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager, numOfFinishedMutations);
+                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, numOfFinishedMutations);
                 Pair<List<String>, List<Integer>> triple = processMutants(numOfFinishedMutations, numOfMutations, mutationResults, origSpec, currFaultySpec, operationMode);
 
-                if (numOfFinishedMutations < numOfMutations) // if we have not finished all mutations yet, then put it back for further processing
+                if (numOfFinishedMutations < numOfMutations) { // if we have not finished all mutations yet, then put it back for further processing
                     queueOfSpecs.addAll(triple.getFirst());
-                else {
+                    mutationSpecPool = new HashMap<>();
+                } else {
                     mutatedSpecs.addAll(triple.getFirst());
                     repairDepths.addAll(triple.getSecond());
                 }
@@ -53,8 +56,10 @@ public class ProcessMutants {
 
     public static Pair<List<String>, List<Integer>> processMutants(int numOfFinishedMutations, int numOfMutations, ArrayList<MutationResult> mutationResults, Program inputExtendedPgm, String currFaultySpec, OperationMode operationMode) {
         List<String> mutatedSpecs = new ArrayList<>();
+
+        //a hashmap that contains a mapping from a type of a mutation, and its location to all possible repairs.
+
         List<Integer> repairDepths = new ArrayList<>();
-        List<Boolean> perfectMutantFlags = new ArrayList<>();
         HashSet<Integer> generatedMutantsHash = new HashSet();
         assert mutationResults.size() > 0 || Config.numOfMutations > 1; //there must be mutants to be processed to call this method.
         /*String[] mutatedSpecs = new String[mutationResults.size()];
@@ -78,9 +83,10 @@ public class ProcessMutants {
 
                 String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
                 writeToFile(specFileName, newProgram.toString(), false, true);
+                mutationResult.fileName = specFileName;
+                putInMutationSpecHashMap(mutationResult, currFaultySpec, numOfMutations);
                 mutatedSpecs.add(specFileName);
                 repairDepths.add(mutationResult.repairDepth);
-//                perfectMutantFlags.add(mutationResult.isPerfect); //obsolute now, computed now with the later statement
 
                 if (numOfFinishedMutations >= numOfMutations)
                     if (IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
@@ -95,6 +101,41 @@ public class ProcessMutants {
 //        System.out.println("number of mutants generated after checksum are: " + mutatedSpecs.size());
         //assert perfectMutant != null; //TODO:enable that once we have the perfectMutant plugged in.
         return new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths);
+    }
+
+    private static void putInMutationSpecHashMap(MutationResult mutationResult, String currFaultySpec, int numOfMutations) {
+
+        assert numOfMutations<=2 && (currFaultySpec.contains("LOR") || currFaultySpec.contains("ROR") || !currFaultySpec.contains("-")) : "population of the hashmap is configured to handle only two mutations ROR and LOR for at most 2 mutations. Violation detected. Failing.";
+
+        String filteredCurrSpecName = currFaultySpec.replaceAll("LOR-.", "LOR");
+        filteredCurrSpecName = filteredCurrSpecName.replaceAll("ROR-.", "ROR");
+
+
+        Queue<MutationResult> mutationResQueue = mutationSpecPool.get(mutationResult.getUniqueMutationName(filteredCurrSpecName));
+        if (mutationResQueue == null) {
+
+            PriorityQueue<MutationResult> queue = new PriorityQueue<>(new Comparator<MutationResult>() {
+                @Override
+                public int compare(MutationResult t1, MutationResult t2) {
+
+                    int repairDepthSum1 = 0;
+                    for (GenericRepairNode repairNode : t1.repairNodes)
+                        repairDepthSum1 += repairNode.repairDepth;
+
+                    int repairDepthSum2 = 0;
+                    for (GenericRepairNode repairNode : t2.repairNodes)
+                        repairDepthSum2 += repairNode.repairDepth;
+                    return Integer.compare(repairDepthSum1, repairDepthSum2);
+
+                  /*  int t1DubiousSize = ExprRepairSizeVisitor.execute(t1.mutatedExpr, DiscoverContract.contract.tInOutManager, DiscoverContract.contract.rInOutManager.generateInputDecl(), DiscoverContract.contract.rInOutManager.generateOutputDecl());
+                    int t2DubiousSize = ExprRepairSizeVisitor.execute(t2.mutatedExpr, DiscoverContract.contract.tInOutManager, DiscoverContract.contract.rInOutManager.generateInputDecl(), DiscoverContract.contract.rInOutManager.generateOutputDecl());
+                    return Integer.compare(t1DubiousSize, t2DubiousSize);*/
+                }
+            });
+            queue.add(mutationResult);
+            mutationSpecPool.put(mutationResult.getUniqueMutationName(filteredCurrSpecName), queue);
+        } else mutationResQueue.add(mutationResult);
+
     }
 
 

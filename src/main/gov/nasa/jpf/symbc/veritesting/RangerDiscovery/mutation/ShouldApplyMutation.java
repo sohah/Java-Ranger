@@ -1,6 +1,7 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.DiscoverContract;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.InputOutput.SpecInOutManager;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
@@ -24,12 +25,12 @@ public class ShouldApplyMutation {
     final List<VarDecl> outputs;
 
 
-    public ShouldApplyMutation(int prevMutationIndex, int prevRepairMutationIndex, SpecInOutManager tInOutManager, List<VarDecl> inputs, List<VarDecl> outputs) {
+    public ShouldApplyMutation(int prevMutationIndex, int prevRepairMutationIndex, List<VarDecl> inputs, List<VarDecl> outputs) {
         this.prevMutationIndex = prevMutationIndex;
         this.prevRepairMutationIndex = prevRepairMutationIndex;
         this.mutationIndex = -1;
         this.repairMutationIndex = -1;
-        this.tInOutManager = tInOutManager;
+        this.tInOutManager = DiscoverContract.contract.tInOutManager;
         this.inputs = inputs;
         this.outputs = outputs;
     }
@@ -68,8 +69,11 @@ public class ShouldApplyMutation {
                 varDecls = tInOutManager.getFreeInputs().generateVarDecl();
                 varDecls.addAll(tInOutManager.getInOutput().generateVarDecl());
             }
-
-            int exprSize = exprToWrap.accept(new ExprSizeVisitor(varDecls, true));
+            int exprSize = 0;
+            if (Config.useOrigPropSize)
+                exprSize = Config.genericNodeSizeMap.get(Config.getGenericNodeSizeKey());
+            else
+                exprSize = exprToWrap.accept(new ExprSizeVisitor(varDecls, true));
             GenericRepairNode genericRepairNode = new GenericRepairNode(varDecls, exprSize);
             repairNodes.add(genericRepairNode);
             repairDepth = genericRepairNode.repairDepth;
