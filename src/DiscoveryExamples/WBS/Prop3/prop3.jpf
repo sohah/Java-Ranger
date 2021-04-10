@@ -5,7 +5,7 @@ vm.storage.class=nil
 #symbolic.debug=true
 
 
-######## miscellaneous  ######
+  ######## miscellaneous  ###### 
 symbolic.method=DiscoveryExamples.wbs.DiscoveryWBS.discoveryLaunch(sym#sym#sym#sym#sym#sym#sym)
 
 symbolic.dp=z3bitvectorinc
@@ -19,20 +19,13 @@ simplify = false
 
 
 ################## contract Discovery configurations ###############
-contractDiscoveryOn = true
-spec = wbs
-specRepair = true
-repairMode = 2
-
-
-SpecDirectory = WBS/Prop3
-faultySpec=Prop3
-mutationEnabled = true
-repairMutantsOnly = false
-
-randomSampleMutants=true
+spec=wbs
 prop=3
+SpecDirectory=WBS/Prop3
+depthFixed=false
+evaluationMode=true
 
-depthFixed = false
-evaluationMode = true
-#repairScope=2
+##### in discoveryMode=2, all the configurations are the same except for the faultySpec, it becomes the specification that we want to repair, also there will a new configuration for origSpec
+origSpec=Prop3
+executionMode=2
+faultySpec=Prop3

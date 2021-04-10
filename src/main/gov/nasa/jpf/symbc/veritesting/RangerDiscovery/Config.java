@@ -2,8 +2,8 @@ package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.VeritestingListener;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.AllMutationStatistics;
-import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Statistics.ExprSizeVisitor;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.IsPerfectRepairVisitor;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.ProcessMutants;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
@@ -23,6 +23,7 @@ public class Config {
     public static String symVarName;
     public static int lastMaxSteps; //this is the last maximum steps used in the last BMC
 
+    public static ExecutionMode executionMode;
     // atom synthesized
     static String tFileName;
     static String holeRepairFileName = folderName + "holeRepair";
@@ -46,27 +47,31 @@ public class Config {
     public static boolean useInitialSpecValues = true;
     public static String genericRepairNodeName = "repairNode";
     //this boolean toggles between equation based repair and whole spec repair.
-    public static boolean specLevelRepair;// = false;
+    public static boolean specLevelRepair = true;// = false;
     //this contains specific equations we would like to repair, instead of repairing the whole thing. This is now used for testing only.
     public static Integer[] equationNumToRepair = {1};
     public static boolean allEqRepair = true;
+
+    //is a unique instance for repairing that is defined by time, we theoritically we can hit the same mutant with the same repair during the random sampling and we want to distinguish each instance
+    public static String outInstanceDirectory = null;
 
 
     /***** configurations needs consideration for each run in .jpf file *********/
     public static RepairScopeType repairScope = RepairScopeType.ENCLOSED_TERMS; //the default configuration.
     public static boolean randZ3Seed = false;
     public static String spec;
-    public static String currFaultySpec;
+    public static String currFaultySpec; // this is overloaded in the execution, but outside of the mutation part it refers to the specification that we want to reapir
+    public static String origSpec; // this is the original spec before mutation
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
-    public static int numOfMutations = 2; // number of mutations we want to do on a spec, set by hand not through a configuration file
+    public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
 
     // indicates if we are repairing by emulating the faulty expression, or if we are repairing using all input and outputs of the spec
     public static boolean repairWithAllInputOutput = false;
     public static boolean useOrigPropSize = false; //turn that on if you want to use the size of the original property and therefore the sketch contains all possible inputs and outputs pair
 
     public static boolean repairMutantsOnly = false;
-    public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode;
+    public static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.RepairMode repairMode = RepairMode.LIBRARY;
     public static List<String> faultySpecs;
     public static Integer[] repairDepth;
     public static boolean z3Solver = true;
@@ -95,8 +100,6 @@ public class Config {
 
     public static boolean repairInitialValues = true;
 
-    private static boolean firstTime = true;
-
     static String mutationDir = "../src/DiscoveryExamples/mutants";
 
     public static int milliSecondSimplification = 1000; // must be in thousands, since it is usually used for simplification and to also check if we exceeded the timeout which is also in seconds.
@@ -104,7 +107,6 @@ public class Config {
     public static AllMutationStatistics allMutationStatistics;
 
     public static OperationMode operationMode = OperationMode.NORMAL;
-    public static boolean randomSample = true;
     public static int goalMutantNum;
 
 
@@ -112,7 +114,6 @@ public class Config {
     private static int maxRandForProp; // maximum number of mutants that we are going to sample
 
     private static int samplesSoFar = 0; //this is the number of samples that we have finished so far. We shoul stop when they read the maxRandforProp.
-    public static boolean regressionTestOn = false;
     public static String toVerifyPropFileName;
     public static Expr origProp; // the original property before mutation.
     public static Expr mutatedProp; // the mutated property that we are going to try to repair, this changes with every run of repair
@@ -121,95 +122,64 @@ public class Config {
     private static Random randomGenerator = new Random(2030);
     public static HashMap<String, Integer> genericNodeSizeMap = new HashMap<>();
 
-    public static ArrayList<String> randomSampleOrder = new ArrayList<>(); //contains an ordered selection by the random sampling, where the execution should processed by accessing in order mutations in that order. it defines a mutation without a repair location
-    private static int currentRandIndex = 0; //defines the index of the first mutant inside the randomSampleOrder, so we can continue the experiment from where we left off.
+    public static ArrayList<String> orderedRandSample = new ArrayList<>(); //contains an ordered selection by the random sampling, where the execution should processed by accessing in order mutations in that order. it defines a mutation without a repair location
+
+    //these define the beginning and the end of the indexed mutants we want to repair, by attempting all possible repair locations for them.
+    private static int startRandIndex = 0; //must be greater than or equal 0
+    private static int endRandIndex = 1; // must be less than 50.
 
     public static boolean canSetup() throws IOException {
+        System.out.println("faultySpec=" + currFaultySpec);
+        System.out.println("executionMode=" + executionMode.toString());
+        System.out.println("origSpec = " + origSpec);
 
-        if (firstTime) {
-            DiscoverContract.contract = new Contract();
+        if (executionMode == ExecutionMode.SINGLE_EXECUTION_MODE) { // take the faulty spec provided in the configuration file
+            outInstanceDirectory = "output/" + currFaultySpec + "-" + System.currentTimeMillis();
+            String oldCurrFaultySpec = currFaultySpec;
+            currFaultySpec = origSpec;
+            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName + currFaultySpec)), "UTF-8"));
+            Config.origProp = origSpec.getMainNode().equations.get(0).expr;
+            Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
+            faultySpecs = triple.getFirst();
+            repairDepth = triple.getSecond();
+
+            currFaultySpec = oldCurrFaultySpec;
             allMutationStatistics = new AllMutationStatistics();
-            setupGenericNodeSize();
-            if (mutationEnabled) {
-                firstTime = false;
-                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName + currFaultySpec)), "UTF-8"));
-                Config.origProp = origSpec.getMainNode().equations.get(0).expr;
-/*                int exprSize = origSpec.getMainNode().equations.get(0).expr.accept(new ExprSizeVisitor(origSpec.getMainNode().inputs, true));
 
-                System.out.println(spec + "," + currFaultySpec + " " + exprSize);*/
+            tFileName = folderName + currFaultySpec;
 
-//                tFileName = folderName + currFaultySpec;
-//                Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-//                ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, DiscoverContract.contract.tInOutManager);
-//                Pair<Pair<String[], int[]>, boolean[]> triple = processMutants(mutationResults, origSpec, currFaultySpec, operationMode);
+            origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
+            if (origSpec.repairNodes.size() == 0)
+                assert false : "repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr";
 
-                Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
-                faultySpecs = triple.getFirst();
-                repairDepth = triple.getSecond();
-                System.out.println("OperationMode is " + operationMode.name());
-
-                populateRandomSampleOrder();
-            }
-            if (randomSample) {
-                computeUniformPropDistribution();
-//                System.out.println("maxMutants for Random Sampling is =" + goalMutantNum + "benchmark Sample = " + maxRandForProp);
-                System.out.println("maximum mutants for Random Sampling is =" + maxRandForProp);
-
-                //selection based on half perfect and half non-perfect -- first time pick from the perfect set
-                String randPerfectSpec = perfectMutants.get(randomGenerator.nextInt(perfectMutants.size()));
-
-                faultySpecIndex = faultySpecs.indexOf(randPerfectSpec);
-//                faultySpecIndex = new Random().nextInt(faultySpecs.length);
-                ++samplesSoFar;
-            }
-        }
-
-        assert faultySpecs.size() != 0;
-
-        if (randomSample && samplesSoFar > maxRandForProp) return false;
-        if ((faultySpecIndex) >= faultySpecs.size()) return false;
-
-        currFaultySpec = faultySpecs.get(faultySpecIndex);
-
-        if (mutationEnabled)
+            tnodeSpecPropertyName = "T_node~0.p1";
             repairNodeDepth = repairDepth[faultySpecIndex];
 
-        if (!randomSample) ++faultySpecIndex;
-        else {
-            int randValue = 0;
-            String randSpec;
-            if (samplesSoFar < maxRandForProp / 2) {
-                randValue = new Random().nextInt(perfectMutants.size());
-                randSpec = perfectMutants.get(randValue);
+           /* //make a new directory for the output of that spec
+            new File(folderName + "/output/" + Config.currFaultySpec).mkdirs();
+*/
+            VeritestingListener.simplify = false; //forcing simplification to be false for now
+            return true;
 
-                faultySpecIndex = faultySpecs.indexOf(randSpec);
-            } else {
-                randValue = new Random().nextInt(nonPerfectMutants.size());
-                randSpec = nonPerfectMutants.get(randValue);
+        } else {
+            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(folderName + currFaultySpec)), "UTF-8"));
+            Config.origProp = origSpec.getMainNode().equations.get(0).expr;
 
-                faultySpecIndex = faultySpecs.indexOf(randSpec);
+            Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
+            faultySpecs = triple.getFirst();
+            repairDepth = triple.getSecond();
+            allMutationStatistics = new AllMutationStatistics();
+            populateRandomSampleOrder();
+
+            System.out.println("sampling from index = " + startRandIndex + ", to index = " + endRandIndex);
+
+            for (int i = startRandIndex; i < endRandIndex; i++) {//pick specs in the range and attempt to repair them by attempting all possible repairs
+                String mutationToRepair = orderedRandSample.get(i);
+                Queue<MutationResult> repairPossibilities = ProcessMutants.mutationSpecPool.get(mutationToRepair);
+                FireThreads.findRepairs(i, repairPossibilities);
             }
-            //selection based on half perfect and half non-perfect
-
-//            faultySpecIndex = new Random().nextInt(faultySpecs.length);
-            ++samplesSoFar;
+            return true;
         }
-
-        tFileName = folderName + currFaultySpec;
-        if (!mutationEnabled) { //sanity check
-            Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
-            if (!regressionTestOn && origSpec.repairNodes.size() == 0) {
-                System.out.println("repair nodes can not be zero if we are not using mutation. The user needs to specify a repair node and repair expr");
-                assert false;
-            }
-        }
-        tnodeSpecPropertyName = "T_node~0.p1";
-
-        //make a new directory for the output of that spec
-        new File(folderName + "/output/" + Config.currFaultySpec).mkdirs();
-
-        VeritestingListener.simplify = false; //forcing simplification to be false for now
-        return true;
     }
 
     private static void populateRandomSampleOrder() {
@@ -218,7 +188,7 @@ public class Config {
 
         for (int i = 0; i < 50; i++) {
             int index = randomGenerator.nextInt(mutations.size());
-            randomSampleOrder.add(mutations.get(index));
+            orderedRandSample.add(mutations.get(index));
         }
     }
 
@@ -263,6 +233,8 @@ public class Config {
     }
 
 
+    /* */
+
     /**
      * used to divide the maxMutants used for the expirement among the benchmarks. The division is dependent on the number of mutants that can be generated for each property, and it is precomputed. Alarm = 22%, Infusion = 58%, TCAS = 9% and WBS = 10%. These percentages are also divided by properties for every benchmark where
      * ALARM	Prop1	2
@@ -295,7 +267,7 @@ public class Config {
      * 9
      * WBS	Prop1	6
      * Prop3	4
-     */
+     *//*
     private static void computeBenchmarkMaxSample() {
         if (spec.equals("gpca")) {
             if (prop == 1) {
@@ -384,13 +356,13 @@ public class Config {
             System.out.println("cannot sample from unknown benchmark");
         }
     }
-
-    private static void computeUniformPropDistribution() {
-       /* maxRandForProp = 70;
-        goalMutantNum = 70 * 29;*/
+*/
+    /* private static void computeUniformPropDistribution() {
+     *//* maxRandForProp = 70;
+        goalMutantNum = 70 * 29;*//*
         maxRandForProp = 10; // currently we are only running the experiment for 10 properties at a time.
     }
-
+*/
     public static boolean isCurrMutantPerfect() {
         if (Config.mutationEnabled)
             return IsPerfectRepairVisitor.execute(origProp, mutatedProp);

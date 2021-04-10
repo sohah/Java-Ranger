@@ -29,6 +29,7 @@ import static jkind.lustre.UnaryOp.NOT;
 public class DiscoveryUtil {
     private static boolean firstTime = true;
 
+
     public static NamedType stringToLusterType(String typeName) {
         if (typeName.equals("int")) return NamedType.INT;
         else if (typeName.equals("float")) return NamedType.REAL;
@@ -126,13 +127,13 @@ public class DiscoveryUtil {
 
     public static boolean writeToFile(String fileName, String content, boolean minimal, boolean config) {
         String directory;
-
         if (config) {
             directory = folderName + "/";
             assert !minimal;
         } else if (minimal) {
-            directory = folderName + "output/" + Config.currFaultySpec + "/minimal/";
-        } else directory = folderName + "output/" + Config.currFaultySpec + "/";
+            assert outInstanceDirectory != null : "output directory cannot be null, failing.";
+            directory = folderName + outInstanceDirectory + "/minimal/";
+        } else directory = folderName + outInstanceDirectory + "/";
 
 
         fileName = directory + fileName;
@@ -372,8 +373,10 @@ public class DiscoveryUtil {
     public static JKindResult callJkind(String fileName, boolean kInductionOn, int maxK, boolean minimal, boolean existsQuery) {
         File file1;
 
-        if (!minimal) file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/" + fileName);
-        else file1 = new File(folderName + "/output/" + Config.currFaultySpec + "/minimal/" + fileName);
+        assert outInstanceDirectory != null : "output directory cannot be null, failing.";
+
+        if (!minimal) file1 = new File(folderName + outInstanceDirectory + "/" + fileName);
+        else file1 = new File(folderName + outInstanceDirectory + "/minimal/" + fileName);
 
         if (minimal) return runJKind(file1, kInductionOn, maxK, existsQuery);
         else // ensuring that you can't have a exists query true, without having a minimal query

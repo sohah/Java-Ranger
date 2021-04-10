@@ -1,17 +1,21 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config;
+import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.ExecutionMode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.OperationMode;
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.dynamicRepairDefinition.GenericRepairNode;
 import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.*;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Util.DiscoveryUtil.writeToFile;
 import static gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationUtils.createSpecMutants;
 
@@ -38,7 +42,7 @@ public class ProcessMutants {
                 Program origSpec = LustreParseUtil.program(new String(Files.readAllBytes(Paths.get(tFileName)), "UTF-8"));
                 ArrayList<MutationResult> mutationResults = createSpecMutants(origSpec, mutationDir, numOfFinishedMutations);
                 Pair<List<String>, List<Integer>> triple = processMutants(numOfFinishedMutations, numOfMutations, mutationResults, origSpec, currFaultySpec, operationMode);
-
+//                new File(tFileName).delete(); // delete the file after processing it and generating the appropriate mutants.
                 if (numOfFinishedMutations < numOfMutations) { // if we have not finished all mutations yet, then put it back for further processing
                     queueOfSpecs.addAll(triple.getFirst());
                     mutationSpecPool = new HashMap<>();
@@ -82,16 +86,18 @@ public class ProcessMutants {
                 generatedMutantsHash.add(newPgmHash);
 
                 String specFileName = currFaultySpec + mutationResult.mutationIdentifier;
-                writeToFile(specFileName, newProgram.toString(), false, true);
+                if (!Files.exists(Paths.get(specFileName)))
+                    writeToFile(specFileName, newProgram.toString(), false, true);
                 mutationResult.fileName = specFileName;
-                putInMutationSpecHashMap(mutationResult, currFaultySpec, numOfMutations);
                 mutatedSpecs.add(specFileName);
                 repairDepths.add(mutationResult.repairDepth);
 
                 if (numOfFinishedMutations >= numOfMutations)
-                    if (IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
-                        Config.perfectMutants.add(specFileName);
-                    else Config.nonPerfectMutants.add(specFileName);
+                    if (executionMode == ExecutionMode.MULTI_THREAD_MODE)
+                        putInMutationSpecHashMap(specFileName, newProgram, mutationResult, currFaultySpec, numOfMutations);
+                if (IsPerfectRepairVisitor.execute(Config.origProp, mutationResult.mutatedExpr))
+                    Config.perfectMutants.add(specFileName);
+                else Config.nonPerfectMutants.add(specFileName);
 
             }
             ++mutantIndex;
@@ -103,17 +109,23 @@ public class ProcessMutants {
         return new Pair<List<String>, List<Integer>>(mutatedSpecs, repairDepths);
     }
 
-    private static void putInMutationSpecHashMap(MutationResult mutationResult, String currFaultySpec, int numOfMutations) {
+    private static void putInMutationSpecHashMap(String specFileName, Program newProgram, MutationResult mutationResult, String currFaultySpec, int numOfMutations) {
 
-        assert numOfMutations<=2 && (currFaultySpec.contains("LOR") || currFaultySpec.contains("ROR") || !currFaultySpec.contains("-")) : "population of the hashmap is configured to handle only two mutations ROR and LOR for at most 2 mutations. Violation detected. Failing.";
+        assert numOfMutations <= 2 && (currFaultySpec.contains("LOR") || currFaultySpec.contains("ROR") || !currFaultySpec.contains("-")) : "population of the hashmap is configured to handle only two mutations ROR and LOR for at most 2 mutations. Violation detected. Failing.";
 
         String filteredCurrSpecName = currFaultySpec.replaceAll("LOR-.", "LOR");
         filteredCurrSpecName = filteredCurrSpecName.replaceAll("ROR-.", "ROR");
 
+        String mutantName = mutationResult.getUniqueMutationName(filteredCurrSpecName);
+        Queue<MutationResult> mutationResQueue = mutationSpecPool.get(mutantName);
 
-        Queue<MutationResult> mutationResQueue = mutationSpecPool.get(mutationResult.getUniqueMutationName(filteredCurrSpecName));
+        //hack
+        String oldFolderName = folderName;
+        folderName += "/" + mutantName;
+
         if (mutationResQueue == null) {
-
+            if (!evaluationMode)
+                new File(folderName).mkdirs();
             PriorityQueue<MutationResult> queue = new PriorityQueue<>(new Comparator<MutationResult>() {
                 @Override
                 public int compare(MutationResult t1, MutationResult t2) {
@@ -126,16 +138,16 @@ public class ProcessMutants {
                     for (GenericRepairNode repairNode : t2.repairNodes)
                         repairDepthSum2 += repairNode.repairDepth;
                     return Integer.compare(repairDepthSum1, repairDepthSum2);
-
-                  /*  int t1DubiousSize = ExprRepairSizeVisitor.execute(t1.mutatedExpr, DiscoverContract.contract.tInOutManager, DiscoverContract.contract.rInOutManager.generateInputDecl(), DiscoverContract.contract.rInOutManager.generateOutputDecl());
-                    int t2DubiousSize = ExprRepairSizeVisitor.execute(t2.mutatedExpr, DiscoverContract.contract.tInOutManager, DiscoverContract.contract.rInOutManager.generateInputDecl(), DiscoverContract.contract.rInOutManager.generateOutputDecl());
-                    return Integer.compare(t1DubiousSize, t2DubiousSize);*/
                 }
             });
             queue.add(mutationResult);
             mutationSpecPool.put(mutationResult.getUniqueMutationName(filteredCurrSpecName), queue);
         } else mutationResQueue.add(mutationResult);
 
+        //hack
+        if (!evaluationMode) // can be printed in a folder formate in non-evaluation mode, for debugging purposes.
+            writeToFile(specFileName, newProgram.toString(), false, true);
+        folderName = oldFolderName;
     }
 
 

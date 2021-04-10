@@ -34,7 +34,7 @@ public class DiscoverContract {
     /**
      * name of the method we want to extract its contract.
      */
-    public static boolean contractDiscoveryOn = false;
+    public static boolean contractDiscoveryOn = true;
     public static boolean discoveryAttempted = false;
     public static RepairStatistics repairStatistics;
 
@@ -73,36 +73,36 @@ public class DiscoverContract {
     public static final void discoverLusterContract(DynamicRegion dynRegion) {
         DiscoverContract.dynRegion = dynRegion;
         fillUserSynNodes();
-        int mutantsNum = 0;
         try {
-            while (!specAlreadyMatching && Config.canSetup()) {
-                if(mutantsNum == 1 && !Config.mutationEnabled){
-                    System.out.println("finished repairing attempts.");
-                    return;
-                }
-
-                System.out.println("-|-|-|-|-|  resetting state and trying repairing: " + currFaultySpec);
-                resetState();
-                assert (userSynNodes.size() > 0);
-                if (Config.specLevelRepair)
-                    try {
-                        executionTime = System.currentTimeMillis();
-                        repairSpec();
-                        ++mutantsNum;
-                    } catch (JKindException jkindExp) {
-                        System.out.println("jkind exception encountered aborting specification" + jkindExp);
-                        repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;
-                        repairStatistics.lastQueryType = QueryType.UNKONWN;
-                        repairStatistics.printSpecStatistics();
-                        assert false;
-                    }
-                else
-                    assert false; //removed definition repair for now.
-                //repairDef(dynRegion);
-                //executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
-                allMutationStatistics.doneAllMutants();
-                System.out.println("The overall time for : " + currFaultySpec + "= " + executionTime + " sec");
+            contract = new Contract();
+            // execute the multi thread repairs and return
+            if (executionMode == ExecutionMode.MULTI_THREAD_MODE) {
+                canSetup();
+                return;
+            } else if (!canSetup()) { // single thread mode we run after setting up the environment
+                System.out.println("problem with the setup");
+                assert false;
+                return;
             }
+            System.out.println("repairing: " + currFaultySpec);
+            assert (userSynNodes.size() > 0);
+            if (Config.specLevelRepair)
+                try {
+                    executionTime = System.currentTimeMillis();
+                    repairSpec();
+                } catch (JKindException jkindExp) {
+                    System.out.println("jkind exception encountered aborting specification" + jkindExp);
+                    repairStatistics.terminationResult = TerminationResult.OTHER_JKIND_EXCEPTION;
+                    repairStatistics.lastQueryType = QueryType.UNKONWN;
+                    repairStatistics.printSpecStatistics();
+                    assert false;
+                }
+            else
+                assert false; //removed definition repair for now.
+            //repairDef(dynRegion);
+            //executionTime = (System.currentTimeMillis() - executionTime) / milliSecondSimplification;
+            allMutationStatistics.doneAllMutants();
+            System.out.println("The overall time for : " + currFaultySpec + "= " + executionTime + " sec");
         } catch (IOException e) {
             System.out.println("Unable to read specification file.! Aborting");
             assert false;
