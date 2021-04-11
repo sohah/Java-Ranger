@@ -19,19 +19,14 @@ performanceMode = false
 simplify = false
 
 ################## contract Discovery configurations ###############
-contractDiscoveryOn = true
 spec = infusion
-specRepair = true
-repairMode = 2
-
-SpecDirectory = GPCA_Infusion/Prop1
-faultySpec=Faulty_Prop1
-mutationEnabled = true
-repairMutantsOnly = false
-
-randomSampleMutants=true
 prop=1
-
+SpecDirectory = GPCA_Infusion/Prop1
 depthFixed = false
 evaluationMode = true
-#repairScope=2
+evaluationMode=true
+
+##### in discoveryMode=2, all the configurations are the same except for the faultySpec, it becomes the specification that we want to repair, also there will a new configuration for origSpec
+origSpec=Faulty_Prop1
+executionMode=2
+faultySpec=Faulty_Prop1

@@ -23,14 +23,12 @@ simplify = false
 
 ################## contract Discovery configurations ###############
 spec = tcas
-specRepair = true
-repairMode = 2
-contractDiscoveryOn = true
-
+prop=3
 SpecDirectory=TCAS/Prop3
+depthFixed=false
+evaluationMode=true
+
+##### in discoveryMode=2, all the configurations are the same except for the faultySpec, it becomes the specification that we want to repair, also there will a new configuration for origSpec
+origSpec=Prop3
+executionMode=2
 faultySpec=Prop3
-mutationEnabled = true
-repairMutantsOnly = true
-depthFixed = false
-evaluationMode = true
-#repairScope=2

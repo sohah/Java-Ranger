@@ -19,20 +19,13 @@ simplify = false
 
 
 ################## contract Discovery configurations ###############
-contractDiscoveryOn = true
 spec = wbs
-specRepair = true
-repairMode = 2
-
-
-SpecDirectory = WBS/Prop1
-faultySpec=Prop1
-mutationEnabled = true
-repairMutantsOnly = false
-
-randomSampleMutants=true
 prop=1
+SpecDirectory=WBS/Prop1
+depthFixed=false
+evaluationMode=true
 
-depthFixed = false
-evaluationMode = true
-#repairScope=2
+##### in discoveryMode=2, all the configurations are the same except for the faultySpec, it becomes the specification that we want to repair, also there will a new configuration for origSpec
+origSpec=Prop1
+executionMode=2
+faultySpec=Prop1

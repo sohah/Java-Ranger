@@ -22,20 +22,14 @@ performanceMode = false
 simplify = false
 
 ################## contract Discovery configurations ###############
-contractDiscoveryOn = true
 spec = gpca
-specRepair = true
-repairMode = 2
-
-SpecDirectory = GPCA_Alarm/Prop5
-#faultySpec=Faulty_GPCA_Prop5-ORO-0-0,Faulty_GPCA_Prop5-ORO-0-1,Faulty_GPCA_Prop5-ORO-0-2,Faulty_GPCA_Prop5-ORO-0-3,Faulty_GPCA_Prop5-ORO-0-4,Faulty_GPCA_Prop5-ORO-0-5,Faulty_GPCA_Prop5-ORO-0-6,Faulty_GPCA_Prop5-ORO-1-5,Faulty_GPCA_Prop5-ORO-1-6,Faulty_GPCA_Prop5-ORO-2-5,Faulty_GPCA_Prop5-ORO-2-6
-faultySpec=Faulty_GPCA_Prop5
-mutationEnabled = true
-repairMutantsOnly = false
-
-randomSampleMutants=true
 prop=5
-
+SpecDirectory = GPCA_Alarm/Prop5
 depthFixed = false
 evaluationMode = true
-#repairScope=2
+evaluationMode=true
+
+##### in discoveryMode=2, all the configurations are the same except for the faultySpec, it becomes the specification that we want to repair, also there will a new configuration for origSpec
+origSpec=Faulty_GPCA_Prop5
+executionMode=2
+faultySpec=Faulty_GPCA_Prop5
