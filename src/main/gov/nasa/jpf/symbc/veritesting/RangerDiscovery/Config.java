@@ -9,7 +9,6 @@ import gov.nasa.jpf.symbc.veritesting.VeritestingUtil.Pair;
 import jkind.lustre.*;
 import jkind.lustre.parsing.LustreParseUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -64,7 +63,7 @@ public class Config {
     public static String origSpec; // this is the original spec before mutation
     public static boolean printMutantDir = false;
     public static boolean mutationEnabled = true;
-    public static int numOfMutations = 1; // number of mutations we want to do on a spec, set by hand not through a configuration file
+    public static int numOfMutations = 2; // number of mutations we want to do on a spec, set by hand not through a configuration file
 
     // indicates if we are repairing by emulating the faulty expression, or if we are repairing using all input and outputs of the spec
     public static boolean repairWithAllInputOutput = false;
@@ -126,7 +125,8 @@ public class Config {
 
     //these define the beginning and the end of the indexed mutants we want to repair, by attempting all possible repair locations for them.
     private static int startRandIndex = 0; //must be greater than or equal 0
-    private static int endRandIndex = 1; // must be less than 50.
+    private static int endRandIndex = 7 ; // must be less than 50.
+    public static int mutationPosition; // this is the position/index of the mutation in the orderedMutationMap, that should be provided to single threads, so that logs are created based on this unique number per benchmark and property
 
     public static boolean canSetup() throws IOException {
         System.out.println("faultySpec=" + currFaultySpec);
@@ -144,7 +144,7 @@ public class Config {
             repairDepth = triple.getSecond();
 
             currFaultySpec = oldCurrFaultySpec;
-            allMutationStatistics = new AllMutationStatistics();
+            allMutationStatistics = new AllMutationStatistics(mutationPosition);// single threads, must have the same number of mutationPosition as the multi-threading parent to push on the statistics of the all repairs of the same mutatant to the same file name
 
             tFileName = folderName + currFaultySpec;
 
@@ -168,12 +168,13 @@ public class Config {
             Pair<List<String>, Integer[]> triple = runMultipleMutations(numOfMutations, folderName, currFaultySpec, operationMode, mutationDir);
             faultySpecs = triple.getFirst();
             repairDepth = triple.getSecond();
-            allMutationStatistics = new AllMutationStatistics();
             populateRandomSampleOrder();
 
             System.out.println("sampling from index = " + startRandIndex + ", to index = " + endRandIndex);
 
             for (int i = startRandIndex; i < endRandIndex; i++) {//pick specs in the range and attempt to repair them by attempting all possible repairs
+                Config.mutationPosition = i; //has the side effect
+                allMutationStatistics = new AllMutationStatistics(i); // prepare the statistics file per mutation.
                 String mutationToRepair = orderedRandSample.get(i);
                 Queue<MutationResult> repairPossibilities = ProcessMutants.mutationSpecPool.get(mutationToRepair);
                 FireThreads.findRepairs(i, repairPossibilities);

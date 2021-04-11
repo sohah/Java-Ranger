@@ -246,6 +246,9 @@ public class VeritestingListener extends PropertyListenerAdapter implements Publ
             if (conf.hasValue("evaluationMode"))
                 gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode = conf.getBoolean("evaluationMode");
 
+            if (conf.hasValue("mutationPosition"))
+                gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.mutationPosition = conf.getInt("mutationPosition");
+
         }
         if (conf.hasValue("randZ3Seed"))
             gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.randZ3Seed = conf.getBoolean("randZ3Seed");

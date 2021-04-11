@@ -16,16 +16,17 @@ public class AllMutationStatistics {
 
     String uniquePropFileName = Config.folderName + Config.spec + "_unique_prop" + Config.prop + ".txt";
     String allPropFileName = Config.folderName + Config.spec + "_all_prop" + Config.prop + ".txt";
-    public String statFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_stats.txt";
+    public String statFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_" + Config.mutationPosition + "_stats.txt";
 
     static public String threadStatFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_stats.txt";
 
-    public AllMutationStatistics() {
+    public AllMutationStatistics(int mutationPosition) {
         String out = ("bench,     ") + ("prop,     ") + ("currFaultySpec,     ") + ("perfect,     ") + ("repairNodeDepth,     ") + ("terminationResult,     ") +
 //                ("allCandidatesAttempted,     ") +
                 ("repairsFoundNum,     ") + ("executionTime,     ") + ("totalQueriesTime,     ") +
                 ("totalExistsTime,     ") + ("totalForallTime,     ") + ("totalExistsNum,     ") +
                 ("totalForallNum,     ") + ("avgExistsTime,     ") + ("avgForallTime,     ") + ("tightestProp,     ");
+        statFileName = Config.folderName + Config.spec + "_prop" + Config.prop + "_" + mutationPosition + "_stats.txt";
         System.out.println("working directory" + FileSystems.getDefault().getPath(".").toAbsolutePath());
         System.out.println("Config.folderName=" + Config.folderName);
         File file = new File(statFileName);

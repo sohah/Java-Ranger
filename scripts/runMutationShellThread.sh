@@ -10,8 +10,11 @@ shopt -s expand_aliases
 
 DISCOVERYDIR=/home/soha/git/ranger-discovery
 JPFCONFIG=$1
-REPAIRNUM=$2
+SPEC=$2
+PROP=$3
+MUTATIONPOSITION=$4
+REPAIRNUM=$5
 
 echo "running configuration of => "${JPFCONFIG}
-runDiscovery $JPFCONFIG >& $DISCOVERYDIR/logs/mutation/thread_${REPAIRNUM}.log
+runDiscovery $JPFCONFIG >& $DISCOVERYDIR/logs/${SPEC}/th_${SPEC}${PROP}_${MUTATIONPOSITION}_${REPAIRNUM}.log
 #$DISCOVERYDIR/logs/mutation/${JPFCONFIG}_${REPAIRNUM}

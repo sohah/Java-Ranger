@@ -98,7 +98,7 @@ public class MinimalRepairDriver {
                     canFindMoreTighterRepair = false;
                     repairStatistics.terminationResult = TerminationResult.MINIMAL_MAX_LOOP_REACHED;
                     repairStatistics.lastQueryType = QueryType.FORALL;
-                    System.out.println("Minimum Loop Max Count Reached. Aborting");
+                    System.out.println("CandidateLoopCount = " + candidateLoopCount + ", Minimum Loop Max Count Reached=" + MINIMALLOOP_MAXLOOPCOUNT + " Minimum Loop Max Count Reached. Aborting");
                 } else if (DiscoveryUtil.convertTimeToSecond(System.currentTimeMillis() - executionTime) >= mutantTimeOut) { // aborting if we ever hit the overall mutant timeout.
                     canFindMoreTighterRepair = false;
                     repairStatistics.terminationResult = TerminationResult.MUTANT_TIME_OUT;

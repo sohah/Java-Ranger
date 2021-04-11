@@ -1,7 +1,6 @@
 package gov.nasa.jpf.symbc.veritesting.RangerDiscovery;
 
 import gov.nasa.jpf.symbc.veritesting.RangerDiscovery.mutation.MutationResult;
-import org.opt4j.benchmark.M;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -15,14 +14,14 @@ public class FireThreads {
 
         ArrayList<MutationResult> repairPossibilitiesArr = new ArrayList<>(repairPossibilities);
         int coreCount = Runtime.getRuntime().availableProcessors();
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        ExecutorService service = Executors.newFixedThreadPool(coreCount-1);
 
         ArrayList<Future> futures = new ArrayList<>();
 
         //mutation number is the
-        for (int i = 0; i < 3; i++) {  //repairPossibilitiesArr.size()
+        for (int i = 0; i < repairPossibilitiesArr.size(); i++) {  //repairPossibilitiesArr.size()
             String threadJpfFile = Config.folderName + "threadJpf_" + mutationNum + "_" + i + ".jpf";
-            futures.add(service.submit(new RepairTask(repairPossibilitiesArr.get(i), threadJpfFile, i)));
+            futures.add(service.submit(new RepairTask(repairPossibilitiesArr.get(i), threadJpfFile, mutationNum, i)));
         }
 
         try {
