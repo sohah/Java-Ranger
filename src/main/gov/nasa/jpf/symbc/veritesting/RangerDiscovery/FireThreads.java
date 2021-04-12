@@ -45,7 +45,7 @@ public class FireThreads {
         long mutantRepairTime = System.currentTimeMillis();
 
         //mutation number is the
-        for (int i = 0; i < 1; i++) {  //repairPossibilitiesArr.size()
+        for (int i = 0; i < repairPossibilitiesArr.size(); i++) {  //repairPossibilitiesArr.size()
             String threadJpfFile = Config.folderName + "threadJpf_" + mutationNum + "_" + i + ".jpf";
             futures.add(service.submit(new RepairTask(repairPossibilitiesArr.get(i), threadJpfFile, mutationNum, i)));
         }
