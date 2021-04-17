@@ -23,7 +23,7 @@ simplify = false
 
 ################## contract Discovery configurations ###############
 spec = infusion
-prop=1
+prop=5
 SpecDirectory = GPCA_Infusion/Prop5
 depthFixed = false
 evaluationMode = true
