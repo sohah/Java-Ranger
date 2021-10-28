@@ -1,6 +1,8 @@
 Symbolic (Java) PathFinder:
 ---------------------------
 
+SPF README file
+
 Created new branch that contains many updates to SPF;
 in particular, interfacing with Z3 is robust; 
 also SPF now has a "symcrete" mode that executes paths 
