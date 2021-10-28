@@ -402,13 +402,14 @@ public class DiscoveryUtil {
         }
 
 
-        if (mac) {
+        /*if (mac) {
             if (randZ3Seed) api.setJKindJar("../../../jkind/jkind.jar");
             else api.setJKindJar("../../../jkindNoRand/jkind.jar");
         } else {//assuming linux
             if (randZ3Seed) api.setJKindJar("/home/soha/jkind/jkind.jar");
             else api.setJKindJar("/home/soha/jkindNoRand/jkind.jar");
-        }
+        }*/
+        api.setJKindJar("../jkind/jkind.jar");
         api.disableSlicing();
 
         List<String> vmArgs = new ArrayList<>();

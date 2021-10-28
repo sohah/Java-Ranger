@@ -36,3 +36,6 @@ prop=1
 depthFixed = false
 evaluationMode = true
 #repairScope=2
+
+##CHANGE ME
+jkindlocation=/home/soha/jkindNoRand/jkind.jar
