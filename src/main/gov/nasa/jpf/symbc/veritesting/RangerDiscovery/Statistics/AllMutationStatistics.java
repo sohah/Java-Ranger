@@ -33,7 +33,7 @@ public class AllMutationStatistics {
         try {
             Files.write(file, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            System.out.println("problem writing to all statistics file");
+            System.out.println("problem writing to all statistics file = " + file.toAbsolutePath());
             assert false;
         }
 
