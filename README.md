@@ -11,4 +11,10 @@ Assuming you have Java 8, gradle and git installed on your machine, you can foll
    $ cd jpf-core
    $ gradle
     
-2. 
+2. Install ContractDR
+   $ cd ..
+   $ git clone https://github.com/sohah/ranger-discovery.git
+   $ cd ranger-discovery
+   $ ant
+   $ cd scripts
+   $ vim ToolExample.sh
