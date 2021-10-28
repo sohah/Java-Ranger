@@ -1,0 +1,38 @@
+target=DiscoveryExamples.wbs.DiscoveryWBS
+classpath=${jpf-symbc}/build/examples,${jpf-symbc}/lib/com.ibm.wala.util-1.4.4-SNAPSHOT.jar
+sourcepath=${jpf-symbc}/src/examples
+vm.storage.class=nil
+#symbolic.debug=true
+
+
+######## miscellaneous  ######
+symbolic.method=DiscoveryExamples.wbs.DiscoveryWBS.discoveryLaunch(sym#sym#sym#sym#sym#sym#sym)
+
+symbolic.dp=z3bitvectorinc
+
+listener = .symbc.VeritestingListener,gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+#listener = gov.nasa.jpf.symbc.numeric.solvers.IncrementalListener
+jitAnalysis = true
+veritestingMode = 3
+performanceMode = false
+simplify = false
+
+
+################## contract Discovery configurations ###############
+contractDiscoveryOn = true
+spec = wbs
+specRepair = true
+repairMode = 2
+
+
+SpecDirectory = ToolExample/Prop1
+faultySpec=WBS_InvalidProp1
+mutationEnabled = true
+repairMutantsOnly = true
+
+randomSampleMutants=false
+prop=1
+
+depthFixed = false
+evaluationMode = true
+#repairScope=2
