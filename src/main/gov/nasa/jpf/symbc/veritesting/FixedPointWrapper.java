@@ -102,7 +102,6 @@ public class FixedPointWrapper {
         }
 
 
-
         Exception transformationException = currentTransformation.getFirstException();
         //TODO:This really does not propagate any exceptions that different transformations can raise. It only propagates specific exceptions from Substitution, which at this point suppresses most high order related exceptions, but propagates exceptions from jitAnalysis and earlyReturn.
         if (firstException == null)
@@ -140,26 +139,31 @@ public class FixedPointWrapper {
         FixedPointWrapper.topStackFrame = ti.getTopFrame();
         FixedPointWrapper.regionBefore = dynRegion;
         DynamicRegion intermediateRegion;
-
-        System.out.println("========================================= RUNNING FIXED POINT ITERATION # " + FixedPointWrapper.iterationNumber + "=========================================");
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("========================================= RUNNING FIXED POINT ITERATION # " + FixedPointWrapper.iterationNumber + "=========================================");
+        }
         if (FixedPointWrapper.iterationNumber > 1)
             FixedPointWrapper.resetIteration();
 
         SubstitutionVisitor substitutionVisitor = SubstitutionVisitor.create(ti, dynRegion, iterationNumber, false);
-        if(multiPathRegSymbolValueTable == null)
+        if (multiPathRegSymbolValueTable == null)
             multiPathRegSymbolValueTable = substitutionVisitor.getValueSymbolTable();
         intermediateRegion = substitutionVisitor.execute();
         collectTransformationState(substitutionVisitor);
 
-
-        System.out.println("\n--------------- FIELD REFERENCE TRANSFORMATION ---------------\n");
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- FIELD REFERENCE TRANSFORMATION ---------------\n");
+        }
         FieldSSAVisitor fieldSSAVisitor = new FieldSSAVisitor(ti, intermediateRegion);
         intermediateRegion = fieldSSAVisitor.execute();
         collectTransformationState(fieldSSAVisitor);
 
 
         /* Array substitution iteration */
-        System.out.println("\n--------------- ARRAY TRANSFORMATION ---------------\n");
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- ARRAY TRANSFORMATION ---------------\n");
+        }
+
         ArraySSAVisitor arraySSAVisitor = new ArraySSAVisitor(ti, intermediateRegion);
         intermediateRegion = arraySSAVisitor.execute();
         collectTransformationState(arraySSAVisitor);
@@ -186,7 +190,9 @@ public class FixedPointWrapper {
         FixedPointWrapper.regionBefore = dynRegion;
         DynamicRegion intermediateRegion;
 
-        System.out.println("========================================= RUNNING HIGH-ORDER ONE EXTRA TIME AFTER FIXED POINT ITERATION# " + FixedPointWrapper.iterationNumber + "=========================================");
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("========================================= RUNNING HIGH-ORDER ONE EXTRA TIME AFTER FIXED POINT ITERATION# " + FixedPointWrapper.iterationNumber + "=========================================");
+        }
         FixedPointWrapper.resetChange();
 
         SubstitutionVisitor highOrderVisitor = SubstitutionVisitor.create(ti, dynRegion, 0, true);

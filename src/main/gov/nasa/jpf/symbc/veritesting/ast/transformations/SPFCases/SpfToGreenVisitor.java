@@ -179,7 +179,7 @@ public class SpfToGreenVisitor implements AstVisitor<Expression> {
         Expression newAssign;
         if (dynRegion.earlyReturnResult.hasER()) {
             boolean isConstOrCopyReturn = false;
-            if (VeritestingListener.simplify && dynRegion.constantsTable != null){
+            if (VeritestingListener.simplify && dynRegion.constantsTable != null) {
                 Expression returnVar = dynRegion.earlyReturnResult.retVar;
                 isConstOrCopyReturn = isConstant(dynRegion.constantsTable.lookup((Variable) returnVar))
                         || isVariable(dynRegion.constantsTable.lookup((Variable) returnVar));
@@ -189,11 +189,10 @@ public class SpfToGreenVisitor implements AstVisitor<Expression> {
             newCond = earlyReturnToGreen(dynRegion.earlyReturnResult.condition, dynRegion);
             ReturnResult oldResult = dynRegion.earlyReturnResult;
             RemoveEarlyReturns o = new RemoveEarlyReturns();
-            if(!isConstOrCopyReturn) {
+            if (!isConstOrCopyReturn) {
                 Expression newRetVar = earlyReturnToGreen(dynRegion.earlyReturnResult.retVar, dynRegion);
                 newReturnResult = o.new ReturnResult(oldResult.stmt, newAssign, newCond, oldResult.retPosAndType, newRetVar);
-            }
-            else {
+            } else {
                 // This lets the ReturnResult.retVar remain 'lookup'-able in the dynRegion.constantsTable by letting
                 // it remain an AstVarExpr. Otherwise it will be turned into a green variable.
                 newReturnResult = o.new ReturnResult(oldResult.stmt, newAssign, newCond, oldResult.retPosAndType, oldResult.retVar);
@@ -203,10 +202,10 @@ public class SpfToGreenVisitor implements AstVisitor<Expression> {
             newReturnResult = dynRegion.earlyReturnResult;
         }
 
-
-        System.out.println("\n--------------- SPFCases GREEN PREDICATE ---------------");
-        System.out.println(StmtPrintVisitor.print(spfPredicateSummary));
-
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- SPFCases GREEN PREDICATE ---------------");
+            System.out.println(StmtPrintVisitor.print(spfPredicateSummary));
+        }
         DynamicRegion greenDynRegion = new DynamicRegion(dynRegion,
                 dynRegion.dynStmt,
                 dynRegion.spfCaseList,

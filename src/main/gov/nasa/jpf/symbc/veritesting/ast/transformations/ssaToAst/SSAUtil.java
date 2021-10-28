@@ -49,16 +49,20 @@ public class SSAUtil {
     }
 
     public static void printBlock(ISSABasicBlock block) {
-        System.out.println("Basic block: " + block);
-        for (SSAInstruction ins: block) {
-            System.out.println("  Instruction: " + ins);
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("Basic block: " + block);
+            for (SSAInstruction ins : block) {
+                System.out.println("  Instruction: " + ins);
+            }
+            System.out.println("End of block: " + block);
         }
-        System.out.println("End of block: " + block);
     }
 
     public static void printBlocksUpTo(SSACFG cfg, int blockNum) {
-        for (int i = 1; i <= blockNum; i++) {
-            printBlock(cfg.getNode(i));
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            for (int i = 1; i <= blockNum; i++) {
+                printBlock(cfg.getNode(i));
+            }
         }
     }
 

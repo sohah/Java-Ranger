@@ -61,7 +61,9 @@ public class JITAnalysis {
         long startTime = System.nanoTime();
 
         if (firstTime) { //create veritestingMain only once.
-            System.out.println("^_^ running jitAnalysis ^_^");
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                System.out.println("^_^ running jitAnalysis ^_^");
+            }
             JITAnalysis.veritestingMain = new VeritestingMain(ti);
             firstTime = false;
         }

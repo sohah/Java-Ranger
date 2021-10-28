@@ -47,7 +47,9 @@ public class IncrementalListener extends PropertyListenerAdapter {
   @Override
   public void choiceGeneratorAdvanced (VM vm, ChoiceGenerator<?> currentCG) {
     if(currentCG instanceof PCChoiceGenerator) {
-      System.out.println("choiceGeneratorAdvanced: at " + currentCG.getInsn().getMethodInfo() + "#" + currentCG.getInsn().getPosition());
+      if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+        System.out.println("choiceGeneratorAdvanced: at " + currentCG.getInsn().getMethodInfo() + "#" + currentCG.getInsn().getPosition());
+      }
       solver.push();
     }
   }

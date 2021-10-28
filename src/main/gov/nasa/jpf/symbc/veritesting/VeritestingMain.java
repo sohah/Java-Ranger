@@ -68,7 +68,9 @@ public class VeritestingMain {
             AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(appJar,
                     jitAnalysis == true ? null : (new FileProvider()).getFile(exclusionsFile));
 //                    (new FileProvider()).getFile(CallGraphTestUtil.REGRESSION_EXCLUSIONS));
-            System.out.print("Constructing class hierarchy...");
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                System.out.print("Constructing class hierarchy...");
+            }
             cha = ClassHierarchyFactory.make(scope);
             System.out.println("done!");
             methodSummaryClassNames = new HashSet<String>();

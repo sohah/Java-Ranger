@@ -249,13 +249,13 @@ public class CreateStaticRegions {
                 // that tries to ensure that all local outputs in outputTable have a assignment using a gamma expression.
                 // This part of the LocalOutputInvariantVisitor is now commented out (04/29/2019).
                 /* Vaibhav: this simplification should not make a correctness difference unless we have a region that
-                * writes the same value to a local variable on both sides of a branch. But, having this simplification
-                * turned on causes the LocalOutputInvariantVisitor to not create a stack output for the lhs of such
-                * gamma expressions. An example of this is in replace.amatch([C[CI)I#56 that ends on the instruction
-                * at offset 62. Using this simplification, we now dont assume that such regions have a stack output and therefore
-                * dont want such regions to end on a stack consuming instruction. These regions appear right before the
-                * beginning of a loop and these gamma expressions are assigning a value that would be modified in the
-                * loop. */
+                 * writes the same value to a local variable on both sides of a branch. But, having this simplification
+                 * turned on causes the LocalOutputInvariantVisitor to not create a stack output for the lhs of such
+                 * gamma expressions. An example of this is in replace.amatch([C[CI)I#56 that ends on the instruction
+                 * at offset 62. Using this simplification, we now dont assume that such regions have a stack output and therefore
+                 * dont want such regions to end on a stack consuming instruction. These regions appear right before the
+                 * beginning of a loop and these gamma expressions are assigning a value that would be modified in the
+                 * loop. */
                 if (gamma instanceof AssignmentStmt && ((AssignmentStmt) gamma).rhs instanceof GammaVarExpr) {
                     Expression exp1 = ((GammaVarExpr) ((AssignmentStmt) gamma).rhs).thenExpr;
                     Expression exp2 = ((GammaVarExpr) ((AssignmentStmt) gamma).rhs).elseExpr;
@@ -517,7 +517,8 @@ public class CreateStaticRegions {
 // iterations through the "for (ISSABasicBlock parent : cfg.getNormalPredecessors(child))" loop. I think it is best to
 // not create such a region. It is also good to not crash Java Ranger on encountering such a region.
 //        assert (returnExpr != null);
-        if (returnExpr == null) throwException(new StaticRegionException("createComplexIfCondition: failed to recover condition"), STATIC);
+        if (returnExpr == null)
+            throwException(new StaticRegionException("createComplexIfCondition: failed to recover condition"), STATIC);
         return new Pair<>(returnExpr, setupStmt);
     }
 
@@ -728,10 +729,10 @@ public class CreateStaticRegions {
                 new IfThenElseStmt(SSAUtil.getLastBranchInstruction(currentBlock), condExpr, thenStmt, elseStmt),
                 false);
 
-        if (!actualThenBlock.equals(thenBlock) &&(!actualThenBlock.equals(elseBlock)))
+        if (!actualThenBlock.equals(thenBlock) && (!actualThenBlock.equals(elseBlock)))
             populateMissedRegions(cfg, actualThenBlock, terminus);
 
-        if (!actualElseBlock.equals(thenBlock) &&(!actualElseBlock.equals(elseBlock)))
+        if (!actualElseBlock.equals(thenBlock) && (!actualElseBlock.equals(elseBlock)))
             populateMissedRegions(cfg, actualElseBlock, terminus);
 
         return returnStmt;
@@ -784,8 +785,9 @@ public class CreateStaticRegions {
                 endIns = ((IBytecodeMethod) (ir.getMethod())).getBytecodeIndex(terminus.getFirstInstructionIndex());
                 Stmt s = conjoin(stmt, partialGammaStmt);
                 veritestingRegions.put(CreateStaticRegions.constructRegionIdentifier(ir, currentBlock), new StaticRegion(s, ir, false, endIns, currentBlock, terminus, null));
-                System.out.println("Subregion" + System.lineSeparator() + PrettyPrintVisitor.print(s));
-
+                if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                    System.out.println("Subregion" + System.lineSeparator() + PrettyPrintVisitor.print(s));
+                }
             } catch (InvalidClassFileException e) {
                 System.out.println("Unable to create subregion.  Reason: " + e.toString());
             } catch (StaticRegionException e) {
@@ -897,8 +899,9 @@ public class CreateStaticRegions {
 
                 endIns = ((IBytecodeMethod) (ir.getMethod())).getBytecodeIndex(terminus.getFirstInstructionIndex());
                 veritestingRegions.put(CreateStaticRegions.constructRegionIdentifier(ir, currentBlock), new StaticRegion(s, ir, false, endIns, currentBlock, terminus, null));
-                System.out.println("Subregion: " + System.lineSeparator() + PrettyPrintVisitor.print(s));
-
+                if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                    System.out.println("Subregion: " + System.lineSeparator() + PrettyPrintVisitor.print(s));
+                }
             } catch (StaticRegionException e) {
                 //SSAUtil.printBlocksUpTo(cfg, endingBlock.getNumber());
                 System.out.println("Unable to create subregion.  Reason: " + e.toString());
@@ -930,7 +933,9 @@ public class CreateStaticRegions {
 
         try {
             Stmt s = attemptMethodSubregion(cfg, cfg.entry(), cfg.exit());
-            System.out.println("Method" + System.lineSeparator() + PrettyPrintVisitor.print(s));
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                System.out.println("Method" + System.lineSeparator() + PrettyPrintVisitor.print(s));
+            }
             veritestingRegions.put(CreateStaticRegions.constructMethodIdentifier(cfg.entry()), new StaticRegion(s, ir, true, 0, null, null, null));
         } catch (StaticRegionException sre) {
             System.out.println("Unable to create a method summary region for: " + cfg.getMethod().getName().toString());
@@ -1035,8 +1040,7 @@ public class CreateStaticRegions {
                     System.out.println("unable to create static region:" + sre.getMessage());
 
                 }
-            }
-            else
+            } else
                 populateMissedRegions(cfg, cfg.getNormalSuccessors(currentBlock).iterator().next(), endingBlock);
         }
     }
@@ -1063,11 +1067,13 @@ public class CreateStaticRegions {
 
         try {
             Stmt s = attemptMethodAndMultiPathRegions(cfg, cfg.entry(), cfg.exit());
-            System.out.println("Method" + System.lineSeparator() + PrettyPrintVisitor.print(s));
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                System.out.println("Method" + System.lineSeparator() + PrettyPrintVisitor.print(s));
+            }
             SSAInstruction[] insns = ir.getInstructions();
             veritestingRegions.put(CreateStaticRegions.constructMethodIdentifier(cfg.entry()), new StaticRegion(s, ir, true, 0, null, null, null));
         } catch (StaticRegionException sre) { //TODO: check if we need that for method regions.
-                throw sre;
+            throw sre;
         }
     }
 }

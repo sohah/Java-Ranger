@@ -57,20 +57,23 @@ public class UniqueRegion {
             dynRegion = new DynamicRegion(staticRegion,
                     dynStmt,
                     uniqueNum, newReturnResult);
-        }else
+        } else
             dynRegion = new DynamicRegion(staticRegion,
                     dynStmt,
                     uniqueNum, staticRegion.earlyReturnResult);
 
+        if (gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
 
-        System.out.println("\n--------------- UNIQUENESS TRANSFORMATION ---------------");
-        System.out.println(StmtPrintVisitor.print(dynRegion.dynStmt));
-        dynRegion.slotParamTable.print();
-        dynRegion.inputTable.print();
-        dynRegion.varTypeTable.print();
-        dynRegion.outputTable.print();
-        System.out.println("Stack output: " + dynRegion.stackOutput);
-
+                System.out.println("\n--------------- UNIQUENESS TRANSFORMATION ---------------");
+                System.out.println(StmtPrintVisitor.print(dynRegion.dynStmt));
+                dynRegion.slotParamTable.print();
+                dynRegion.inputTable.print();
+                dynRegion.varTypeTable.print();
+                dynRegion.outputTable.print();
+                System.out.println("Stack output: " + dynRegion.stackOutput);
+            }
+        }
         return dynRegion;
     }
 
@@ -92,7 +95,7 @@ public class UniqueRegion {
             newDynRegion.stackOutput = oldDynRegion.stackOutput.makeUnique(uniqueNum);
 
 
-        if(VeritestingListener.simplify)
+        if (VeritestingListener.simplify)
             newDynRegion.constantsTable = makeConstantsTableUnique(newDynRegion.constantsTable, uniqueNum);
 
         return newDynRegion;

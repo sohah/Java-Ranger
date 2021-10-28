@@ -200,7 +200,7 @@ public class SubstitutionVisitor extends FixedPointAstMapVisitor {
         if ((FixedPointWrapper.iterationNumber > 1) && (noFurtherInlines.contains(((SSAInvokeInstruction) c.original)
                 .getCallSite()
                 .getDeclaredTarget()))
-                ) {   //if the method invocation was previously discovered to be recursive in a previous fix point iteration then just
+        ) {   //if the method invocation was previously discovered to be recursive in a previous fix point iteration then just
             // return, i.e., do not attempt to inline it.
             System.out.println("Encountering an already discovered recursive method. Returning.");
             return c;
@@ -257,8 +257,10 @@ public class SubstitutionVisitor extends FixedPointAstMapVisitor {
                     ++StatisticManager.thisHighOrdCount;
                     String key = keyRegionPair.getFirst();
 
-                    System.out.println("\n********** High Order Region Discovered for region: " + key + "\n");
-                    System.out.println("\n---------- STARTING Inlining Transformation for region: ---------------\n" + StmtPrintVisitor.print(hgOrdStaticRegion.staticStmt) + "\n");
+                    if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                        System.out.println("\n********** High Order Region Discovered for region: " + key + "\n");
+                        System.out.println("\n---------- STARTING Inlining Transformation for region: ---------------\n" + StmtPrintVisitor.print(hgOrdStaticRegion.staticStmt) + "\n");
+                    }
                     DynamicRegion uniqueHgOrdDynRegion = null;
                     try {
                         hgOrdStaticRegion = RemoveEarlyReturns.removeEarlyReturns(hgOrdStaticRegion);
@@ -396,7 +398,7 @@ public class SubstitutionVisitor extends FixedPointAstMapVisitor {
         String currClassName = null;
         if (!instruction.isStatic() && !instruction.isSpecial()) {
             if (c.params[0] instanceof IntConstant) { //if the first param is a constant, then it is already a reference and it isn't in the varTypeTable, instead we need to ask SPF for it.
-                if (((IntConstant)c.params[0]).getValue() == 0) {
+                if (((IntConstant) c.params[0]).getValue() == 0) {
                     ti.requestSUTException("java.lang.NullPointerException", "found a null pointer reference");
                     throwException(new IllegalArgumentException("cannot instantiate region with null pointer derefernece"),
                             StaticRegionException.ExceptionPhase.INSTANTIATION);
@@ -586,20 +588,22 @@ public class SubstitutionVisitor extends FixedPointAstMapVisitor {
         if (this.cne != null) throwException(new StaticRegionException(this.cne.getMessage()), INSTANTIATION);
         */
         this.instantiatedRegion = new DynamicRegion(dynRegion, dynStmt, new SPFCaseList(), null, null, dynRegion.earlyReturnResult);
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- SUBSTITUTION TRANSFORMATION for: " + VeritestingListener.key + " ---------------\n");
+            System.out.println(StmtPrintVisitor.print(dynRegion.dynStmt));
+            dynRegion.slotParamTable.print();
+            dynRegion.outputTable.print();
+            dynRegion.varTypeTable.print();
 
-        System.out.println("\n--------------- SUBSTITUTION TRANSFORMATION for: " + VeritestingListener.key + " ---------------\n");
-        System.out.println(StmtPrintVisitor.print(dynRegion.dynStmt));
-        dynRegion.slotParamTable.print();
-        dynRegion.outputTable.print();
-        dynRegion.varTypeTable.print();
-
-        System.out.println("\n--------------- AFTER SUBSTITUTION TRANSFORMATION for: " + VeritestingListener.key + " ---------------\n");
-        System.out.println(StmtPrintVisitor.print(instantiatedRegion.dynStmt));
-        instantiatedRegion.slotParamTable.print();
-        instantiatedRegion.outputTable.print();
-        instantiatedRegion.varTypeTable.print();
-        System.out.println("Stack output: " + dynRegion.stackOutput);
-
+            if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                System.out.println("\n--------------- AFTER SUBSTITUTION TRANSFORMATION for: " + VeritestingListener.key + " ---------------\n");
+                System.out.println(StmtPrintVisitor.print(instantiatedRegion.dynStmt));
+                instantiatedRegion.slotParamTable.print();
+                instantiatedRegion.outputTable.print();
+                instantiatedRegion.varTypeTable.print();
+                System.out.println("Stack output: " + dynRegion.stackOutput);
+            }
+        }
         if (!this.somethingChanged)
             this.somethingChanged = ((ExprSubstitutionVisitor) eva.theVisitor).isSomethingChanged();
         return instantiatedRegion;

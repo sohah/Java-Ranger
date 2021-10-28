@@ -205,7 +205,9 @@ public class SSAToStatIVisitor implements SSAInstruction.IVisitor {
 
                 List<PhiCondition> cond = blockConditionMap.get(new PhiEdge(preBlock, currentBlock));
                 if (cond == null) {
-                    System.out.println("Unable to find condition.");
+                    if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+                        System.out.println("Unable to find condition.");
+                    }
                     SSAUtil.printBlocksUpTo(cfg, currentBlock.getNumber());
                     // MWW: null case.  Do not add to the gamma.
                     // MWW: This case occurs due to jumps from complex 'if' conditions.

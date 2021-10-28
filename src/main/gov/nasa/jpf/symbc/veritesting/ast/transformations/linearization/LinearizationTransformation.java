@@ -12,13 +12,16 @@ public class LinearizationTransformation extends DefaultTransformation {
 
     @Override
     public DynamicRegion execute(DynamicRegion region) {
-        System.out.println("\n--------------- LINEARIZATION TRANSFORMATION ---------------");
-
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- LINEARIZATION TRANSFORMATION ---------------");
+        }
         LinearizationVisitor v = new LinearizationVisitor();
         Stmt stmt = region.dynStmt.accept(v);
 
-        System.out.println(StmtPrintVisitor.print(stmt));
-        System.out.println("\nStack output: " + region.stackOutput);
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println(StmtPrintVisitor.print(stmt));
+            System.out.println("\nStack output: " + region.stackOutput);
+        }
 
         return new DynamicRegion(region,
                 stmt, region.spfCaseList, null,null, region.earlyReturnResult);

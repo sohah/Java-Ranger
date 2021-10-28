@@ -142,7 +142,7 @@ public class SimplifyStmtVisitor extends FixedPointAstMapVisitor {
             } else if (entry.getValue() instanceof AstVarExpr) {
                 assert ((AstVarExpr) entry.getValue()).getUniqueNum() != -1;
                 newValue = entry.getValue(); // AstVarExpr are assumed to be alpha-renamed by this point
-            }else if (entry.getValue() instanceof WalaVarExpr) {
+            } else if (entry.getValue() instanceof WalaVarExpr) {
                 assert ((WalaVarExpr) entry.getValue()).getUniqueNum() != -1;
                 newValue = entry.getValue(); // WalaVarExpr are assumed to be alpha-renamed by this point
             } else newValue = entry.getValue();
@@ -166,13 +166,15 @@ public class SimplifyStmtVisitor extends FixedPointAstMapVisitor {
             instantiatedRegion.constantsTable = this.constantsTable;
         else dynRegion.constantsTable.addAll(this.constantsTable);
 //            simplifyArrayOutputs(dynRegion);
-        System.out.println("\n--------------- AFTER SIMPLIFICATION ---------------\n");
-        System.out.println(StmtPrintVisitor.print(instantiatedRegion.dynStmt));
-        Iterator<Map.Entry<Variable, Expression>> itr = instantiatedRegion.constantsTable.table.entrySet().iterator();
-        System.out.println("Constants Table:");
-        while (itr.hasNext()) {
-            Map.Entry<Variable, Expression> entry = itr.next();
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        if (!gov.nasa.jpf.symbc.veritesting.RangerDiscovery.Config.evaluationMode) {
+            System.out.println("\n--------------- AFTER SIMPLIFICATION ---------------\n");
+            System.out.println(StmtPrintVisitor.print(instantiatedRegion.dynStmt));
+            Iterator<Map.Entry<Variable, Expression>> itr = instantiatedRegion.constantsTable.table.entrySet().iterator();
+            System.out.println("Constants Table:");
+            while (itr.hasNext()) {
+                Map.Entry<Variable, Expression> entry = itr.next();
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
         }
         return instantiatedRegion;
     }
