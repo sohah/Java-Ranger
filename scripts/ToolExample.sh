@@ -10,5 +10,6 @@ alias runDiscovery='LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/soha/git/ranger-disco
 shopt -s expand_aliases
 
 
-mkdir $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/log
-runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/Prop1/prop1.jpf >& $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/log/Prop1.log
+#mkdir $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/log
+runDiscovery $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/Prop1/prop1.jpf
+#>& $DISCOVERYDIR/src/DiscoveryExamples/ToolExample/log/Prop1.log
