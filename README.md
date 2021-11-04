@@ -39,14 +39,17 @@ Assuming you have Java 8, gradle, and git installed on your machine, you can fol
       <code>export Z3_HOME=/z3installation</code>
    * reload bash_profile
       <code>source ~/.bash_profile</code>
+     
+5. Setup JKIND
+   * ContractDR includes JKIND version 4.08, which is what it was tried on. For more infomration about JKIND please visit https://github.com/loonwerks/jkind.
 
-5. Run ContractDR
+6. Run ContractDR
    * <code>cd $ContractDR_HOME/script</code>
    * <code>./ToolExample.sh</code>
    This command is going to repair a faulty WBS property in <code>$ContractDR_HOME/src/DiscoveryExamples/ToolExample/Prop1/WBS_InvalidProp1. </code>
    <code>prop1.jpf</code> contains the configuration for ContractDR.
    
-6. ContractDR's results
+7. ContractDR's results
    * Repair attempts:
      ContractDR will attempt various dubious expressions:
      
