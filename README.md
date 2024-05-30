@@ -30,7 +30,7 @@ As of August 2022, we migrated our build workflow to `Gradle`. While migrating t
 
 ## Quick Start Guide
 
-SPF requires: **Java 8** and **Gradle 6.9**.
+SPF requires: **Java 8** and **Gradle 6.9 - something**.
 
 ### 1. Get the latest SPF version
 ```{bash}
